@@ -1,6 +1,6 @@
 Package: soundscapeR
 Type: Package
-Title: Computation, Visualization and Diversity Estimation of Soundscapes
+Title: Visualization and Richness Estimation of Soundscapes
 Version: 0.1.0
 Author: Thomas Luypaert <thomas.luypaert@nmbu.no>
 Maintainer: Thomas Luypaert <thomas.luypaert@nmbu.no>
