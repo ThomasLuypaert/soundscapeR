@@ -1,0 +1,292 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# soundscapeR
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of  `r soundscapeR` is to provide a standardized analytical pipeline for the computation, visualization and richness estimation of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings and is built around the concept of "Acoustic Space Use", being the saturation of the acoustic space at various scales and resolutions for a set of acoustic indices.
+    
+## Installation
+
+You can install the released version of `r soundscapeR` from [GitHub](https://github.com/) with:
+
+``` r
+githubinstall("soundscapeR")
+```
+
+## The soundscapeR workflow
+
+Below, you can find an example of the `r soundscapeR` workflow in action. 
+
+The raw data consists of 1603 sound files from the Brazilian Amazon, recorded at a sampling rate of 384,000 at medium gain, using a sampling regime of 1-min of recording every 10-min. Prior to this example, we downloaded the 'AnalysisPrograms.exe' (AP) software on which `r soundscapeR` relies. For instructions on how to do this, consult this link [link](https://research.ecosounds.org/tutorials/ap/practical}).
+
+### 1. Computing acoustic indices & uploading index data into R
+
+The first step of the \code{soundscapeR} workflow is to compute the acoustic indices which we will use to explore various aspects of the soundscape using the \code{\link{index_calc}} command.However, for this tutorial, to save you from downloading the raw data and computing the indices yourself - both of which are rather time consuming and computationally intensive - the \code{soundscapeR} package comes with test data for you to experiment with. 
+
+The test dataset was derived as follows:
+
+#### **A) Computing acoustic indices:**
+
+First, we computed a set of acoustic indices for all sound files in the recording period:
+
+```{r eval=FALSE}
+index_calc(fileloc="full-length-path-to-audiofiles", progloc="full-length-path-to-AP-location", indexlength=60, samplerate=384000, window=1024)
+```
+
+For each sound file, the output of the `r index_calc` function is stored in a separate folder located in the same directory as the sound files. For each spectral index, a '.csv' file with index values is stored in the output folder. For more information about which acoustic indices are computed, consult the `r index_calc` documentation. 
+
+#### ***B) Merging the '.csv' files into a dataframe in R***
+
+Next, we merged the '.csv' files into a time-frequency dataframe for an index of choice, in this case, the Acoustic Cover index (CVR):
+
+```{r eval=FALSE}
+merged_df=merge_csv(fileloc = "full-length-path-to-output-location", samplerate = 384000, window=1024, index="CVR", lat=-9.595264, lon=-55.932848)
+```
+
+This command takes the individual '.csv' files for the 'CVR' index from each folder recursively, and merges them together into a single time-frequency dataframe. For the purposes of this tutorial, we subsetted the soundscape data to include the frequencies between 0-21,000 Hz. The output of these commands is available as testing data in the `r soundscapeR` package. 
+
+Now, that you know how our testing data was calculated, let's get started! First, lets have a look at the testing data:
+
+```{r example}
+library(soundscapeR)
+
+head(amazon_soundscape)[1:10]
+tail(amazon_soundscape)[1:10]
+
+min(colnames(amazon_soundscape))
+max(colnames(amazon_soundscape))
+
+```
+
+As you can see, for each value of the 'CVR' index, we have the time at which recordings were taken as the column names, and the frequency bin as the row names. Using `r head()` and `r tail()` reveals that we have 'CVR' values from 0-21,000 Hz, separated into frequency bins of 375 Hz width. The `r min()` and `max()` show us we have data for the whole day, from midnight ("00:00:00") to 10-min to midnight ("23:50:00"). 
+
+### 2. Thresholding the spectral index dataframe
+
+The next step in the \code{soundscapeR} workflow is thresholding. This step is used to separate the acoustically active time-frequency bins (the signal) from the background values (the noise). This is done with the \code{\link{binarize_df}} function, which uses a binarization algorithm to turn index values into either 1 (active) or 0 (inactive). 
+
+```{r}
+
+amazon_binarized=binarize_df(df=amazon_soundscape, method = "Otsu")
+
+```
+
+It is import to check the output of our thresholding step and compare the result to the original data to make sure the algorithm is working properly. Luckily, \code{soundscapeR} has a quick interactive visualization tool to this. 
+
+```{r}
+before_thresholding=quick_heatmap(amazon_soundscape)
+after_thresholding=quick_heatmap(amazon_binarized)
+
+before_thresholding
+after_thresholding
+```
+
+A quick visual inspection of the interactive heatmaps produced by \code{\link{quick_heatmap}} reveals the thresholding succesfully separated the signal from the background noise. 
+
+### 3. Aggregating the soundscape by time-of-day
+
+Now that we have succesfully separated the signal from the noise, we will pool our recordings by time-of-day using a specified aggregation interval, sum the activity values for the same frequency bin in each time period, and divide the sum by the number of recordings available for that time. Doing so, we get a time-frequency dataframe with the proportion of acoustically active recordings in each time-frequency bin during the recording period. 
+
+Let's try and aggregate our recordings at several intervals, starting at 10-min, the highest possible resolution we can obtain considering we only collected our recordings at 10-min intervals:
+
+```{r}
+amazon_aggregated_10=aggregate_df(amazon_binarized, 10, "2019-11-12", lat=-9.595264, lon=-55.932848)
+
+amazon_aggregated_20=aggregate_df(amazon_binarized, 20, "2019-11-12", lat=-9.595264, lon=-55.932848)
+
+amazon_aggregated_30=aggregate_df(amazon_binarized, 30, "2019-11-12", lat=-9.595264, lon=-55.932848)
+
+amazon_aggregated_60=aggregate_df(amazon_binarized, 60, "2019-11-12", lat=-9.595264, lon=-55.932848)
+```
+
+### 4. Visualizing the soundscape
+
+At this point we have done the major manipulations on our data, and we are ready to take a look at the soundscape. Do do this, the \code{soundscapeR} package contains the highly flexible \code{\link{heatmapper}} function. 
+
+In it's simplest form, \code{heatmapper} produces a simple heatmap displaying the use of acoustic space in the time-frequency domain for the index of choice. 
+
+Let's have a look at the effect of aggregating at different resolutions:
+
+```{r}
+
+simple_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+
+simple_heatmap_20=heatmapper(amazon_aggregated_20, type="regular", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848)
+
+simple_heatmap_30=heatmapper(amazon_aggregated_30, type="regular", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848)
+
+simple_heatmap_60=heatmapper(amazon_aggregated_60, type="regular", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848)
+
+simple_heatmap_10
+simple_heatmap_20
+simple_heatmap_30
+simple_heatmap_60
+
+
+```
+
+As you can see, aggregating at shorter durations increases the resolution of the soundscape plot, at the expense of having less recordings for each time to measure the use of acoustic space. The choice of aggregation interval will depend on how many recordings are available for each time period to estimate the acoustic space use reliably. 
+
+Now, let's have a look at the various plotting options on offer by \code{\link{heatmapper}}. 
+
+First, \code{heatmapper} is capable of producing two kinds of plots: "regular" and "polar"
+
+```{r}
+regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+
+polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+
+regular_heatmap_10
+polar_heatmap_10
+
+```
+
+The polar heatmap represents a useful way of investigating diurnal patterns in the use of acoustic space. For instance, this plot reveals that the acoustic space for the 'CVR' index is more filled in the nighttime compared to the daytime. 
+
+Let's investigate further by looking at another plotting option in \code{\link{heatmapper}}:
+
+```{r}
+regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+
+polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+
+regular_heatmap_10
+polar_heatmap_10
+```
+
+If \code{annotate=TRUE}, \code{heatmapper} calculates the sunrise and sunset times for the soundscape based on the supplied date and geographic coordinates, and annotates the plot. Additionally, \code{heatmapper} annotates the boundary between the audible and ultrasonic spectrum at 20,000 Hz. 
+
+As we can see, the soundscape is mostly filled at night, and a slight lag can be observed after sunset before the vocalizations commence. Additionally, we can observe a dawn chorus right after sunrise, where the soundscape is filled over a larger part of the frequency range.
+
+If we would like to interact with the plot to explore the values of the time-frequency bins, we can set \code{interactive=TRUE}:
+
+```{r}
+regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, interactive = TRUE) 
+
+regular_heatmap_10
+```
+
+The interactive mode can be used to find out the proportion of acoustic recordings which were active for each time-frequency bin in the recording period. Moreover, it can be used to zoom into certain parts of the plot and investigate patterns up close. Note that the interactive plot is not yet supported for \code{type="polar"}. 
+
+If we would like to dive even further into the patterns of acoustic space use, we can add marginal plots displaying the richness of acoustically active frequency-bin for each time, and acoustically active time-bins for each frequency band:
+
+```{r}
+regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, marginplot = TRUE, nbins=10)
+
+regular_heatmap_10
+
+```
+
+The addition of the margin plot confirms our previous findings. The richness of acoustically active frequency bins is highest at nighttime, with a peak at the dawn chorus (purple plot). Moreover, throughout the whole time period, the frequencyy space is most full between 2000-6000 Hz. 
+
+Finally, the \code{heatmapper} function allows us to play around with some aesthetic properties such as color scales to produce the plot of your liking:
+
+```{r}
+regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, marginplot = TRUE, nbins=10, palette = "A", direction = 1) 
+
+regular_heatmap_10
+```
+
+### 5. Estimating soundscape richness metrics
+
+Next up in the soundscaper workflow, we can continue our exploration of acoustic space use in the time-frequency domain by calculating several soundscape richness metrics. 
+
+As the margin plots revealed earlier, we can measure how "full" the acoustic space is at several scales and resolutions by calculating the "richness" of acoustically active (value>0) time-frequency bins. We do this using the \code{\link{soundscape_richness}} function. 
+
+First, let's have a look at the soundscape richness for the total soundscape:
+
+```{r}
+soundscape_richness(amazon_aggregated_10, type="total", date="2019-11-12", lat=-9.595264, lon=-55.932848, output="percentage")
+```
+
+Based on \code{soundscape_richess}, 21.2% of the total acoustic space is in use. 
+
+Now, let's see how the acoustic space is used at different times of day:
+
+```{r}
+
+# Daytime
+
+soundscape_richness(amazon_aggregated_10, type="day", date="2019-11-12", lat=-9.595264, lon=-55.932848, output="percentage")
+
+# Nighttime
+
+soundscape_richness(amazon_aggregated_10, type="night", date="2019-11-12", lat=-9.595264, lon=-55.932848, output="percentage")
+
+# Dawn
+
+soundscape_richness(amazon_aggregated_10, type="dawn", date="2019-11-12", lat=-9.595264, lon=-55.932848, output="percentage")
+
+# Dusk
+
+soundscape_richness(amazon_aggregated_10, type="dusk", date="2019-11-12", lat=-9.595264, lon=-55.932848, output="percentage")
+
+# Each time of day
+
+soundscape_richness(amazon_aggregated_10, type="tod", date="2019-11-12", lat=-9.595264, lon=-55.932848, output="percentage")
+
+
+
+```
+
+As we previously found out, the soundscape richness during the day (14.2%) is lower than during the night (28.8%). Moreover, as suspected, the richness is highest during the dawn chorus (57.3%). The dusk period has the lowest soundscape richness (4.6%). 
+
+We can investigate in which part of the frequency domain the acoustic space is most full using the \code{freqseq} and \code{nbins} arguments: 
+
+```{r}
+
+# Nighttime soundscape richness per frequency band
+
+soundscape_richness(amazon_aggregated_10, type="night", date="2019-11-12", lat=-9.595264, lon=-55.932848, output="percentage", freqseq = TRUE, nbins=14)
+
+```
+As previously mentioned, the lower frequency bins between 0-6000 Hz have the highest soundscape richness. We can explore these patterns further in the next section. 
+
+### 6. Visualizing Soundscape Richness Metrics
+
+If we want to visualize how the soundscape richness changes throughout the day, and how different frequency bins contribute to the total soundscape richness, the \code{\link{richness_by_time}} function can do just that. 
+
+Several graph types exists:
+
+```{r}
+richness_by_time_total=richness_by_time(amazon_aggregated_10, "total", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
+
+richness_by_time_total
+
+richness_by_time_frequency=richness_by_time(amazon_aggregated_10, "frequency", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
+
+richness_by_time_frequency
+
+richness_by_time_normfreq=richness_by_time(amazon_aggregated_10, "normfreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
+
+richness_by_time_normfreq
+
+richness_by_time_linefreq=richness_by_time(amazon_aggregated_10, "linefreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
+
+richness_by_time_linefreq
+```
+
+These plots allow you to see the contribution of frequency-bins with user-defined with to the total soundscape richness at each time of day. 
+
+## Summary 
+
+The \code{soundscapeR} package contains a range of powerful functions for the computation of acoustic indices, each of which capture unique properties of the soundscape. Moreover, for each of these indices, the package contains functions for the visualization of acoustic space use and calculation of soundscape richness metrics at various scales and resolutions. 
+
+The \code{soundscapeR} package can be used to investigate the change in soundscape properties along environmental gradients, or after interventions. It provides a useful tool to investigate where (frequency domain) and when (time domain) in the soundscape each unique type of sound (acoustic index of choice) is being lost/gained. 
+
+\bold{Note:}\cr
+\code{soundscapeR} output should not be used to make inference about real-life community richness or biodiversity before a relationship between the index of choice and ground-truthed biodiversity has been established. 

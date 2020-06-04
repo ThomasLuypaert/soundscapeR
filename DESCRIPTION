@@ -1,0 +1,50 @@
+Package: soundscapeR
+Type: Package
+Title: Computation, Visualization and Diversity Estimation of Soundscapes
+Version: 0.1.0
+Author: Thomas Luypaert <thomas.luypaert@nmbu.no>
+Maintainer: Thomas Luypaert <thomas.luypaert@nmbu.no>
+Description: The soundscapeR package constitutes a standardized analytical pipeline for 
+    the computation, visualization and richness estimation of soundscapes. 
+    The package is designed to work with either continuous or regular-interval long-duration
+    acoustic recordings. The soundscapeR workflow is built around the concept of 
+    "Acoustic Space Use", reflecting the saturation of the acoustic space at 
+    various scales and resolutions for a set of acoustic indices.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Imports: 
+    yaml (>= 2.2.1),
+    tictoc (>= 1.0),
+    lubridate (>= 1.7.8),
+    hms (>= 0.5.3),
+    chron (>= 2.3-55),
+    autothresholdr (>= 1.3.5),
+    lutz (>= 0.3.1),
+    purrr (>= 0.3.3),
+    dplyr (>= 0.8.4),
+    reshape2 (>= 1.4.3),
+    d3heatmap (>= 0.6.1.2),
+    viridis (>= 0.5.1),
+    viridisLite (>= 0.3.0),
+    plotly (>= 4.9.2.1),
+    ggplot2 (>= 3.3.0),
+    cowplot (>= 1.0.0),
+    scales (>= 1.1.0),
+    grid (>= 2.6.3),
+    pracma (>= 2.3.0),
+    patchwork (>= 1.0.0),
+    hilldiv (>= 1.5.1),
+    photobiology (>= 0.10.2),
+    magrittr,
+    rlang (>= 0.4.6),
+    utils (>= 3.6.3),
+    extrafont (>= 0.17),
+    widgetframe (>= 0.3.1),
+    htmlwidgets (>= 1.5.1),
+    htmltools (>= 0.4.0)
+Suggests: 
+    testthat
+Depends: 
+    R (>= 3.5.0)
