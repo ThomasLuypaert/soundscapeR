@@ -48,3 +48,5 @@ Suggests:
     testthat
 Depends: 
     R (>= 3.5.0)
+URL: https://github.com/ThomasLuypaertGitHub/soundscapeR
+BugReports: https://github.com/ThomasLuypaertGitHub/soundscapeR/issues
