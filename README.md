@@ -17,11 +17,11 @@ audible and ultrasonic recordings.
 ## Background
 
 The theoretical background of the `soundscapeR` package is set in the
-field of ***soundscape ecology***, an area of research which is aimed at
+field of **soundscape ecology**, an area of research which is aimed at
 deriving ecological information from the pooled sounds of a population,
-community or landscape, also referred to as the ***soundscape***.
-Soundscape ecology is predicated on the theory of ***acoustic niche
-partitioning***, which states that acoustic space is a core ecological
+community or landscape, also referred to as the **soundscape**.
+Soundscape ecology is predicated on the theory of **acoustic niche
+partitioning**, which states that acoustic space is a core ecological
 resource for which vocally sympatric animals compete, leading to the
 partitioning of the acoustic niche in the frequency- and time-domain
 through natural selection. As such, it is believed that the diversity of
@@ -31,7 +31,7 @@ spectro-temporal diversity of the soundscape.
 Substantial progress has been made towards establishing the relationship
 the spectro-temporal richness and diversity of the soundscape and
 real-life biodiversity. For instance, Aide et al.
-([2017](#ref-aide2017species)) measured the ***acoustic space use***, or
+([2017](#ref-aide2017species)) measured the **acoustic space use**, or
 the proportion of acoustic space which is saturated with sound, and
 found a strong positive correlation with both the regional avian species
 richness and the richness of unique vocalizations in the recordings.
@@ -239,47 +239,13 @@ tool based of the `d3heatmap` package by Cheng and Galili
 ``` r
 before_thresholding=quick_heatmap(amazon_soundscape)
 after_thresholding=quick_heatmap(amazon_binarized)
-
-htmlwidgets::saveWidget(before_thresholding, "before_thresholding.html")
-htmlwidgets::saveWidget(before_thresholding, "after_thresholding.html")
-
-htmltools::tags$iframe(
-  src=file.path(getwd(), "before_thresholding.html"),
-  width="100%",
-  height="600",
-  scrolling="no",
-  seamless="seamless",
-  frameBorder="0"
-)
 ```
 
-<!--html_preserve-->
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
 
-<iframe src="D:/PhD Norway/Analysis/R_package/Wrap_up/soundscapeR/before_thresholding.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0">
+![before\_thresholding](before_thresholding.png)
 
-</iframe>
-
-<!--/html_preserve-->
-
-``` r
-
-htmltools::tags$iframe(
-  src=file.path(getwd(), "after_thresholding.html"),
-  width="100%",
-  height="600",
-  scrolling="no",
-  seamless="seamless",
-  frameBorder="0"
-)
-```
-
-<!--html_preserve-->
-
-<iframe src="D:/PhD Norway/Analysis/R_package/Wrap_up/soundscapeR/after_thresholding.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0">
-
-</iframe>
-
-<!--/html_preserve-->
+![after\_thresholding](after_thresholding.png)
 
 A quick visual inspection of the interactive heatmaps produced by
 `quick_heatmap` reveals the thresholding succesfully separated the
@@ -336,25 +302,25 @@ simple_heatmap_60=heatmapper(amazon_aggregated_60, type="regular", annotate = FA
 simple_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
 ``` r
 simple_heatmap_20
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
 
 ``` r
 simple_heatmap_30
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-3.png" width="100%" />
 
 ``` r
 simple_heatmap_60
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-4.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-4.png" width="100%" />
 
 As you can see, aggregating at shorter durations increases the
 resolution of the soundscape plot, at the expense of having less
@@ -380,13 +346,13 @@ polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = FALSE
 regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ``` r
 polar_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
 
 The polar heatmap represents a useful way of investigating diurnal
 patterns in the use of acoustic space. For instance, this plot reveals
@@ -408,13 +374,13 @@ polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = TRUE,
 regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ``` r
 polar_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
 
 If `annotate=TRUE`, `heatmapper` calculates the sunrise and sunset times
 for the soundscape based on the supplied date and geographic coordinates
@@ -446,7 +412,7 @@ regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = T
 regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 The interactive mode can be used to find out the proportion of acoustic
 recordings which were active for each time-frequency bin in the
@@ -475,7 +441,7 @@ regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = T
 regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 The addition of the margin plot confirms our previous findings. The
 richness of acoustically active frequency bins is highest at nighttime,
@@ -496,7 +462,7 @@ regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = T
 regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 ### 7\. Estimating soundscape richness metrics
 
@@ -509,12 +475,12 @@ acoustic space is at several scales and resolutions by calculating the
 *“richness”* of acoustically active (value\>0) time-frequency bins. We
 do this using the `soundscape_richness` function.
 
-**Note:** Here we make the distinction between the ***soundscape
-richness*** as the number of time-frequency bins in the soundscape with
-a value \> 0 - and the ***acoustic space use*** or ***soundscape
-saturation*** as the proportion of the acoustic space which is used,
-expressed in percent (richness divided by the number of time-frequency
-bins in the soundscape).
+**Note:** Here we make the distinction between the **soundscape
+richness** as the number of time-frequency bins in the soundscape with a
+value \> 0 - and the **acoustic space use** or **soundscape saturation**
+as the proportion of the acoustic space which is used, expressed in
+percent (richness divided by the number of time-frequency bins in the
+soundscape).
 
 First, let’s have a look at the soundscape richness and saturation for
 the total soundscape. To determine whether the richness of saturation is
@@ -632,7 +598,7 @@ richness_by_time_total=richness_by_time(amazon_aggregated_10, "total", "2019-11-
 richness_by_time_total
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 ``` r
 
@@ -641,7 +607,7 @@ richness_by_time_frequency=richness_by_time(amazon_aggregated_10, "frequency", "
 richness_by_time_frequency
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-2.png" width="100%" />
 
 ``` r
 
@@ -650,7 +616,7 @@ richness_by_time_normfreq=richness_by_time(amazon_aggregated_10, "normfreq", "20
 richness_by_time_normfreq
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-3.png" width="100%" />
 
 ``` r
 
@@ -659,7 +625,7 @@ richness_by_time_linefreq=richness_by_time(amazon_aggregated_10, "linefreq", "20
 richness_by_time_linefreq
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-4.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-4.png" width="100%" />
 
 These plots allow the user to see the variation in total soundscape
 saturation througout the day, and the contribution of frequency-bins
