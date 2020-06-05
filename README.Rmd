@@ -25,7 +25,10 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `soundscaper` is to provide a standardized analytical pipeline for the computation, visualization and richness estimation of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings, and can handle both audible and ultrasonic recordings. 
+|  |  |
+|---|---|
+|![soundscaper hexsticker](man/figures/soundscaper_hexsticker.png) |The goal of `soundscaper` is to provide a standardized analytical pipeline for the computation, visualization and richness estimation of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings, and can handle both audible and ultrasonic recordings.|
+
 
 ## Background
 
