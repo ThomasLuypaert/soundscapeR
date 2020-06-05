@@ -76,6 +76,7 @@ utils::globalVariables(c("time", "frequency", "value", "richness_smooth"))
 #' Options can be found in the \code{\link[photobiology]{day_night}} documentation.
 #' @param labelsize_time If annotate=TRUE, can be used to alter the size of temporal spectrum annotation.
 #' @param labelsize_frequency If annotate=TRUE, can be used to alter the size of frequency spectrum annotation.
+#' @param labelsize_polar If type="polar", can be used to alter the size of the frequency axis labels.
 #' @param palette A character string indicating the colormap option to use.
 #' Four options are available: "magma" (or "A"), "inferno" (or "B"), "plasma" (or "C"),
 #' "viridis" (or "D", the default option) and "cividis" (or "E"). Consult \url{https://www.rdocumentation.org/packages/viridisLite/versions/0.3.0/topics/viridis} for options.
@@ -99,7 +100,7 @@ utils::globalVariables(c("time", "frequency", "value", "richness_smooth"))
 #' @return Returns a ggplot heatmap object and if save=TRUE, saves the plot in a directory of choice using a specified device and filename.
 #' @export
 
-heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", mintime="default", maxtime="default",freqinterval=1000, minfreq=0, maxfreq="default", nbins=10, date, lat, lon, twilight="sunlight", labelsize_time=4, labelsize_frequency=4, palette="D", direction=1, marginplot=FALSE, interactive=FALSE, save=FALSE, dir="default", filename="file", device="png"){
+heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", mintime="default", maxtime="default",freqinterval=1000, minfreq=0, maxfreq="default", nbins=10, date, lat, lon, twilight="sunlight", labelsize_time=4, labelsize_frequency=4, labelsize_polar=3, palette="D", direction=1, marginplot=FALSE, interactive=FALSE, save=FALSE, dir="default", filename="file", device="png"){
 
   tz=lutz::tz_lookup_coords(lat=lat, lon=lon, method="accurate")
 
@@ -304,7 +305,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
           ggplot2::annotate(geom="segment", x=seq.POSIXt(from=min(df2$time), to=max(df2$time), by=3600), xend=seq.POSIXt(from=min(df2$time), to=max(df2$time), by=3600), y=minfreq, yend=maxfreq, color="grey", alpha=0.5, size=0.2)+
           ggplot2::coord_polar()+
           ggplot2::geom_hline(yintercept = seq(minfreq, maxfreq, freqinterval), color="grey", alpha=0.5, size=0.2)+
-          ggplot2::annotate(vjust=-0.4, color=if (direction==1){paste("white")}else{paste("black")}, alpha=0.7, size=3, geom="text", y=seq(minfreq, maxfreq, freqinterval), x=min(df2$time),label=as.character(seq(minfreq, maxfreq, freqinterval)))+
+          ggplot2::annotate(geom="label", size=labelsize_polar, y=seq(minfreq, maxfreq, freqinterval), x=min(df2$time),label=as.character(seq(minfreq, maxfreq, freqinterval)))+
           ggplot2::annotate(geom="rect", xmin =min(df2$time),xmax=sunrise,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", alpha=1)+
           ggplot2::annotate(geom="rect", xmin =sunset,xmax=midnight2,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", alpha=1)+
           ggplot2::annotate(geom="rect", xmin =sunrise,xmax=sunset,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#ffcc13", alpha=1)+
@@ -342,7 +343,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                   legend.title = ggplot2::element_text(color = "black", size = 12, face = "bold"))+
             ggplot2::coord_polar()+
             ggplot2::geom_hline(yintercept = seq(minfreq, maxfreq, freqinterval), color="grey", alpha=0.5, size=0.2)+
-            ggplot2::annotate(vjust=-0.4, color="white", alpha=0.7, size=3, geom="text", y=seq(minfreq, maxfreq, freqinterval), x=min(df2$time),label=as.character(seq(minfreq, maxfreq, freqinterval)))+
+            ggplot2::annotate(geom="label", size=labelsize_polar, y=seq(minfreq, maxfreq, freqinterval), x=min(df2$time),label=as.character(seq(minfreq, maxfreq, freqinterval)))+
             ggplot2::labs(fill="Proportion of acoustically active bins")
         }
 

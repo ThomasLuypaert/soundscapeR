@@ -21,6 +21,7 @@ heatmapper(
   twilight = "sunlight",
   labelsize_time = 4,
   labelsize_frequency = 4,
+  labelsize_polar = 3,
   palette = "D",
   direction = 1,
   marginplot = FALSE,
@@ -69,6 +70,8 @@ Options can be found in the \code{\link[photobiology]{day_night}} documentation.
 \item{labelsize_time}{If annotate=TRUE, can be used to alter the size of temporal spectrum annotation.}
 
 \item{labelsize_frequency}{If annotate=TRUE, can be used to alter the size of frequency spectrum annotation.}
+
+\item{labelsize_polar}{If type="polar", can be used to alter the size of the frequency axis labels.}
 
 \item{palette}{A character string indicating the colormap option to use.
 Four options are available: "magma" (or "A"), "inferno" (or "B"), "plasma" (or "C"),

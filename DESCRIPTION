@@ -1,13 +1,17 @@
-Package: soundscapeR
+Package: soundscaper
 Type: Package
 Title: Visualization and Richness Estimation of Soundscapes
 Version: 0.1.0
-Author: Thomas Luypaert <thomas.luypaert@nmbu.no>
+Authors@R: c(
+    person("Thomas", "Luypaert", email = "thomas.luypaert@nmbu.no", role = c("cre", "aut")),
+    person("Anderson Saldanha", "Bueno", email = "buenoas@gmail.com", role = "aut"), 
+    person("Carlos Augusto", "Peres", email="carlos.a.peres@gmail.com", role="aut"),
+    person("Torbjørn", "Haugaasen", email="torbjorn.haugaasen@nmbu.no", role="aut"))
 Maintainer: Thomas Luypaert <thomas.luypaert@nmbu.no>
-Description: The soundscapeR package constitutes a standardized analytical pipeline for 
+Description: The soundscaper package constitutes a standardized analytical pipeline for 
     the computation, visualization and richness estimation of soundscapes. 
     The package is designed to work with either continuous or regular-interval long-duration
-    acoustic recordings. The soundscapeR workflow is built around the concept of 
+    acoustic recordings. The soundscaper workflow is built around the concept of 
     "Acoustic Space Use", reflecting the saturation of the acoustic space at 
     various scales and resolutions for a set of acoustic indices.
 License: GPL-3
@@ -50,5 +54,5 @@ Suggests:
     testthat
 Depends: 
     R (>= 3.5.0)
-URL: https://github.com/ThomasLuypaertGitHub/soundscapeR
-BugReports: https://github.com/ThomasLuypaertGitHub/soundscapeR/issues
+URL: https://github.com/ThomasLuypaertGitHub/soundscaper
+BugReports: https://github.com/ThomasLuypaertGitHub/soundscaper/issues

@@ -1,6 +1,10 @@
 ---
-title: "soundscapeR: visualization and richness estimation of soundscapes"
-author: "Thomas Luypaert"
+title: "soundscaper: visualization and richness estimation of soundscapes"
+author: 
+- "Thomas Luypaert"
+- "Anderson Saldanha Bueno"
+- "Carlos Augusto Peres"
+- "Torbjørn Haugaasen"
 output: github_document
 bibliography: citations.bib
 link-citations: yes 
@@ -21,33 +25,33 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `soundscapeR` is to provide a standardized analytical pipeline for the computation, visualization and richness estimation of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings, and can handle both audible and ultrasonic recordings. 
+The goal of `soundscaper` is to provide a standardized analytical pipeline for the computation, visualization and richness estimation of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings, and can handle both audible and ultrasonic recordings. 
 
 ## Background
 
-The theoretical background of the `soundscapeR` package is set in the field of **soundscape ecology**, an area of research which is aimed at deriving ecological information from the pooled sounds of a population, community or landscape, also referred to as the **soundscape**. Soundscape ecology is predicated on the theory of **acoustic niche partitioning**, which states that acoustic space is a core ecological resource for which vocally sympatric animals compete, leading to the partitioning of the acoustic niche in the frequency- and time-domain through natural selection. As such, it is believed that the diversity of the vocalizing community can be deducted by looking at the spectro-temporal diversity of the soundscape. 
+The theoretical background of the `soundscaper` package is set in the field of **soundscape ecology**, an area of research which is aimed at deriving ecological information from the pooled sounds of a population, community or landscape, also referred to as the **soundscape**. Soundscape ecology is predicated on the theory of **acoustic niche partitioning**, which states that acoustic space is a core ecological resource for which vocally sympatric animals compete, leading to the partitioning of the acoustic niche in the frequency- and time-domain through natural selection. As such, it is believed that the diversity of the vocalizing community can be deducted by looking at the spectro-temporal diversity of the soundscape. 
 
 Substantial progress has been made towards establishing the relationship the spectro-temporal richness and diversity of the soundscape and real-life biodiversity. For instance, @aide2017species measured the **acoustic space use**, or the proportion of acoustic space which is saturated with sound, and found a strong positive correlation with both the regional avian species richness and the richness of unique vocalizations in the recordings. Similarly, both @burivalova2018using and @burivalova2019using found strong positive correlations between the saturation of acoustic space and the richness of sound types in the recordings. 
 
-Still, for newcomers in the field of soundscape ecology, the analytical processes underlying these findings often remain obscure, with methods being published without code for application or locked behind a paywall. Additionally, the vast size of acoustic datasets and time-consuming nature of aural data exploration make it difficult to get a sense of the data at hand. In the pursuit of alleviating some of these current limitations, we developed the `soundscapeR` package as an open-source, standardized and user-friendly analytical pipeline in R , containing a range of functions for the calculation, visualization and richness estimation of soundscapes . 
+Still, for newcomers in the field of soundscape ecology, the analytical processes underlying these findings often remain obscure, with methods being published without code for application or locked behind a paywall. Additionally, the vast size of acoustic datasets and time-consuming nature of aural data exploration make it difficult to get a sense of the data at hand. In the pursuit of alleviating some of these current limitations, we developed the `soundscaper` package as an open-source, standardized and user-friendly analytical pipeline in R , containing a range of functions for the calculation, visualization and richness estimation of soundscapes . 
 
 ## Installation
 
-You can install the released version of `soundscapeR` from [GitHub](https://github.com/) with:
+You can install the released version of `soundscaper` from [GitHub](https://github.com/) with:
 
 ``` r
-githubinstall("soundscapeR")
+githubinstall("soundscaper")
 ```
 
-## The `soundscapeR` workflow
+## The `soundscaper` workflow
 
-The `soundscapeR` package builds on the methodologies from the aformentioned studies, providing a streamlined and standardized workflow for the computation and visualization of acoustic space at various scales and resolutions. To optimally capture how the acoustic space is used for different types of sound, we expand the methodology to include a wider range of acoustic indices, each capturing unique acoustic features while being minimally intercorrelated. Additionally, the `soundscapeR` workflow contains a range of highly flexible visualization tools which allow the user to explore the soundscape visually with minimal effort. 
+The `soundscaper` package builds on the methodologies from the aformentioned studies, providing a streamlined and standardized workflow for the computation and visualization of acoustic space at various scales and resolutions. To optimally capture how the acoustic space is used for different types of sound, we expand the methodology to include a wider range of acoustic indices, each capturing unique acoustic features while being minimally intercorrelated. Additionally, the `soundscaper` workflow contains a range of highly flexible visualization tools which allow the user to explore the soundscape visually with minimal effort. 
 
-Below, you can find an example of the `soundscapeR` workflow in action.
+Below, you can find an example of the `soundscaper` workflow in action.
 
 ### 0. Priors
 
-The `soundscapeR` package calls on the external software **QUT Ecoacoustics Analysis Programs**, written in C#, for the computation of acoustic indices - see @EcoacousticsAudioAnalysisSoftware. Prior to starting analyses in `soundscapeR`, download the 'AnalysisPrograms.exe' (AP) software following  [this](https://research.ecosounds.org/tutorials/ap/practical) link.
+The `soundscaper` package calls on the external software **QUT Ecoacoustics Analysis Programs**, written in C#, for the computation of acoustic indices - see @EcoacousticsAudioAnalysisSoftware. Prior to starting analyses in `soundscaper`, download the 'AnalysisPrograms.exe' (AP) software following  [this](https://research.ecosounds.org/tutorials/ap/practical) link.
 
 Additionally, the QUT Ecoacoustics Analysis Programs software requires sound files to be named based on one of the following [formats](https://ap.qut.ecoacoustics.info/basics/dates.html). Make sure files are named correctly before starting. 
 
@@ -55,13 +59,13 @@ Additionally, the QUT Ecoacoustics Analysis Programs software requires sound fil
 
 ### 1. The data
 
-The `soundscapeR` packages works on long-duration acoustic recordings, either recorded continuously or using a regular sampling interval (*e.g.* 1 min/ 5 min). 
+The `soundscaper` packages works on long-duration acoustic recordings, either recorded continuously or using a regular sampling interval (*e.g.* 1 min/ 5 min). 
 
 For demonstration purposes the package comes with four test datasets on which to try out the functions. The raw data from which the test datasets were derived consists of 1603 sound files from the Brazilian Amazon, recorded at a sampling rate of 384,000 Hz at medium gain, using a sampling regime of 1-min of recording every 10-min. 
 
 ### 2. Computing acoustic indices
 
-The first step of the `soundscapeR` workflow is to compute the acoustic indices using the `index_calc` command. These indices will later be used to explore the various ways in which the acoustic space is used. 
+The first step of the `soundscaper` workflow is to compute the acoustic indices using the `index_calc` command. These indices will later be used to explore the various ways in which the acoustic space is used. 
 
 The following acoustic indices are computed - definitions reproduced from @towsey2017calculation:
 
@@ -77,7 +81,7 @@ The following acoustic indices are computed - definitions reproduced from @towse
 | Spectral peak tracks                                                  | SPT                     | A measure of the presence of spectral peak tracks in a noise-reduced frequency bin.                                                                                                                                                                                                                                                |
 | Ridge indices (Horizontal / Vertical / Upward slope / Downward slope) | (RHZ / RVT / RPS / RNS) | A set of indices based on the presence of formants in the harmonic structure of many animal vocalizations, calculated in the four directions of the ridge slope. Formants in the mid-band are typically due to birdsong, whereas vertical formants are typical for non-biological sounds such as rain drops and electrical clicks. |
 
-For this tutorial, to save you from downloading the raw data and computing the indices yourself - both of which are rather time consuming and computationally intensive - the `soundscapeR` package comes with four test datasets for you to experiment with. 
+For this tutorial, to save you from downloading the raw data and computing the indices yourself - both of which are rather time consuming and computationally intensive - the `soundscaper` package comes with four test datasets for you to experiment with. 
 
 To obtain the test datasets, first, we computed a set of acoustic indices for all sound files in the recording period using the `index_calc` function:
 
@@ -90,7 +94,7 @@ For each sound file, the output of the `index_calc` function is stored in a sepa
 
 ### 3. Concatenating acoustic index *'.csv'* files
 
-Next, using the `merge_csv` command, we merged the *'.csv'* files into a time-frequency dataframe for an index of choice. The `soundscapeR` package contains test datasets for four acoustic indices: the **Acoustic Cover Index** **(CVR)**, the **Acoustic Complexity Index** **(ACI)**, the **Temporal Entropy Index** **(ENT)** and the **Horizontal Ridge Index** **(RHZ)**. 
+Next, using the `merge_csv` command, we merged the *'.csv'* files into a time-frequency dataframe for an index of choice. The `soundscaper` package contains test datasets for four acoustic indices: the **Acoustic Cover Index** **(CVR)**, the **Acoustic Complexity Index** **(ACI)**, the **Temporal Entropy Index** **(ENT)** and the **Horizontal Ridge Index** **(RHZ)**. 
 
 `amazon_soundscape_CVR=merge_csv(fileloc = "full-length-path-to-output-location", samplerate = 384000, window=1024, index="CVR", lat=-9.595264, lon=-55.932848)`
 
@@ -102,10 +106,11 @@ Next, using the `merge_csv` command, we merged the *'.csv'* files into a time-fr
 
 This command takes the individual *'.csv'* files for the index fo choice from each folder recursively and merges them together into a single time-frequency dataframe. For the purposes of this tutorial, we subsetted the soundscape datasets to include only the frequencies between 0-21,000 Hz. 
 
-The output of these commands is available as testing data in the `soundscapeR` package:
+The output of these commands is available as testing data in the `soundscaper` package:
 
 ```{r warning=FALSE}
-library(soundscapeR)
+library(soundscaper)
+
 data("amazon_soundscape_CVR")
 data("amazon_soundscape_ACI")
 data("amazon_soundscape_ENT")
@@ -128,7 +133,7 @@ As you can see, for each value of the 'CVR' index, we have the time at which rec
 
 ### 4. Thresholding the spectral index dataframe
 
-The next step in the `soundscapeR` workflow is thresholding. This step is used to separate the acoustically active time-frequency bins (the signal) from the background values (the noise). This is done with the `binarize_df` function, which uses a binarization algorithm to turn index values into either 1 (active) or 0 (inactive). 
+The next step in the `soundscaper` workflow is thresholding. This step is used to separate the acoustically active time-frequency bins (the signal) from the background values (the noise). This is done with the `binarize_df` function, which uses a binarization algorithm to turn index values into either 1 (active) or 0 (inactive). 
 
 ```{r warning=FALSE}
 amazon_binarized=binarize_df(df=amazon_soundscape_CVR, method = "Otsu")
@@ -136,7 +141,7 @@ amazon_binarized=binarize_df(df=amazon_soundscape_CVR, method = "Otsu")
 
 Several binarization algorithms from the `autothresholdr` package are available - see @autothresholdr. Consult the following [link](https://imagej.net/Auto_Threshold) for more information about the available algorithms.
 
-It is import to check the output of our thresholding step and compare the result to the original data to make sure the algorithm is working properly. Luckily, `soundscapeR` has a quick interactive visualization tool based of the `d3heatmap` package by @d3heatmap to do just this: 
+It is import to check the output of our thresholding step and compare the result to the original data to make sure the algorithm is working properly. Luckily, `soundscaper` has a quick interactive visualization tool based of the `d3heatmap` package by @d3heatmap to do just this: 
 
 ```{r warning=FALSE}
 before_thresholding=quick_heatmap(amazon_soundscape_CVR)
@@ -172,7 +177,7 @@ amazon_aggregated_60=aggregate_df(amazon_binarized, 60, "2019-11-12", lat=-9.595
 
 ### 6. Visualizing the soundscape
 
-At this point we have done the major manipulations on our data, and we are ready to take a look at the soundscape. Do do this, the `soundscapeR` package contains the highly flexible `heatmapper` function. 
+At this point we have done the major manipulations on our data, and we are ready to take a look at the soundscape. Do do this, the `soundscaper` package contains the highly flexible `heatmapper` function. 
 
 In it's simplest form, `heatmapper` produces a rudimentary heatmap displaying how the acoustic space is used in the time-frequency domain for the index of choice. 
 
@@ -217,7 +222,7 @@ regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = F
 
 # type="polar"
 
-polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, labelsize_polar = 3) 
 ```
 
 ```{r, dpi=300, warning=FALSE, fig.height=8, fig.width=10}
@@ -305,7 +310,7 @@ regular_heatmap_10_palette
 
 ### 7. Estimating soundscape richness metrics
 
-Next up in the soundscaper workflow, we can continue our exploration of acoustic space use in the time-frequency domain by calculating several soundscape richness metrics. 
+Next up in the `soundscaper` workflow, we can continue our exploration of acoustic space use in the time-frequency domain by calculating several soundscape richness metrics. 
 
 As the margin plots revealed earlier, we can measure how *"full"* the acoustic space is at several scales and resolutions by calculating the *"richness"* of acoustically active (value>0) time-frequency bins. We do this using the `soundscape_richness` function. 
 
@@ -415,9 +420,9 @@ These plots allow the user to see the variation in total soundscape saturation t
 
 ## 9. Compare acoustic space use for different types of sound
 
-The set of indices included in the `soundscapeR` package each capture unique properties of sound, and are thus sensitive to different sound sources. The ways in which the acoustic space is used by different types of sound can be compared by looking at different indices for the same soundscape. 
+The set of indices included in the `soundscaper` package each capture unique properties of sound, and are thus sensitive to different sound sources. The ways in which the acoustic space is used by different types of sound can be compared by looking at different indices for the same soundscape. 
 
-Let's do a quick visual comparison of four different indices for which test data is included in the `soundscapeR` package: 
+Let's do a quick visual comparison of four different indices for which test data is included in the `soundscaper` package: 
 
 ```{r}
 # Thresholding
@@ -507,12 +512,12 @@ The comparison of the acoustic space use heatmaps for the different indices reve
 
 ## Summary 
 
-The `soundscapeR` package contains a range of powerful functions for the computation of acoustic indices, each of which capture unique properties of the soundscape. Moreover, for each of these indices, the package contains functions for the visualization of acoustic space use and calculation of soundscape richness metrics at various scales and resolutions. 
+The `soundscaper` package contains a range of powerful functions for the computation of acoustic indices, each of which capture unique properties of the soundscape. Moreover, for each of these indices, the package contains functions for the visualization of acoustic space use and calculation of soundscape richness metrics at various scales and resolutions. 
 
 The workflow can be used to investigate the change in soundscape properties along environmental gradients, or after interventions. It provides a useful tool to investigate where (frequency domain) and when (time domain) in the soundscape each unique type of sound (acoustic index of choice) is being lost/gained. 
 
 **Note:**
-`soundscapeR` output should not be used to make inference about real-life community richness or biodiversity before a relationship between the index of choice and ground-truthed biodiversity has been established. 
+`soundscaper` output should not be used to make inference about real-life community richness or biodiversity before a relationship between the index of choice and ground-truthed biodiversity has been established. 
 
 
 ## References
