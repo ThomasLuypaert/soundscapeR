@@ -44,8 +44,8 @@ Imports:
     widgetframe (>= 0.3.1),
     htmlwidgets (>= 1.5.1),
     htmltools (>= 0.4.0),
-    webshot (>= 0.5.2),
-    png (>= 0.1-7)
+    png (>= 0.1-7),
+    webshot2 (>= 0.0.0.9000)
 Suggests: 
     testthat
 Depends: 

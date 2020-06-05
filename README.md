@@ -78,10 +78,11 @@ Below, you can find an example of the `soundscapeR` workflow in action.
 ### 0\. Priors
 
 The `soundscapeR` package calls on the external software **QUT
-Ecoacoustics Analysis Programs**, written in C\# - see Towsey et al.
-([2020](#ref-EcoacousticsAudioAnalysisSoftware)) - for the computation
-of acoustic indices. Prior to starting analyses in `soundscapeR`,
-download the ‘AnalysisPrograms.exe’ (AP) software following
+Ecoacoustics Analysis Programs**, written in C\#, for the computation of
+acoustic indices - see Towsey et al.
+([2020](#ref-EcoacousticsAudioAnalysisSoftware)). Prior to starting
+analyses in `soundscapeR`, download the ‘AnalysisPrograms.exe’ (AP)
+software following
 [this](https://research.ecosounds.org/tutorials/ap/practical) link.
 
 Additionally, the QUT Ecoacoustics Analysis Programs software requires
@@ -99,11 +100,11 @@ The `soundscapeR` packages works on long-duration acoustic recordings,
 either recorded continuously or using a regular sampling interval
 (*e.g.* 1 min/ 5 min).
 
-For demonstration purposes the package comes with a test dataset on
-which to try out the functions. The raw data from which the test dataset
-was derived consists of 1603 sound files from the Brazilian Amazon,
-recorded at a sampling rate of 384,000 Hz at medium gain, using a
-sampling regime of 1-min of recording every 10-min.
+For demonstration purposes the package comes with four test datasets on
+which to try out the functions. The raw data from which the test
+datasets were derived consists of 1603 sound files from the Brazilian
+Amazon, recorded at a sampling rate of 384,000 Hz at medium gain, using
+a sampling regime of 1-min of recording every 10-min.
 
 ### 2\. Computing acoustic indices
 
@@ -129,11 +130,11 @@ from Towsey ([2017](#ref-towsey2017calculation)):
 For this tutorial, to save you from downloading the raw data and
 computing the indices yourself - both of which are rather time consuming
 and computationally intensive - the `soundscapeR` package comes with
-test data for you to experiment with.
+four test datasets for you to experiment with.
 
-To obtain the test data, first, we computed a set of acoustic indices
-for all sound files in the recording period using the `index_calc`
-function:
+To obtain the test datasets, first, we computed a set of acoustic
+indices for all sound files in the recording period using the
+`index_calc` function:
 
 `index_calc(fileloc="full-length-path-to-audiofiles",
 progloc="full-length-path-to-AP-location", indexlength=60,
@@ -156,33 +157,53 @@ computed, consult the `index_calc` documentation.
 ### 3\. Concatenating acoustic index *‘.csv’* files
 
 Next, using the `merge_csv` command, we merged the *‘.csv’* files into a
-time-frequency dataframe for an index of choice, in this case, the
-**Acoustic Cover** index (CVR):
+time-frequency dataframe for an index of choice. The `soundscapeR`
+package contains test datasets for four acoustic indices: the **Acoustic
+Cover Index** **(CVR)**, the **Acoustic Complexity Index** **(ACI)**,
+the **Temporal Entropy Index** **(ENT)** and the **Horizontal Ridge
+Index** **(RHZ)**.
 
-`merged_df=merge_csv(fileloc = "full-length-path-to-output-location",
-samplerate = 384000, window=1024, index="CVR", lat=-9.595264,
-lon=-55.932848)`
+`amazon_soundscape_CVR=merge_csv(fileloc =
+"full-length-path-to-output-location", samplerate = 384000, window=1024,
+index="CVR", lat=-9.595264, lon=-55.932848)`
 
-This command takes the individual *‘.csv’* files for the ‘CVR’ index
+`amazon_soundscape_ACI=merge_csv(fileloc =
+"full-length-path-to-output-location", samplerate = 384000, window=1024,
+index="ACI", lat=-9.595264, lon=-55.932848)`
+
+`amazon_soundscape_ENT=merge_csv(fileloc =
+"full-length-path-to-output-location", samplerate = 384000, window=1024,
+index="ENT", lat=-9.595264, lon=-55.932848)`
+
+`amazon_soundscape_RHZ=merge_csv(fileloc =
+"full-length-path-to-output-location", samplerate = 384000, window=1024,
+index="RHZ", lat=-9.595264, lon=-55.932848)`
+
+This command takes the individual *‘.csv’* files for the index fo choice
 from each folder recursively and merges them together into a single
 time-frequency dataframe. For the purposes of this tutorial, we
-subsetted the soundscape data to include only the frequencies between
-0-21,000 Hz.
+subsetted the soundscape datasets to include only the frequencies
+between 0-21,000 Hz.
 
 The output of these commands is available as testing data in the
 `soundscapeR` package:
 
 ``` r
 library(soundscapeR)
-data("amazon_soundscape")
+data("amazon_soundscape_CVR")
+data("amazon_soundscape_ACI")
+data("amazon_soundscape_ENT")
+data("amazon_soundscape_RHZ")
 ```
 
 Now that you know how our testing data was derived, let’s get started\!
+In the next section we will focus on a single acoustic index, the
+**Acoustic Cover Index**.
 
 First, lets have a look at the testing data:
 
 ``` r
-head(amazon_soundscape)[1:5]
+head(amazon_soundscape_CVR)[1:5]
 #>         10:10:00   10:20:00   10:30:00   10:40:00   10:50:00
 #> 21000 0.06702222 0.06804444 0.08928889 0.08213333 0.05853333
 #> 20625 0.06191111 0.06591111 0.08995556 0.08364444 0.05697778
@@ -190,7 +211,7 @@ head(amazon_soundscape)[1:5]
 #> 19875 0.05871111 0.06155556 0.07595556 0.07960000 0.05315556
 #> 19500 0.05968889 0.05911111 0.07395556 0.07346667 0.05168889
 #> 19125 0.06426667 0.06080000 0.07506667 0.07448889 0.05240000
-tail(amazon_soundscape)[1:5]
+tail(amazon_soundscape_CVR)[1:5]
 #>        10:10:00   10:20:00    10:30:00    10:40:00   10:50:00
 #> 2250 0.22657778 0.13515556 0.107555556 0.115911111 0.12697778
 #> 1875 0.16284444 0.08368889 0.055200000 0.053600000 0.06168889
@@ -199,9 +220,9 @@ tail(amazon_soundscape)[1:5]
 #> 750  0.23728889 0.18426667 0.193022222 0.201244444 0.18706667
 #> 375  0.21355556 0.16968889 0.181111111 0.183911111 0.16591111
 
-min(colnames(amazon_soundscape))
+min(colnames(amazon_soundscape_CVR))
 #> [1] "00:00:00"
-max(colnames(amazon_soundscape))
+max(colnames(amazon_soundscape_CVR))
 #> [1] "23:50:00"
 ```
 
@@ -222,7 +243,7 @@ signal) from the background values (the noise). This is done with the
 index values into either 1 (active) or 0 (inactive).
 
 ``` r
-amazon_binarized=binarize_df(df=amazon_soundscape, method = "Otsu")
+amazon_binarized=binarize_df(df=amazon_soundscape_CVR, method = "Otsu")
 ```
 
 Several binarization algorithms from the `autothresholdr` package are
@@ -237,15 +258,11 @@ tool based of the `d3heatmap` package by Cheng and Galili
 ([2018](#ref-d3heatmap)) to do just this:
 
 ``` r
-before_thresholding=quick_heatmap(amazon_soundscape)
+before_thresholding=quick_heatmap(amazon_soundscape_CVR)
 after_thresholding=quick_heatmap(amazon_binarized)
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
-
-![before\_thresholding](before_thresholding.png)
-
-![after\_thresholding](after_thresholding.png)
 
 A quick visual inspection of the interactive heatmaps produced by
 `quick_heatmap` reveals the thresholding succesfully separated the
@@ -298,29 +315,31 @@ simple_heatmap_20=heatmapper(amazon_aggregated_20, type="regular", annotate = FA
 simple_heatmap_30=heatmapper(amazon_aggregated_30, type="regular", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848)
 
 simple_heatmap_60=heatmapper(amazon_aggregated_60, type="regular", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848)
+```
 
+``` r
 simple_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ``` r
 simple_heatmap_20
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ``` r
 simple_heatmap_30
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ``` r
 simple_heatmap_60
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-4.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 As you can see, aggregating at shorter durations increases the
 resolution of the soundscape plot, at the expense of having less
@@ -342,17 +361,19 @@ regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = F
 # type="polar"
 
 polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = FALSE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+```
 
+``` r
 regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
 ``` r
 polar_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 The polar heatmap represents a useful way of investigating diurnal
 patterns in the use of acoustic space. For instance, this plot reveals
@@ -365,22 +386,24 @@ Let’s investigate this further by looking at another plotting option in
 ``` r
 # type="regular" and annotate=TRUE
 
-regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
+regular_heatmap_10_annotated=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
 
 # type="polar" and annotate=TRUE
 
-polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
-
-regular_heatmap_10
+polar_heatmap_10_annotated=heatmapper(amazon_aggregated_10, type="polar", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848) 
 ```
-
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ``` r
-polar_heatmap_10
+regular_heatmap_10_annotated
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+
+``` r
+polar_heatmap_10_annotated
+```
+
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 If `annotate=TRUE`, `heatmapper` calculates the sunrise and sunset times
 for the soundscape based on the supplied date and geographic coordinates
@@ -407,18 +430,19 @@ time-frequency bins, we can set `interactive=TRUE`:
 
 # interactive=TRUE 
 
-regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, interactive = TRUE) 
-
-regular_heatmap_10
+regular_heatmap_10_interactive=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, interactive = TRUE) 
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
 The interactive mode can be used to find out the proportion of acoustic
 recordings which were active for each time-frequency bin in the
 recording period. Moreover, it can be used to zoom into certain parts of
 the plot and investigate patterns up close. Note that the interactive
 plot is not yet supported for `type="polar"`.
+
+**Note:** The GitHub README file does not support interactive plots, so
+a screenshot of the *‘.html’* widget is displayed.
 
 If we would like to dive even further into the patterns of acoustic
 space use, we can add marginal plots displaying the richness of
@@ -429,7 +453,7 @@ time-bins for each frequency band using the `marginplot` argument:
 
 # marginplot=TRUE
 
-regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, marginplot = TRUE, nbins=10)
+regular_heatmap_10_marginplot=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, marginplot = TRUE, nbins=10)
 #> Registered S3 methods overwritten by 'huge':
 #>   method    from   
 #>   plot.sim  BDgraph
@@ -437,11 +461,13 @@ regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = T
 #> Registered S3 method overwritten by 'geiger':
 #>   method            from
 #>   unique.multiPhylo ape
-
-regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+``` r
+regular_heatmap_10_marginplot
+```
+
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
 
 The addition of the margin plot confirms our previous findings. The
 richness of acoustically active frequency bins is highest at nighttime,
@@ -456,13 +482,14 @@ liking using the `palette` and `direction` arguments:
 ``` r
 
 # palette="D" and direction=1
-
-regular_heatmap_10=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, marginplot = TRUE, nbins=10, palette = "A", direction = 1) 
-
-regular_heatmap_10
+regular_heatmap_10_palette=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, marginplot = TRUE, nbins=10, palette = "A", direction = 1) 
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+``` r
+regular_heatmap_10_palette
+```
+
+<img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
 
 ### 7\. Estimating soundscape richness metrics
 
@@ -593,44 +620,170 @@ soundscape saturation, the `richness_by_time` function can do just that.
 Several graph types exists:
 
 ``` r
-richness_by_time_total=richness_by_time(amazon_aggregated_10, "total", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
+richness_by_time_total=richness_by_time(amazon_aggregated_10, "total", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = FALSE)
+```
 
+``` r
 richness_by_time_total
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
 
 ``` r
+richness_by_time_frequency=richness_by_time(amazon_aggregated_10, "frequency", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = FALSE)
+```
 
-richness_by_time_frequency=richness_by_time(amazon_aggregated_10, "frequency", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
-
+``` r
 richness_by_time_frequency
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
 
 ``` r
+richness_by_time_normfreq=richness_by_time(amazon_aggregated_10, "normfreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = FALSE)
+```
 
-richness_by_time_normfreq=richness_by_time(amazon_aggregated_10, "normfreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
-
+``` r
 richness_by_time_normfreq
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-33-1.png" width="100%" />
 
 ``` r
+richness_by_time_linefreq=richness_by_time(amazon_aggregated_10, "linefreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = FALSE, timeinterval = "2 hours")
+```
 
-richness_by_time_linefreq=richness_by_time(amazon_aggregated_10, "linefreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = TRUE)
-
+``` r
 richness_by_time_linefreq
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-4.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-35-1.png" width="100%" />
 
 These plots allow the user to see the variation in total soundscape
 saturation througout the day, and the contribution of frequency-bins
 with user-defined width to the total soundscape saturation at each
 unique time of day.
+
+## 9\. Compare acoustic space use for different types of sound
+
+The set of indices included in the `soundscapeR` package each capture
+unique properties of sound, and are thus sensitive to different sound
+sources. The ways in which the acoustic space is used by different types
+of sound can be compared by looking at different indices for the same
+soundscape.
+
+Let’s do a quick visual comparison of four different indices for which
+test data is included in the `soundscapeR` package:
+
+``` r
+# Thresholding
+
+  # CVR
+
+amazon_binarized_CVR=binarize_df(df=amazon_soundscape_CVR, method = "Otsu")
+
+  # ACI
+amazon_binarized_ACI=binarize_df(df=amazon_soundscape_ACI, method = "Mode", strictness = 0.9)
+
+  # ENT
+
+amazon_binarized_ENT=binarize_df(df=amazon_soundscape_ENT, method="Otsu", strictness = 1.2)
+
+  #RHZ
+
+amazon_binarized_RHZ=binarize_df(df=amazon_soundscape_RHZ, method="Otsu")
+```
+
+**Note:** As you can see in the code above, a different binarization
+algorithm was used for the Acoustic Complexity Index. Modal subtraction
+with an adapted *strictness* worked best in this case. Always verify the
+thresholding output before proceeding.
+
+``` r
+# Aggregation 
+
+  # CVR
+
+amazon_aggregated_CVR=aggregate_df(amazon_binarized_CVR, 10, "2019-11-12", lat=-9.595264, lon=-55.932848)
+
+  # ACI
+
+amazon_aggregated_ACI=aggregate_df(amazon_binarized_ACI, 10, "2019-11-12", lat=-9.595264, lon=-55.932848)
+
+  # ENT
+
+amazon_aggregated_ENT=aggregate_df(amazon_binarized_ENT, 10, "2019-11-12", lat=-9.595264, lon=-55.932848)
+
+  # RHZ
+
+amazon_aggregated_RHZ=aggregate_df(amazon_binarized_RHZ, 10, "2019-11-12", lat=-9.595264, lon=-55.932848)
+```
+
+``` r
+# Visualization
+
+  # CVR
+
+regular_heatmap_annotated_CVR=heatmapper(amazon_aggregated_CVR, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, palette = "D") 
+
+  # ACI
+
+regular_heatmap_annotated_ACI=heatmapper(amazon_aggregated_ACI, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, palette = "D") 
+
+  # ENT
+
+regular_heatmap_annotated_ENT=heatmapper(amazon_aggregated_ENT, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, palette = "D") 
+
+  # RHZ
+
+regular_heatmap_annotated_RHZ=heatmapper(amazon_aggregated_RHZ, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, palette = "D") 
+```
+
+``` r
+regular_heatmap_annotated_CVR
+```
+
+<img src="man/figures/README-unnamed-chunk-39-1.png" width="100%" />
+
+``` r
+regular_heatmap_annotated_ACI
+```
+
+<img src="man/figures/README-unnamed-chunk-40-1.png" width="100%" />
+
+``` r
+regular_heatmap_annotated_ENT
+```
+
+<img src="man/figures/README-unnamed-chunk-41-1.png" width="100%" />
+
+``` r
+regular_heatmap_annotated_RHZ
+```
+
+<img src="man/figures/README-unnamed-chunk-42-1.png" width="100%" />
+
+The comparison of the acoustic space use heatmaps for the different
+indices reveals two main things:
+
+  - Certain indices are more sensitive to non-biological noise than
+    other. For instance, the acoustic complexity index shows several
+    vertical bands which have high values across the frequency spectrum.
+    This is often indicative of some source of non-biological sound, in
+    this case likely tropical rain. Similarly, the Temporal entropy
+    index also has vertical banding. This often occurs when, for
+    instance, a gust of wind *‘saturates’* the microphone, generating
+    highly concentrated sound across all frequency bands in the sound
+    file. For these types of indices, before any biological patterns can
+    be explored, removal of files with heavy rain or wind might be
+    required.
+
+  - Different indices reveal different patterns. Per example, for the
+    ACI, the patterns at 2000-10,000 Hz between 02:00-10:00, which are
+    likely of biological origin, show a different structure than
+    previously seen for the CVR index. Additionally, the ACI picks up a
+    constant source of sound of unknown origin at 12,000 Hz, 15,000 Hz
+    and 20,000 Hz.
 
 ## Summary
 

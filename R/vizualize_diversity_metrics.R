@@ -338,7 +338,7 @@ richness_by_time=function(df, graphtype="total", date, lat, lon, minfreq="defaul
                   legend.key.width = grid::unit(3,"cm"),
                   aspect.ratio = 0.3)+
             viridis::scale_fill_viridis(discrete = TRUE,
-                                        guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=1, label.position = "top"),
+                                        guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=2, label.position = "top"),
                                         labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz"))
 
           if (interactive==TRUE){
@@ -376,7 +376,7 @@ richness_by_time=function(df, graphtype="total", date, lat, lon, minfreq="defaul
                       legend.key.width = grid::unit(3,"cm"),
                       aspect.ratio = 0.3)+
                 viridis::scale_fill_viridis(discrete = TRUE,
-                                            guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=1, label.position = "top"),
+                                            guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=2, label.position = "top"),
                                             labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz"))
 
             if (interactive==TRUE){

@@ -264,7 +264,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                 legend.position = "top",
                 legend.direction = "horizontal",
                 legend.title = ggplot2::element_text(color = "black", size = 12, face = "bold"))+
-          ggplot2::labs(fill="Proportion of \nacoustically \nactive bins")
+          ggplot2::labs(fill="Proportion of acoustically active bins")
       }
 
       else{print("Error: invalid annotate argument - please consult package documentation for options")}
