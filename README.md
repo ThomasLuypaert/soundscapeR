@@ -492,7 +492,7 @@ regular_heatmap_10_palette
 
 <img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
 
-### 7\. Estimating soundscape richness metrics
+### 7\. Computing soundscape richness metrics
 
 Next up in the `soundscaper` workflow, we can continue our exploration
 of acoustic space use in the time-frequency domain by calculating
@@ -665,7 +665,7 @@ saturation througout the day, and the contribution of frequency-bins
 with user-defined width to the total soundscape saturation at each
 unique time of day.
 
-## 9\. Compare acoustic space use for different types of sound
+## 9\. Comparing acoustic space use for different types of sound
 
 The set of indices included in the `soundscaper` package each capture
 unique properties of sound, and are thus sensitive to different sound
