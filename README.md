@@ -1,6 +1,7 @@
 soundscaper: visualization and richness estimation of soundscapes
 ================
-Thomas Luypaert
+Thomas Luypaert, Anderson Saldanha Bueno, Carlos Augusto Peres, Torbjørn
+Haugaasen
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -94,7 +95,7 @@ file metadata because of faulty renaming\!
 
 ### 1\. The data
 
-The `soundscaper` packages works on long-duration acoustic recordings,
+The `soundscaper` package works on long-duration acoustic recordings,
 either recorded continuously or using a regular sampling interval
 (*e.g.* 1 min/ 5 min).
 
@@ -296,7 +297,7 @@ amazon_aggregated_60=aggregate_df(amazon_binarized, 60, "2019-11-12", lat=-9.595
 ### 6\. Visualizing the soundscape
 
 At this point we have done the major manipulations on our data, and we
-are ready to take a look at the soundscape. Do do this, the
+are ready to take a look at the soundscape. To do this, the
 `soundscaper` package contains the highly flexible `heatmapper`
 function.
 
@@ -445,8 +446,9 @@ a screenshot of the *‘.html’* widget is displayed.
 
 If we would like to dive even further into the patterns of acoustic
 space use, we can add marginal plots displaying the richness of
-acoustically active frequency-bin for each time, and acoustically active
-time-bins for each frequency band using the `marginplot` argument:
+acoustically active frequency-bins for each time, and acoustically
+active time-bins for each frequency band using the `marginplot`
+argument:
 
 ``` r
 

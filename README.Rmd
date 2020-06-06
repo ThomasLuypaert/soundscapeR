@@ -1,10 +1,6 @@
 ---
 title: "soundscaper: visualization and richness estimation of soundscapes"
-author: 
-- "Thomas Luypaert"
-- "Anderson Saldanha Bueno"
-- "Carlos Augusto Peres"
-- "Torbjørn Haugaasen"
+author: "Thomas Luypaert, Anderson Saldanha Bueno, Carlos Augusto Peres, Torbjørn Haugaasen"
 output: github_document
 bibliography: citations.bib
 link-citations: yes 
@@ -62,7 +58,7 @@ Additionally, the QUT Ecoacoustics Analysis Programs software requires sound fil
 
 ### 1. The data
 
-The `soundscaper` packages works on long-duration acoustic recordings, either recorded continuously or using a regular sampling interval (*e.g.* 1 min/ 5 min). 
+The `soundscaper` package works on long-duration acoustic recordings, either recorded continuously or using a regular sampling interval (*e.g.* 1 min/ 5 min). 
 
 For demonstration purposes the package comes with four test datasets on which to try out the functions. The raw data from which the test datasets were derived consists of 1603 sound files from the Brazilian Amazon, recorded at a sampling rate of 384,000 Hz at medium gain, using a sampling regime of 1-min of recording every 10-min. 
 
@@ -180,7 +176,7 @@ amazon_aggregated_60=aggregate_df(amazon_binarized, 60, "2019-11-12", lat=-9.595
 
 ### 6. Visualizing the soundscape
 
-At this point we have done the major manipulations on our data, and we are ready to take a look at the soundscape. Do do this, the `soundscaper` package contains the highly flexible `heatmapper` function. 
+At this point we have done the major manipulations on our data, and we are ready to take a look at the soundscape. To do this, the `soundscaper` package contains the highly flexible `heatmapper` function. 
 
 In it's simplest form, `heatmapper` produces a rudimentary heatmap displaying how the acoustic space is used in the time-frequency domain for the index of choice. 
 
@@ -282,7 +278,7 @@ The interactive mode can be used to find out the proportion of acoustic recordin
 
 **Note:** The GitHub README file does not support interactive plots, so a screenshot of the *'.html'* widget is displayed.
 
-If we would like to dive even further into the patterns of acoustic space use, we can add marginal plots displaying the richness of acoustically active frequency-bin for each time, and acoustically active time-bins for each frequency band using the `marginplot` argument:
+If we would like to dive even further into the patterns of acoustic space use, we can add marginal plots displaying the richness of acoustically active frequency-bins for each time, and acoustically active time-bins for each frequency band using the `marginplot` argument:
 
 ```{r, warning=FALSE, dpi=300, fig.height=8, fig.width=10}
 
