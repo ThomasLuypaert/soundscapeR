@@ -36,7 +36,7 @@ Imports:
     cowplot (>= 1.0.0),
     scales (>= 1.1.0),
     grid (>= 2.6.3),
-    pracma (>= 2.3.0),
+    pracma,
     patchwork (>= 1.0.0),
     hilldiv (>= 1.5.1),
     photobiology (>= 0.10.2),
