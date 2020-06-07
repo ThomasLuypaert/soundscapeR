@@ -12,7 +12,7 @@ of day when the recording was taken. For each time-frequency bin, the 'Horizonta
 Amazon Biodiversity & Carbon Expeditions (unpublished)
 }
 \usage{
-data(amazon_soundscape)
+data(amazon_soundscape_RHZ)
 }
 \description{
 Soundscape data from the Brazilian Amazon, collected at the Cristalino Ecolodge in November 2019.

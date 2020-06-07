@@ -39,8 +39,8 @@ lengthen=function(df, date, lat, lon){
 #' @export
 
 quick_heatmap=function(df){
-  plsgenomics::matrix.heatmap(df, col=hcl.colors(palette = "YlGnBu", n=20, rev=TRUE))
-  }
+  plsgenomics::matrix.heatmap(df, col=grDevices::hcl.colors(palette = "YlGnBu", n=20, rev=TRUE))
+}
 
 ##
 

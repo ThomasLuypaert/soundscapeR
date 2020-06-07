@@ -12,7 +12,7 @@
 #' @docType data
 #' @author Thomas Luypaert \email{thomas.luypaert@@nmbu.no}
 #' @keywords data datasets
-#' @usage data(amazon_soundscape)
+#' @usage data(amazon_soundscape_CVR)
 #' @format A time-frequency data frame with 56 rows and 1603 columns. Rows represent frequency bins and columns show the time
 #' of day when the recording was taken. For each time-frequency bin, the 'Acoustic Cover' index value is given.
 #'
@@ -33,7 +33,7 @@
 #' @docType data
 #' @author Thomas Luypaert \email{thomas.luypaert@@nmbu.no}
 #' @keywords data datasets
-#' @usage data(amazon_soundscape)
+#' @usage data(amazon_soundscape_ACI)
 #' @format A time-frequency data frame with 56 rows and 1603 columns. Rows represent frequency bins and columns show the time
 #' of day when the recording was taken. For each time-frequency bin, the 'Acoustic Complexity Index' value is given.
 #'
@@ -54,7 +54,7 @@
 #' @docType data
 #' @author Thomas Luypaert \email{thomas.luypaert@@nmbu.no}
 #' @keywords data datasets
-#' @usage data(amazon_soundscape)
+#' @usage data(amazon_soundscape_ENT)
 #' @format A time-frequency data frame with 56 rows and 1603 columns. Rows represent frequency bins and columns show the time
 #' of day when the recording was taken. For each time-frequency bin, the 'Temporal Entropy' index value is given.
 #'
@@ -75,7 +75,7 @@
 #' @docType data
 #' @author Thomas Luypaert \email{thomas.luypaert@@nmbu.no}
 #' @keywords data datasets
-#' @usage data(amazon_soundscape)
+#' @usage data(amazon_soundscape_RHZ)
 #' @format A time-frequency data frame with 56 rows and 1603 columns. Rows represent frequency bins and columns show the time
 #' of day when the recording was taken. For each time-frequency bin, the 'Horizontal Ridge Index' value is given.
 #'

@@ -45,7 +45,8 @@ Imports:
     utils (>= 3.6.3),
     extrafont (>= 0.17),
     png (>= 0.1-7),
-    plsgenomics (>= 1.5-2)
+    plsgenomics (>= 1.5-2),
+    grDevices
 Suggests: 
     testthat
 Depends: 
