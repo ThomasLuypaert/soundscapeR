@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 ```
 
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR.svg?branch=master)](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR)
 <!-- badges: end -->
 
 |  |  |
@@ -30,7 +31,7 @@ knitr::opts_chunk$set(
 
 The theoretical background of the `soundscaper` package is set in the field of **soundscape ecology**, an area of research which is aimed at deriving ecological information from the pooled sounds of a population, community or landscape, also referred to as the **soundscape**. Soundscape ecology is predicated on the theory of **acoustic niche partitioning**, which states that acoustic space is a core ecological resource for which vocally sympatric animals compete, leading to the partitioning of the acoustic niche in the frequency- and time-domain through natural selection. As such, it is believed that the diversity of the vocalizing community can be deducted by looking at the spectro-temporal diversity of the soundscape. 
 
-Substantial progress has been made towards establishing the relationship the spectro-temporal richness and diversity of the soundscape and real-life biodiversity. For instance, @aide2017species measured the **acoustic space use**, or the proportion of acoustic space which is saturated with sound, and found a strong positive correlation with both the regional avian species richness and the richness of unique vocalizations in the recordings. Similarly, both @burivalova2018using and @burivalova2019using found strong positive correlations between the saturation of acoustic space and the richness of sound types in the recordings. 
+Substantial progress has been made towards establishing the relationship between the spectro-temporal richness and diversity of the soundscape and real-life biodiversity. For instance, @aide2017species measured the **acoustic space use**, or the proportion of acoustic space which is saturated with sound, and found a strong positive correlation with both the regional avian species richness and the richness of unique vocalizations in the recordings. Similarly, both @burivalova2018using and @burivalova2019using found strong positive correlations between the saturation of acoustic space and the richness of sound types in the recordings. 
 
 Still, for newcomers in the field of soundscape ecology, the analytical processes underlying these findings often remain obscure, with methods being published without code for application or locked behind a paywall. Additionally, the vast size of acoustic datasets and time-consuming nature of aural data exploration make it difficult to get a sense of the data at hand. In the pursuit of alleviating some of these current limitations, we developed the `soundscaper` package as an open-source, standardized and user-friendly analytical pipeline in R , containing a range of functions for the calculation, visualization and richness estimation of soundscapes . 
 

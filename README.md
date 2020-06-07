@@ -7,6 +7,8 @@ Haugaasen
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR.svg?branch=master)](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR)
 <!-- badges: end -->
 
 |                                                                   |                                                                                                                                                                                                                                                                                                                            |
@@ -28,8 +30,8 @@ the vocalizing community can be deducted by looking at the
 spectro-temporal diversity of the soundscape.
 
 Substantial progress has been made towards establishing the relationship
-the spectro-temporal richness and diversity of the soundscape and
-real-life biodiversity. For instance, Aide et al.
+between the spectro-temporal richness and diversity of the soundscape
+and real-life biodiversity. For instance, Aide et al.
 ([2017](#ref-aide2017species)) measured the **acoustic space use**, or
 the proportion of acoustic space which is saturated with sound, and
 found a strong positive correlation with both the regional avian species
