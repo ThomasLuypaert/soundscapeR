@@ -8,5 +8,4 @@ os:
  - osx
 
 r:
-  - oldrel
-  - release
+  - 4.0
