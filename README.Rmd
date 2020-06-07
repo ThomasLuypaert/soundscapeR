@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR.svg?branch=master)](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ThomasLuypaertGitHub/soundscapeR?branch=master&svg=true)](https://ci.appveyor.com/project/ThomasLuypaertGitHub/soundscapeR)
 <!-- badges: end -->
 
 |  |  |
@@ -141,23 +142,22 @@ amazon_binarized=binarize_df(df=amazon_soundscape_CVR, method = "Otsu")
 
 Several binarization algorithms from the `autothresholdr` package are available - see @autothresholdr. Consult the following [link](https://imagej.net/Auto_Threshold) for more information about the available algorithms.
 
-It is import to check the output of our thresholding step and compare the result to the original data to make sure the algorithm is working properly. Luckily, `soundscaper` has a quick interactive visualization tool based of the `d3heatmap` package by @d3heatmap to do just this: 
+It is important to check the output of our thresholding step and compare the result to the original data to make sure the algorithm is working properly. Luckily, `soundscaper` has a quick visualization tool based of the `matrix.heatmap` function in the `plsgenomics` package by @plsgenomics to do just this: 
 
 ```{r warning=FALSE}
 before_thresholding=quick_heatmap(amazon_soundscape_CVR)
 after_thresholding=quick_heatmap(amazon_binarized)
 ```
 
-```{r echo=FALSE}
-htmlwidgets::saveWidget(before_thresholding, "before_thresholding.html")
-htmlwidgets::saveWidget(after_thresholding, "after_thresholding.html")
-
-webshot2::webshot(url="before_thresholding.html", file="before_thresholding.png")
-webshot2::webshot(url="after_thresholding.html", file="after_thresholding.png")
+```{r, dpi=300, warning=FALSE, fig.height=8, fig.width=10}
+before_thresholding
 ```
 
+```{r, dpi=300, warning=FALSE, fig.height=8, fig.width=10}
+after_thresholding
+```
 
-A quick visual inspection of the interactive heatmaps produced by `quick_heatmap` reveals the thresholding succesfully separated the signal from the background noise. Try out several methods to get the best one. 
+A quick visual inspection of the heatmaps produced by `quick_heatmap` reveals the thresholding succesfully separated the signal from the background noise. Try out several methods to get the best one. 
 
 ### 5. Aggregating the acoustic activity vectors by time-of-day
 
@@ -260,24 +260,12 @@ If `annotate=TRUE`, `heatmapper` calculates the sunrise and sunset times for the
 
 As we can see, the soundscape is mostly filled at night, and a slight lag can be observed after sunset before the vocalizations commence. Additionally, we can observe a dawn chorus right after sunrise, where the soundscape is filled over a larger part of the frequency range.
 
-If we would like to interact with the plot to explore the values of the time-frequency bins, we can set `interactive=TRUE`:
+If we would like to interact with the plot to explore the values of the time-frequency bins, we can set `interactive=TRUE`. 
 
-```{r warning=FALSE, dpi=300, warning=FALSE, fig.height=8, fig.width=10}
-
-# interactive=TRUE 
-
-regular_heatmap_10_interactive=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, interactive = TRUE) 
-```
-
-
-```{r, echo=FALSE, dpi=300, warning=FALSE, fig.height=8, fig.width=10}
-htmlwidgets::saveWidget(regular_heatmap_10_interactive, "regular_heatmap_10_interactive.html")
-webshot2::webshot(url="regular_heatmap_10_interactive.html", file="regular_heatmap_10_interactive.png")
-```
+**Note:** The GitHub README file does not support interactive plots, please consult package documentation for more information regarding interactive mode. 
 
 The interactive mode can be used to find out the proportion of acoustic recordings which were active for each time-frequency bin in the recording period. Moreover, it can be used to zoom into certain parts of the plot and investigate patterns up close. Note that the interactive plot is not yet supported for `type="polar"`. 
 
-**Note:** The GitHub README file does not support interactive plots, so a screenshot of the *'.html'* widget is displayed.
 
 If we would like to dive even further into the patterns of acoustic space use, we can add marginal plots displaying the richness of acoustically active frequency-bins for each time, and acoustically active time-bins for each frequency band using the `marginplot` argument:
 

@@ -29,7 +29,6 @@ Imports:
     purrr (>= 0.3.3),
     dplyr (>= 0.8.4),
     reshape2 (>= 1.4.3),
-    d3heatmap (>= 0.6.1.2),
     viridis (>= 0.5.1),
     viridisLite (>= 0.3.0),
     plotly (>= 4.9.2.1),
@@ -45,11 +44,8 @@ Imports:
     rlang (>= 0.4.6),
     utils (>= 3.6.3),
     extrafont (>= 0.17),
-    widgetframe (>= 0.3.1),
-    htmlwidgets (>= 1.5.1),
-    htmltools (>= 0.4.0),
     png (>= 0.1-7),
-    webshot2 (>= 0.0.0.9000)
+    plsgenomics (>= 1.5-2)
 Suggests: 
     testthat
 Depends: 

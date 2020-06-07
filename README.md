@@ -9,6 +9,8 @@ Haugaasen
 
 [![Travis build
 status](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR.svg?branch=master)](https://travis-ci.com/ThomasLuypaertGitHub/soundscapeR)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/ThomasLuypaertGitHub/soundscapeR?branch=master&svg=true)](https://ci.appveyor.com/project/ThomasLuypaertGitHub/soundscapeR)
 <!-- badges: end -->
 
 |                                                                   |                                                                                                                                                                                                                                                                                                                            |
@@ -253,23 +255,37 @@ available - see Landini et al. ([2017](#ref-autothresholdr)). Consult
 the following [link](https://imagej.net/Auto_Threshold) for more
 information about the available algorithms.
 
-It is import to check the output of our thresholding step and compare
+It is important to check the output of our thresholding step and compare
 the result to the original data to make sure the algorithm is working
-properly. Luckily, `soundscaper` has a quick interactive visualization
-tool based of the `d3heatmap` package by Cheng and Galili
-([2018](#ref-d3heatmap)) to do just this:
+properly. Luckily, `soundscaper` has a quick visualization tool based of
+the `matrix.heatmap` function in the `plsgenomics` package by Boulesteix
+et al. ([2018](#ref-plsgenomics)) to do just this:
 
 ``` r
 before_thresholding=quick_heatmap(amazon_soundscape_CVR)
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+``` r
 after_thresholding=quick_heatmap(amazon_binarized)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" /><img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
 
-A quick visual inspection of the interactive heatmaps produced by
-`quick_heatmap` reveals the thresholding succesfully separated the
-signal from the background noise. Try out several methods to get the
-best one.
+``` r
+before_thresholding
+#> NULL
+```
+
+``` r
+after_thresholding
+#> NULL
+```
+
+A quick visual inspection of the heatmaps produced by `quick_heatmap`
+reveals the thresholding succesfully separated the signal from the
+background noise. Try out several methods to get the best one.
 
 ### 5\. Aggregating the acoustic activity vectors by time-of-day
 
@@ -323,25 +339,25 @@ simple_heatmap_60=heatmapper(amazon_aggregated_60, type="regular", annotate = FA
 simple_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ``` r
 simple_heatmap_20
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ``` r
 simple_heatmap_30
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ``` r
 simple_heatmap_60
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 As you can see, aggregating at shorter durations increases the
 resolution of the soundscape plot, at the expense of having less
@@ -369,13 +385,13 @@ polar_heatmap_10=heatmapper(amazon_aggregated_10, type="polar", annotate = FALSE
 regular_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 ``` r
 polar_heatmap_10
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 The polar heatmap represents a useful way of investigating diurnal
 patterns in the use of acoustic space. For instance, this plot reveals
@@ -399,13 +415,13 @@ polar_heatmap_10_annotated=heatmapper(amazon_aggregated_10, type="polar", annota
 regular_heatmap_10_annotated
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 ``` r
 polar_heatmap_10_annotated
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 If `annotate=TRUE`, `heatmapper` calculates the sunrise and sunset times
 for the soundscape based on the supplied date and geographic coordinates
@@ -426,25 +442,17 @@ Additionally, we can observe a dawn chorus right after sunrise, where
 the soundscape is filled over a larger part of the frequency range.
 
 If we would like to interact with the plot to explore the values of the
-time-frequency bins, we can set `interactive=TRUE`:
+time-frequency bins, we can set `interactive=TRUE`.
 
-``` r
-
-# interactive=TRUE 
-
-regular_heatmap_10_interactive=heatmapper(amazon_aggregated_10, type="regular", annotate = TRUE, timeinterval = "1 hour", freqinterval = 2000, date="2019-11-12", lat=-9.595264, lon=-55.932848, interactive = TRUE) 
-```
-
-<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+**Note:** The GitHub README file does not support interactive plots,
+please consult package documentation for more information regarding
+interactive mode.
 
 The interactive mode can be used to find out the proportion of acoustic
 recordings which were active for each time-frequency bin in the
 recording period. Moreover, it can be used to zoom into certain parts of
 the plot and investigate patterns up close. Note that the interactive
 plot is not yet supported for `type="polar"`.
-
-**Note:** The GitHub README file does not support interactive plots, so
-a screenshot of the *‘.html’* widget is displayed.
 
 If we would like to dive even further into the patterns of acoustic
 space use, we can add marginal plots displaying the richness of
@@ -470,7 +478,7 @@ regular_heatmap_10_marginplot=heatmapper(amazon_aggregated_10, type="regular", a
 regular_heatmap_10_marginplot
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
 
 The addition of the margin plot confirms our previous findings. The
 richness of acoustically active frequency bins is highest at nighttime,
@@ -492,7 +500,7 @@ regular_heatmap_10_palette=heatmapper(amazon_aggregated_10, type="regular", anno
 regular_heatmap_10_palette
 ```
 
-<img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-23-1.png" width="100%" />
 
 ### 7\. Computing soundscape richness metrics
 
@@ -630,7 +638,7 @@ richness_by_time_total=richness_by_time(amazon_aggregated_10, "total", "2019-11-
 richness_by_time_total
 ```
 
-<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
 
 ``` r
 richness_by_time_frequency=richness_by_time(amazon_aggregated_10, "frequency", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = FALSE)
@@ -640,7 +648,7 @@ richness_by_time_frequency=richness_by_time(amazon_aggregated_10, "frequency", "
 richness_by_time_frequency
 ```
 
-<img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" />
 
 ``` r
 richness_by_time_normfreq=richness_by_time(amazon_aggregated_10, "normfreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = FALSE)
@@ -650,7 +658,7 @@ richness_by_time_normfreq=richness_by_time(amazon_aggregated_10, "normfreq", "20
 richness_by_time_normfreq
 ```
 
-<img src="man/figures/README-unnamed-chunk-33-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-32-1.png" width="100%" />
 
 ``` r
 richness_by_time_linefreq=richness_by_time(amazon_aggregated_10, "linefreq", "2019-11-12",lat=-9.595264, lon=-55.932848, nbins=14, smooth=TRUE, interactive = FALSE, timeinterval = "2 hours")
@@ -660,7 +668,7 @@ richness_by_time_linefreq=richness_by_time(amazon_aggregated_10, "linefreq", "20
 richness_by_time_linefreq
 ```
 
-<img src="man/figures/README-unnamed-chunk-35-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-34-1.png" width="100%" />
 
 These plots allow the user to see the variation in total soundscape
 saturation througout the day, and the contribution of frequency-bins
@@ -746,25 +754,25 @@ regular_heatmap_annotated_RHZ=heatmapper(amazon_aggregated_RHZ, type="regular", 
 regular_heatmap_annotated_CVR
 ```
 
-<img src="man/figures/README-unnamed-chunk-39-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-38-1.png" width="100%" />
 
 ``` r
 regular_heatmap_annotated_ACI
 ```
 
-<img src="man/figures/README-unnamed-chunk-40-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-39-1.png" width="100%" />
 
 ``` r
 regular_heatmap_annotated_ENT
 ```
 
-<img src="man/figures/README-unnamed-chunk-41-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-40-1.png" width="100%" />
 
 ``` r
 regular_heatmap_annotated_RHZ
 ```
 
-<img src="man/figures/README-unnamed-chunk-42-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-41-1.png" width="100%" />
 
 The comparison of the acoustic space use heatmaps for the different
 indices reveals two main things:
@@ -828,6 +836,14 @@ Aphalo, Pedro J. 2015. “The R4photobiology Suite.” *UV4Plants Bulletin*
 
 </div>
 
+<div id="ref-plsgenomics">
+
+Boulesteix, Anne-Laure, Ghislain Durif, Sophie Lambert-Lacroix, Julie
+Peyre, and Korbinian Strimmer. 2018. *Plsgenomics: PLS Analyses for
+Genomics*. <https://CRAN.R-project.org/package=plsgenomics>.
+
+</div>
+
 <div id="ref-burivalova2018using">
 
 Burivalova, Zuzana, Michael Towsey, Tim Boucher, Anthony Truskinger,
@@ -844,14 +860,6 @@ Anthony Truskinger, Michael Towsey, Paul Roe, Delon Marthinus, Bronson
 Griscom, and Edward T Game. 2019. “Using Soundscapes to Investigate
 Homogenization of Tropical Forest Diversity in Selectively Logged
 Forests.” *Journal of Applied Ecology* 56 (11): 2493–2504.
-
-</div>
-
-<div id="ref-d3heatmap">
-
-Cheng, Joe, and Tal Galili. 2018. *D3heatmap: Interactive Heat Maps
-Using ’Htmlwidgets’ and ’D3.js’*.
-<https://CRAN.R-project.org/package=d3heatmap>.
 
 </div>
 
