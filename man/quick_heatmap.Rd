@@ -10,10 +10,10 @@ quick_heatmap(df)
 \item{df}{A time-frequency dataframe produced by \code{\link{merge_csv}}, \code{\link{binarize_df}} or \code{\link{aggregate_df}}.}
 }
 \value{
-Returns an interactive html-widget heatmap.
+Returns a heatmap plot
 }
 \description{
-A quick-and-dirty interactive heatmap for rapid data checking, using the \code{\link[d3heatmap]{d3heatmap}} function.
+A quick-and-dirty interactive heatmap for rapid data checking, using the \code{\link[plsgenomics]{matrix.heatmap}} function.
 Used for quick visual inspection of outputs for the \code{\link{merge_csv}} and \code{\link{binarize_df}} functions.
 Useful for checking which binarization algorithm works best, and fine-tuning threshold values.
 }

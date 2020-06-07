@@ -29,13 +29,13 @@ lengthen=function(df, date, lat, lon){
 
 #' Quick heatmap
 #'
-#' @description A quick-and-dirty interactive heatmap for rapid data checking, using the \code{\link[d3heatmap]{d3heatmap}} function.
+#' @description A quick-and-dirty interactive heatmap for rapid data checking, using the \code{\link[plsgenomics]{matrix.heatmap}} function.
 #' Used for quick visual inspection of outputs for the \code{\link{merge_csv}} and \code{\link{binarize_df}} functions.
 #' Useful for checking which binarization algorithm works best, and fine-tuning threshold values.
 #'
 #' @param df A time-frequency dataframe produced by \code{\link{merge_csv}}, \code{\link{binarize_df}} or \code{\link{aggregate_df}}.
 #'
-#' @return Returns an interactive html-widget heatmap.
+#' @return Returns a heatmap plot
 #' @export
 
 quick_heatmap=function(df){
