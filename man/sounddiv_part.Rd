@@ -42,7 +42,7 @@ sounddiv_part(
 
 \item{maxtime}{The upper time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the latest time for which data exists in the dataframe.}
 
-\item{date}{The first day of the recording period. Used for managing time-objects in R. \cr
+\item{date}{The first day of the recording period. Used for managing time-objects in R.
 Format as "YYYY-mm-dd".}
 
 \item{lat}{The latitude of the site at which the sound files were collected, expressed in decimal degrees.}
@@ -66,18 +66,18 @@ Options can be found in the \code{\link[photobiology]{day_night}} documentation.
 A dataframe of diversity values
 }
 \description{
-The diversity of a system can generally be broken down into three components: \cr
-Alpha, Beta and Gamma diversity.\cr
-\cr
-For Hill numbers these three components take a multiplicative relationship: Gamma = Alpha x Beta \cr
-\cr
-- \bold{Alpha diversity}: The average diversity of the subsystems \cr
-\cr
-- \bold{Beta diversity}: The compositional heterogeneity between subsystems.\cr
-\cr
-The beta diversity component can be computed as: Beta = Gamma / Alpha. \cr
-\cr
-Beta represents the effective number of equally large and completely unique subsystems within the system. As Beta quantifies the ratio between Gamma and Alpha, it can also be seen as the number of times more diverse the whole system is in effective number of OSUs compared to its constituent subsystems on average. The beta diversity ranges from 1 to N (the number of subsystems in the system).\cr
-\cr
-- \bold{Gamma diversity}: The average diversity of the whole system \cr
+The diversity of a system can generally be broken down into three components:
+Alpha, Beta and Gamma diversity.
+
+For Hill numbers these three components take a multiplicative relationship: Gamma = Alpha x Beta
+
+- \bold{Alpha diversity}: The average diversity of the subsystems
+
+- \bold{Beta diversity}: The compositional heterogeneity between subsystems.
+
+The beta diversity component can be computed as: Beta = Gamma / Alpha.
+
+Beta represents the effective number of equally large and completely unique subsystems within the system. As Beta quantifies the ratio between Gamma and Alpha, it can also be seen as the number of times more diverse the whole system is in effective number of OSUs compared to its constituent subsystems on average. The beta diversity ranges from 1 to N (the number of subsystems in the system).
+
+- \bold{Gamma diversity}: The average diversity of the whole system
 }

@@ -44,7 +44,7 @@ sounddiv_pairdis(
 
 \item{maxtime}{The upper time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the latest time for which data exists in the dataframe.}
 
-\item{date}{The first day of the recording period. Used for managing time-objects in R. \cr
+\item{date}{The first day of the recording period. Used for managing time-objects in R.
 Format as "YYYY-mm-dd".}
 
 \item{lat}{The latitude of the site at which the sound files were collected, expressed in decimal degrees.}
@@ -68,24 +68,24 @@ Options can be found in the \code{\link[photobiology]{day_night}} documentation.
 A list of pairwise matrices for the beta diversity, and the one-complement for the Sorensen-type overlap, Jaccard-type overlap, Sorensen-type turnover and Jaccard-type turnover.
 }
 \description{
-Computation of pairwise dissimularities among soundscapes. \cr
-\cr
-Regular Beta diversity varies between 1-N, its value being dependent on the number of subsystems under consideration (N). As such, due to its dependence on the number of subsystems, it cannot directly be used as a measure of dissimilarity among communities. Instead, several simple transformations can be performed on the Beta values to get dissimilarity indices ranging between 0-1. \cr
+Computation of pairwise dissimularities among soundscapes.
 
-\cr
-- Sorensen-type (local) overlap:\cr
-\cr
-Quantifies the average proportion of a sub-system's OSUs which are shared across all considered sub-systems. It quantifies the overlap (similarity) from the sub-system perspective. To make this into a dissimilarity metric, we take the one-complement (1-Sorensen overlap), being the average proportion of non-shared OSUs in the system.  \cr
-\cr
-- Jaccard-type (regional) overlap:\cr
-\cr
-Quantifies the effective proportion of OSUs which are shared across all subsystems. It quantifies overlap (similarity) from the perspective of the overall system. To make this into a dissimilarity metric, we take the one-complement (1 - Jaccard overlap), being the effective proportion of non-shard OSUs in the whole system.\cr
-\cr
-- Sorensen-type turnover:\cr
-\cr
-Quantifies the normalized turnover rate of OSUs from the perspective of the subsystem (alpha) - or the proportion of a subsystem which changes across subsystems. Once again, we take the one-complement as a dissimilarity measure. \cr
-\cr
-- Jaccard-type turnover:\cr
-\cr
+Regular Beta diversity varies between 1-N, its value being dependent on the number of subsystems under consideration (N). As such, due to its dependence on the number of subsystems, it cannot directly be used as a measure of dissimilarity among communities. Instead, several simple transformations can be performed on the Beta values to get dissimilarity indices ranging between 0-1.
+
+
+- Sorensen-type (local) overlap:
+
+Quantifies the average proportion of a sub-system's OSUs which are shared across all considered sub-systems. It quantifies the overlap (similarity) from the sub-system perspective. To make this into a dissimilarity metric, we take the one-complement (1-Sorensen overlap), being the average proportion of non-shared OSUs in the system.
+
+- Jaccard-type (regional) overlap:
+
+Quantifies the effective proportion of OSUs which are shared across all subsystems. It quantifies overlap (similarity) from the perspective of the overall system. To make this into a dissimilarity metric, we take the one-complement (1 - Jaccard overlap), being the effective proportion of non-shard OSUs in the whole system.
+
+- Sorensen-type turnover:
+
+Quantifies the normalized turnover rate of OSUs from the perspective of the subsystem (alpha) - or the proportion of a subsystem which changes across subsystems. Once again, we take the one-complement as a dissimilarity measure.
+
+- Jaccard-type turnover:
+
 Quantifies the normalized OSU turnover rate from the perspective of the whole system (gamma). Once more, the one-complement gives us our dissimilarity measure.
 }

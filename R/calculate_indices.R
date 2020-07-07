@@ -55,56 +55,56 @@ index_config=function(progloc, samplerate=41000, window=256){
 #' The default duration of sound files for index computation is 60 seconds. If the file length
 #' exceeds 60 seconds, the file is automatically cut into 60 second segments for further analysis.
 #'
-#' \bold{The following spectral indices will be computed:}\cr
-#' \cr
-#' \emph{Background Noise (BGN)}:\cr
+#' \bold{The following spectral indices will be computed:}
+#'
+#' \emph{Background Noise (BGN)}:
 #' The mode of the distribution of decibel values in each
 #' frequency bin, representing the “background” intensity value. This index captures
 #' the acoustic energy which persists throughout the duration of the sound file,
-#' regardless of its origin (biophonic, geophonic or anthrophonic).\cr
-#' \cr
-#' \emph{Power minus noise (PMN)}:\cr
+#' regardless of its origin (biophonic, geophonic or anthrophonic).
+#'
+#' \emph{Power minus noise (PMN)}:
 #' The difference between the maximum decibel value in
-#' each frequency bin and the corresponding BGN decibel value.\cr
-#' \cr
-#' \emph{Acoustic cover (CVR)}:\cr
+#' each frequency bin and the corresponding BGN decibel value.
+#'
+#' \emph{Acoustic cover (CVR)}:
 #' The fraction of active elements in each noise-reduced
-#' frequency bin where the amplitude exceeds a 3-dB threshold. \cr
-#' \cr
-#' \emph{Number of events (EVN)}:\cr
+#' frequency bin where the amplitude exceeds a 3-dB threshold.
+#'
+#' \emph{Number of events (EVN)}:
 #' The number of times the decibel value in a noise-reduced
-#' frequency bin crosses the 3-dB threshold from lower to higher values.\cr
-#' \cr
-#' \emph{Temporal entropy (ENT)}:\cr
-#' A measure of acoustic energy concentration in each noise-reduced frequency bin.\cr
-#' \cr
-#' \emph{Acoustic Complexity Index (ACI)}:\cr
+#' frequency bin crosses the 3-dB threshold from lower to higher values.
+#'
+#' \emph{Temporal entropy (ENT)}:
+#' A measure of acoustic energy concentration in each noise-reduced frequency bin.
+#'
+#' \emph{Acoustic Complexity Index (ACI)}:
 #' A measure quantifying the variability in
 #' intensity values in each noise-reduced frequency bin. It is widely used as a
 #' measure of biophony in recordings, however remains highly sensitive to
-#' non-biological sources of sound. \cr
-#' \cr
-#' \emph{Oscillation Index (OSC)}:\cr
-#' ... \cr
-#' \cr
-#' \emph{Spectral Peak Tracks (SPT)}:\cr
+#' non-biological sources of sound.
+#'
+#' \emph{Oscillation Index (OSC)}:
+#' ...
+#'
+#' \emph{Spectral Peak Tracks (SPT)}:
 #' A measure of the presence of spectral peak
-#' tracks in a noise-reduced frequency bin. \cr
-#' \cr
-#' \emph{Ridge indices (RHZ, RVT, RPS, RNS)}:\cr
+#' tracks in a noise-reduced frequency bin.
+#'
+#' \emph{Ridge indices (RHZ, RVT, RPS, RNS)}:
 #' A set of indices based on the presence of formants
 #' in the harmonic structure of many animal vocalizations, calculated in the four
 #' directions of the ridge slope (horizontal (RHZ), vertical (RVT), upward slope (RPS),
 #' downward slope (RNS)). Formants in the mid-band are typically due to birdsong,
 #' whereas vertical formants are typical for non-biological sounds such as rain drops
-#' and electrical clicks. \cr
+#' and electrical clicks.
 #'
 #' For index computation this function calls on the external software 'AnalysisPrograms.exe'
 #' by the QUT Ecoacoustics Research Group (\url{https://github.com/QutEcoacoustics/audio-analysis}).
 #' Make sure the software is installed prior to commencing the analysis. Additionally, the software requires
 #' sound files to be named according to certain standards (\url{https://ap.qut.ecoacoustics.info/basics/dates.html}).
 #'
-#' \strong{Software citation}:\cr
+#' \strong{Software citation}:
 #' Michael Towsey, Anthony Truskinger, Mark Cottman-Fields, & Paul Roe. (2018, March 5).
 #' Ecoacoustics Audio Analysis Software v18.03.0.41 (Version v18.03.0.41). Zenodo.
 #' http://doi.org/10.5281/zenodo.1188744

@@ -30,27 +30,27 @@ sounddiv_by_time(
 
 \item{qvalue}{A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.}
 
-\item{graphtype}{The type of plot which is produced. \cr
-\cr
-Options are:\cr
-\cr
-\emph{'total'}:
-\cr
-An area chart showing the soundscape diversity by time-of-day for the entire frequency range.\cr
-\cr
-\emph{'frequency'}:
-\cr
-A stacked area chart showing the relative contribution of frequency bins with user-defined width to the total soundscape diversity by time-of-day.\cr
-\cr
-\emph{'normfreq'}:
-\cr
-A percentage stacked area chart showing the normalized relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.\cr
-\cr
-\emph{'linefreq'}:
-\cr
-A line chart showing the relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.\cr}
+\item{graphtype}{The type of plot which is produced.
 
-\item{date}{The first day of the recording period. Used for managing time-objects in R. \cr
+Options are:
+
+\emph{'total'}:
+
+An area chart showing the soundscape diversity by time-of-day for the entire frequency range.
+
+\emph{'frequency'}:
+
+A stacked area chart showing the relative contribution of frequency bins with user-defined width to the total soundscape diversity by time-of-day.
+
+\emph{'normfreq'}:
+
+A percentage stacked area chart showing the normalized relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.
+
+\emph{'linefreq'}:
+
+A line chart showing the relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.}
+
+\item{date}{The first day of the recording period. Used for managing time-objects in R.
 Format as "YYYY-mm-dd".}
 
 \item{lat}{The latitude of the site at which the sound files were collected.}

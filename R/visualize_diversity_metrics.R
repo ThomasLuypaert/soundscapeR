@@ -11,26 +11,26 @@ utils::globalVariables(c("time_of_day", "soundscape_div", "frequency", "freq", "
 #'
 #' @param df The aggregated time-frequency dataframe produced by \code{\link{aggregate_df}}.
 #' @param qvalue A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.
-#' @param graphtype The type of plot which is produced. \cr
-#' \cr
-#'Options are:\cr
-#'\cr
+#' @param graphtype The type of plot which is produced.
+#'
+#'Options are:
+#'
 #'\emph{'total'}:
-#'\cr
-#'An area chart showing the soundscape diversity by time-of-day for the entire frequency range.\cr
-#'\cr
+#'
+#'An area chart showing the soundscape diversity by time-of-day for the entire frequency range.
+#'
 #'\emph{'frequency'}:
-#'\cr
-#'A stacked area chart showing the relative contribution of frequency bins with user-defined width to the total soundscape diversity by time-of-day.\cr
-#'\cr
+#'
+#'A stacked area chart showing the relative contribution of frequency bins with user-defined width to the total soundscape diversity by time-of-day.
+#'
 #'\emph{'normfreq'}:
-#'\cr
-#'A percentage stacked area chart showing the normalized relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.\cr
-#'\cr
+#'
+#'A percentage stacked area chart showing the normalized relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.
+#'
 #'\emph{'linefreq'}:
-#'\cr
-#'A line chart showing the relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.\cr
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr
+#'
+#'A line chart showing the relative contribution of frequency bins with user-defined width to the soundscape diversity by time-of-day.
+#' @param date The first day of the recording period. Used for managing time-objects in R.
 #' Format as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected.
 #' @param lon The longitude of the site at which the sound files were collected.

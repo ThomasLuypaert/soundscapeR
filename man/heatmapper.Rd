@@ -58,7 +58,7 @@ time for which data exists in the dataframe.}
 \item{nbins}{If \code{marginplot=TRUE}, determines the number of the frequency-bins by which to divide the frequency range to compute the
 soundscape richness, expressed as a numeric constant.}
 
-\item{date}{The first day of the recording period. Used for managing time-objects in R. \cr Formatted as "YYYY-mm-dd".}
+\item{date}{The first day of the recording period. Used for managing time-objects in R.  Formatted as "YYYY-mm-dd".}
 
 \item{lat}{The latitude of the site at which the sound files were collected.}
 

@@ -5,20 +5,20 @@
 
 #' Partitioning Soundscape Diversity into Alpha, Beta and Gamma components
 #'
-#' @description The diversity of a system can generally be broken down into three components: \cr
-#' Alpha, Beta and Gamma diversity.\cr
-#' \cr
-#' For Hill numbers these three components take a multiplicative relationship: Gamma = Alpha x Beta \cr
-#' \cr
-#' - \bold{Alpha diversity}: The average diversity of the subsystems \cr
-#' \cr
-#' - \bold{Beta diversity}: The compositional heterogeneity between subsystems.\cr
-#' \cr
-#' The beta diversity component can be computed as: Beta = Gamma / Alpha. \cr
-#' \cr
-#' Beta represents the effective number of equally large and completely unique subsystems within the system. As Beta quantifies the ratio between Gamma and Alpha, it can also be seen as the number of times more diverse the whole system is in effective number of OSUs compared to its constituent subsystems on average. The beta diversity ranges from 1 to N (the number of subsystems in the system).\cr
-#' \cr
-#' - \bold{Gamma diversity}: The average diversity of the whole system \cr
+#' @description The diversity of a system can generally be broken down into three components:
+#' Alpha, Beta and Gamma diversity.
+#'
+#' For Hill numbers these three components take a multiplicative relationship: Gamma = Alpha x Beta
+#'
+#' - \bold{Alpha diversity}: The average diversity of the subsystems
+#'
+#' - \bold{Beta diversity}: The compositional heterogeneity between subsystems.
+#'
+#' The beta diversity component can be computed as: Beta = Gamma / Alpha.
+#'
+#' Beta represents the effective number of equally large and completely unique subsystems within the system. As Beta quantifies the ratio between Gamma and Alpha, it can also be seen as the number of times more diverse the whole system is in effective number of OSUs compared to its constituent subsystems on average. The beta diversity ranges from 1 to N (the number of subsystems in the system).
+#'
+#' - \bold{Gamma diversity}: The average diversity of the whole system
 #'
 
 
@@ -31,7 +31,7 @@
 #' @param maxfreq A numeric value indicating the upper frequency limit for which to compute the soundscape diversity. If set to default, uses the highest available frequency in the dataframe.
 #' @param mintime The lower time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the earliest time for which data exists in the dataframe.
 #' @param maxtime The upper time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the latest time for which data exists in the dataframe.
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr
+#' @param date The first day of the recording period. Used for managing time-objects in R.
 #' Format as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected, expressed in decimal degrees.
 #' @param lon The longitude of the site at which the sound files were collected, expressed in decimal degrees.
@@ -460,25 +460,25 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
 
 #' Pairwise Beta diversity and dissimilarity values between subsystems in the system
 #'
-#' @description Computation of pairwise dissimularities among soundscapes. \cr
-#' \cr
-#' Regular Beta diversity varies between 1-N, its value being dependent on the number of subsystems under consideration (N). As such, due to its dependence on the number of subsystems, it cannot directly be used as a measure of dissimilarity among communities. Instead, several simple transformations can be performed on the Beta values to get dissimilarity indices ranging between 0-1. \cr
+#' @description Computation of pairwise dissimularities among soundscapes.
 #'
-#' \cr
-#' - Sorensen-type (local) overlap:\cr
-#' \cr
-#' Quantifies the average proportion of a sub-system's OSUs which are shared across all considered sub-systems. It quantifies the overlap (similarity) from the sub-system perspective. To make this into a dissimilarity metric, we take the one-complement (1-Sorensen overlap), being the average proportion of non-shared OSUs in the system.  \cr
-#' \cr
-#' - Jaccard-type (regional) overlap:\cr
-#' \cr
-#' Quantifies the effective proportion of OSUs which are shared across all subsystems. It quantifies overlap (similarity) from the perspective of the overall system. To make this into a dissimilarity metric, we take the one-complement (1 - Jaccard overlap), being the effective proportion of non-shard OSUs in the whole system.\cr
-#' \cr
-#' - Sorensen-type turnover:\cr
-#' \cr
-#' Quantifies the normalized turnover rate of OSUs from the perspective of the subsystem (alpha) - or the proportion of a subsystem which changes across subsystems. Once again, we take the one-complement as a dissimilarity measure. \cr
-#' \cr
-#' - Jaccard-type turnover:\cr
-#' \cr
+#' Regular Beta diversity varies between 1-N, its value being dependent on the number of subsystems under consideration (N). As such, due to its dependence on the number of subsystems, it cannot directly be used as a measure of dissimilarity among communities. Instead, several simple transformations can be performed on the Beta values to get dissimilarity indices ranging between 0-1.
+#'
+#'
+#' - Sorensen-type (local) overlap:
+#'
+#' Quantifies the average proportion of a sub-system's OSUs which are shared across all considered sub-systems. It quantifies the overlap (similarity) from the sub-system perspective. To make this into a dissimilarity metric, we take the one-complement (1-Sorensen overlap), being the average proportion of non-shared OSUs in the system.
+#'
+#' - Jaccard-type (regional) overlap:
+#'
+#' Quantifies the effective proportion of OSUs which are shared across all subsystems. It quantifies overlap (similarity) from the perspective of the overall system. To make this into a dissimilarity metric, we take the one-complement (1 - Jaccard overlap), being the effective proportion of non-shard OSUs in the whole system.
+#'
+#' - Sorensen-type turnover:
+#'
+#' Quantifies the normalized turnover rate of OSUs from the perspective of the subsystem (alpha) - or the proportion of a subsystem which changes across subsystems. Once again, we take the one-complement as a dissimilarity measure.
+#'
+#' - Jaccard-type turnover:
+#'
 #' Quantifies the normalized OSU turnover rate from the perspective of the whole system (gamma). Once more, the one-complement gives us our dissimilarity measure.
 #'
 #'
@@ -492,7 +492,7 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
 #' @param maxfreq A numeric value indicating the upper frequency limit for which to compute the soundscape diversity. If set to default, uses the highest available frequency in the dataframe.
 #' @param mintime The lower time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the earliest time for which data exists in the dataframe.
 #' @param maxtime The upper time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the latest time for which data exists in the dataframe.
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr
+#' @param date The first day of the recording period. Used for managing time-objects in R.
 #' Format as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected, expressed in decimal degrees.
 #' @param lon The longitude of the site at which the sound files were collected, expressed in decimal degrees.

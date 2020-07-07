@@ -69,7 +69,7 @@ utils::globalVariables(c("time", "frequency", "value", "richness_smooth"))
 #' @param maxfreq The upper frequency limit for the y-axis as a numeric value. Defaults to the maximum frequency of the dataframe.
 #' @param nbins If \code{marginplot=TRUE}, determines the number of the frequency-bins by which to divide the frequency range to compute the
 #' soundscape richness, expressed as a numeric constant.
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr Formatted as "YYYY-mm-dd".
+#' @param date The first day of the recording period. Used for managing time-objects in R.  Formatted as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected.
 #' @param lon The longitude of the site at which the sound files were collected.
 #' @param twilight A character string of the twilight method to be used for sunrise and sunset annotation.

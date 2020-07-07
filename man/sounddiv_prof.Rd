@@ -65,5 +65,5 @@ Options can be found in the \code{\link[photobiology]{day_night}} documentation.
 A soundscape diversity profile plot or table.
 }
 \description{
-Gives the soundscape diversity as a continuous function of the order of diversity q. Soundscape diversity profiles are a useful visualization tool to characterize the abundance of OSUs in the system, and assess the evenness. \cr
+Gives the soundscape diversity as a continuous function of the order of diversity q. Soundscape diversity profiles are a useful visualization tool to characterize the abundance of OSUs in the system, and assess the evenness.
 }

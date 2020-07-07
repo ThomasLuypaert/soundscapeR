@@ -40,7 +40,7 @@ sounddiv_profile_point_internal(
 
 \item{maxtime}{The upper time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the latest time for which data exists in the dataframe.}
 
-\item{date}{The first day of the recording period. Used for managing time-objects in R. \cr
+\item{date}{The first day of the recording period. Used for managing time-objects in R.
 Format as "YYYY-mm-dd".}
 
 \item{lat}{The latitude of the site at which the sound files were collected, expressed in decimal degrees.}

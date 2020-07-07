@@ -33,7 +33,7 @@ sounddiv(
 \item{type}{The scale for which the soundscape diversity is computed. Options are 'total', 'day',
 'night', 'dawn', 'dusk' and 'tod' (time of day - for each unique time in the day).}
 
-\item{date}{The first day of the recording period. Used for managing time-objects in R. \cr
+\item{date}{The first day of the recording period. Used for managing time-objects in R.
 Format as "YYYY-mm-dd".}
 
 \item{lat}{The latitude of the site at which the sound files were collected, expressed in decimal degrees.}

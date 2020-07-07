@@ -19,7 +19,7 @@
 #' @param qvalue A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.
 #' @param type The scale for which the soundscape diversity is computed. Options are 'total', 'day',
 #' 'night', 'dawn', 'dusk' and 'tod' (time of day - for each unique time in the day).
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr
+#' @param date The first day of the recording period. Used for managing time-objects in R.
 #' Format as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected, expressed in decimal degrees.
 #' @param lon The longitude of the site at which the sound files were collected, expressed in decimal degrees.
@@ -378,7 +378,7 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
 #' @param qvalue A parameter which modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A positive integer or decimal number (>=0), most commonly between 0-3. A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective species for the Simpson index.
 #' @param type The scale for which the soundscape diversity is computed. Options are 'total', 'day',
 #' 'night', 'dawn', 'dusk' and 'tod' (time of day - for each unique time in the day).
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr
+#' @param date The first day of the recording period. Used for managing time-objects in R.
 #' Format as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected.
 #' @param lon The longitude of the site at which the sound files were collected.

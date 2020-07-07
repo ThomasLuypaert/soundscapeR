@@ -10,7 +10,7 @@ utils::globalVariables(c("div_order", "eff_osus"))
 #' @param maxfreq A numeric value indicating the upper frequency limit for which to compute the soundscape diversity. If set to default, uses the highest available frequency in the dataframe.
 #' @param mintime The lower time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the earliest time for which data exists in the dataframe.
 #' @param maxtime The upper time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the latest time for which data exists in the dataframe.
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr
+#' @param date The first day of the recording period. Used for managing time-objects in R.
 #' Format as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected, expressed in decimal degrees.
 #' @param lon The longitude of the site at which the sound files were collected, expressed in decimal degrees.
@@ -196,7 +196,7 @@ sounddiv_profile_internal <- function(df, qvalues=seq(0, 5, 0.1), type="total",
 #' @param maxfreq A numeric value indicating the upper frequency limit for which to compute the soundscape diversity. If set to default, uses the highest available frequency in the dataframe.
 #' @param mintime The lower time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the earliest time for which data exists in the dataframe.
 #' @param maxtime The upper time limit for which to compute the soundscape diversity, formatted as "HH:MM:SS". If set to default, uses the latest time for which data exists in the dataframe.
-#' @param date The first day of the recording period. Used for managing time-objects in R. \cr
+#' @param date The first day of the recording period. Used for managing time-objects in R.
 #' Format as "YYYY-mm-dd".
 #' @param lat The latitude of the site at which the sound files were collected, expressed in decimal degrees.
 #' @param lon The longitude of the site at which the sound files were collected, expressed in decimal degrees.
@@ -387,7 +387,7 @@ sounddiv_profile_point_internal <- function(df, qvalues=seq(0, 5, 0.1), type="to
 
 #' Compute and Visualize Soundscape Diversity Profiles
 #'
-#' @description Gives the soundscape diversity as a continuous function of the order of diversity q. Soundscape diversity profiles are a useful visualization tool to characterize the abundance of OSUs in the system, and assess the evenness. \cr
+#' @description Gives the soundscape diversity as a continuous function of the order of diversity q. Soundscape diversity profiles are a useful visualization tool to characterize the abundance of OSUs in the system, and assess the evenness.
 #'
 #' @param df The aggregated time-frequency dataframe produced by \code{\link{aggregate_df}}.
 #' @param qvalues A numeric vector of sequential q-values for which to compute the diversity profiles, generally ranging between 0-5. \emph{e.g.:} \code{seq(0, 5, 0.1)} yields a vector between 0 and 5 with an increment value of 0.1. The smaller the increment value, the smoother the diversity profiles.
