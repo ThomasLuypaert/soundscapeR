@@ -161,8 +161,8 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                 panel.background = ggplot2::element_blank(), axis.line = ggplot2::element_line(colour = "black"),
                 axis.text.y = ggplot2::element_text(color = "black", size = 10),
                 axis.text.x = ggplot2::element_text(color = "black", size = 10, angle = 45, hjust=1.1, vjust=1),
-                axis.title.y = ggplot2::element_text(face="bold"),
-                axis.title.x = ggplot2::element_text(face="bold"),
+                axis.title.y = ggplot2::element_text(),
+                axis.title.x = ggplot2::element_text(),
                 plot.margin = grid::unit(c(1,1,1,1),"cm"),
                 legend.position = "top",
                 legend.direction = "horizontal",
@@ -209,8 +209,8 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                   panel.background = ggplot2::element_blank(), axis.line = ggplot2::element_line(colour = "black"),
                   axis.text.y = ggplot2::element_text(color = "black", size = 10),
                   axis.text.x = ggplot2::element_text(color = "black", size = 10, angle = 45, hjust=1.1,vjust=1),
-                  axis.title.y = ggplot2::element_text(face="bold"),
-                  axis.title.x = ggplot2::element_text(face="bold"),
+                  axis.title.y = ggplot2::element_text(),
+                  axis.title.x = ggplot2::element_text(),
                   plot.margin = grid::unit(c(1,1,1,1),"cm"),
                   legend.position = "top",
                   legend.direction = "horizontal",
@@ -258,8 +258,8 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                 panel.background = ggplot2::element_blank(), axis.line = ggplot2::element_line(colour = "black"),
                 axis.text.y = ggplot2::element_text(color = "black", size = 10),
                 axis.text.x = ggplot2::element_text(color = "black", size = 10, angle = 45, hjust=1.1,vjust=1),
-                axis.title.y = ggplot2::element_text(face="bold"),
-                axis.title.x = ggplot2::element_text(face="bold"),
+                axis.title.y = ggplot2::element_text(),
+                axis.title.x = ggplot2::element_text(),
                 panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.5),
                 plot.margin = grid::unit(c(1,1,1,1),"cm"),
                 legend.position = "top",
@@ -291,8 +291,8 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
           ggplot2::theme(panel.grid.major = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank(),
                 panel.background = ggplot2::element_blank(), axis.line = ggplot2::element_line(colour = "black"),
                 axis.text.x = ggplot2::element_text(color = "black", size = 10, angle = -0, hjust=1.1, vjust=1),
-                axis.title.y = ggplot2::element_text(face="bold"),
-                axis.title.x = ggplot2::element_text(face="bold"),
+                axis.title.y = ggplot2::element_text(),
+                axis.title.x = ggplot2::element_text(),
                 panel.border = ggplot2::element_rect(colour = "white", fill=NA, size=0.5),
                 plot.margin = grid::unit(c(1,1,1,1),"cm"),
                 axis.text.y = ggplot2::element_blank(),
@@ -332,8 +332,8 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
             ggplot2::theme(panel.grid.major = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank(),
                   panel.background = ggplot2::element_blank(), axis.line = ggplot2::element_line(colour = "black"),
                   axis.text.x = ggplot2::element_text(color = "black", size = 10, angle = -0, hjust=1.1,vjust=1),
-                  axis.title.y = ggplot2::element_text(face="bold"),
-                  axis.title.x = ggplot2::element_text(face="bold"),
+                  axis.title.y = ggplot2::element_text(),
+                  axis.title.x = ggplot2::element_text(),
                   panel.border = ggplot2::element_rect(colour = "white", fill=NA, size=0.5),
                   axis.text.y = ggplot2::element_blank(),
                   axis.ticks.y = ggplot2::element_blank(),
@@ -393,7 +393,8 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
                   heatmap=plot+ggplot2::theme(plot.margin = grid::unit(c(0.15, 0.15, 0, 0), "cm"),legend.position = "none")
 
-                  xdata=as.data.frame(as.numeric(soundscape_richness(df,
+                  xdata=as.data.frame(as.numeric(sounddiv_internal(df,
+                                                          qvalue=0,
                                                            type="tod",
                                                            date=date,
                                                            lat = lat,
@@ -425,15 +426,15 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
                   xplot
 
-                  ydata=as.data.frame(as.numeric(soundscape_richness(df,
-                                                                     type="total",
-                                                                     date=date,
-                                                                     lat = lat,
-                                                                     lon=lon,
-                                                                     freqseq = TRUE,
-                                                                     nbins = nbins,
-                                                                     minfreq = minfreq,
-                                                                     maxfreq = maxfreq)))
+                  ydata=as.data.frame(as.numeric(sounddiv_internal(df, qvalue = 0,
+                                                          type="total",
+                                                          date=date,
+                                                          lat = lat,
+                                                          lon=lon,
+                                                          freqseq = TRUE,
+                                                          nbins = nbins,
+                                                          minfreq = minfreq,
+                                                          maxfreq = maxfreq)))
 
                   ydata$frequency=seq(from=minfreq, maxfreq, (maxfreq/nbins))
 

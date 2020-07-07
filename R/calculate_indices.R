@@ -11,8 +11,6 @@
 #' for the computation of acoustic indices.
 #'
 #' @param progloc The full-length path to the location of the 'AnalysisPrograms.exe' software.
-#' @param indexlength The timespan (in seconds) over which the acoustic indices are computed.
-#'     This value cannot exceed 60 seconds, as this is the default file length for index computation.
 #' @param samplerate The number of times the sound was sampled each second. This is a fixed
 #'     parameter determined by your recording setup, although downsampling to a lower sampling
 #'     rate is possible.
@@ -28,10 +26,10 @@
 #' index computation.
 #'
 #' @export
-index_config=function(progloc, indexlength=60, samplerate=41000, window=256){
+index_config=function(progloc, samplerate=41000, window=256){
   config=as.data.frame(yaml::read_yaml(file=paste0(progloc, "/ConfigFiles/Towsey.Acoustic.yml")))
   config$SegmentDuration=60
-  config$IndexCalculationDuration=as.integer(indexlength)
+  config$IndexCalculationDuration=60
   config$ResampleRate=as.integer(samplerate)
   config$FrameLength=as.integer(window)
   yaml::write_yaml(config, file=paste0(progloc, "/ConfigFiles/Towsey.Acoustic.Custom.yml"))
@@ -43,12 +41,8 @@ index_config=function(progloc, indexlength=60, samplerate=41000, window=256){
 #' @description Calls on the external software 'AnalysisPrograms.exe' to compute a set of
 #' acoustic indices using user-specified configuration parameters.
 #'
-#' @usage index_calc(fileloc, progloc, indexlength, samplerate, window)
-#'
 #' @param fileloc The full-length path to the sound file for which to compute indices.
 #' @param progloc The full-length path to the location of 'AnalysisPrograms.exe'.
-#' @param indexlength The timespan (in seconds) over which the acoustic indices are calculated.
-#'     This value cannot exceed 60 seconds, as this is the default file length for index computation.
 #' @param samplerate The number of times the sound was sampled each second. This is a fixed
 #'     parameter determined by your recording setup, although downsampling to a lower sampling
 #'     rate is possible.
@@ -120,12 +114,12 @@ index_config=function(progloc, indexlength=60, samplerate=41000, window=256){
 #'
 #' @export
 #'
-index_calc=function(fileloc, progloc, indexlength=60, samplerate=41000, window=256){
+index_calc=function(fileloc, progloc, samplerate=41000, window=256){
   directory <- fileloc
   base_output_directory <- paste0(fileloc, "/Output")
   files <- list.files(directory, pattern = "*.wav|*.WAV|*.mp3|*.ogg|*.flac|*.wv|*.webm|*.wma", full.names = TRUE)
 
-  index_config(progloc, indexlength=indexlength, samplerate=samplerate, window=window)
+  index_config(progloc, samplerate=samplerate, window=window)
 
   i=0
   vector_i=c()

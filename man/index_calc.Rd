@@ -4,15 +4,12 @@
 \alias{index_calc}
 \title{Compute Acoustic Indices}
 \usage{
-index_calc(fileloc, progloc, indexlength, samplerate, window)
+index_calc(fileloc, progloc, samplerate = 41000, window = 256)
 }
 \arguments{
 \item{fileloc}{The full-length path to the sound file for which to compute indices.}
 
 \item{progloc}{The full-length path to the location of 'AnalysisPrograms.exe'.}
-
-\item{indexlength}{The timespan (in seconds) over which the acoustic indices are calculated.
-This value cannot exceed 60 seconds, as this is the default file length for index computation.}
 
 \item{samplerate}{The number of times the sound was sampled each second. This is a fixed
 parameter determined by your recording setup, although downsampling to a lower sampling

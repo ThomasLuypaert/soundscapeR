@@ -4,13 +4,10 @@
 \alias{index_config}
 \title{Set Configuration Parameters for Acoustic Index Computation}
 \usage{
-index_config(progloc, indexlength = 60, samplerate = 41000, window = 256)
+index_config(progloc, samplerate = 41000, window = 256)
 }
 \arguments{
 \item{progloc}{The full-length path to the location of the 'AnalysisPrograms.exe' software.}
-
-\item{indexlength}{The timespan (in seconds) over which the acoustic indices are computed.
-This value cannot exceed 60 seconds, as this is the default file length for index computation.}
 
 \item{samplerate}{The number of times the sound was sampled each second. This is a fixed
 parameter determined by your recording setup, although downsampling to a lower sampling
