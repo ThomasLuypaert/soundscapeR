@@ -206,8 +206,20 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
           soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_2[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_2[[i]])*nrow(freq_list_2[[i]]))} else{print("Error: invalid output argument")}}
         }
 
+        for (i in 1:length(freq_list_2)){
+
+          if (sum(unlist(freq_list_2[i]))==0){
+            soundscape_diversity[i] <- 0
+          }
+
+          else{
+            soundscape_diversity[i] <- soundscape_diversity[i]
+          }
+        }
+
         soundscape_diversity=soundscape_diversity*multiplier
         soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
+
         soundscape_diversity <- as.data.frame(soundscape_diversity)
         soundscape_diversity$frequency_bin <- paste0(seq((freq1-freq1), (freq2-(freq2/nbins)), freq2/nbins), "-", seq(((freq1-freq1)+(freq2/nbins)), freq2, freq2/nbins), " Hz")
 
@@ -228,7 +240,23 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
             for (j in 1:ncol(freq_list_2[[i]])){
               soundscape_diversity[[i]][[j]]=hilldiv::hill_div(unlist(freq_list_2[[i]][[j]]), qvalue = qvalue)/if (output=="raw"){1} else{if(output=="percentage"){length(freq_list_2[[i]][[j]])} else{print("Error: invalid output argument")}}
             }
-            soundscape_diversity[[i]]=unlist(soundscape_diversity[[i]])
+          }
+
+          for (i in 1:length(freq_list_2)){
+            for (j in 1:ncol(freq_list_2[[i]])){
+
+              if (all.equal(rep(0, length(freq_list_2[[i]][[j]])), freq_list_2[[i]][[j]])==TRUE){
+                soundscape_diversity[[i]][[j]] <- 0
+              }
+
+              else{
+                soundscape_diversity[[i]][[j]] <- soundscape_diversity[[i]][[j]]
+              }
+            }
+          }
+
+          for (i in 1:length(soundscape_diversity)){
+            soundscape_diversity[[i]] <- unlist(soundscape_diversity[[i]])
           }
 
           for (i in 1:length(soundscape_diversity)){
@@ -263,8 +291,21 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
               soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_day[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_day[[i]])*nrow(freq_list_day[[i]]))} else{print("Error: invalid output argument")}}
             }
 
+            for (i in 1:length(freq_list_day)){
+
+              if (all.equal(rep(0, length(freq_list_day[[i]])),
+                            freq_list_day[[i]])==TRUE){
+                soundscape_diversity[[i]] <- 0
+              }
+
+              else{
+                soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+              }
+            }
+
             soundscape_diversity=soundscape_diversity*multiplier
             soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
+
             soundscape_diversity <- as.data.frame(soundscape_diversity)
             soundscape_diversity$frequency_bin <- paste0(seq((freq1-freq1), (freq2-(freq2/nbins)), freq2/nbins), "-", seq(((freq1-freq1)+(freq2/nbins)), freq2, freq2/nbins), " Hz")
             colnames(soundscape_diversity) <- c(paste0("soundscape_div_day", " (q=", qvalue, ")"), "freq_interval")
@@ -290,8 +331,21 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
                 soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_night[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_night[[i]])*nrow(freq_list_night[[i]]))} else{print("Error: invalid output argument")}}
               }
 
+              for (i in 1:length(freq_list_night)){
+
+                if (all.equal(rep(0, length(freq_list_night[[i]])),
+                              freq_list_night[[i]])==TRUE){
+                  soundscape_diversity[[i]] <- 0
+                }
+
+                else{
+                  soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+                }
+              }
+
               soundscape_diversity=soundscape_diversity*multiplier
               soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
+
               soundscape_diversity <- as.data.frame(soundscape_diversity)
               soundscape_diversity$frequency_bin <- paste0(seq((freq1-freq1), (freq2-(freq2/nbins)), freq2/nbins), "-", seq(((freq1-freq1)+(freq2/nbins)), freq2, freq2/nbins), " Hz")
               colnames(soundscape_diversity) <- c(paste0("soundscape_div_night", " (q=", qvalue, ")"), "freq_interval")
@@ -315,6 +369,18 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
 
                 for (i in 1:length(freq_list_dawn)){
                   soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_dawn[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_dawn[[i]])*nrow(freq_list_dawn[[i]]))} else{print("Error: invalid output argument")}}
+                }
+
+                for (i in 1:length(freq_list_dawn)){
+
+                  if (all.equal(rep(0, length(freq_list_dawn[[i]])),
+                                freq_list_dawn[[i]])==TRUE){
+                    soundscape_diversity[[i]] <- 0
+                  }
+
+                  else{
+                    soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+                  }
                 }
 
                 soundscape_diversity=soundscape_diversity*multiplier
@@ -344,6 +410,18 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
 
                   for (i in 1:length(freq_list_dusk)){
                     soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_dusk[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_dusk[[i]])*nrow(freq_list_dusk[[i]]))} else{print("Error: invalid output argument")}}
+                  }
+
+                  for (i in 1:length(freq_list_dusk)){
+
+                    if (all.equal(rep(0, length(freq_list_dusk[[i]])),
+                                  freq_list_dusk[[i]])==TRUE){
+                      soundscape_diversity[[i]] <- 0
+                    }
+
+                    else{
+                      soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+                    }
                   }
 
                   soundscape_diversity=soundscape_diversity*multiplier
@@ -573,6 +651,17 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
           soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_2[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_2[[i]])*nrow(freq_list_2[[i]]))} else{print("Error: invalid output argument")}}
         }
 
+        for (i in 1:length(freq_list_2)){
+
+          if (all.equal(rep(0, length(unlist(freq_list_2[[i]]))), unlist(freq_list_2[[i]]))==TRUE){
+            soundscape_diversity[i] <- 0
+          }
+
+          else{
+            soundscape_diversity[i] <- soundscape_diversity[i]
+          }
+        }
+
         soundscape_diversity=soundscape_diversity*multiplier
         soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
 
@@ -591,7 +680,23 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
             for (j in 1:ncol(freq_list_2[[i]])){
               soundscape_diversity[[i]][[j]]=hilldiv::hill_div(unlist(freq_list_2[[i]][[j]]), qvalue = qvalue)/if (output=="raw"){1} else{if(output=="percentage"){length(freq_list_2[[i]][[j]])} else{print("Error: invalid output argument")}}
             }
-            soundscape_diversity[[i]]=unlist(soundscape_diversity[[i]])
+          }
+
+          for (i in 1:length(freq_list_2)){
+            for (j in 1:ncol(freq_list_2[[i]])){
+
+              if (all.equal(rep(0, length(freq_list_2[[i]][[j]])), freq_list_2[[i]][[j]])==TRUE){
+                soundscape_diversity[[i]][[j]] <- 0
+              }
+
+              else{
+                soundscape_diversity[[i]][[j]] <- soundscape_diversity[[i]][[j]]
+              }
+            }
+          }
+
+          for (i in 1:length(soundscape_diversity)){
+            soundscape_diversity[[i]] <- unlist(soundscape_diversity[[i]])
           }
 
           for (i in 1:length(soundscape_diversity)){
@@ -621,6 +726,18 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
               soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_day[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_day[[i]])*nrow(freq_list_day[[i]]))} else{print("Error: invalid output argument")}}
             }
 
+            for (i in 1:length(freq_list_day)){
+
+                if (all.equal(rep(0, length(freq_list_day[[i]])),
+                              freq_list_day[[i]])==TRUE){
+                  soundscape_diversity[[i]] <- 0
+                }
+
+                else{
+                  soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+                }
+              }
+
             soundscape_diversity=soundscape_diversity*multiplier
             soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
 
@@ -644,6 +761,18 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
 
               for (i in 1:length(freq_list_night)){
                 soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_night[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_night[[i]])*nrow(freq_list_night[[i]]))} else{print("Error: invalid output argument")}}
+              }
+
+              for (i in 1:length(freq_list_night)){
+
+                if (all.equal(rep(0, length(freq_list_night[[i]])),
+                              freq_list_night[[i]])==TRUE){
+                  soundscape_diversity[[i]] <- 0
+                }
+
+                else{
+                  soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+                }
               }
 
               soundscape_diversity=soundscape_diversity*multiplier
@@ -671,6 +800,18 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
                   soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_dawn[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_dawn[[i]])*nrow(freq_list_dawn[[i]]))} else{print("Error: invalid output argument")}}
                 }
 
+                for (i in 1:length(freq_list_dawn)){
+
+                  if (all.equal(rep(0, length(freq_list_dawn[[i]])),
+                                freq_list_dawn[[i]])==TRUE){
+                    soundscape_diversity[[i]] <- 0
+                  }
+
+                  else{
+                    soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+                  }
+                }
+
                 soundscape_diversity=soundscape_diversity*multiplier
                 soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
 
@@ -696,6 +837,18 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
 
                   for (i in 1:length(freq_list_dusk)){
                     soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_dusk[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_dusk[[i]])*nrow(freq_list_dusk[[i]]))} else{print("Error: invalid output argument")}}
+                  }
+
+                  for (i in 1:length(freq_list_dusk)){
+
+                    if (all.equal(rep(0, length(freq_list_dusk[[i]])),
+                                  freq_list_dusk[[i]])==TRUE){
+                      soundscape_diversity[[i]] <- 0
+                    }
+
+                    else{
+                      soundscape_diversity[[i]] <- soundscape_diversity[[i]]
+                    }
                   }
 
                   soundscape_diversity=soundscape_diversity*multiplier

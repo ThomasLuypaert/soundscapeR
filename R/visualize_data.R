@@ -27,19 +27,40 @@ lengthen=function(df, date, lat, lon){
 
 ##
 
-#' Quick heatmap
+#' Rapid soundscape heatmapping function to assess the performance of the thresholding step
 #'
-#' @description A quick-and-dirty interactive heatmap for rapid data checking, using the \code{\link[plsgenomics]{matrix.heatmap}} function.
-#' Used for quick visual inspection of outputs for the \code{\link{merge_csv}} and \code{\link{binarize_df}} functions.
+#' @description A quick-and-dirty heatmap for rapid data assessment of the performance of the thresholding step, using the \code{\link[plsgenomics]{matrix.heatmap}} function.
 #' Useful for checking which binarization algorithm works best, and fine-tuning threshold values.
 #'
-#' @param df A time-frequency dataframe produced by \code{\link{merge_csv}}, \code{\link{binarize_df}} or \code{\link{aggregate_df}}.
+#' @param df A time-frequency dataframe produced by \code{\link{merge_csv}}.
+#' @param method The algorithm used to determine the threshold. Options are "IJDefault",
+#'  "Huang", "Huang2", "Intermodes", "IsoData", "Li", "MaxEntropy", "Mean", "MinErrorI", "Minimum",
+#'  "Moments", "Otsu", "Percentile", "RenyiEntropy", "Shanbhag", "Triangle", "Yen", and "Mode.
+#'  Consult \url{http://imagej.net/Auto_Threshold} for more information on algorithm methodologies.
 #'
-#' @return Returns a heatmap plot
+#' @param value Optional argument used to set a custom threshold value for binarization - used in combination with
+#' method="Custom".
+#'
+#' @param strictness A numeric value with which the threshold value is multiplied. Used for slight tweaking of
+#' the threshold value. Reduce the threshold value using values <0, increase using values >1. Defaults to 1.
+#'
+#' @return Returns a before-after thresholding heatmap plot.
 #' @export
 
-quick_heatmap=function(df){
-  plsgenomics::matrix.heatmap(df, col=grDevices::hcl.colors(palette = "YlGnBu", n=20, rev=TRUE))
+check_thresh=function(df, method, value=NULL, strictness=1){
+
+  df <- df
+
+  df2 <- binarize_df(df=df, method=method, value=value, strictness=strictness)
+
+  fields::set.panel()
+
+  fields::set.panel(2, 1)
+
+  plot1 <- plsgenomics::matrix.heatmap(df, col=grDevices::hcl.colors(palette = "YlGnBu", n=20, rev=TRUE))
+
+  plot2 <- plsgenomics::matrix.heatmap(df2, col=grDevices::hcl.colors(palette = "YlGnBu", n=20, rev=TRUE))
+
 }
 
 ##

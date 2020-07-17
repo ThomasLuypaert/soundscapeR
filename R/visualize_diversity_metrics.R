@@ -168,23 +168,25 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
 
       freq_tod=sounddiv_internal(df=df,
-                                        qvalue=qvalue,
-                                        type="tod",
-                                        date=date,
-                                        lat=lat,
-                                        lon=lon,
-                                        minfreq=minfreq,
-                                        maxfreq=(maxfreq-1),
-                                        twilight="sunlight",
-                                        freqseq=TRUE ,
-                                        nbins=nbins,
-                                        output="raw")
+                                 qvalue=qvalue,
+                                 type="tod",
+                                 date=date,
+                                 lat=lat,
+                                 lon=lon,
+                                 minfreq=minfreq,
+                                 maxfreq=(maxfreq-1),
+                                 twilight="sunlight",
+                                 freqseq=TRUE ,
+                                 nbins=nbins,
+                                 output="raw")
+
 
       if(output=="percentage"){
         for (i in 1:length(freq_tod)){
           freq_tod[[i]] <- (freq_tod[[i]]/nrow(df))*100
         }
       } else {}
+
 
       freq_tod_smooth=vector("list", 0)
 
@@ -236,7 +238,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                 legend.position=c(0.5, 1))+
           viridis::scale_fill_viridis(discrete = TRUE,
                                       guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=2, label.position = "top"),
-                                      labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz"))
+                                      labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz"))
 
         if (interactive==TRUE){
           plotly::ggplotly(plot)}
@@ -269,7 +271,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                     legend.position=c(0.5, 1))+
               viridis::scale_fill_viridis(discrete = TRUE,
                                           guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=2, label.position = "top"),
-                                          labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz"))
+                                          labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz"))
 
             if (interactive==TRUE){
               plotly::ggplotly(plot)}
@@ -352,7 +354,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                   aspect.ratio = 0.3)+
             viridis::scale_fill_viridis(discrete = TRUE,
                                         guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=2, label.position = "top"),
-                                        labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz"))
+                                        labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz"))
 
           if (interactive==TRUE){
             plotly::ggplotly(plot)}
@@ -390,7 +392,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                       aspect.ratio = 0.3)+
                 viridis::scale_fill_viridis(discrete = TRUE,
                                             guide=ggplot2::guide_legend(title=NULL,direction ="horizontal", nrow=2, label.position = "top"),
-                                            labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz"))
+                                            labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz"))
 
             if (interactive==TRUE){
               plotly::ggplotly(plot)}
@@ -455,7 +457,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
           if (smooth==TRUE){
 
-            labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz")
+            labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz")
             names(labels)=seq(minfreq, maxfreq, (maxfreq/nbins))
 
             tmp <- freq_tod_smooth %>%
@@ -496,7 +498,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
             if (smooth==FALSE){
 
-              labels=paste0(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins)), "-", seq((maxfreq/nbins), maxfreq, (maxfreq/nbins)), " ", "Hz")
+              labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz")
               names(labels)=seq(minfreq, maxfreq, (maxfreq/nbins))
 
               tmp <- freq_tod %>%
