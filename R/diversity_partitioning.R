@@ -507,10 +507,11 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
 #' @return A list of pairwise matrices for the beta diversity, and the one-complement for the Sorensen-type overlap, Jaccard-type overlap, Sorensen-type turnover and Jaccard-type turnover.
 #' @export
 
-sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="default", type="total",
-                                  minfreq="default", maxfreq="default",mintime="default",
-                                  maxtime="default",date, lat, lon,twilight="sunlight",dawnstart=0,
-                                  dawnend=5400, duskstart=5400, duskend=0,output="percentage"){
+sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="default",
+                             type="total",minfreq="default", maxfreq="default",
+                             mintime="default",maxtime="default",date, lat, lon,
+                             twilight="sunlight",dawnstart=0,dawnend=5400, duskstart=5400,
+                             duskend=0,output="percentage"){
 
   if (class(df_list)=="data.frame"){
     errorCondition(message = "Invalid df_list class - please supply a list of dataframes")
@@ -724,6 +725,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
       }
 
+
       if (type=="total"){
 
         soundscape_df <- vector("list", 0)
@@ -735,6 +737,8 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
         soundscape_df <- as.data.frame(dplyr::bind_cols(soundscape_df))
         colnames(soundscape_df) <- names(df_list)
+        rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
+
       }
 
       else{
@@ -765,6 +769,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
           soundscape_df <- dplyr::bind_cols(soundscape_df)
           colnames(soundscape_df) <- names(df_list)
+          rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
 
         }
 
@@ -829,6 +834,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
               soundscape_df <- dplyr::bind_cols(soundscape_df)
               colnames(soundscape_df) <- names(df_list)
+              rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
 
             }
 
@@ -863,6 +869,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
                 soundscape_df <- dplyr::bind_cols(soundscape_df)
                 colnames(soundscape_df) <- names(df_list)
+                rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
 
               }
 
@@ -873,41 +880,24 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
         }
       }
 
-      if (hier_table=="default"){
-
-        if (level=="default"){
+      if(missing(hier_table)){
         soundscape_pairdis <- hilldiv::pair_dis(countable = soundscape_df,
-                                             qvalue = qvalue)
-        }
-
-        else{
-          soundscape_pairdis <- hilldiv::pair_dis(countable = soundscape_df,
-                                                  qvalue = qvalue, level = level)
-        }
+                                                qvalue = qvalue)
       }
 
       else{
-
-        if (level=="default"){
-
         soundscape_pairdis <- hilldiv::pair_dis(countable = soundscape_df,
-                                             qvalue = qvalue,
-                                             hierarchy = hier_table)
-        }
-
-        else{
-
-          soundscape_pairdis <- hilldiv::pair_dis(countable = soundscape_df,
-                                                  qvalue = qvalue,
-                                                  hierarchy = hier_table, level = level)
-
-        }
+                                                qvalue = qvalue,
+                                                hierarchy = hier_table,
+                                                level = level)
       }
+
+      soundscape_pairdis
+
     }
 
     else{errorCondition("Invalid df_list class - please supply a list of dataframes")}
-  }
 
-  soundscape_pairdis
+  }
 }
 

@@ -195,7 +195,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
           ggplot2::annotate(geom="rect", xmin =sunset,xmax=midnight2,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", color="white", alpha=1)+
           ggplot2::annotate(geom="rect", xmin =sunrise,xmax=sunset,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#ffcc13", color="white", alpha=1)+
           ggplot2::annotate(geom="rect", xmin =min(df2$time),xmax=sunrise,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", color="black", alpha=0.25)+
-          ggplot2::annotate(geom="rect", xmin =sunset,xmax=midnight2,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", color="black", alpha=0.25)+
+          ggplot2::annotate(geom="rect", xmin =sunset,xmax=(midnight2-(60*5)),ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", color="black", alpha=0.25)+
           ggplot2::annotate(geom="rect", xmin =sunrise,xmax=sunset,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#ffcc13", color="black", alpha=0.25)+
           ggplot2::annotate(geom="rect", xmin =midnight2,xmax=midnight2+3600,ymin=minfreq, ymax=20000,fill="white", color="white", alpha=0.5)+
           ggplot2::annotate(geom="rect", xmin =midnight2,xmax=midnight2+3600,ymin=20000, ymax=maxfreq,fill="white", color="white", alpha=0.5)+

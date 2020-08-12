@@ -126,10 +126,6 @@ index_calc=function(fileloc, progloc, samplerate=41000, window=256){
 
   for(file in files) {
 
-    # start timer
-
-    tictoc::tic(quiet = TRUE)
-
     # Alert start
 
     message("Processing ", file)
@@ -150,12 +146,8 @@ index_calc=function(fileloc, progloc, samplerate=41000, window=256){
     # Print progress & estimated remaining time
 
     i=i+1
-    timer=tictoc::toc()
-    vector_i[i]=as.numeric(((as.numeric(timer[[2]])-as.numeric(timer[[1]]))/3600))
-
     print(paste0("Progress:", " ",((i/length(files))*100), " ", "%"))
-    print(paste0("Estimated remaining time:", " ",  hms::hms(chron::times((as.numeric(mean(vector_i))*(as.numeric(length(files))-as.numeric(i)))/24))))
-    Sys.sleep(0.01)
+
   }
 }
 
