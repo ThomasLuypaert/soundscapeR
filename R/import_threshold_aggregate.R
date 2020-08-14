@@ -152,6 +152,14 @@ aggregate_df=function(df, aggregation, date, lat, lon){
 
   times=unique(substr(colnames(df), 1, 2))
 
+  times_2 <- as.list(as.numeric(times))
+  names(times_2) <- times
+
+  times_2 <- times_2[order(unlist(times_2), decreasing=FALSE)]
+
+  times <- names(times_2)
+
+
   colnames=hms::as_hms(seq.POSIXt(from =min(as.POSIXct(strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz))),
                                   to=max(as.POSIXct(strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz))),
                                   by=(aggregation*60)))
@@ -238,8 +246,8 @@ aggregate_df=function(df, aggregation, date, lat, lon){
         for (i in 1:length(times)){
           list_1[[i]]=df[grep(x=substr(colnames(df), 1, 2), pattern = times[i])]
           subset_1=subset(colnames(list_1[[i]]), as.numeric(substr(colnames(list_1[[i]]), 4, 5))<20)
-          subset_2=subset(colnames(list_1[[i]]), as.numeric(substr(colnames(list_1[[i]]), 4, 5))>20 & as.numeric(substr(colnames(list_1[[i]]), 4, 5))<40)
-          subset_3=subset(colnames(list_1[[i]]), as.numeric(substr(colnames(list_1[[i]]), 4, 5))>40)
+          subset_2=subset(colnames(list_1[[i]]), as.numeric(substr(colnames(list_1[[i]]), 4, 5))>=20 & as.numeric(substr(colnames(list_1[[i]]), 4, 5))<40)
+          subset_3=subset(colnames(list_1[[i]]), as.numeric(substr(colnames(list_1[[i]]), 4, 5))>=40)
           list_2[[length(list_2)+1]]=as.data.frame(list_1[[i]][,subset_1])
           list_2[[length(list_2)+1]]=as.data.frame(list_1[[i]][,subset_2])
           list_2[[length(list_2)+1]]=as.data.frame(list_1[[i]][,subset_3])
