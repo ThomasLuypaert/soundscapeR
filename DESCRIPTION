@@ -9,11 +9,9 @@ Authors@R: c(
     person("Torbjørn", "Haugaasen", email="torbjorn.haugaasen@nmbu.no", role="aut"))
 Maintainer: Thomas Luypaert <thomas.luypaert@nmbu.no>
 Description: The soundscapeR package constitutes a standardized analytical pipeline for 
-    the computation, visualization and richness estimation of soundscapes. 
+    the computation, visualization and diversity estimation of soundscapes. 
     The package is designed to work with either continuous or regular-interval long-duration
-    acoustic recordings. The soundscapeR workflow is built around the concept of 
-    "Acoustic Space Use", reflecting the saturation of the acoustic space at 
-    various scales and resolutions for a set of acoustic indices.
+    acoustic recordings.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -48,10 +46,12 @@ Imports:
     plsgenomics (>= 1.5-2),
     grDevices,
     gridExtra (>= 2.3),
-    fields
+    fields,
+    ape,
+    geiger
 Suggests: 
     testthat
 Depends: 
     R (>= 3.5.0)
-URL: https://github.com/ThomasLuypaertGitHub/soundscaper
-BugReports: https://github.com/ThomasLuypaertGitHub/soundscaper/issues
+URL: https://github.com/ThomasLuypaertGitHub/soundscapeR
+BugReports: https://github.com/ThomasLuypaertGitHub/soundscapeR/issues

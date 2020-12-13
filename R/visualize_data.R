@@ -103,10 +103,13 @@ utils::globalVariables(c("time", "frequency", "value", "richness_smooth"))
 #' "viridis" (or "D", the default option) and "cividis" (or "E"). Consult \url{https://www.rdocumentation.org/packages/viridisLite/versions/0.3.0/topics/viridis} for options.
 #' @param direction Sets the order of colors in the scale. If 1, the default, the regular order is followed.
 #' If -1, the order of colors is reversed.
+#' @param zero.white One of either TRUE or FALSE. If set to TRUE, absent OSUs with incidence zero will be colored white.
 #' @param marginplot One of either TRUE or FALSE. If set to TRUE, adds marginal plots to the x- and y-axes.
 #' For the x-axis, the marginal plot displays the smoothed richness of acoustically active frequency bins for each time of day.
 #' For the y-axis, the marginal plot displays the smoothed richness of acoustically active time-bins for each frequency band.
 #' Note that marginal plots are not available for type="polar".
+#' @param n_time If marginplot=TRUE, determines the backward window length for smoothing the temporal richness
+#' @param n_freq If marginplot=TRUE, determines the backwards window length for smoothing the frequency richness
 #' @param interactive One of either TRUE or FALSE. If set to TRUE, an interactive plot is produced using \code{\link[plotly]{ggplotly}}.
 #' Note that interactive plots are not available for marginplot=TRUE.
 #' @param save One of either TRUE or FALSE. If set to TRUE, saves the plot using \code{\link[ggplot2]{ggsave}}, and the 'dir', 'filename' and 'device'
@@ -118,10 +121,13 @@ utils::globalVariables(c("time", "frequency", "value", "richness_smooth"))
 #' "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only).
 #' Defaults to "png". For more information consult \code{\link[ggplot2]{ggsave}}.
 #'
+#' @param width If save=TRUE, expresses the width of the saved image in milimeters. Defaults to 100 mm.
+#' @param height If save=TRUE, expresses the height of the saved image in milimeters. Defaults to 100 mm.
+#'
 #' @return Returns a ggplot heatmap object and if save=TRUE, saves the plot in a directory of choice using a specified device and filename.
 #' @export
 
-heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", mintime="default", maxtime="default",freqinterval=1000, minfreq=0, maxfreq="default", nbins=10, date, lat, lon, twilight="sunlight", labelsize_time=4, labelsize_frequency=4, labelsize_polar=3, palette="D", direction=1, marginplot=FALSE, interactive=FALSE, save=FALSE, dir="default", filename="file", device="png"){
+heatmapper=function(df,type="regular", annotate=FALSE, timeinterval="1 hour", mintime="default", maxtime="default",freqinterval=1000, minfreq=0, maxfreq="default", nbins=10, date, lat, lon, twilight="sunlight", labelsize_time=4, labelsize_frequency=4, labelsize_polar=3, palette="D", direction=1, zero.white=F, marginplot=FALSE,n_time=10, n_freq=2, interactive=FALSE, save=FALSE, dir="default", filename="file", device="png", width=100, height=100){
 
   tz=lutz::tz_lookup_coords(lat=lat, lon=lon, method="accurate")
 
@@ -132,6 +138,14 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
   else{dir=dir}
 
   df2=lengthen(df, paste0(date), lat = lat, lon=lon)
+
+  if(zero.white==TRUE){
+    df2[df2==0] <- NA
+  }
+
+  else{}
+
+
 
   if (mintime=="default"){
     mintime=min(as.POSIXct(strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
@@ -171,7 +185,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
       if (maxfreq>22000){
         plot= ggplot2::ggplot(df2, ggplot2::aes(time, frequency, fill=value))+
           ggplot2::geom_raster(hjust=1)+
-          viridis::scale_fill_viridis(option=palette, direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=1),breaks=seq(0, 1, 0.1))+
+          viridis::scale_fill_viridis(option=palette, na.value="#383e42", direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=1),breaks=seq(0, 1, 0.1))+
           ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                            breaks = scales::date_breaks(timeinterval),
                            expand = c(0,0),
@@ -210,7 +224,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                    y = 20000+((maxfreq-20000)/2), label = "ULTRASOUND", color="black", fontface=2, angle=-90, size=labelsize_frequency)+
           ggplot2::annotate("text", x = midnight2+2200,
                    y = (20000-minfreq)/2, label = "AUDIBLE", color="black", fontface=2, angle=-90, size=labelsize_frequency)+
-          ggplot2::labs(fill="Proportion of acoustically active bins")
+          ggplot2::labs(fill="OSU INCIDENCE")
       }
 
       else{
@@ -219,7 +233,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
           plot= ggplot2::ggplot(df2, ggplot2::aes(time, frequency, fill=value))+
             ggplot2::geom_raster(hjust=1)+
-            viridis::scale_fill_viridis(option=palette, direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=1),breaks=seq(0, 1, 0.1))+
+            viridis::scale_fill_viridis(option=palette, na.value="#383e42", direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=1),breaks=seq(0, 1, 0.1))+
             ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                              breaks = scales::date_breaks(timeinterval),
                              expand = c(0,0),
@@ -254,7 +268,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
             ggplot2::annotate("text", x = (midnight2-(as.numeric(difftime(midnight2, sunset, units = "secs"))/2)),
                      y = (maxfreq+(maxfreq/20)), label = "NIGHTTIME", color="white", fontface=2)+
             ggplot2::geom_vline(xintercept = midnight2)+
-            ggplot2::labs(fill="Proportion of acoustically active bins")
+            ggplot2::labs(fill="OSU INCIDENCE")
         }
 
         else{print("Error: invalid maxfreq argument - please consult package documentation for options")}
@@ -268,7 +282,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
         plot=ggplot2::ggplot(df2, ggplot2::aes(time, frequency, fill=value))+
           ggplot2::geom_raster(hjust=1)+
-          viridis::scale_fill_viridis(option=palette, direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=1),breaks=seq(0, 1, 0.1))+
+          viridis::scale_fill_viridis(option=palette, na.value="#383e42", direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=1),breaks=seq(0, 1, 0.1))+
           ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                            breaks = scales::date_breaks(timeinterval),
                            expand = c(0,0),
@@ -286,7 +300,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                 legend.position = "top",
                 legend.direction = "horizontal",
                 legend.title = ggplot2::element_text(color = "black", size = 12, face = "bold"))+
-          ggplot2::labs(fill="Proportion of acoustically active bins")
+          ggplot2::labs(fill="OSU INCIDENCE")
       }
 
       else{print("Error: invalid annotate argument - please consult package documentation for options")}
@@ -302,7 +316,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
         plot=ggplot2::ggplot(df2, ggplot2::aes(time, frequency, fill=value))+
           ggplot2::geom_tile()+
-          viridis::scale_fill_viridis(option=palette, direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=2),breaks=seq(0, 1, 0.1))+
+          viridis::scale_fill_viridis(option=palette,na.value="#383e42", direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=2),breaks=seq(0, 1, 0.1))+
           ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                            breaks = scales::date_breaks(timeinterval),
                            expand = c(0,0),
@@ -323,9 +337,9 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                 legend.title = ggplot2::element_text(color = "black", size = 12, face = "bold"))+
           ggplot2::annotate(geom="segment", x=sunrise, xend=sunrise, y=minfreq, yend=maxfreq, color=if (direction==1){paste("white")}else{paste("black")})+
           ggplot2::annotate(geom="segment", x=sunset, xend=sunset, y=minfreq, yend=maxfreq, color=if (direction==1){paste("white")}else{paste("black")})+
-          ggplot2::annotate(geom="segment", x=seq.POSIXt(from=min(df2$time), to=max(df2$time), by=3600), xend=seq.POSIXt(from=min(df2$time), to=max(df2$time), by=3600), y=minfreq, yend=maxfreq, color="grey", alpha=0.5, size=0.2)+
+          ggplot2::annotate(geom="segment", x=seq.POSIXt(from=min(df2$time), to=max(df2$time), by=3600), xend=seq.POSIXt(from=min(df2$time), to=max(df2$time), by=3600), y=minfreq, yend=maxfreq, color="#383e42", alpha=0.5, size=0.2)+
           ggplot2::coord_polar()+
-          ggplot2::geom_hline(yintercept = seq(minfreq, maxfreq, freqinterval), color="grey", alpha=0.5, size=0.2)+
+          ggplot2::geom_hline(yintercept = seq(minfreq, maxfreq, freqinterval), color="#383e42", alpha=0.5, size=0.2)+
           ggplot2::annotate(geom="label", size=labelsize_polar, y=seq(minfreq, maxfreq, freqinterval), x=min(df2$time),label=as.character(seq(minfreq, maxfreq, freqinterval)))+
           ggplot2::annotate(geom="rect", xmin =min(df2$time),xmax=sunrise,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", alpha=1)+
           ggplot2::annotate(geom="rect", xmin =sunset,xmax=midnight2,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", alpha=1)+
@@ -333,7 +347,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
           ggplot2::annotate(geom="rect", xmin =min(df2$time),xmax=sunrise,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", alpha=0.25)+
           ggplot2::annotate(geom="rect", xmin =sunset,xmax=midnight2,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#4C4B69", alpha=0.25)+
           ggplot2::annotate(geom="rect", xmin =sunrise,xmax=sunset,ymin=maxfreq, ymax=(maxfreq+(maxfreq/10)),fill="#ffcc13", alpha=0.25)+
-          ggplot2::labs(fill="Proportion of acoustically active bins")
+          ggplot2::labs(fill="OSU INCIDENCE")
 
       }
 
@@ -343,7 +357,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
           plot=ggplot2::ggplot(df2, ggplot2::aes(time, frequency, fill=value))+
             ggplot2::geom_tile()+
-            viridis::scale_fill_viridis(option=palette, direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=2),breaks=seq(0, 1, 0.1))+
+            viridis::scale_fill_viridis(option=palette,na.value="#383e42", direction = direction, guide = ggplot2::guide_legend(title.position = "top", title.vjust = 1, title.hjust = 0.5, nrow=2),breaks=seq(0, 1, 0.1))+
             ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                              breaks = scales::date_breaks(timeinterval),
                              expand = c(0,0),
@@ -363,9 +377,9 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                   legend.direction = "horizontal",
                   legend.title = ggplot2::element_text(color = "black", size = 12, face = "bold"))+
             ggplot2::coord_polar()+
-            ggplot2::geom_hline(yintercept = seq(minfreq, maxfreq, freqinterval), color="grey", alpha=0.5, size=0.2)+
+            ggplot2::geom_hline(yintercept = seq(minfreq, maxfreq, freqinterval), color="#383e42", alpha=0.5, size=0.2)+
             ggplot2::annotate(geom="label", size=labelsize_polar, y=seq(minfreq, maxfreq, freqinterval), x=min(df2$time),label=as.character(seq(minfreq, maxfreq, freqinterval)))+
-            ggplot2::labs(fill="Proportion of acoustically active bins")
+            ggplot2::labs(fill="OSU INCIDENCE")
         }
 
         else{print("Error: invalid annotate argument - please consult package documentation for options")}
@@ -380,7 +394,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
     else{
 
       if (marginplot==FALSE & interactive==FALSE & save==TRUE){
-        ggplot2::ggsave(filename=paste0(paste0(type, "_"),"no_margin_",filename,".",device), plot=plot, device=device, path=dir, dpi = "retina")
+        ggplot2::ggsave(filename=paste0(paste0(type, "_"),"no_margin_",filename,".",device), plot=plot, device=device, path=dir, dpi = "retina", width = width, height = height, units = c("mm"))
         plot
         }
 
@@ -392,7 +406,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
           if (marginplot==FALSE & interactive==TRUE & save==TRUE){
                 print("Error: cannot save interactive plot - saving regular plot instead")
-            ggplot2::ggsave(filename=paste0(paste0(type, "_"),"no_margin_",filename,".",device), plot=plot, device=device, path=dir, dpi = "retina")
+            ggplot2::ggsave(filename=paste0(paste0(type, "_"),"no_margin_",filename,".",device), plot=plot, device=device, path=dir, dpi = "retina", width=width, height = height, units = c("mm"))
                 plotly::ggplotly(plot)
           }
 
@@ -426,7 +440,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                   xdata$time=hms::as_hms(as.POSIXct((strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz))))
 
                   colnames(xdata)=c("richness", "time")
-                  xdata$richness_smooth=pracma::movavg(xdata$richness, 6, type="t")
+                  xdata$richness_smooth=pracma::movavg(xdata$richness, n=n_time, type="t")
 
 
                   xplot=ggplot2::ggplot(xdata, ggplot2::aes(time, richness_smooth))+
@@ -461,7 +475,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
 
                   colnames(ydata)=c("richness", "frequency")
 
-                  ydata$richness_smooth=pracma::movavg(ydata$richness, 2, type="s")
+                  ydata$richness_smooth=pracma::movavg(ydata$richness, n=n_freq, type="s")
 
                   yplot=ggplot2::ggplot(ydata, ggplot2::aes(frequency, richness_smooth))+
                     ggplot2::geom_area(alpha=0.40, fill="#FDE725FF")+
@@ -485,7 +499,7 @@ heatmapper=function(df,type="regular", annotate=TRUE, timeinterval="1 hour", min
                   combined_plot=xplot+patchwork::plot_spacer()+heatmap+yplot+patchwork::plot_layout(widths = c(3, 1), heights = c(1,3))
 
                   if (save==TRUE){
-                    ggplot2::ggsave(filename=paste0(paste0(type, "_"),"marginplot_",filename,".",device), plot=combined_plot, device=device, path=dir, dpi = "retina")
+                    ggplot2::ggsave(filename=paste0(paste0(type, "_"),"marginplot_",filename,".",device), plot=combined_plot, device=device, path=dir, dpi = "retina", width=width, height = height, units = c("mm"))
                     combined_plot
                     }
 

@@ -45,7 +45,7 @@
 #'
 #' @return A dataframe of diversity values
 #' @export
-sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",minfreq="default",
+sounddiv_part <- function(df_list, qvalue, hier_table, type="total",minfreq="default",
                                maxfreq="default",mintime="default", maxtime="default",date, lat, lon,
                                twilight="sunlight",dawnstart=0, dawnend=5400, duskstart=5400,
                                duskend=0,output="percentage"){
@@ -272,8 +272,9 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
         }
 
         soundscape_df <- as.data.frame(dplyr::bind_cols(soundscape_df))
+        colnames(soundscape_df) <- names(df_list)
+        rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
-        soundscape_df
       }
 
       else{
@@ -299,10 +300,11 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
 
             soundscape_df[[i]] <- unlist(daytime_df[[i]])
 
-
           }
 
           soundscape_df <- dplyr::bind_cols(soundscape_df)
+          colnames(soundscape_df) <- names(df_list)
+          rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
         }
 
@@ -333,6 +335,8 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
             }
 
             soundscape_df <- dplyr::bind_cols(soundscape_df)
+            colnames(soundscape_df) <- names(df_list)
+            rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
           }
 
@@ -365,6 +369,8 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
               }
 
               soundscape_df <- dplyr::bind_cols(soundscape_df)
+              colnames(soundscape_df) <- names(df_list)
+              rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
             }
 
@@ -398,6 +404,8 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
                 }
 
                 soundscape_df <- dplyr::bind_cols(soundscape_df)
+                colnames(soundscape_df) <- names(df_list)
+                rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
               }
 
@@ -408,7 +416,7 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
         }
       }
 
-      if (hier_table=="default"){
+      if (missing(hier_table)){
       soundscape_part <- hilldiv::div_part(countable = soundscape_df,
                                            qvalue = qvalue)
       }
@@ -449,7 +457,7 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
     else{errorCondition("Invalid df_list class - please supply a list of dataframes")}
   }
 
-  soundscape_part_table
+  return(soundscape_part_table)
 
 }
 
@@ -486,7 +494,6 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
 #' @param df_list A list of dataframes of equal dimensions, each dataframe being produced by \code{\link{aggregate_df}}.
 #' @param qvalue A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.
 #' @param hier_table A matrix indicating the relationship between the soundscapes in the df_list. The first column lists the names of all the soundscapes in the df_list, other columns can be used to group soundscapes into higher hierarchical levels. If no hierarchy table is supplied, the function defaults to a 2-level diversity partitioning.
-#' @param level A positive integer. If a multi-level hierarchical structure exists in the data, as supplied in the hierarchy table, this argument indicates the hierarchical level for which to compute the pairwise values. level=1 computes the pairwise values at the lowest hierarchical level (sub-systems or individual soundscapes), whereas level=2,...,X refers to higher levels of grouping, with the level value corresponding to the column number of the grouping variable in the hierarchy table.
 #' @param type The scale for which the soundscape diversity is computed. Options are 'total', 'day', night', 'dawn', 'dusk' and 'tod' (time of day - for each unique time in the day).
 #' @param minfreq A numeric value indicating the lower frequency limit for which to compute the soundscape diversity. If set to default, uses the lowest available frequency in the dataframe.
 #' @param maxfreq A numeric value indicating the upper frequency limit for which to compute the soundscape diversity. If set to default, uses the highest available frequency in the dataframe.
@@ -507,7 +514,7 @@ sounddiv_part <- function(df_list, qvalue, hier_table="default", type="total",mi
 #' @return A list of pairwise matrices for the beta diversity, and the one-complement for the Sorensen-type overlap, Jaccard-type overlap, Sorensen-type turnover and Jaccard-type turnover.
 #' @export
 
-sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="default",
+sounddiv_pairdis <- function(df_list, qvalue, hier_table="default",
                              type="total",minfreq="default", maxfreq="default",
                              mintime="default",maxtime="default",date, lat, lon,
                              twilight="sunlight",dawnstart=0,dawnend=5400, duskstart=5400,
@@ -725,7 +732,6 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
       }
 
-
       if (type=="total"){
 
         soundscape_df <- vector("list", 0)
@@ -737,7 +743,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
         soundscape_df <- as.data.frame(dplyr::bind_cols(soundscape_df))
         colnames(soundscape_df) <- names(df_list)
-        rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
+        rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
       }
 
@@ -764,12 +770,11 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
             soundscape_df[[i]] <- unlist(daytime_df[[i]])
 
-
           }
 
           soundscape_df <- dplyr::bind_cols(soundscape_df)
           colnames(soundscape_df) <- names(df_list)
-          rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
+          rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
         }
 
@@ -801,6 +806,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
             soundscape_df <- dplyr::bind_cols(soundscape_df)
             colnames(soundscape_df) <- names(df_list)
+            rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
           }
 
@@ -834,7 +840,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
               soundscape_df <- dplyr::bind_cols(soundscape_df)
               colnames(soundscape_df) <- names(df_list)
-              rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
+              rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
             }
 
@@ -869,7 +875,7 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
 
                 soundscape_df <- dplyr::bind_cols(soundscape_df)
                 colnames(soundscape_df) <- names(df_list)
-                rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df), 1))
+                rownames(soundscape_df) <- paste0("OSU", seq(1, nrow(soundscape_df),1))
 
               }
 
@@ -881,15 +887,14 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default", level="defau
       }
 
       if(missing(hier_table)){
-        soundscape_pairdis <- hilldiv::pair_dis(countable = soundscape_df,
+        soundscape_pairdis <- pair_dis_modified(countable = soundscape_df,
                                                 qvalue = qvalue)
       }
 
       else{
-        soundscape_pairdis <- hilldiv::pair_dis(countable = soundscape_df,
+        soundscape_pairdis <- pair_dis_modified(countable = soundscape_df,
                                                 qvalue = qvalue,
-                                                hierarchy = hier_table,
-                                                level = level)
+                                                hierarchy = hier_table)
       }
 
       soundscape_pairdis

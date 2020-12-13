@@ -54,9 +54,12 @@ utils::globalVariables(c("time_of_day", "soundscape_div", "frequency", "freq", "
 #' Defaults to "png". For more information consult \code{\link[ggplot2]{ggsave}}.
 #' @param output A character string. Indicates the format in which the soundscape diversity is expressed. Options are "percentage" (the fraction between the observed soundscape diversity and the maximum possible soundscape diversity), or "raw" (the number of acoustically active OSUs in the soundscape). Defaults to "percentage".
 #'
+#'@param width If save=TRUE, expresses the width of the saved image in milimeters. Defaults to 100 mm.
+#' @param height If save=TRUE, expresses the height of the saved image in milimeters. Defaults to 100 mm.
+#'
 #' @return Returns a ggplot object and if save=TRUE, saves the plot in a directory of choice using a specified device and filename.
 #' @export
-sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq="default", maxfreq="default", nbins=10, timeinterval="1 hour", smooth=TRUE, movavg=6,interactive=FALSE, save=FALSE, dir="default", filename="file", device="png", output="percentage"){
+sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq="default", maxfreq="default", nbins=10, timeinterval="1 hour", smooth=TRUE, movavg=6,interactive=FALSE, save=FALSE, dir="default", filename="file", device="png", output="percentage", width=150, height=150){
 
   tz=lutz::tz_lookup_coords(lat=lat, lon=lon, method="accurate")
 
@@ -86,7 +89,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                               date=date,lat=lat,
                               lon=lon,
                               minfreq=minfreq,
-                              maxfreq=(maxfreq-1),
+                              maxfreq=maxfreq,
                               twilight="sunlight",
                               freqseq=FALSE ,
                               nbins=nbins,
@@ -111,7 +114,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
       ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                        breaks = scales::date_breaks(timeinterval),
                        expand = c(0,0))+
-      ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,if(output=="percentage"){100}else{max(total_tod$soundscape_div_smooth)+10}))+
+      ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,max(total_tod$soundscape_div_smooth)+10))+
       ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
             panel.grid.minor = ggplot2::element_blank(),
             panel.background = ggplot2::element_blank(),
@@ -141,7 +144,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
           ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                            breaks = scales::date_breaks(timeinterval),
                            expand = c(0,0))+
-          ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,if(output=="percentage"){100}else{max(total_tod$soundscape_div)+10}))+
+          ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,max(total_tod$soundscape_div)+10))+
           ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                 panel.grid.minor = ggplot2::element_blank(),
                 panel.background = ggplot2::element_blank(),
@@ -174,7 +177,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                                  lat=lat,
                                  lon=lon,
                                  minfreq=minfreq,
-                                 maxfreq=(maxfreq-1),
+                                 maxfreq=maxfreq,
                                  twilight="sunlight",
                                  freqseq=TRUE ,
                                  nbins=nbins,
@@ -194,8 +197,8 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
         freq_tod_smooth[[i]]=pracma::movavg(freq_tod[[i]], movavg, type="t")
       }
 
-      names(freq_tod)=seq(minfreq, maxfreq, (maxfreq/nbins))
-      names(freq_tod_smooth)=seq(minfreq, maxfreq, (maxfreq/nbins))
+      names(freq_tod)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
+      names(freq_tod_smooth)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
 
       freq_tod_maxlim <- max(rowSums(dplyr::bind_rows(freq_tod)))
       freq_tod_smooth_maxlim <- max(rowSums(dplyr::bind_rows(freq_tod_smooth)))
@@ -225,7 +228,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
           ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                            breaks = scales::date_breaks(timeinterval),
                            expand = c(0,0))+
-          ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,if(output=="percentage"){100}else{freq_tod_smooth_maxlim+10}))+
+          ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,freq_tod_smooth_maxlim+10))+
           ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                 panel.grid.minor = ggplot2::element_blank(),
                 panel.background = ggplot2::element_blank(),
@@ -258,7 +261,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
               ggplot2::scale_x_datetime(labels=scales::date_format("%H:%M", tz=tz),
                                breaks = scales::date_breaks(timeinterval),
                                expand = c(0,0))+
-              ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,if(output=="percentage"){100}else{freq_tod_maxlim+10}))+
+              ggplot2::scale_y_continuous(expand = c(0,0), limits=c(0,freq_tod_maxlim+10))+
               ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                     panel.grid.minor = ggplot2::element_blank(),
                     panel.background = ggplot2::element_blank(),
@@ -296,7 +299,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                                           lat=lat,
                                           lon=lon,
                                           minfreq=minfreq,
-                                          maxfreq=(maxfreq-1),
+                                          maxfreq=maxfreq,
                                           twilight="sunlight",
                                           freqseq=TRUE ,
                                           nbins=nbins,
@@ -308,8 +311,8 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
           freq_tod_smooth[[i]]=pracma::movavg(freq_tod[[i]], movavg, type="t")
         }
 
-        names(freq_tod)=seq(minfreq, maxfreq, (maxfreq/nbins))
-        names(freq_tod_smooth)=seq(minfreq, maxfreq, (maxfreq/nbins))
+        names(freq_tod)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
+        names(freq_tod_smooth)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
 
         freq_tod=dplyr::bind_rows(freq_tod)
         freq_tod_smooth=dplyr::bind_rows(freq_tod_smooth)
@@ -418,7 +421,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
                                             lat=lat,
                                             lon=lon,
                                             minfreq=minfreq,
-                                            maxfreq=(maxfreq-1),
+                                            maxfreq=maxfreq,
                                             twilight="sunlight",
                                             freqseq=TRUE ,
                                             nbins=nbins,
@@ -436,8 +439,8 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
             freq_tod_smooth[[i]]=pracma::movavg(freq_tod[[i]], movavg, type="t")
           }
 
-          names(freq_tod)=seq(minfreq, maxfreq, (maxfreq/nbins))
-          names(freq_tod_smooth)=seq(minfreq, maxfreq, (maxfreq/nbins))
+          names(freq_tod)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
+          names(freq_tod_smooth)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
 
           freq_tod=dplyr::bind_rows(freq_tod)
           freq_tod_smooth=dplyr::bind_rows(freq_tod_smooth)
@@ -458,7 +461,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
           if (smooth==TRUE){
 
             labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz")
-            names(labels)=seq(minfreq, maxfreq, (maxfreq/nbins))
+            names(labels)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
 
             tmp <- freq_tod_smooth %>%
               dplyr::mutate(frequency2=frequency)
@@ -499,7 +502,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
             if (smooth==FALSE){
 
               labels=paste0(as.integer(seq((minfreq-minfreq),(maxfreq-(maxfreq/nbins)), (maxfreq/nbins))), "-", as.integer(seq((maxfreq/nbins), maxfreq, (maxfreq/nbins))), " ", "Hz")
-              names(labels)=seq(minfreq, maxfreq, (maxfreq/nbins))
+              names(labels)=seq((minfreq+(maxfreq/nbins)), maxfreq, (maxfreq/nbins))
 
               tmp <- freq_tod %>%
                 dplyr::mutate(frequency2=frequency)
@@ -549,7 +552,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
   }
 
   if (save==TRUE){
-    ggplot2::ggsave(filename=paste0(paste0(graphtype, "_"),filename,".",device),plot=plot,device = device, path=dir, dpi="retina")
+    ggplot2::ggsave(filename=paste0(paste0(graphtype, "_"),filename,".",device),plot=plot,device = device, path=dir, dpi="retina", width = width, height = height, units = c("mm"))
 
     if (interactive==TRUE){
       plotly::ggplotly(plot)}

@@ -22,7 +22,9 @@ sounddiv_by_time(
   dir = "default",
   filename = "file",
   device = "png",
-  output = "percentage"
+  output = "percentage",
+  width = 150,
+  height = 150
 )
 }
 \arguments{
@@ -87,6 +89,10 @@ Defaults to the working directory. For more information consult \code{\link[ggpl
 Defaults to "png". For more information consult \code{\link[ggplot2]{ggsave}}.}
 
 \item{output}{A character string. Indicates the format in which the soundscape diversity is expressed. Options are "percentage" (the fraction between the observed soundscape diversity and the maximum possible soundscape diversity), or "raw" (the number of acoustically active OSUs in the soundscape). Defaults to "percentage".}
+
+\item{width}{If save=TRUE, expresses the width of the saved image in milimeters. Defaults to 100 mm.}
+
+\item{height}{If save=TRUE, expresses the height of the saved image in milimeters. Defaults to 100 mm.}
 }
 \value{
 Returns a ggplot object and if save=TRUE, saves the plot in a directory of choice using a specified device and filename.

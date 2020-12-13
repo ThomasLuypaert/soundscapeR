@@ -7,7 +7,7 @@
 sounddiv_part(
   df_list,
   qvalue,
-  hier_table = "default",
+  hier_table,
   type = "total",
   minfreq = "default",
   maxfreq = "default",

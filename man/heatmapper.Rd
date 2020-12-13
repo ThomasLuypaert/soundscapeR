@@ -7,7 +7,7 @@
 heatmapper(
   df,
   type = "regular",
-  annotate = TRUE,
+  annotate = FALSE,
   timeinterval = "1 hour",
   mintime = "default",
   maxtime = "default",
@@ -24,12 +24,17 @@ heatmapper(
   labelsize_polar = 3,
   palette = "D",
   direction = 1,
+  zero.white = F,
   marginplot = FALSE,
+  n_time = 10,
+  n_freq = 2,
   interactive = FALSE,
   save = FALSE,
   dir = "default",
   filename = "file",
-  device = "png"
+  device = "png",
+  width = 100,
+  height = 100
 )
 }
 \arguments{
@@ -80,10 +85,16 @@ Four options are available: "magma" (or "A"), "inferno" (or "B"), "plasma" (or "
 \item{direction}{Sets the order of colors in the scale. If 1, the default, the regular order is followed.
 If -1, the order of colors is reversed.}
 
+\item{zero.white}{One of either TRUE or FALSE. If set to TRUE, absent OSUs with incidence zero will be colored white.}
+
 \item{marginplot}{One of either TRUE or FALSE. If set to TRUE, adds marginal plots to the x- and y-axes.
 For the x-axis, the marginal plot displays the smoothed richness of acoustically active frequency bins for each time of day.
 For the y-axis, the marginal plot displays the smoothed richness of acoustically active time-bins for each frequency band.
 Note that marginal plots are not available for type="polar".}
+
+\item{n_time}{If marginplot=TRUE, determines the backward window length for smoothing the temporal richness}
+
+\item{n_freq}{If marginplot=TRUE, determines the backwards window length for smoothing the frequency richness}
 
 \item{interactive}{One of either TRUE or FALSE. If set to TRUE, an interactive plot is produced using \code{\link[plotly]{ggplotly}}.
 Note that interactive plots are not available for marginplot=TRUE.}
@@ -99,6 +110,10 @@ Defaults to the working directory. For more information consult \code{\link[ggpl
 \item{device}{Device to use. Can either be a device function (e.g. png()), or one of
 "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only).
 Defaults to "png". For more information consult \code{\link[ggplot2]{ggsave}}.}
+
+\item{width}{If save=TRUE, expresses the width of the saved image in milimeters. Defaults to 100 mm.}
+
+\item{height}{If save=TRUE, expresses the height of the saved image in milimeters. Defaults to 100 mm.}
 }
 \value{
 Returns a ggplot heatmap object and if save=TRUE, saves the plot in a directory of choice using a specified device and filename.

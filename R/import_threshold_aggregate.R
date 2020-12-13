@@ -33,7 +33,7 @@ merge_csv=function(fileloc, samplerate, window, index, lat, lon){
     frequency_bins <- as.integer(seq(from=(samplerate/2)/(window), to=samplerate/2, by=(((samplerate/2)/(window)))))
   }
 
-  else{
+ else{
     frequency_bins <- as.integer(seq(from=(samplerate/2)/(window/2), to=samplerate/2, by=(samplerate/2)/(window/2)))
   }
 
@@ -577,4 +577,18 @@ aggregate_df=function(df, aggregation, date, lat, lon){
       }
     }
   }
+}
+
+#' Normalize index values using min-max normalization
+#'
+#' @description Normalizes the index values to scale between 0-1 using min-max normalization.
+#'
+#' @param df The time-frequency dataframe of index values produced by \code{merge_csv}
+#'
+#' @return Returns a time-by-frequency dataframe of nornalized acoustic index values.
+#' @export
+#'
+normalize_index <- function(df){
+  norm_df <- (df - min(df))/(max(df)-min(df))
+  return(norm_df)
 }

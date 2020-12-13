@@ -8,7 +8,6 @@ sounddiv_pairdis(
   df_list,
   qvalue,
   hier_table = "default",
-  level = "default",
   type = "total",
   minfreq = "default",
   maxfreq = "default",
@@ -31,8 +30,6 @@ sounddiv_pairdis(
 \item{qvalue}{A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.}
 
 \item{hier_table}{A matrix indicating the relationship between the soundscapes in the df_list. The first column lists the names of all the soundscapes in the df_list, other columns can be used to group soundscapes into higher hierarchical levels. If no hierarchy table is supplied, the function defaults to a 2-level diversity partitioning.}
-
-\item{level}{A positive integer. If a multi-level hierarchical structure exists in the data, as supplied in the hierarchy table, this argument indicates the hierarchical level for which to compute the pairwise values. level=1 computes the pairwise values at the lowest hierarchical level (sub-systems or individual soundscapes), whereas level=2,...,X refers to higher levels of grouping, with the level value corresponding to the column number of the grouping variable in the hierarchy table.}
 
 \item{type}{The scale for which the soundscape diversity is computed. Options are 'total', 'day', night', 'dawn', 'dusk' and 'tod' (time of day - for each unique time in the day).}
 

@@ -102,6 +102,11 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
 
         for (i in 1:ncol(new_df)){
           soundscape_diversity[i] <- hilldiv::hill_div(unlist(new_df[[i]]), qvalue = qvalue)/ if (output=="raw"){1} else{if(output=="percentage"){length(new_df[[i]])} else{print("Error: invalid output argument")}}
+
+          if(sum(unlist(new_df[[i]]))==0){
+            soundscape_diversity[i] <- 0
+          }
+
         }
 
         soundscape_diversity <- soundscape_diversity*multiplier
@@ -181,18 +186,16 @@ sounddiv=function(df, qvalue, type="total",date, lat, lon, minfreq="default", ma
 
     if (freqseq=="TRUE"){
 
-      freq=seq(freq1, freq2, freq2/nbins)
-
       new_df$frequency=as.numeric(rownames(new_df))
 
       freq_list_1=vector("list", 0)
       freq_list_2=vector("list", 0)
 
-      for (i in 1:length(freq)){
+      for (i in 1:nbins){
         freq_list_1[[i]]=subset(new_df, new_df$frequency<(i*(freq2/nbins)))
       }
 
-      for (i in 1:length(freq)){
+      for (i in 1:nbins){
         freq_list_2[[i]]=subset(freq_list_1[[i]], freq_list_1[[i]]$frequency>((i-1)*(freq2/nbins)))
         freq_list_2[[i]]$frequency=NULL
       }
@@ -551,6 +554,11 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
 
         for (i in 1:ncol(new_df)){
           soundscape_diversity[i] <- hilldiv::hill_div(unlist(new_df[[i]]), qvalue = qvalue)/ if (output=="raw"){1} else{if(output=="percentage"){length(new_df[[i]])} else{print("Error: invalid output argument")}}
+
+          if(sum(unlist(new_df[[i]]))==0){
+            soundscape_diversity[i] <- 0
+          }
+
         }
 
         soundscape_diversity <- soundscape_diversity*multiplier
@@ -626,18 +634,16 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
 
     if (freqseq=="TRUE"){
 
-      freq=seq(freq1, freq2, freq2/nbins)
-
       new_df$frequency=as.numeric(rownames(new_df))
 
       freq_list_1=vector("list", 0)
       freq_list_2=vector("list", 0)
 
-      for (i in 1:length(freq)){
+      for (i in 1:nbins){
         freq_list_1[[i]]=subset(new_df, new_df$frequency<(i*(freq2/nbins)))
       }
 
-      for (i in 1:length(freq)){
+      for (i in 1:nbins){
         freq_list_2[[i]]=subset(freq_list_1[[i]], freq_list_1[[i]]$frequency>((i-1)*(freq2/nbins)))
         freq_list_2[[i]]$frequency=NULL
       }
@@ -649,18 +655,14 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
 
         for (i in 1:length(freq_list_2)){
           soundscape_diversity[i]=hilldiv::hill_div(unlist(freq_list_2[[i]]), qvalue=qvalue)/if (output=="raw"){1} else{if(output=="percentage"){(ncol(freq_list_2[[i]])*nrow(freq_list_2[[i]]))} else{print("Error: invalid output argument")}}
-        }
 
-        for (i in 1:length(freq_list_2)){
 
-          if (all.equal(rep(0, length(unlist(freq_list_2[[i]]))), unlist(freq_list_2[[i]]))==TRUE){
+          if(sum(unlist(freq_list_2[[i]]))==0){
             soundscape_diversity[i] <- 0
           }
 
-          else{
-            soundscape_diversity[i] <- soundscape_diversity[i]
-          }
         }
+
 
         soundscape_diversity=soundscape_diversity*multiplier
         soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
@@ -685,7 +687,8 @@ sounddiv_internal=function(df, qvalue, type="total",date, lat, lon, minfreq="def
           for (i in 1:length(freq_list_2)){
             for (j in 1:ncol(freq_list_2[[i]])){
 
-              if (all.equal(rep(0, length(freq_list_2[[i]][[j]])), freq_list_2[[i]][[j]])==TRUE){
+              if (all.equal(rep(0, length(freq_list_2[[i]][[j]])),
+                            freq_list_2[[i]][[j]])==TRUE){
                 soundscape_diversity[[i]][[j]] <- 0
               }
 
