@@ -1,6 +1,6 @@
 Package: soundscapeR
 Type: Package
-Title: Visualization and Richness Estimation of Soundscapes
+Title: Visualization and Quantification of Soundscape Diversity
 Version: 0.1.0
 Authors@R: c(
     person("Thomas", "Luypaert", email = "thomas.luypaert@nmbu.no", role = c("cre", "aut")),
@@ -9,7 +9,7 @@ Authors@R: c(
     person("Torbjørn", "Haugaasen", email="torbjorn.haugaasen@nmbu.no", role="aut"))
 Maintainer: Thomas Luypaert <thomas.luypaert@nmbu.no>
 Description: The soundscapeR package constitutes a standardized analytical pipeline for 
-    the computation, visualization and diversity estimation of soundscapes. 
+    the computation, visualization and diversity quantification of soundscapes. 
     The package is designed to work with either continuous or regular-interval long-duration
     acoustic recordings.
 License: GPL-3
