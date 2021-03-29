@@ -5,9 +5,9 @@
 \title{Visualize soundscape diversity profiles - only for internal use}
 \usage{
 sounddiv_profile_point_internal(
-  df,
+  aggregate_list,
   qvalues = seq(0, 5, 0.1),
-  type = "total",
+  subset = "total",
   minfreq = "default",
   maxfreq = "default",
   mintime = "default",
@@ -25,11 +25,11 @@ sounddiv_profile_point_internal(
 )
 }
 \arguments{
-\item{df}{The aggregated time-frequency dataframe produced by \code{\link{aggregate_df}}.}
+\item{aggregate_list}{The aggregated time-frequency dataframe produced by \code{\link{aggregate_df}}.}
 
 \item{qvalues}{A numeric vector of sequential q-values for which to compute the diversity profiles, generally ranging between 0-5. \emph{e.g.:} \code{seq(0, 5, 0.1)} yields a vector between 0 and 5 with an increment value of 0.1. The smaller the increment value, the smoother the diversity profiles.}
 
-\item{type}{The scale for which the soundscape diversity is computed. Options are 'total', 'day',
+\item{subset}{The scale for which the soundscape diversity is computed. Options are 'total', 'day',
 'night', 'dawn', 'dusk' and 'tod' (time of day - for each unique time in the day).}
 
 \item{minfreq}{A numeric value indicating the lower frequency limit for which to compute the soundscape diversity. If set to default, uses the lowest available frequency in the dataframe.}
@@ -50,13 +50,13 @@ Format as "YYYY-mm-dd".}
 \item{twilight}{A character string of the twilight method to be used for sunrise and sunset as the boundary between day and night.
 Options can be found in the \code{\link[photobiology]{day_night}} documentation.}
 
-\item{dawnstart}{A numeric argument. If type='dawn', used to determine the start of dawn. By default, dawn starts at sunrise. Expressed as the time in seconds before sunrise.}
+\item{dawnstart}{A numeric argument. If subset='dawn', used to determine the start of dawn. By default, dawn starts at sunrise. Expressed as the time in seconds before sunrise.}
 
-\item{dawnend}{A numeric argument. If type='dawn', used to determine the end of dawn. By default, dawn ends 1.5 hours after sunrise. Expressed as the time in seconds after sunrise.}
+\item{dawnend}{A numeric argument. If subset='dawn', used to determine the end of dawn. By default, dawn ends 1.5 hours after sunrise. Expressed as the time in seconds after sunrise.}
 
-\item{duskstart}{A numeric argument. If type='dusk', used to determine the start of dusk. By default, dusk starts 1.5 hours before sunset. Expressed as the time in seconds before sunset.}
+\item{duskstart}{A numeric argument. If subset='dusk', used to determine the start of dusk. By default, dusk starts 1.5 hours before sunset. Expressed as the time in seconds before sunset.}
 
-\item{duskend}{A numeric argument. If type='dusk', used to determine the end of dusk. By default, dusk ends at sunset. Expressed as the time in seconds after sunset.}
+\item{duskend}{A numeric argument. If subset='dusk', used to determine the end of dusk. By default, dusk ends at sunset. Expressed as the time in seconds after sunset.}
 
 \item{display}{A character string. Indicates the output format, one of either "plot" or "table".}
 

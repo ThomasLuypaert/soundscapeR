@@ -9,7 +9,8 @@ utils::globalVariables(c("time_of_day", "soundscape_div", "frequency", "freq", "
 #'
 #' @description Produces plots showing the variation in soundscape diversity by time-of-day. Soundscape diversity can be shown for the full frequency range, or the relative contribution of frequency-bins with user-specified width.
 #'
-#' @param df The aggregated time-frequency dataframe produced by \code{\link{aggregate_df}}.
+#' @param aggregate_list The list produced by the \code{\link{aggregate_df}}
+#'  function.
 #' @param qvalue A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.
 #' @param graphtype The type of plot which is produced.
 #'
@@ -59,18 +60,18 @@ utils::globalVariables(c("time_of_day", "soundscape_div", "frequency", "freq", "
 #'
 #' @return Returns a ggplot object and if save=TRUE, saves the plot in a directory of choice using a specified device and filename.
 #' @export
-sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq="default", maxfreq="default", nbins=10, timeinterval="1 hour", smooth=TRUE, movavg=6,interactive=FALSE, save=FALSE, dir="default", filename="file", device="png", output="percentage", width=150, height=150){
+sounddiv_by_time=function(aggregate_list, qvalue, graphtype="total", date, lat, lon, minfreq="default", maxfreq="default", nbins=10, timeinterval="1 hour", smooth=TRUE, movavg=6,interactive=FALSE, save=FALSE, dir="default", filename="file", device="png", output="percentage", width=150, height=150){
 
   tz=lutz::tz_lookup_coords(lat=lat, lon=lon, method="accurate")
 
   if (minfreq=="default"){
-    minfreq=min(as.numeric(rownames(df)))
+    minfreq=min(as.numeric(rownames(aggregate_list[[3]])))
   }
 
   else{minfreq=minfreq}
 
   if (maxfreq=="default"){
-    maxfreq=max(as.numeric(rownames(df)))
+    maxfreq=max(as.numeric(rownames(aggregate_list[[3]])))
   }
 
   else{maxfreq=maxfreq}
@@ -83,9 +84,9 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
   if (graphtype=="total"){
 
-    total_tod=sounddiv_internal(df=df,
+    total_tod=sounddiv_internal(aggregate_list = aggregate_list,
                               qvalue=qvalue,
-                              type="tod",
+                              subset = "tod",
                               date=date,lat=lat,
                               lon=lon,
                               minfreq=minfreq,
@@ -97,12 +98,12 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
     total_tod <- as.data.frame(total_tod)
 
-    total_tod$time_of_day <- as.POSIXct(strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M", tz=tz))
+    total_tod$time_of_day <- as.POSIXct(strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M", tz=tz))
 
     colnames(total_tod) <- c("soundscape_div", "time_of_day")
 
 
-    total_tod$soundscape_div_smooth=pracma::movavg(total_tod$soundscape_div, movavg, type="t")
+    total_tod$soundscape_div_smooth=pracma::movavg(total_tod$soundscape_div, movavg, type = "t")
 
     if (smooth==TRUE){
 
@@ -170,9 +171,9 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
     if (graphtype=="frequency"){
 
 
-      freq_tod=sounddiv_internal(df=df,
+      freq_tod=sounddiv_internal(aggregate_list = aggregate_list,
                                  qvalue=qvalue,
-                                 type="tod",
+                                 subset = "tod",
                                  date=date,
                                  lat=lat,
                                  lon=lon,
@@ -186,7 +187,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
       if(output=="percentage"){
         for (i in 1:length(freq_tod)){
-          freq_tod[[i]] <- (freq_tod[[i]]/nrow(df))*100
+          freq_tod[[i]] <- (freq_tod[[i]]/nrow(aggregate_list[[3]]))*100
         }
       } else {}
 
@@ -207,8 +208,8 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
       freq_tod_smooth=dplyr::bind_rows(freq_tod_smooth)
 
 
-      freq_tod$time=as.POSIXct((strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
-      freq_tod_smooth$time=as.POSIXct((strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+      freq_tod$time=as.POSIXct((strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+      freq_tod_smooth$time=as.POSIXct((strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
       freq_tod=reshape2::melt(freq_tod, id.vars=c("time"))
       freq_tod_smooth=reshape2::melt(freq_tod_smooth, id.vars=c("time"))
 
@@ -292,9 +293,9 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
       if (graphtype=="normfreq"){
 
-        freq_tod=sounddiv_internal(df=df,
+        freq_tod=sounddiv_internal(aggregate_list = aggregate_list,
                                           qvalue=qvalue,
-                                          type="tod",
+                                          subset = "tod",
                                           date=date,
                                           lat=lat,
                                           lon=lon,
@@ -318,8 +319,8 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
         freq_tod_smooth=dplyr::bind_rows(freq_tod_smooth)
 
 
-        freq_tod$time=as.POSIXct((strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
-        freq_tod_smooth$time=as.POSIXct((strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+        freq_tod$time=as.POSIXct((strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+        freq_tod_smooth$time=as.POSIXct((strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
         freq_tod=reshape2::melt(freq_tod, id.vars=c("time"))
         freq_tod_smooth=reshape2::melt(freq_tod_smooth, id.vars=c("time"))
 
@@ -414,9 +415,9 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
         if (graphtype=="linefreq"){
 
-          freq_tod=sounddiv_internal(df=df,
+          freq_tod=sounddiv_internal(aggregate_list = aggregate_list,
                                             qvalue=qvalue,
-                                            type="tod",
+                                            subset = "tod",
                                             date=date,
                                             lat=lat,
                                             lon=lon,
@@ -429,7 +430,7 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
 
           if (output=="percentage"){
             for (i in 1:length(freq_tod)){
-            freq_tod[[i]]=(freq_tod[[i]]/nrow(df))*100
+            freq_tod[[i]]=(freq_tod[[i]]/nrow(aggregate_list[[3]]))*100
             }
           }
 
@@ -446,8 +447,8 @@ sounddiv_by_time=function(df, qvalue, graphtype="total", date, lat, lon, minfreq
           freq_tod_smooth=dplyr::bind_rows(freq_tod_smooth)
 
 
-          freq_tod$time=as.POSIXct((strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
-          freq_tod_smooth$time=as.POSIXct((strptime(paste(date, colnames(df), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+          freq_tod$time=as.POSIXct((strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+          freq_tod_smooth$time=as.POSIXct((strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
           freq_tod=reshape2::melt(freq_tod, id.vars=c("time"))
           freq_tod_smooth=reshape2::melt(freq_tod_smooth, id.vars=c("time"))
 

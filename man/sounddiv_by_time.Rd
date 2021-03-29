@@ -5,7 +5,7 @@
 \title{Visualize Soundscape Diversity by Time of Day}
 \usage{
 sounddiv_by_time(
-  df,
+  aggregate_list,
   qvalue,
   graphtype = "total",
   date,
@@ -28,7 +28,8 @@ sounddiv_by_time(
 )
 }
 \arguments{
-\item{df}{The aggregated time-frequency dataframe produced by \code{\link{aggregate_df}}.}
+\item{aggregate_list}{The list produced by the \code{\link{aggregate_df}}
+function.}
 
 \item{qvalue}{A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.}
 
