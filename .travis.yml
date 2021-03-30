@@ -8,7 +8,13 @@ os:
  - osx
 
 r:
-  - 4.0
+  - 4.1
+
+bioc_required: true
+bioc_use_devel: true
+
+bioc_packages:
+  - BiocCheck
 
 addons:
        apt:

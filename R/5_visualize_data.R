@@ -8,7 +8,8 @@
 #'     section to find out more about visualization options.
 #'
 #' @param aggregated_soundscape The aggregated soundscape object produced by
-#'  \code{\link{aggregate_df}} function.
+#'  \code{\link{aggregate_df
+#'  }} function.
 #'
 #' @param type One of either "regular" or "polar". If set
 #' to "regular", produces a regular rectangular heatmap.
