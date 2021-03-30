@@ -16,6 +16,12 @@ bioc_use_devel: true
 bioc_packages:
   - BiocCheck
 
+bioc_required: true
+bioc_use_devel: true
+
+bioc_packages:
+  - BiocCheck
+
 addons:
        apt:
          update: true
