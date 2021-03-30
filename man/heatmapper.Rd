@@ -5,12 +5,9 @@
 \title{Flexible Soundscape Heatmaps}
 \usage{
 heatmapper(
-  aggregate_list,
+  aggregated_soundscape,
   type = "regular",
   annotate = FALSE,
-  date,
-  lat,
-  lon,
   timeinterval = "1 hour",
   mintime = "default",
   maxtime = "default",
@@ -38,7 +35,8 @@ heatmapper(
 )
 }
 \arguments{
-\item{aggregate_list}{The list produced by the \code{\link{aggregate_df}} function, containing the 'aggregated_per_time', 'sampling_effort_per_time' and 'aggregated_df' elements.}
+\item{aggregated_soundscape}{The aggregated soundscape object produced by
+\code{\link{aggregate_df}} function.}
 
 \item{type}{One of either "regular" or "polar". If set
 to "regular", produces a regular rectangular heatmap.
@@ -49,16 +47,6 @@ If set to "polar", produces a polar heatmap suitable for
 TRUE, annotates the heatmap with sunrise and
 sunset times,´and highlights the border between the
  audible and ultrasonic spectrum for human hearing.}
-
-\item{date}{The first day of the recording period. Used
-for managing time-objects in R.
-Formatted as "YYYY-mm-dd".}
-
-\item{lat}{The latitude of the site at which the sound
-files were collected.}
-
-\item{lon}{The longitude of the site at which the sound
-files were collected.}
 
 \item{timeinterval}{A time interval for the x-axis.
 Options can be found in the

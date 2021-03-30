@@ -1,277 +1,3 @@
-# Functions for visualizing data
-
-# Preparing dataframe for visualization. Function for internal use.
-
-#' Reformats the dataframe for subsequent visualization
-#'
-#' @description Lengthens the dataframe so it can be
-#' used for subsequent visualization using ggplot2.
-#'  Function intended for internal use by
-#'   \code{\link{heatmapper}}, however can also be
-#'   used manually by user.
-#'
-#' @param df The aggregated time-frequency dataframe
-#'  produced by \code{\link{aggregate_df}}.
-#'
-#' @param date The first day of the recording period.
-#' Used for managing time-objects in R.
-#' Format as "YYYY-mm-dd".
-#'
-#' @param lat The latitude of the site at which the
-#' sound files were collected.
-#'
-#' @param lon The longitude of the site at which the
-#' sound files were collected.
-#'
-#' @return Returns a long dataframe with "frequency",
-#'  "time" and "value" columns.
-#'
-#' @export
-#'
-lengthen=function(df, date, lat, lon){
-
-  # 0. Check if the arguments are missing
-
-  test_0 <- function(x){
-
-    !missing(x)
-
-  }
-
-  assertthat::on_failure(test_0) <- function(call, env){
-
-    paste0(deparse(call$x), " argument is missing. Please supply the missing argument.")
-
-  }
-
-  assertthat::assert_that(test_0(df))
-  assertthat::assert_that(test_0(date))
-  assertthat::assert_that(test_0(lat))
-  assertthat::assert_that(test_0(lon))
-
-  # 1. Check if input variable in the right format
-
-  #1.1. The supplied dataframe is a dataframe, is not
-  # empty, and does not contain NAs
-
-  test_1 <- function(x){
-
-    is.data.frame(x)
-
-  }
-
-  test_2 <- function(x){
-
-    assertthat::not_empty(x)
-
-  }
-
-  test_3 <- function(x){
-
-    assertthat::noNA(x)
-
-  }
-
-  test_4 <- function(x){
-
-    limma::isNumeric(x)
-
-  }
-
-  assertthat::on_failure(test_1) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a data frame. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe (third element in the list) produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_2) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty dataframe. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe (third element in the list) produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_3) <- function(call, env){
-
-    paste0(deparse(call$x), " contains NA values. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe (third element in the list) produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_4) <- function(call, env){
-
-    paste0(deparse(call$x), " contains non-numeric values. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe (third element in the list) produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::assert_that(test_1(df))
-  assertthat::assert_that(test_2(df))
-  assertthat::assert_that(test_3(df))
-  assertthat::assert_that(test_4(df))
-
-  # 1.2. Test that supplied date is in the right format
-
-  test_5 <- function(x) {
-    assertthat::is.string(x)
-  }
-
-  test_6 <- function(x) {
-    formatted = try(as.Date(x, "%Y-%m-%d"), silent = TRUE)
-    is_date = as.character(formatted) == x & !is.na(formatted)
-    return(is_date)
-  }
-
-  assertthat::on_failure(test_5) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a character string. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
-  }
-
-  assertthat::on_failure(test_6) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid date. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
-  }
-
-  assertthat::assert_that(test_5(date))
-  assertthat::assert_that(test_6(date))
-
-  # 1.3. Test that lat and lon are in decimal degrees
-  # and exist on Earth
-
-  test_7 <- function(x){
-
-    is.numeric(x) &
-      x >= -90 &
-      x <= 90
-
-  }
-
-  test_8 <- function(x){
-
-    is.numeric(x) &
-      x >= -180 &
-      x <= 180
-
-  }
-
-
-  assertthat::on_failure(test_7) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
-
-  }
-
-  assertthat::on_failure(test_8) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
-
-  }
-
-  assertthat::assert_that(test_7(lat))
-  assertthat::assert_that(test_8(lon))
-
-  # 1.4. Check if the df argument has correct
-  # row and column names
-
-  test_9 <- function(x){
-
-    (abs(as.numeric(rownames(x)[1]))+
-       abs(as.numeric(rownames(x)[2])))>3 &
-      min(as.numeric(rownames(x))) > 0 &
-      max(as.numeric(rownames(x)))<180000
-
-  }
-
-  test_10 <- function(x){
-
-    formatted <-  try(
-      as.POSIXct(
-        paste0(date," ", colnames(x)),
-        tz=lutz::tz_lookup_coords(lat=lat,
-                                  lon=lon,
-                                  method = "accurate"),
-        format="%Y-%m-%d %H:%M:%S"),
-      silent = TRUE)
-
-    is_time <-  all(
-
-      all(
-        substr(as.character(formatted),
-               12,
-               nchar(as.character(formatted))) == colnames(x)
-      )
-
-      & !any(is.na(formatted))
-
-    )
-
-    return(is_time)
-
-  }
-
-  assertthat::on_failure(test_9) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_10) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::assert_that(test_9(df))
-  assertthat::assert_that(test_10(df))
-
-  # 2. Look up the time-zone for the lat/long combination
-
-  tz <- lutz::tz_lookup_coords(lat=lat,
-                               lon=lon,
-                               method="accurate")
-
-  # 2.1. Test if time zone exists
-
-  # Timezone
-
-  test_11 <- function(x) {
-
-    return(x %in% (OlsonNames()))
-
-  }
-
-  assertthat::on_failure(test_11) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the correct latitude and longitude in decimal degrees?")
-
-  }
-
-  assertthat::assert_that(test_11(tz))
-
-  # 3. Add a column with frequencies from rownames
-
-  df$frequency <- as.integer(rownames(df))
-
-  # 4. Melt the data frame using the frequency column
-
-  melt_df <- reshape2::melt(df, id.vars="frequency")
-
-  colnames(melt_df) <- c("frequency", "time", "value")
-
-  melt_df$frequency <- as.numeric(
-    as.character(melt_df$frequency))
-
-  melt_df$time <- as.POSIXct(
-    strptime(
-      paste(date, melt_df$time, sep=" "),
-      format= "%Y-%m-%d %H:%M",
-      tz=tz))
-
-  # 5. Return the melted data frame
-
-  return(melt_df)
-
-}
-
 #' Flexible Soundscape Heatmaps
 #'
 #' @description  Creates a soundscape heatmap to visualize
@@ -281,7 +7,8 @@ lengthen=function(df, date, lat, lon){
 #'    aspect of the heatmap. Please consult the arguments
 #'     section to find out more about visualization options.
 #'
-#' @param aggregate_list The list produced by the \code{\link{aggregate_df}} function, containing the 'aggregated_per_time', 'sampling_effort_per_time' and 'aggregated_df' elements.
+#' @param aggregated_soundscape The aggregated soundscape object produced by
+#'  \code{\link{aggregate_df}} function.
 #'
 #' @param type One of either "regular" or "polar". If set
 #' to "regular", produces a regular rectangular heatmap.
@@ -319,16 +46,6 @@ lengthen=function(df, date, lat, lon){
 #'  number of the frequency-bins by which to divide the
 #'   frequency range to compute the soundscape richness
 #'   (q=0), expressed as a single positive integer.
-#'
-#' @param date The first day of the recording period. Used
-#'  for managing time-objects in R.
-#'  Formatted as "YYYY-mm-dd".
-#'
-#' @param lat The latitude of the site at which the sound
-#'  files were collected.
-#'
-#' @param lon The longitude of the site at which the sound
-#'  files were collected.
 #'
 #' @param twilight A character string of the twilight
 #' method to be used for sunrise and sunset annotation.
@@ -416,12 +133,9 @@ lengthen=function(df, date, lat, lon){
 #'
 #' @export
 
-heatmapper=function(aggregate_list,
+heatmapper=function(aggregated_soundscape,
                     type="regular",
                     annotate=FALSE,
-                    date,
-                    lat,
-                    lon,
                     timeinterval="1 hour",
                     mintime="default",
                     maxtime="default",
@@ -461,281 +175,48 @@ heatmapper=function(aggregate_list,
 
   }
 
-  assertthat::assert_that(test_0(aggregate_list))
-  assertthat::assert_that(test_0(date))
-  assertthat::assert_that(test_0(lat))
-  assertthat::assert_that(test_0(lon))
+  assertthat::assert_that(test_0(aggregated_soundscape))
 
   # 1. Check if function input meets expectations
 
-  # 1.1. The supplied aggregate_list is a list, is not
-  # empty, and does not contain NAs
+  # 1.1. The supplied aggregated_soundscape argument is an S4-object of the type
+  # 'soundscape', and is not empty.
 
   test_1 <- function(x){
 
-    all(is.list(x) & length(x) == 3)
+    isS4(x) &
+      assertthat::are_equal(class(x)[1], "soundscape")
 
   }
 
-  test_1_1 <- function(x){
-
-    is.list(x)
-
-  }
-
-  test_2_1 <- function(x){
-
-    !any(sapply(x, function(x) is.null(x)))
-
-  }
-
-  test_2_2 <- function(x){
+  test_2 <- function(x){
 
     assertthat::not_empty(x)
 
   }
 
-  test_3 <- function(x){
-
-    assertthat::noNA(x)
-
-  }
-
-  test_4 <- function(x){
-
-    limma::isNumeric(x) & is.data.frame(x)
-
-  }
-
-
   assertthat::on_failure(test_1) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a list of the correct length. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
+    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape'. Please supply the aggregated_soundscape object produced by the aggregate_df() function. Consult the package documentation for further information.")
 
   }
 
-  assertthat::on_failure(test_1_1) <- function(call, env){
+  assertthat::on_failure(test_2) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a list. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_2_1) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty list. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
+    paste0(deparse(call$x), " is an empty S4-object of the type 'soundscape'. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the aggregate_df() function.")
 
   }
 
-  assertthat::on_failure(test_2_2) <- function(call, env){
+  assertthat::assert_that(test_1(aggregated_soundscape))
+  assertthat::assert_that(test_2(aggregated_soundscape))
 
-    paste0(deparse(call$x), " is an empty data frame. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
+  # 1.2. The aggregated_soundscape elements are in the expected format
 
-  }
+    # 1.2.1. The first_day argument cannot be wrong (S4 property)
 
-  assertthat::on_failure(test_3) <- function(call, env){
+    # 1.2.2. The lat and lon argument
 
-    paste0(deparse(call$x), " contains NA values. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_4) <- function(call, env){
-
-    paste0(deparse(call$x), " contains non-numeric values. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::assert_that(test_1(aggregate_list))
-  assertthat::assert_that(test_1_1(aggregate_list[[1]]))
-  assertthat::assert_that(test_1_1(aggregate_list[[2]]))
-  assertthat::assert_that(test_2_1(aggregate_list[[1]]))
-  assertthat::assert_that(test_2_1(aggregate_list[[2]]))
-  assertthat::assert_that(test_2_2(aggregate_list[[3]]))
-  assertthat::assert_that(test_3(aggregate_list[[1]]))
-  assertthat::assert_that(test_3(aggregate_list[[2]]))
-  assertthat::assert_that(test_3(aggregate_list[[3]]))
-  assertthat::assert_that(test_4(aggregate_list[[3]]))
-
-  # 1.2. Check if supplied type argument is one of
-  # available options
-
-  test_5 <- function(x){
-    assertthat::is.string(x)
-  }
-
-  test_6 <- function(x){
-    x %in% c("regular", "polar")
-  }
-
-  assertthat::on_failure(test_5) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a character string. Please supply the heatmap type as a character string. Consult package documentation for available type argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
-
-  }
-
-  assertthat::on_failure(test_6) <- function(call, env){
-
-    paste0(deparse(call$x), " is not one of the available heatmap type options. Please consult package documentation for available type argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
-
-  }
-
-  assertthat::assert_that(test_5(type))
-  assertthat::assert_that(test_6(type))
-
-  # 1.3. Check if supplied annotate argument is one of the
-  # available options
-
-  test_7 <- function(x){
-
-    assertthat::is.flag(x)
-
-  }
-
-  assertthat::on_failure(test_7) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a Boolean flag (TRUE or FALSE). Please set annotate argument to TRUE or FALSE. Make sure the argument is not a character string.")
-
-  }
-
-  assertthat::assert_that(test_7(annotate))
-
-  # 1.4. Check if supplied timeinterval argument is one of
-  # the available options
-
-  test_8 <- function(x){
-
-    any(stringr::str_detect(timeinterval,c("sec", "secs", "min", "mins", "hour", "hours", "day", "days", "week", "weeks", "month", "months", "year", "years"))) &
-      grepl("^[[:digit:]]\\s", timeinterval)
-
-  }
-
-  assertthat::on_failure(test_8) <- function(call, env){
-
-    paste0(deparse(call$x), " is not one of the available timeinterval options. Please make sure the timeinterval argument is a character string of the following format: n unit (with n = number, and unit = one of 'sec', 'secs', 'min', 'mins', 'hour', 'hours', 'day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'). Please consult the scales::breaks_width() documentation for more information.")
-
-  }
-
-  assertthat::assert_that(test_8(timeinterval))
-
-  # 1.5. Check if supplied mintime and maxtime arguments
-  # are one of the available options
-
-  test_9 <- function(x){
-
-    x == "default" |
-      !is.na(as.POSIXct(x, format="%H:%M:%S"))
-
-  }
-
-  assertthat::on_failure(test_9) <- function(call, env){
-
-    paste0(deparse(call$x), " is not one a valid format. The mintime or maxtime arguments need to be a character string formatted as %H:%M:%S. Please consult the package documentation for further information.")
-
-  }
-
-  assertthat::assert_that(test_9(mintime))
-  assertthat::assert_that(test_9(maxtime))
-
-  # 1.6. Check if the freqinterval argument is in the right format.
-
-  test_10 <- function(x){
-
-    assertthat::is.count(x) &
-      x > min(as.numeric(rownames(aggregate_list[[3]]))) &
-      x < max(as.numeric(rownames(aggregate_list[[3]])))
-
-  }
-
-  assertthat::on_failure(test_10) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a single positive integer, or is outside of the frequency bounds of the data frame. Please supply the frequency interval as a single positive integer which falls without the data frame's frequency bounds (min frequency < freqinterval < max frequency).")
-
-  }
-
-  assertthat::assert_that(test_10(freqinterval))
-
-  # 1.7. Check if the minfreq and maxfreq arguments follow
-  # the expected values
-
-  test_11 <- function(x){
-    (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregate_list[[3]]))) &
-       x <= max(as.numeric(rownames(aggregate_list[[3]])))) |
-      x == 0
-
-  }
-
-  test_12 <- function(x){
-    (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregate_list[[3]]))) &
-       x <= max(as.numeric(rownames(aggregate_list[[3]])))) |
-      x == "default"
-
-  }
-
-  assertthat::on_failure(test_11) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or equals 0. Please provide a minfreq argument which abides by the expected format. For more information, please consult the package documentation.")
-
-  }
-
-  assertthat::on_failure(test_12) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or a character string set to default. Please provide a maxfreq argument which abides by the expected format. For more information, please consult the package documentation.")
-
-  }
-
-  assertthat::assert_that(test_11(minfreq))
-  assertthat::assert_that(test_12(maxfreq))
-
-  # 1.8. Check if the nbins argument abides by the
-  # expected format
-
-  test_13 <- function(x){
-
-    assertthat::is.count(x) &
-      x > 0 &
-      x < nrow(aggregate_list[[3]])
-  }
-
-  assertthat::on_failure(test_13) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid nbins format. The nbins argument needs to be provided as a single positive integer. The value should range between 1 and the number of rows in the data frame. Please note that the nbins argument works in synergy with the marginplot argument. If you wish to display a marginal plot, please set marginplot = TRUE.")
-
-  }
-
-  assertthat::assert_that(test_13(nbins))
-
-  # 1.9. Test that supplied date is in the right format
-
-  test_14_1 <- function(x) {
-    assertthat::is.string(x)
-  }
-
-  test_14_2 <- function(x) {
-    formatted = try(as.Date(x, "%Y-%m-%d"), silent = TRUE)
-    is_date = as.character(formatted) == x & !is.na(formatted)
-    return(is_date)
-  }
-
-  assertthat::on_failure(test_14_1) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a character string. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
-  }
-
-  assertthat::on_failure(test_14_2) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid date. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
-  }
-
-  assertthat::assert_that(test_14_1(date))
-  assertthat::assert_that(test_14_2(date))
-
-  # 1.10. Test that lat and lon are in decimal degrees and
-  # exist on Earth
-
-  test_15_1 <- function(x){
+  test_3 <- function(x){
 
     is.numeric(x) &
       x >= -90 &
@@ -743,7 +224,7 @@ heatmapper=function(aggregate_list,
 
   }
 
-  test_15_2 <- function(x){
+  test_4 <- function(x){
 
     is.numeric(x) &
       x >= -180 &
@@ -751,25 +232,448 @@ heatmapper=function(aggregate_list,
 
   }
 
-  assertthat::on_failure(test_15_1) <- function(call, env){
+  assertthat::on_failure(test_3) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
-
-  }
-
-  assertthat::on_failure(test_15_2) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
-  assertthat::assert_that(test_15_1(lat))
-  assertthat::assert_that(test_15_2(lon))
+  assertthat::on_failure(test_4) <- function(call, env){
 
-  # 1.11. Check if the supplied twilight argument is one
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+
+  }
+
+  assertthat::assert_that(test_3(aggregated_soundscape@lat))
+  assertthat::assert_that(test_4(aggregated_soundscape@lon))
+
+    # 1.2.3. The time zone argument
+
+  test_5 <- function(x){
+
+    assertthat::is.string(x) & (x %in% (OlsonNames()))
+
+  }
+
+  assertthat::on_failure(test_5) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
+
+  }
+
+  assertthat::assert_that(test_5(aggregated_soundscape@tz))
+
+    # 1.2.4. The sunrise and sunset arguments cannot be wrong (s4 property)
+
+    # 1.2.5. The fileloc argument
+
+  test_6 <- function(x){
+
+    assertthat::is.dir(x) & assertthat::is.readable(x)
+
+  }
+
+  assertthat::assert_that(test_6(aggregated_soundscape@fileloc))
+
+    # 1.2.6. The index argument
+
+  test_7 <- function(x){
+
+    assertthat::is.string(x) & (x %in% c("BGN", "PMN", "CVR", "EVN", "ENT", "ACI",
+                                         "OSC", "SPT", "RHZ", "RVT", "RPS", "RNG"))
+
+  }
+
+  assertthat::on_failure(test_7) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
+
+  }
+
+  assertthat::assert_that(test_7(aggregated_soundscape@index))
+
+    # 1.2.7. The samplerate and window arguments
+
+  test_8 <- function(x){
+
+    assertthat::is.count(x)
+
+  }
+
+  assertthat::on_failure(test_8) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the samplerate and window arguments.")
+
+  }
+
+  assertthat::assert_that(test_8(aggregated_soundscape@samplerate))
+  assertthat::assert_that(test_8(aggregated_soundscape@window))
+
+    # 1.2.8. The binarization_method argument
+
+  test_9 <- function(x){
+    assertthat::is.string(x) & (x %in% c("IJDefault", "Huang", "Huang2", "Intermodes", "IsoData", "Li","MaxEntropy", "Mean", "MinErrorI", "Minimum", "Moments", "Otsu","Percentile", "RenyiEntropy", "Shanbhag", "Triangle", "Yen","Mode", "custom"))
+  }
+
+
+
+  assertthat::on_failure(test_9) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a character string describing one of the available binarization method options. Please consult package documentation for available options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+
+  }
+
+  assertthat::assert_that(test_9(aggregated_soundscape@binarization_method))
+
+    # 1.2.9. The threshold argument
+
+  test_10 <- function(x){
+
+    all(length(x) == 1 &
+          is.double(x) & !is.na(x))
+
+  }
+
+  assertthat::on_failure(test_10) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the value argument is you're supplying a custom threshold value.")
+
+  }
+
+  assertthat::assert_that(test_10(aggregated_soundscape@threshold))
+
+    # 1.2.10. The output argument
+
+  test_11 <- function(x){
+
+    all(length(x) == 1 & is.character(x) & (x %in% c("incidence_freq", "raw")))
+
+  }
+
+  assertthat::on_failure(test_11) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
+
+  }
+
+  assertthat::assert_that(test_11(aggregated_soundscape@output))
+
+    # 1.2.11. The merged_df argument
+
+  test_12 <- function(x){
+
+    is.data.frame(x) &
+      assertthat::not_empty(x) &
+      assertthat::noNA(x) &
+      limma::isNumeric(x)
+
+  }
+
+  test_13 <- function(x){
+
+    (abs(as.numeric(rownames(x)[1]))+
+       abs(as.numeric(rownames(x)[2])))>3 &
+      min(as.numeric(rownames(x))) >= 0 &
+      max(as.numeric(rownames(x)))<= aggregated_soundscape@samplerate/2
+
+  }
+
+  test_14 <- function(x){
+
+    formatted <-  try(
+      as.POSIXct(
+        paste0(substr(aggregated_soundscape@first_day, 1, 12)," ", colnames(x)),
+        tz = aggregated_soundscape@tz,
+        format="%Y-%m-%d %H:%M:%S"),
+      silent = TRUE)
+
+    !any(sapply(formatted, function(y) is.na(y)))
+
+  }
+
+
+  assertthat::on_failure(test_12) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+
+  }
+
+  assertthat::on_failure(test_13) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe produced by the aggregate_df() function.")
+
+  }
+
+  assertthat::on_failure(test_14) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe produced by the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_12(aggregated_soundscape@merged_df))
+  assertthat::assert_that(test_13(aggregated_soundscape@merged_df))
+  assertthat::assert_that(test_14(aggregated_soundscape@merged_df))
+
+    # 1.2.12. The binarized_df argument
+
+  test_15 <- function(x){
+
+    min(x) >= 0 &
+      max(x) <= 1
+
+  }
+
+  assertthat::on_failure(test_15) <- function(call, env){
+
+    paste0(deparse(call$x), " has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_12(aggregated_soundscape@binarized_df))
+  assertthat::assert_that(test_13(aggregated_soundscape@binarized_df))
+  assertthat::assert_that(test_14(aggregated_soundscape@binarized_df))
+  assertthat::assert_that(test_15(aggregated_soundscape@binarized_df))
+
+    # 1.2.12. The aggregated_df argument
+
+  assertthat::assert_that(test_12(aggregated_soundscape@aggregated_df))
+  assertthat::assert_that(test_13(aggregated_soundscape@aggregated_df))
+  assertthat::assert_that(test_14(aggregated_soundscape@aggregated_df))
+
+  if(aggregated_soundscape@output=="incidence_freq"){
+
+    test_16 <- function(x){
+
+      all(is.double(unlist(x)) & max(x) <= 1 & min(x)>= 0)
+
+    }
+
+    assertthat::on_failure(test_16) <- function(call, env){
+
+      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function, and pay special attention to the output argument.")
+
+    }
+
+    assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
+  }
+
+  if(aggregated_soundscape@output=="raw"){
+
+    test_16 <- function(x){
+
+      all(all(round(unlist(x)) == unlist(x)) &
+            max(x) <= max(table(colnames(x))) &
+            min(x) >= 0)
+
+    }
+
+    assertthat::on_failure(test_16) <- function(call, env){
+
+      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function, and pay special attention to the output argument.")
+
+    }
+
+    assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
+  }
+
+  # 1.2.13. The aggregated_df_per_time argument
+
+  test_17 <- function(x){
+
+    all(
+
+    sapply(x, function(x) is.data.frame(x)) &
+      assertthat::are_equal(
+        as.vector(sort(table(colnames(aggregated_soundscape@merged_df)))),
+        as.vector(unlist(sapply(x, function(x) ncol(x))))
+      ) &
+      all(sapply(x, function(x) nrow(x)==nrow(aggregated_soundscape@merged_df))) &
+      all(names(x) == unique(colnames(aggregated_soundscape@merged_df))) &
+      length(x) == ncol(aggregated_soundscape@aggregated_df)
+
+    )
+
+  }
+
+  assertthat::on_failure(test_17) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_17(aggregated_soundscape@aggregated_df_per_time))
+
+  # 1.2.14. The effort_per_time argument
+
+  test_18 <- function(x){
+
+    identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
+
+  }
+
+  assertthat::on_failure(test_18) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
+
+  # 1.3. Check if supplied type argument is one of
+  # available options
+
+  test_19 <- function(x){
+    assertthat::is.string(x)
+  }
+
+  test_20 <- function(x){
+    x %in% c("regular", "polar")
+  }
+
+  assertthat::on_failure(test_19) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a character string. Please supply the heatmap type as a character string. Consult package documentation for available type argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+
+  }
+
+  assertthat::on_failure(test_20) <- function(call, env){
+
+    paste0(deparse(call$x), " is not one of the available heatmap type options. Please consult package documentation for available type argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+
+  }
+
+  assertthat::assert_that(test_19(type))
+  assertthat::assert_that(test_20(type))
+
+  # 1.4. Check if supplied annotate argument is one of the
+  # available options
+
+  test_21 <- function(x){
+
+    assertthat::is.flag(x)
+
+  }
+
+  assertthat::on_failure(test_21) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a Boolean flag (TRUE or FALSE). Please set annotate argument to TRUE or FALSE. Make sure the argument is not a character string.")
+
+  }
+
+  assertthat::assert_that(test_21(annotate))
+
+  # 1.5. Check if supplied timeinterval argument is one of
+  # the available options
+
+  test_22 <- function(x){
+
+    any(stringr::str_detect(timeinterval,c("sec", "secs", "min", "mins", "hour", "hours", "day", "days", "week", "weeks", "month", "months", "year", "years"))) &
+      grepl("^[[:digit:]]\\s", timeinterval)
+
+  }
+
+  assertthat::on_failure(test_22) <- function(call, env){
+
+    paste0(deparse(call$x), " is not one of the available timeinterval options. Please make sure the timeinterval argument is a character string of the following format: n unit (with n = number, and unit = one of 'sec', 'secs', 'min', 'mins', 'hour', 'hours', 'day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'). Please consult the scales::breaks_width() documentation for more information.")
+
+  }
+
+  assertthat::assert_that(test_22(timeinterval))
+
+  # 1.6. Check if supplied mintime and maxtime arguments
+  # are one of the available options
+
+  test_23 <- function(x){
+
+    x == "default" |
+      !is.na(as.POSIXct(x, format="%H:%M:%S"))
+
+  }
+
+  assertthat::on_failure(test_23) <- function(call, env){
+
+    paste0(deparse(call$x), " is not one a valid format. The mintime or maxtime arguments need to be a character string formatted as %H:%M:%S. Please consult the package documentation for further information.")
+
+  }
+
+  assertthat::assert_that(test_23(mintime))
+  assertthat::assert_that(test_23(maxtime))
+
+  # 1.7. Check if the freqinterval argument is in the right format.
+
+  test_24 <- function(x){
+
+    assertthat::is.count(x) &
+      x > min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
+      x < max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))
+
+  }
+
+  assertthat::on_failure(test_24) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a single positive integer, or is outside of the frequency bounds of the data frame. Please supply the frequency interval as a single positive integer which falls without the data frame's frequency bounds (min frequency < freqinterval < max frequency).")
+
+  }
+
+  assertthat::assert_that(test_24(freqinterval))
+
+  # 1.8. Check if the minfreq and maxfreq arguments follow
+  # the expected values
+
+  test_25 <- function(x){
+    (assertthat::is.count(x) &
+       x >= min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
+       x <= max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))) |
+      x == 0
+
+  }
+
+  test_26 <- function(x){
+    (assertthat::is.count(x) &
+       x >= min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
+       x <= max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))) |
+      x == "default"
+
+  }
+
+  assertthat::on_failure(test_25) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or equals 0. Please provide a minfreq argument which abides by the expected format. For more information, please consult the package documentation.")
+
+  }
+
+  assertthat::on_failure(test_26) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or a character string set to default. Please provide a maxfreq argument which abides by the expected format. For more information, please consult the package documentation.")
+
+  }
+
+  assertthat::assert_that(test_25(minfreq))
+  assertthat::assert_that(test_26(maxfreq))
+
+  # 1.9. Check if the nbins argument abides by the
+  # expected format
+
+  test_27 <- function(x){
+
+    assertthat::is.count(x) &
+      x > 0 &
+      x < nrow(aggregated_soundscape@aggregated_df)
+  }
+
+  assertthat::on_failure(test_27) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a valid nbins format. The nbins argument needs to be provided as a single positive integer. The value should range between 1 and the number of rows in the data frame. Please note that the nbins argument works in synergy with the marginplot argument. If you wish to display a marginal plot, please set marginplot = TRUE.")
+
+  }
+
+  assertthat::assert_that(test_27(nbins))
+
+
+  # 1.10. Check if the supplied twilight argument is one
   # of the available options
 
-  test_16 <- function(x){
+  test_28 <- function(x){
 
     (assertthat::is.string(x) &
        x %in% c("none","rim","refraction","sunlight","civil",
@@ -778,18 +682,18 @@ heatmapper=function(aggregate_list,
 
   }
 
-  assertthat::on_failure(test_16) <- function(call, env){
+  assertthat::on_failure(test_28) <- function(call, env){
 
     paste0(deparse(call$x), " is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.")
 
   }
 
-  assertthat::assert_that(test_16(twilight))
+  assertthat::assert_that(test_28(twilight))
 
-  # 1.12. Check if the labelsize arguments follow the
+  # 1.11. Check if the labelsize arguments follow the
   # expected format.
 
-  test_17 <- function(x){
+  test_29 <- function(x){
 
     (abs(x) == x) &
       x > 0 &
@@ -797,20 +701,20 @@ heatmapper=function(aggregate_list,
 
   }
 
-  assertthat::on_failure(test_17) <- function(call, env){
+  assertthat::on_failure(test_29) <- function(call, env){
 
     paste0(deparse(call$x), " is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.")
 
   }
 
-  assertthat::assert_that(test_17(labelsize_time))
-  assertthat::assert_that(test_17(labelsize_frequency))
-  assertthat::assert_that(test_17(labelsize_polar))
+  assertthat::assert_that(test_29(labelsize_time))
+  assertthat::assert_that(test_29(labelsize_frequency))
+  assertthat::assert_that(test_29(labelsize_polar))
 
-  # 1.13. Check if the palette and direction arguments
+  # 1.12. Check if the palette and direction arguments
   # abide by the expected format.
 
-  test_18 <- function(x){
+  test_30 <- function(x){
 
     assertthat::is.string(x) &
       x %in% c("A", "B", "C", "D", "E", "magma", "inferno",
@@ -818,49 +722,49 @@ heatmapper=function(aggregate_list,
 
   }
 
-  test_19 <- function(x){
+  test_31 <- function(x){
 
       x %in% c(1, -1)
 
   }
 
-  assertthat::on_failure(test_18) <- function(call, env){
+  assertthat::on_failure(test_30) <- function(call, env){
 
     paste0(deparse(call$x), " is not a valid palette argument. Palette needs to be supplied as a character string of either: 'A', 'B', 'C', 'D', 'E', 'magma', 'inferno', 'plasma', 'viridis' or 'cividis'. Please supply a valid palette argument. Consult the soundscapeR of viridis package documentation for more information.")
 
   }
 
-  assertthat::on_failure(test_19) <- function(call, env){
+  assertthat::on_failure(test_31) <- function(call, env){
 
     paste0(deparse(call$x), " is not a valid direction argument. The direction argument needs to be supplied as a single integer of either 1 or -1. Please supply a valid direction argument. Consult the soundscapeR of viridis package documentation for more information.")
 
   }
 
-  assertthat::assert_that(test_18(palette))
-  assertthat::assert_that(test_19(direction))
+  assertthat::assert_that(test_30(palette))
+  assertthat::assert_that(test_31(direction))
 
-  # 1.14. Check if the boolean flag arguments follow the
+  # 1.13. Check if the boolean flag arguments follow the
   # expected format (zero.black, marginplot, interactive,
   # save)
 
-  test_20 <- function(x){
+  test_32 <- function(x){
 
     assertthat::is.flag(x)
 
   }
 
-  assertthat::on_failure(test_20) <- function(call, env){
+  assertthat::on_failure(test_32) <- function(call, env){
 
     paste0(deparse(call$x), " is not a boolean flag. Please supply the argument as one of either TRUE or FALSE, and make sure the argument is not a character string.")
 
   }
 
-  assertthat::assert_that(test_20(zero.black))
-  assertthat::assert_that(test_20(marginplot))
-  assertthat::assert_that(test_20(interactive))
-  assertthat::assert_that(test_20(save))
+  assertthat::assert_that(test_32(zero.black))
+  assertthat::assert_that(test_32(marginplot))
+  assertthat::assert_that(test_32(interactive))
+  assertthat::assert_that(test_32(save))
 
-  test_21 <- function(x){
+  test_33 <- function(x){
 
     if (x == TRUE){
 
@@ -871,24 +775,24 @@ heatmapper=function(aggregate_list,
 
   }
 
-  assertthat::on_failure(test_21) <- function(call, env){
+  assertthat::on_failure(test_33) <- function(call, env){
 
     paste0(deparse(call$x), " is used with other arguments which are not accepted. The marginplot=TRUE argument can not be used in synergy with type='polar' or interactive = TRUE.")
 
   }
 
-  assertthat::assert_that(test_21(x = marginplot))
+  assertthat::assert_that(test_33(x = marginplot))
 
-  # 1.15. Check if the n_time and the n_freq arguments
+  # 1.14. Check if the n_time and the n_freq arguments
   # follow the expected format
 
-  test_23 <- function(x){
+  test_34 <- function(x){
 
     assertthat::is.count(x)
 
   }
 
-  assertthat::on_failure(test_23) <- function(call, env){
+  assertthat::on_failure(test_34) <- function(call, env){
     paste0(deparse(call$x), " does not have the correct
            format. Please supply the argument as a single
            positive integer. Consult package documentation
@@ -896,64 +800,63 @@ heatmapper=function(aggregate_list,
 
   }
 
-  assertthat::assert_that(test_23(n_time))
-  assertthat::assert_that(test_23(n_freq))
+  assertthat::assert_that(test_34(n_time))
+  assertthat::assert_that(test_34(n_freq))
 
-  # 1.16. Check if the dir, filename and device arguments
+  # 1.15. Check if the dir, filename and device arguments
   # follow the expected format.
 
   if (dir=="default"){
     dir <- getwd()
-
   }
 
   else{dir <- dir}
 
-  test_24_1 <- function(x){
+  test_35 <- function(x){
 
     assertthat::is.string(x)
 
   }
 
-  test_24_2 <- function(x){
+  test_36 <- function(x){
 
     assertthat::is.dir(x)
 
   }
 
-  assertthat::on_failure(test_24_1) <- function(call, env){
+  assertthat::on_failure(test_35) <- function(call, env){
     paste0(deparse(call$x), " is not a character string. The dir arguments needs to be a character string of either 'default' - or a valid pathname to an existing directory on your device. If you're working on a Windows operating system, pay attention to backslash and forwardslash.")
 
   }
 
-  assertthat::assert_that(test_24_1(dir))
-  assertthat::assert_that(test_24_2(dir))
+  assertthat::assert_that(test_35(dir))
+  assertthat::assert_that(test_36(dir))
 
-  test_25_1 <- function(x){
+  test_37 <- function(x){
 
     assertthat::is.string(x)
 
   }
 
-  test_25_2 <- function(x){
+  test_38 <- function(x){
 
     !(sub('.*\\.', '', filename) %in% c("eps", "ps","tex", "pdf", "jpeg",
                                         "tiff","png", "bmp","svg", "wmf"))
 
   }
 
-  assertthat::on_failure(test_25_1) <- function(call, env){
+  assertthat::on_failure(test_37) <- function(call, env){
     paste0(deparse(call$x), " is not a valid filename argument. The filename argument needs to be a character string.")
   }
 
-  assertthat::on_failure(test_25_2) <- function(call, env){
+  assertthat::on_failure(test_38) <- function(call, env){
     paste0(deparse(call$x), " is not a valid filename argument. Please make the filename argument you provide a character string without the extension.")
   }
 
-  assertthat::assert_that(test_25_1(filename))
-  assertthat::assert_that(test_25_2(filename))
+  assertthat::assert_that(test_37(filename))
+  assertthat::assert_that(test_38(filename))
 
-  test_26 <- function(x){
+  test_39 <- function(x){
 
     assertthat::is.string(x) &
       x %in% c("eps", "ps","tex", "pdf", "jpeg", "tiff",
@@ -961,87 +864,54 @@ heatmapper=function(aggregate_list,
 
   }
 
-  assertthat::on_failure(test_26) <- function(call, env){
+  assertthat::on_failure(test_39) <- function(call, env){
     paste0(deparse(call$x), " is not a valid device argument. The device argument needs to be a character string, and one of the following options: eps, ps, tex, pdf, jpeg, tiff, png, bmp, svg, wmf.")
   }
 
-  assertthat::assert_that(test_26(device))
+  assertthat::assert_that(test_39(device))
 
-  # 1.17. Check if the supplied height and width arguments
+  # 1.16. Check if the supplied height and width arguments
   # follow the expected format
 
-  test_27 <- function(x){
+  test_40 <- function(x){
     assertthat::is.count(x)
   }
 
-  assertthat::on_failure(test_27) <- function(call, env){
+  assertthat::on_failure(test_40) <- function(call, env){
     paste0(deparse(call$x), " is not a valid argument. The height and width arguments needs to be supplied as a single positive integer. The height and width argument use the unit 'mm'. When values are too large, the figure will fail to plot/save.")
   }
 
-  assertthat::assert_that(test_27(height))
-  assertthat::assert_that(test_27(width))
-
+  assertthat::assert_that(test_40(height))
+  assertthat::assert_that(test_40(width))
 
   # 2. Prepare variables for plotting
 
-  tz <- lutz::tz_lookup_coords(lat=lat,
-                               lon=lon,
-                               method="accurate")
+  tz <- aggregated_soundscape@tz
 
-  test_28 <- function(x) {
+  lengthen=function(aggregated_soundscape){
 
-    return(x %in% (OlsonNames()))
-
-  }
-
-  assertthat::assert_that(test_28(tz))
-
-  df2 <- lengthen(aggregate_list[[3]],
-                  paste0(date),
-                  lat = lat,
-                  lon = lon)
-
-  test_29 <- function(x){
-
-    is.data.frame(x)
-
-  }
-
-  test_30 <- function(x){
-
-    assertthat::not_empty(x)
+    tz <- aggregated_soundscape@tz
+    df <- aggregated_soundscape@aggregated_df
+    df$frequency <- as.integer(rownames(df))
+    melt_df <- reshape2::melt(df, id.vars="frequency")
+    colnames(melt_df) <- c("frequency", "time", "value")
+    melt_df$frequency <- as.numeric(
+      as.character(melt_df$frequency))
+    melt_df$time <- as.POSIXct(
+      strptime(
+        x =paste(substr(aggregated_soundscape@first_day, 1, 12),
+                 melt_df$time,
+                 sep=" "),
+        format = "%Y-%m-%d %H:%M",
+        tz = tz))
+    return(melt_df)
 
   }
 
-  test_31 <- function(x){
-
-    assertthat::noNA(x)
-
-  }
-
-  test_32 <- function(x, y){
-
-    nrow(x) == (nrow(y)*ncol(y))
-
-  }
-
-  assertthat::assert_that(test_29(df2))
-  assertthat::assert_that(test_30(df2))
-  assertthat::assert_that(test_31(df2))
-  assertthat::assert_that(test_32(x = df2,
-                                  y = aggregate_list[[3]]))
+  df2 <- lengthen(aggregated_soundscape = aggregated_soundscape)
 
   if(zero.black==TRUE){
     df2[df2==0] <- NA
-
-    test_33 <- function(x){
-
-      is.na(any(x==0))
-
-    }
-
-    assertthat::assert_that(test_33(df2))
-
   }
 
   else{}
@@ -1050,55 +920,45 @@ heatmapper=function(aggregate_list,
     mintime <- min(
       as.POSIXct(
         strptime(
-          paste(date,
-                colnames(aggregate_list[[3]]),
+          paste(substr(aggregated_soundscape@first_day, 1, 12),
+                colnames(aggregated_soundscape@aggregated_df),
                 sep=" "),
           format= "%Y-%m-%d %H:%M:%S",
-          tz=tz)))
+          tz = tz)))
   }
 
   else{
     mintime <- as.POSIXct(
       strptime(
-        paste(date,
+        paste(substr(aggregated_soundscape@first_day, 1, 12),
               mintime,
               sep=" "),
         format= "%Y-%m-%d %H:%M:%S",
-        tz=tz))
+        tz = tz))
 
   }
-
-  test_34 <- function(x){
-
-    !is.na(as.POSIXct(x, format="%Y-%m-%d %H:%M:%S"))
-
-  }
-
-  assertthat::assert_that(test_34(mintime))
 
   if (maxtime=="default"){
     maxtime <- max(
       as.POSIXct(
         strptime(
-          paste(date,
-                colnames(aggregate_list[[3]]),
+          paste(substr(aggregated_soundscape@first_day, 1, 12),
+                colnames(aggregated_soundscape@aggregated_df),
                 sep=" "),
           format= "%Y-%m-%d %H:%M:%S",
-          tz=tz)))
+          tz = tz)))
 
   }
 
   else{
     maxtime <- as.POSIXct(
       strptime(
-        paste(date,
+        paste(substr(aggregated_soundscape@first_day, 1, 12),
               maxtime,
               sep=" "),
         format= "%Y-%m-%d %H:%M:%S",
-        tz=tz))
+        tz = tz))
   }
-
-  assertthat::assert_that(test_34(maxtime))
 
   if (maxfreq=="default"){
     maxfreq <- max(df2$frequency)
@@ -1108,65 +968,30 @@ heatmapper=function(aggregate_list,
 
   day <- as.POSIXct(
     strptime(
-      paste(date,
+      paste(substr(aggregated_soundscape@first_day, 1, 12),
             "00:00:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
-      tz=tz))
+      tz = tz))
 
-  test_38 <- function(x){
-
-    !is.na(as.POSIXct(x, format="%Y-%m-%d %H:%M:%S"))
-
-  }
-
-  assertthat::assert_that(test_38(day))
-
-  points <- data.frame(lon = lon, lat = lat)
-
-  assertthat::assert_that(test_29(points))
-  assertthat::assert_that(test_30(points))
-  assertthat::assert_that(test_31(points))
-
-  suntimes <- photobiology::day_night(
-    date = date,
-    tz= tz,
-    geocode = points,
-    twilight = twilight,
-    unit.out = "datetime")
-
-  assertthat::assert_that(test_29(suntimes))
-  assertthat::assert_that(test_30(suntimes))
-
-  sunrise <- as.POSIXct(suntimes$sunrise,
-                        tz = tz,
-                        format = "%Y-%m-%d %H:%M:%S")
-  sunset <- as.POSIXct(suntimes$sunset,
-                       tz = tz,
-                       format = "%Y-%m-%d %H:%M:%S")
-
-  assertthat::assert_that(test_31(sunrise))
-  assertthat::assert_that(test_31(sunset))
+  sunrise <- aggregated_soundscape@sunrise
+  sunset <- aggregated_soundscape@sunset
 
   midnight1 <- as.POSIXct(
     strptime(
-      paste(date,
+      paste(substr(aggregated_soundscape@first_day, 1, 12),
             "00:00:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
-      tz=tz))
-
-  assertthat::assert_that(test_38(midnight1))
+      tz = tz))
 
   midnight2 <- as.POSIXct(
     strptime(
-      paste(date,
-            "23:50:00",
+      paste(substr(aggregated_soundscape@first_day, 1, 12),
+            "23:55:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
-      tz=tz))
-
-  assertthat::assert_that(test_38(midnight2))
+      tz = tz))
 
   if (type=="regular"){
 
@@ -1233,13 +1058,13 @@ heatmapper=function(aggregate_list,
               face = "bold"))+
 
             ggplot2::geom_vline(
-              ggplot2::aes(xintercept = as.numeric(suntimes$sunrise)),
+              ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunrise)),
                            linetype="dashed",
                            color= if (direction==1){paste("white")}
                            else{paste("black")})+
 
             ggplot2::geom_vline(
-              ggplot2::aes(xintercept = as.numeric(suntimes$sunset)),
+              ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunset)),
               linetype="dashed",
               color= if (direction==1){paste("white")}
               else{paste("black")})+
@@ -1456,13 +1281,13 @@ heatmapper=function(aggregate_list,
                 face = "bold"))+
 
               ggplot2::geom_vline(
-                ggplot2::aes(xintercept = as.numeric(suntimes$sunrise)),
+                ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunrise)),
                 linetype="dashed",
                 color= if (direction==1){paste("white")}
                 else{paste("black")})+
 
               ggplot2::geom_vline(
-                ggplot2::aes(xintercept = as.numeric(suntimes$sunset)),
+                ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunset)),
                 linetype="dashed",
                 color= if (direction==1){paste("white")}
                 else{paste("black")})+
