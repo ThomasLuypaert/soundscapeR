@@ -19,8 +19,9 @@
 #'  inference about the diversity of the real-world biological community
 #'   unless verified using ground-truthing methods.
 #'
-#' @param aggregate_list The list produced by the \code{\link{aggregate_df}}
-#'  function.
+#' @param aggregated_soundscape The aggregated soundscape object produced by
+#'  \code{\link{aggregate_df}} function.
+#'
 #' @param qvalue A positive integer or decimal number (>=0), most commonly
 #'  between 0-3. This parameter modulates the sensitivity of diversity
 #'  values to the relative abundance of Operational Sound Units (OSUs).
@@ -30,12 +31,6 @@
 #' @param subset The scale for which the soundscape diversity is computed.
 #'  Options are 'total', 'day', night', 'dawn', 'dusk' and
 #'  'tod' (time of day - for each unique time in the day).
-#' @param date The first day of the recording period. Used for managing
-#' time-objects in R. Format as "YYYY-mm-dd".
-#' @param lat The latitude of the site at which the sound files were
-#' collected, expressed in decimal degrees.
-#' @param lon The longitude of the site at which the sound files were
-#' collected, expressed in decimal degrees.
 #' @param minfreq A numeric value indicating the lower frequency limit
 #' for which to compute the soundscape diversity. If set to default, uses
 #' the lowest available frequency in the dataframe.
@@ -80,12 +75,9 @@
 #' diversity either a numeric value, a vector of values or a list of
 #' vectors of values.
 #' @export
-sounddiv=function(aggregate_list,
+sounddiv=function(aggregated_soundscape,
                   qvalue,
                   subset="total",
-                  date,
-                  lat,
-                  lon,
                   mintime="default",
                   maxtime="default",
                   minfreq=0,
@@ -113,102 +105,347 @@ sounddiv=function(aggregate_list,
 
   }
 
-  assertthat::assert_that(test_0(aggregate_list))
+  assertthat::assert_that(test_0(aggregated_soundscape))
   assertthat::assert_that(test_0(qvalue))
-  assertthat::assert_that(test_0(date))
-  assertthat::assert_that(test_0(lat))
-  assertthat::assert_that(test_0(lon))
 
   # 1. Check if function input meets expectations
 
-  # 1.1. The supplied aggregate_list is a list, is not
-  # empty, and does not contain NAs
+  # 1.1. The supplied aggregated_soundscape argument is an S4-object of the type
+  # 'soundscape', and is not empty.
 
   test_1 <- function(x){
 
-    all(is.list(x) & length(x) == 3)
+    isS4(x) &
+      assertthat::are_equal(class(x)[1], "soundscape") &
+      assertthat::not_empty(x)
 
   }
 
-  test_1_1 <- function(x){
+  assertthat::on_failure(test_1) <- function(call, env){
 
-    is.list(x)
-
-  }
-
-  test_2_1 <- function(x){
-
-    !any(sapply(x, function(x) is.null(x)))
+    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape', or is empty. Please supply the aggregated_soundscape object produced by the aggregate_df() function. Consult the package documentation for further information.")
 
   }
 
-  test_2_2 <- function(x){
+  assertthat::assert_that(test_1(aggregated_soundscape))
 
-    assertthat::not_empty(x)
+  # 1.2. The aggregated_soundscape elements are in the expected format
 
-  }
+  # 1.2.1. The first_day argument cannot be wrong (S4 property)
+
+  # 1.2.2. The lat and lon argument
 
   test_3 <- function(x){
 
-    assertthat::noNA(x)
+    is.numeric(x) &
+      x >= -90 &
+      x <= 90
 
   }
 
   test_4 <- function(x){
 
-    limma::isNumeric(x) & is.data.frame(x)
-
-  }
-
-
-  assertthat::on_failure(test_1) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a list of the correct length. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_1_1) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a list. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_2_1) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty list. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
-
-  }
-
-  assertthat::on_failure(test_2_2) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty data frame. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
+    is.numeric(x) &
+      x >= -180 &
+      x <= 180
 
   }
 
   assertthat::on_failure(test_3) <- function(call, env){
 
-    paste0(deparse(call$x), " contains NA values. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
   assertthat::on_failure(test_4) <- function(call, env){
 
-    paste0(deparse(call$x), " contains non-numeric values. This functions builds on the output of aggregate_df(). Make sure you're supplying the output produced by the aggregate_df() function.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
-  assertthat::assert_that(test_1(aggregate_list))
-  assertthat::assert_that(test_1_1(aggregate_list[[1]]))
-  assertthat::assert_that(test_1_1(aggregate_list[[2]]))
-  assertthat::assert_that(test_2_1(aggregate_list[[1]]))
-  assertthat::assert_that(test_2_1(aggregate_list[[2]]))
-  assertthat::assert_that(test_2_2(aggregate_list[[3]]))
-  assertthat::assert_that(test_3(aggregate_list[[1]]))
-  assertthat::assert_that(test_3(aggregate_list[[2]]))
-  assertthat::assert_that(test_3(aggregate_list[[3]]))
-  assertthat::assert_that(test_4(aggregate_list[[3]]))
+  assertthat::assert_that(test_3(aggregated_soundscape@lat))
+  assertthat::assert_that(test_4(aggregated_soundscape@lon))
 
-  # 1.2. The supplied qvalue argument is a positive integer or decimal number
+  # 1.2.3. The time zone argument
+
+  test_5 <- function(x){
+
+    assertthat::is.string(x) & (x %in% (OlsonNames()))
+
+  }
+
+  assertthat::on_failure(test_5) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
+
+  }
+
+  assertthat::assert_that(test_5(aggregated_soundscape@tz))
+
+  # 1.2.4. The sunrise and sunset arguments cannot be wrong (s4 property)
+
+  # 1.2.5. The fileloc argument
+
+  test_6 <- function(x){
+
+    assertthat::is.dir(x) & assertthat::is.readable(x)
+
+  }
+
+  assertthat::assert_that(test_6(aggregated_soundscape@fileloc))
+
+  # 1.2.6. The index argument
+
+  test_7 <- function(x){
+
+    assertthat::is.string(x) & (x %in% c("BGN", "PMN", "CVR", "EVN", "ENT", "ACI",
+                                         "OSC", "SPT", "RHZ", "RVT", "RPS", "RNG"))
+
+  }
+
+  assertthat::on_failure(test_7) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
+
+  }
+
+  assertthat::assert_that(test_7(aggregated_soundscape@index))
+
+  # 1.2.7. The samplerate and window arguments
+
+  test_8 <- function(x){
+
+    assertthat::is.count(x)
+
+  }
+
+  assertthat::on_failure(test_8) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the samplerate and window arguments.")
+
+  }
+
+  assertthat::assert_that(test_8(aggregated_soundscape@samplerate))
+  assertthat::assert_that(test_8(aggregated_soundscape@window))
+
+  # 1.2.8. The binarization_method argument
+
+  test_9 <- function(x){
+    assertthat::is.string(x) & (x %in% c("IJDefault", "Huang", "Huang2", "Intermodes", "IsoData", "Li","MaxEntropy", "Mean", "MinErrorI", "Minimum", "Moments", "Otsu","Percentile", "RenyiEntropy", "Shanbhag", "Triangle", "Yen","Mode", "custom"))
+  }
+
+
+
+  assertthat::on_failure(test_9) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a character string describing one of the available binarization method options. Please consult package documentation for available options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+
+  }
+
+  assertthat::assert_that(test_9(aggregated_soundscape@binarization_method))
+
+  # 1.2.9. The threshold argument
+
+  test_10 <- function(x){
+
+    all(length(x) == 1 &
+          is.double(x) & !is.na(x))
+
+  }
+
+  assertthat::on_failure(test_10) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the binarize_df() and aggregate_df() functions, and pay special attention to the value argument is you're supplying a custom threshold value.")
+
+  }
+
+  assertthat::assert_that(test_10(aggregated_soundscape@threshold))
+
+  # 1.2.10. The output argument
+
+  test_11 <- function(x){
+
+    all(length(x) == 1 & is.character(x) & (x %in% c("incidence_freq", "raw")))
+
+  }
+
+  assertthat::on_failure(test_11) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
+
+  }
+
+  assertthat::assert_that(test_11(aggregated_soundscape@output))
+
+  # 1.2.11. The merged_df argument
+
+  test_12 <- function(x){
+
+    is.data.frame(x) &
+      assertthat::not_empty(x) &
+      assertthat::noNA(x) &
+      limma::isNumeric(x)
+
+  }
+
+  test_13 <- function(x){
+
+    (abs(as.numeric(rownames(x)[1]))+
+       abs(as.numeric(rownames(x)[2])))>3 &
+      min(as.numeric(rownames(x))) >= 0 &
+      max(as.numeric(rownames(x)))<= aggregated_soundscape@samplerate/2
+
+  }
+
+  test_14 <- function(x){
+
+    formatted <-  try(
+      as.POSIXct(
+        paste0(substr(aggregated_soundscape@first_day, 1, 12)," ", colnames(x)),
+        tz = aggregated_soundscape@tz,
+        format="%Y-%m-%d %H:%M:%S"),
+      silent = TRUE)
+
+    !any(sapply(formatted, function(y) is.na(y)))
+
+  }
+
+
+  assertthat::on_failure(test_12) <- function(call, env){
+
+    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+
+  }
+
+  assertthat::on_failure(test_13) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe produced by the aggregate_df() function.")
+
+  }
+
+  assertthat::on_failure(test_14) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of aggregate_df(). Make sure you're supplying the dataframe produced by the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_12(aggregated_soundscape@merged_df))
+  assertthat::assert_that(test_13(aggregated_soundscape@merged_df))
+  assertthat::assert_that(test_14(aggregated_soundscape@merged_df))
+
+  # 1.2.12. The binarized_df argument
+
+  test_15 <- function(x){
+
+    min(x) >= 0 &
+      max(x) <= 1
+
+  }
+
+  assertthat::on_failure(test_15) <- function(call, env){
+
+    paste0(deparse(call$x), " has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_12(aggregated_soundscape@binarized_df))
+  assertthat::assert_that(test_13(aggregated_soundscape@binarized_df))
+  assertthat::assert_that(test_14(aggregated_soundscape@binarized_df))
+  assertthat::assert_that(test_15(aggregated_soundscape@binarized_df))
+
+  # 1.2.12. The aggregated_df argument
+
+  assertthat::assert_that(test_12(aggregated_soundscape@aggregated_df))
+  assertthat::assert_that(test_13(aggregated_soundscape@aggregated_df))
+  assertthat::assert_that(test_14(aggregated_soundscape@aggregated_df))
+
+  if(aggregated_soundscape@output=="incidence_freq"){
+
+    test_16 <- function(x){
+
+      all(is.double(unlist(x)) & max(x) <= 1 & min(x)>= 0)
+
+    }
+
+    assertthat::on_failure(test_16) <- function(call, env){
+
+      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function, and pay special attention to the output argument.")
+
+    }
+
+    assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
+  }
+
+  if(aggregated_soundscape@output=="raw"){
+
+    test_16 <- function(x){
+
+      all(all(round(unlist(x)) == unlist(x)) &
+            max(x) <= max(table(colnames(aggregated_soundscape@merged_df))) &
+            min(x) >= 0)
+
+    }
+
+    assertthat::on_failure(test_16) <- function(call, env){
+
+      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function, and pay special attention to the output argument.")
+
+    }
+
+    assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
+  }
+
+  # 1.2.13. The aggregated_df_per_time argument
+
+  test_17_1 <- function(x){
+
+      all(sapply(x, function(x) is.data.frame(x))) &
+      all(assertthat::are_equal(
+        as.vector(sort(table(colnames(aggregated_soundscape@merged_df)))),
+        as.vector(unlist(sapply(x, function(x) ncol(x))))
+      )) &
+      length(x) == ncol(aggregated_soundscape@aggregated_df)
+  }
+
+  test_17_2 <- function(x){
+
+      all(sapply(x, function(x) nrow(x)==nrow(aggregated_soundscape@merged_df)))
+
+  }
+
+
+  assertthat::on_failure(test_17_1) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+
+  }
+
+  assertthat::on_failure(test_17_2) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_17_1(aggregated_soundscape@aggregated_df_per_time))
+  assertthat::assert_that(test_17_2(aggregated_soundscape@aggregated_df_per_time))
+
+  # 1.2.14. The effort_per_time argument
+
+  test_18 <- function(x){
+
+    identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
+
+  }
+
+  assertthat::on_failure(test_18) <- function(call, env){
+
+    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+
+  }
+
+  assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
+
+  # 1.3. The supplied qvalue argument is a positive integer or decimal number
 
   test_5 <- function(x){
       !is.character(x)
@@ -259,7 +496,7 @@ sounddiv=function(aggregate_list,
   assertthat::assert_that(test_7(qvalue))
   assertthat::assert_that(test_8(qvalue))
 
-  # 1.3. The subset argument is a character string, and one of the
+  # 1.4. The subset argument is a character string, and one of the
   # available options
 
   test_9 <- function(x){
@@ -285,74 +522,16 @@ sounddiv=function(aggregate_list,
   assertthat::assert_that(test_9(subset))
   assertthat::assert_that(test_10(subset))
 
-  # 1.4. the supplied date is in the right format
 
-  test_11 <- function(x) {
-    assertthat::is.string(x)
-  }
-
-  test_12 <- function(x) {
-    formatted = try(as.Date(x, "%Y-%m-%d"), silent = TRUE)
-    is_date = as.character(formatted) == x & !is.na(formatted)
-    return(is_date)
-  }
-
-  assertthat::on_failure(test_11) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a character string. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
-  }
-
-  assertthat::on_failure(test_12) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid date. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
-  }
-
-  assertthat::assert_that(test_11(date))
-  assertthat::assert_that(test_12(date))
-
-  # 1.5. The lat and lon are in decimal degrees and
-  # exist on Earth
-
-  test_13 <- function(x){
-
-    is.numeric(x) &
-      x >= -90 &
-      x <= 90
-
-  }
-
-  test_14 <- function(x){
-
-    is.numeric(x) &
-      x >= -180 &
-      x <= 180
-
-  }
-
-  assertthat::on_failure(test_13) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
-
-  }
-
-  assertthat::on_failure(test_14) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
-
-  }
-
-  assertthat::assert_that(test_13(lat))
-  assertthat::assert_that(test_14(lon))
-
-  # 1.6. the supplied mintime and maxtime arguments
+  # 1.5. the supplied mintime and maxtime arguments
   # are one of the available options
 
   test_15 <- function(x){
 
+    is.character(x) & (
+
     x == "default" |
-      !is.na(as.POSIXct(x, format="%H:%M:%S"))
+      !is.na(as.POSIXct(x, format="%H:%M:%S")))
 
   }
 
@@ -365,21 +544,21 @@ sounddiv=function(aggregate_list,
   assertthat::assert_that(test_15(mintime))
   assertthat::assert_that(test_15(maxtime))
 
-  # 1.7. The minfreq and maxfreq arguments follow
+  # 1.6. The minfreq and maxfreq arguments follow
   # the expected values
 
   test_16 <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregate_list[[3]]))) &
-       x <= max(as.numeric(rownames(aggregate_list[[3]])))) |
+       x >= min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
+       x <= max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))) |
       x == 0
 
   }
 
   test_17 <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregate_list[[3]]))) &
-       x <= max(as.numeric(rownames(aggregate_list[[3]])))) |
+       x >= min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
+       x <= max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))) |
       x == "default"
 
   }
@@ -399,7 +578,7 @@ sounddiv=function(aggregate_list,
   assertthat::assert_that(test_16(minfreq))
   assertthat::assert_that(test_17(maxfreq))
 
-  # 1.8. The supplied twilight argument is one
+  # 1.7. The supplied twilight argument is one
   # of the available options
 
   test_18 <- function(x){
@@ -419,7 +598,7 @@ sounddiv=function(aggregate_list,
 
   assertthat::assert_that(test_18(twilight))
 
-  # 1.9. The dawnstart, dawnend, duskstart and duskend arguments are either
+  # 1.8. The dawnstart, dawnend, duskstart and duskend arguments are either
   # zero or a single positive integer
 
   test_19 <- function(x){
@@ -430,7 +609,7 @@ sounddiv=function(aggregate_list,
 
   assertthat::on_failure(test_19) <- function(call, env){
 
-    paste0(deparse(call$x), " is not in a valid dawnstart/dawnend/duskstart/duskend argument. The dawn and dusk timing arguments need to be either zero, or a single positive integer. Please consult package documentation for more information.")
+    paste0(deparse(call$x), " is not a valid dawnstart/dawnend/duskstart/duskend format The dawn and dusk timing arguments need to be either zero, or a single positive integer. Please consult package documentation for more information.")
 
   }
 
@@ -439,7 +618,7 @@ sounddiv=function(aggregate_list,
   assertthat::assert_that(test_19(duskstart))
   assertthat::assert_that(test_19(duskend))
 
-  # 1.10. The freqseq argument is a boolean flag
+  # 1.9. The freqseq argument is a boolean flag
 
   test_20 <- function(x){
 
@@ -455,14 +634,14 @@ sounddiv=function(aggregate_list,
 
   assertthat::assert_that(test_20(freqseq))
 
-  # 1.11. Check if the nbins argument abides by the
+  # 1.10. Check if the nbins argument abides by the
   # expected format
 
   test_21 <- function(x){
 
     assertthat::is.count(x) &
       x > 0 &
-      x < nrow(aggregate_list[[3]])
+      x < nrow(aggregated_soundscape@aggregated_df)
   }
 
   assertthat::on_failure(test_21) <- function(call, env){
@@ -473,7 +652,7 @@ sounddiv=function(aggregate_list,
 
   assertthat::assert_that(test_21(nbins))
 
-  # 1.12. The output argument is a string and one of the available options
+  # 1.11. The output argument is a string and one of the available options
 
   test_22 <- function(x){
     assertthat::is.string(x)
@@ -485,7 +664,7 @@ sounddiv=function(aggregate_list,
 
   assertthat::on_failure(test_22) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string. Please supply the heatmap type as a character string. Consult package documentation for available output argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+    paste0(deparse(call$x), " is not a character string. Please supply the output argument as a character string. Consult package documentation for available output argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
 
   }
 
@@ -513,105 +692,76 @@ sounddiv=function(aggregate_list,
 
   # 3. Create the diurnal phase subsetting objects
 
-  tz <- lutz::tz_lookup_coords(lat=lat, lon=lon, method="accurate")
-
-  test_24 <- function(x) {
-
-    return(x %in% (OlsonNames()))
-
-  }
-
-  assertthat::assert_that(test_24(tz))
+  tz <- aggregated_soundscape@tz
 
   day <- as.POSIXct(
     strptime(
-      paste(date,
+      paste(substr(aggregated_soundscape@first_day, 1, 12),
             "00:00:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
       tz=tz))
 
-  test_25 <- function(x){
+  sunrise <- aggregated_soundscape@sunrise
 
-    !is.na(as.POSIXct(x, format="%Y-%m-%d %H:%M:%S"))
-
-  }
-
-  assertthat::assert_that(test_25(day))
-
-  points <- data.frame(lon = lon, lat = lat)
-
-  test_26 <- function(x){
-
-    is.data.frame(x)
-
-  }
-
-  test_27 <- function(x){
-
-    assertthat::not_empty(x)
-
-  }
-
-  test_28 <- function(x){
-
-    assertthat::noNA(x)
-
-  }
-
-  assertthat::assert_that(test_26(points))
-  assertthat::assert_that(test_27(points))
-  assertthat::assert_that(test_28(points))
-
-  suntimes <- photobiology::day_night(
-    date = date,
-    tz= tz,
-    geocode = points,
-    twilight = twilight,
-    unit.out = "datetime")
-
-  assertthat::assert_that(test_26(suntimes))
-  assertthat::assert_that(test_27(suntimes))
-
-  sunrise <- as.POSIXct(suntimes$sunrise,
-                        tz = tz,
-                        format = "%Y-%m-%d %H:%M:%S")
-
-  sunset <- as.POSIXct(suntimes$sunset,
-                       tz = tz,
-                       format = "%Y-%m-%d %H:%M:%S")
-
-  assertthat::assert_that(test_25(sunrise))
-  assertthat::assert_that(test_25(sunset))
+  sunset <- aggregated_soundscape@sunset
 
   # 4. Set minfreq, maxfreq, mintime and maxtime arguments
 
   if (maxfreq=="default"){
-    maxfreq <- max(as.numeric(rownames(aggregate_list[[3]])))
+    maxfreq <- max(
+      as.numeric(
+        rownames(aggregated_soundscape@aggregated_df)))
   }
 
   else{maxfreq <- maxfreq}
 
   if (mintime=="default"){
-    mintime <- min(as.POSIXct(strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+    mintime <- min(
+      as.POSIXct(
+        strptime(
+          paste(
+            substr(aggregated_soundscape@first_day, 1, 12),
+            colnames(aggregated_soundscape@aggregated_df),
+            sep=" "),
+          format= "%Y-%m-%d %H:%M:%S",
+          tz=tz)))
   }
 
-  else{mintime <- as.POSIXct(strptime(paste(date, mintime, sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz))}
+  else{mintime <- as.POSIXct(
+    strptime(
+      paste(
+        substr(aggregated_soundscape@first_day, 1, 12),
+        mintime,
+        sep=" "),
+      format= "%Y-%m-%d %H:%M:%S",
+      tz=tz))}
 
-  assertthat::assert_that(test_25(mintime))
 
   if (maxtime=="default"){
-    maxtime <- max(as.POSIXct(strptime(paste(date, colnames(aggregate_list[[3]]), sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz)))
+    maxtime <- max(
+      as.POSIXct(
+        strptime(
+          paste(substr(aggregated_soundscape@first_day, 1, 12),
+                colnames(aggregated_soundscape@aggregated_df),
+                sep=" "),
+          format= "%Y-%m-%d %H:%M:%S",
+          tz=tz)))
   }
 
-  else{maxtime <- as.POSIXct(strptime(paste(date, maxtime, sep=" "), format= "%Y-%m-%d %H:%M:%S", tz=tz))}
-
-  assertthat::assert_that(test_25(mintime))
+  else{maxtime <- as.POSIXct(
+    strptime(
+      paste(
+        substr(aggregated_soundscape@first_day, 1, 12),
+        maxtime,
+        sep=" "),
+      format= "%Y-%m-%d %H:%M:%S",
+      tz=tz))}
 
   # 5. Set row names, column names and subsetting objects + create new df
 
   rownames_df <- as.numeric(
-    rownames(aggregate_list[[3]]))
+    rownames(aggregated_soundscape@aggregated_df))
 
   rownames_subset <- as.character(
     subset(rownames_df,
@@ -620,8 +770,8 @@ sounddiv=function(aggregate_list,
 
   colnames_df <- as.POSIXct(
     strptime(
-      paste(date,
-            colnames(aggregate_list[[3]]),
+      paste(substr(aggregated_soundscape@first_day, 1, 12),
+            colnames(aggregated_soundscape@aggregated_df),
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
       tz=tz))
@@ -632,7 +782,7 @@ sounddiv=function(aggregate_list,
              colnames_df >= mintime &
                colnames_df <= maxtime)))
 
-  new_df <- aggregate_list[[3]][rownames_subset,colnames_subset]
+  new_df <- aggregated_soundscape@aggregated_df[rownames_subset,colnames_subset]
 
   # Compute the soundscape diversity under different scenarios
 
@@ -684,16 +834,13 @@ sounddiv=function(aggregate_list,
         soundscape_diversity$time <- hms::as_hms(
           (as.POSIXct(
             strptime(
-              paste(date,
-                    colnames(aggregate_list[[3]]),
+              paste(substr(aggregated_soundscape@first_day, 1, 12),
+                    colnames(aggregated_soundscape@aggregated_df),
                     sep=" "),
               format= "%Y-%m-%d %H:%M:%S",
               tz=tz))))
 
-        colnames(soundscape_diversity) <-
-          c(paste0("soundscape_div",
-                   " (q=", qvalue, ")"),
-            "time_of_day")
+        colnames(soundscape_diversity) <- c("soundscape_div", "time_of_day")
 
         soundscape_diversity
       }
@@ -709,7 +856,7 @@ sounddiv=function(aggregate_list,
                        colnames_df >= sunrise &
                          colnames_df <= sunset)))
 
-          daytime_df <- aggregate_list[[3]][rownames_subset,colnames_day]
+          daytime_df <- aggregated_soundscape@aggregated_df[rownames_subset,colnames_day]
 
           soundscape_diversity <-
             hilldiv::hill_div(
@@ -740,7 +887,7 @@ sounddiv=function(aggregate_list,
                          colnames_df < sunrise |
                            colnames_df > sunset)))
 
-            nighttime_df <- aggregate_list[[3]][rownames_subset,
+            nighttime_df <- aggregated_soundscape@aggregated_df[rownames_subset,
                                                 colnames_night]
 
             soundscape_diversity <-
@@ -770,7 +917,7 @@ sounddiv=function(aggregate_list,
                          colnames_df >= (sunrise - dawnstart) &
                            colnames_df <= (sunrise + dawnend))))
 
-              dawntime_df <- aggregate_list[[3]][rownames_subset,
+              dawntime_df <- aggregated_soundscape@aggregated_df[rownames_subset,
                                                  colnames_dawn]
 
               soundscape_diversity <-
@@ -801,7 +948,7 @@ sounddiv=function(aggregate_list,
                            colnames_df >= (sunset - duskstart) &
                              colnames_df <= (sunset + duskend))))
 
-                dusktime_df <- aggregate_list[[3]][rownames_subset,
+                dusktime_df <- aggregated_soundscape@aggregated_df[rownames_subset,
                                                    colnames_dusk]
 
                 soundscape_diversity <-
@@ -833,6 +980,8 @@ sounddiv=function(aggregate_list,
     if (freqseq=="TRUE"){
 
       new_df$frequency <- as.numeric(rownames(new_df))
+      minfreq_label <- min(new_df$frequency)
+      maxfreq_label <- max(new_df$frequency)
       rownames <- as.numeric(rownames(new_df))
 
       freq_list_1 <- vector("list", 0)
@@ -864,6 +1013,20 @@ sounddiv=function(aggregate_list,
                  rownames_1[[i]] > ((i-1)*(maxfreq/nbins))))
 
       }
+
+      binnames_min <- vector("list", 0)
+      binnames_max <- vector("list", 0)
+      binnames_tot <- vector("list", 0)
+
+      for (i in 1:length(freq_list_2)){
+
+        binnames_min[[i]] <- min(as.numeric(rownames(freq_list_2[[i]]))) -
+          as.integer(aggregated_soundscape@samplerate / aggregated_soundscape@window)
+        binnames_max[[i]] <- max(as.numeric(rownames(freq_list_2[[i]])))
+        binnames_tot[[i]] <- paste0(binnames_min[[i]], " - ", binnames_max[[i]], " Hz")
+      }
+
+      binnames_tot <- unlist(binnames_tot)
 
       if (subset == "total"){
 
@@ -899,23 +1062,9 @@ sounddiv=function(aggregate_list,
 
         soundscape_diversity <- as.data.frame(soundscape_diversity)
 
-        soundscape_diversity$frequency_bin <-
-          paste0(
-            seq((minfreq-minfreq),
-                (maxfreq-(maxfreq/nbins)),
-                maxfreq/nbins),
-            "-",
-            seq(((minfreq-minfreq)+(maxfreq/nbins)),
-                maxfreq,
-                maxfreq/nbins),
-            " Hz")
+        soundscape_diversity$frequency_bin <- binnames_tot
 
-        colnames(soundscape_diversity) <-
-          c(paste0("soundscape_div",
-                   " (q=",
-                   qvalue,
-                   ")"),
-            "freq_interval")
+        colnames(soundscape_diversity) <- c("soundscape_div", "freq_interval")
 
         soundscape_diversity
       }
@@ -986,30 +1135,16 @@ sounddiv=function(aggregate_list,
               hms::as_hms(
                 (as.POSIXct(
                   strptime(
-                    paste(date,
-                          colnames(aggregate_list[[3]]),
+                    paste(substr(aggregated_soundscape@first_day, 1, 12),
+                          colnames(aggregated_soundscape@aggregated_df),
                           sep=" "),
                     format= "%Y-%m-%d %H:%M:%S",
                     tz=tz))))
 
-            colnames(soundscape_diversity[[i]]) <-
-              c(
-                paste0("soundscape_div",
-                       " (q=",
-                       qvalue,
-                       ")"),
-                "time_of_day")
+            colnames(soundscape_diversity[[i]]) <- c("soundscape_div", "time_of_day")
           }
 
-          names(soundscape_diversity) <-
-            paste0(seq((minfreq-minfreq),
-                       (maxfreq-(maxfreq/nbins)),
-                       maxfreq/nbins),
-                   "-",
-                   seq(((minfreq-minfreq)+(maxfreq/nbins)),
-                       maxfreq,
-                       maxfreq/nbins),
-                   " Hz")
+          names(soundscape_diversity) <- binnames_tot
 
           soundscape_diversity
 
@@ -1066,23 +1201,10 @@ sounddiv=function(aggregate_list,
             soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
 
             soundscape_diversity <- as.data.frame(soundscape_diversity)
-            soundscape_diversity$frequency_bin <-
-              paste0(
-                seq((minfreq-minfreq),
-                    (maxfreq-(maxfreq/nbins)),
-                    maxfreq/nbins),
-                "-",
-                seq(((minfreq-minfreq)+(maxfreq/nbins)),
-                    maxfreq,
-                    maxfreq/nbins),
-                " Hz")
 
-            colnames(soundscape_diversity) <-
-              c(paste0("soundscape_div_day",
-                       " (q=",
-                       qvalue,
-                       ")"),
-                "freq_interval")
+            soundscape_diversity$frequency_bin <-  binnames_tot
+
+            colnames(soundscape_diversity) <- c("soundscape_div", "freq_interval")
 
             soundscape_diversity
 
@@ -1143,23 +1265,9 @@ sounddiv=function(aggregate_list,
 
               soundscape_diversity <- as.data.frame(soundscape_diversity)
 
-              soundscape_diversity$frequency_bin <-
-                paste0(
-                  seq((minfreq-minfreq),
-                      (maxfreq-(maxfreq/nbins)),
-                      maxfreq/nbins),
-                  "-",
-                  seq(((minfreq-minfreq)+(maxfreq/nbins)),
-                      maxfreq,
-                      maxfreq/nbins),
-                  " Hz")
+              soundscape_diversity$frequency_bin <- binnames_tot
 
-              colnames(soundscape_diversity) <-
-                c(paste0("soundscape_div_night",
-                         " (q=",
-                         qvalue,
-                         ")"),
-                  "freq_interval")
+              colnames(soundscape_diversity) <- c("soundscape_div", "freq_interval")
 
               soundscape_diversity
 
@@ -1219,23 +1327,9 @@ sounddiv=function(aggregate_list,
 
                 soundscape_diversity <- as.data.frame(soundscape_diversity)
 
-                soundscape_diversity$frequency_bin <-
-                  paste0(
-                    seq((minfreq-minfreq),
-                        (maxfreq-(maxfreq/nbins)),
-                        maxfreq/nbins),
-                    "-",
-                    seq(((minfreq-minfreq)+(maxfreq/nbins)),
-                        maxfreq,
-                        maxfreq/nbins),
-                    " Hz")
+                soundscape_diversity$frequency_bin <- binnames_tot
 
-                colnames(soundscape_diversity) <-
-                  c(paste0("soundscape_div_dawn",
-                           " (q=",
-                           qvalue,
-                           ")"),
-                    "freq_interval")
+                colnames(soundscape_diversity) <- c("soundscape_div", "freq_interval")
 
                 soundscape_diversity
 
@@ -1297,23 +1391,9 @@ sounddiv=function(aggregate_list,
                   soundscape_diversity[!is.finite(soundscape_diversity)] <- 0
                   soundscape_diversity <- as.data.frame(soundscape_diversity)
 
-                  soundscape_diversity$frequency_bin <-
-                    paste0(
-                      seq((minfreq-minfreq),
-                          (maxfreq-(maxfreq/nbins)),
-                          maxfreq/nbins),
-                      "-",
-                      seq(((minfreq-minfreq)+(maxfreq/nbins)),
-                          maxfreq,
-                          maxfreq/nbins),
-                      " Hz")
+                  soundscape_diversity$frequency_bin <- binnames_tot
 
-                  colnames(soundscape_diversity) <-
-                    c(paste0("soundscape_div_dusk",
-                             " (q=",
-                             qvalue,
-                             ")"),
-                      "freq_interval")
+                  colnames(soundscape_diversity) <- c("soundscape_div", "freq_interval")
 
                   soundscape_diversity
 

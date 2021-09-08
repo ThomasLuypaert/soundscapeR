@@ -52,7 +52,8 @@ Imports:
     assertthat,
     limma,
     vdiffr,
-    crayon
+    crayon,
+    parallel
 Suggests: 
     testthat (>= 3.0.0)
 Depends: 

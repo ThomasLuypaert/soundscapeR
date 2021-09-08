@@ -254,7 +254,7 @@ merge_csv <- function(fileloc,
 
   # 2. Get a list of the acoustic index '.csv' files in the specified file location
 
-  setwd(fileloc)
+  setwd(paste0(fileloc, "/", window))
   folders <- getwd()
 
   filenames <- list.files(folders,
@@ -263,132 +263,10 @@ merge_csv <- function(fileloc,
                                            ".csv$"),
                           recursive = TRUE)
 
-    # 2.1. Check if filenames is a list of characters and is readable
-
-  test_11 <- function(x){
-    is.vector(x, mode = "character")
-  }
-
-  test_12 <- function(x){
-    assertthat::not_empty(x)
-  }
-
-  test_13 <- function(x){
-    assertthat::noNA(x)
-  }
-
-  test_14 <- function(x){
-
-    readable<- vector()
-
-    for (i in 1:length(filenames)){
-
-      readable[i] <- assertthat::is.readable(x[i])
-
-    }
-
-    return(!any(!readable))
-
-  }
-
-  assertthat::on_failure(test_11) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a character vector containing the path to each csv file. Check if the correct file location name was supplied. Make sure to have computed the acoustic index csv files using the index_calc() function prior to using this function.")
-
-  }
-
-  assertthat::on_failure(test_12) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty character vector, files were not succesfully read by list.files(). Check if the correct file location was supplied. Make sure to have computed the acoustic index csv files using the index_calc() function prior to using this function.")
-
-  }
-
-  assertthat::on_failure(test_13) <- function(call, env){
-
-    paste0(deparse(call$x), " contains NAs. Check if the correct file location was supplied, and that files are not corrupted. Make sure to have computed the acoustic index csv files using the index_calc() function prior to using this function.")
-
-  }
-
-  assertthat::on_failure(test_14) <- function(call, env){
-
-    paste0(deparse(call$x), " contains unreadable files. Please change permissions.")
-
-  }
-
-  assertthat::assert_that(test_11(filenames))
-  assertthat::assert_that(test_12(filenames))
-  assertthat::assert_that(test_13(filenames))
-  assertthat::assert_that(test_14(filenames))
-
   # 3. Merge csv files into a dataframe
 
   merged_df <- Reduce(rbind, lapply(filenames, utils::read.csv))
 
-    # 3.1. Check if merging worked successfully
-
-  test_15 <- function(x){
-
-    assertthat::not_empty(x)
-
-  }
-
-  test_16 <- function(x){
-
-    assertthat::noNA(x)
-
-  }
-
-  assertthat::on_failure(test_15) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty dataframe. Check format of .csv files.")
-
-  }
-
-  assertthat::on_failure(test_16) <- function(call, env){
-
-    paste0(deparse(call$x), " contains NA values. Check format of .csv files.")
-
-  }
-
-  assertthat::assert_that(test_15(merged_df))
-  assertthat::assert_that(test_16(merged_df))
-
-  if(index=="OSC"){
-
-  test_17 <- function(x){
-
-   nrow(x) == length(filenames) & ncol(x) == ((2*(window/2))+1)
-
-  }
-
-  assertthat::on_failure(test_17) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have expected dimensions. Check format of .csv files.")
-
-  }
-
-  assertthat::assert_that(test_17(merged_df))
-
-  }
-
-  else{
-
-
-    test_18 <- function(x){
-
-      nrow(x) == length(filenames) & ncol(x) == ((window/2)+1)
-
-    }
-
-    assertthat::on_failure(test_18) <- function(call, env){
-
-      paste0(deparse(call$x), " does not have expected dimensions. Check format of .csv files.")
-
-    }
-
-    assertthat::assert_that(test_18(merged_df))
-
-  }
 
   # 4. Perform some manipulations on the merged_df
 
@@ -408,7 +286,7 @@ merge_csv <- function(fileloc,
   }
 
   else {
-    frequency_bins <- as.integer(
+    frequency_bins <- frequency_bins_128 <- as.integer(
       seq(
         from = (samplerate/window),
         to = samplerate / 2,

@@ -8,8 +8,7 @@
 #'     section to find out more about visualization options.
 #'
 #' @param aggregated_soundscape The aggregated soundscape object produced by
-#'  \code{\link{aggregate_df
-#'  }} function.
+#'  \code{\link{aggregate_df}} function.
 #'
 #' @param type One of either "regular" or "polar". If set
 #' to "regular", produces a regular rectangular heatmap.
@@ -186,30 +185,18 @@ heatmapper=function(aggregated_soundscape,
   test_1 <- function(x){
 
     isS4(x) &
-      assertthat::are_equal(class(x)[1], "soundscape")
-
-  }
-
-  test_2 <- function(x){
-
-    assertthat::not_empty(x)
+      assertthat::are_equal(class(x)[1], "soundscape") &
+      assertthat::not_empty(x)
 
   }
 
   assertthat::on_failure(test_1) <- function(call, env){
 
-    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape'. Please supply the aggregated_soundscape object produced by the aggregate_df() function. Consult the package documentation for further information.")
-
-  }
-
-  assertthat::on_failure(test_2) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty S4-object of the type 'soundscape'. Did you supply the aggregated_soundscape argument produced using the aggregate_df() function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape', or is empty. Please supply the aggregated_soundscape object produced by the aggregate_df() function. Consult the package documentation for further information.")
 
   }
 
   assertthat::assert_that(test_1(aggregated_soundscape))
-  assertthat::assert_that(test_2(aggregated_soundscape))
 
   # 1.2. The aggregated_soundscape elements are in the expected format
 
@@ -463,7 +450,7 @@ heatmapper=function(aggregated_soundscape,
     test_16 <- function(x){
 
       all(all(round(unlist(x)) == unlist(x)) &
-            max(x) <= max(table(colnames(x))) &
+            max(x) <= max(table(colnames(aggregated_soundscape@merged_df))) &
             min(x) >= 0)
 
     }
@@ -479,46 +466,46 @@ heatmapper=function(aggregated_soundscape,
 
   # 1.2.13. The aggregated_df_per_time argument
 
-  test_17 <- function(x){
+  # test_17 <- function(x){
+  #
+  #   all(
+  #
+  #   all(sapply(x, function(x) is.data.frame(x))) &
+  #     assertthat::are_equal(
+  #       as.vector(sort(table(colnames(aggregated_soundscape@merged_df)))),
+  #       as.vector(unlist(sapply(x, function(x) ncol(x))))
+  #     ) &
+  #     all(sapply(x, function(x) nrow(x)==nrow(aggregated_soundscape@merged_df))) &
+  #     all(names(x) == unique(colnames(aggregated_soundscape@merged_df))) &
+  #     length(x) == ncol(aggregated_soundscape@aggregated_df)
+  #
+  #   )
+  #
+  # }
+  #
+  # assertthat::on_failure(test_17) <- function(call, env){
+  #
+  #   paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+  #
+  # }
 
-    all(
-
-    sapply(x, function(x) is.data.frame(x)) &
-      assertthat::are_equal(
-        as.vector(sort(table(colnames(aggregated_soundscape@merged_df)))),
-        as.vector(unlist(sapply(x, function(x) ncol(x))))
-      ) &
-      all(sapply(x, function(x) nrow(x)==nrow(aggregated_soundscape@merged_df))) &
-      all(names(x) == unique(colnames(aggregated_soundscape@merged_df))) &
-      length(x) == ncol(aggregated_soundscape@aggregated_df)
-
-    )
-
-  }
-
-  assertthat::on_failure(test_17) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
-
-  }
-
-  assertthat::assert_that(test_17(aggregated_soundscape@aggregated_df_per_time))
+  # assertthat::assert_that(test_17(aggregated_soundscape@aggregated_df_per_time))
 
   # 1.2.14. The effort_per_time argument
-
-  test_18 <- function(x){
-
-    identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
-
-  }
-
-  assertthat::on_failure(test_18) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
-
-  }
-
-  assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
+#
+#   test_18 <- function(x){
+#
+#     identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
+#
+#   }
+#
+#   assertthat::on_failure(test_18) <- function(call, env){
+#
+#     paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+#
+#   }
+#
+#   assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
 
   # 1.3. Check if supplied type argument is one of
   # available options
@@ -1831,12 +1818,9 @@ heatmapper=function(aggregated_soundscape,
                     c(0.15, 0.15, 0, 0), "cm"),
                   legend.position = "none")
 
-                xdata <- sounddiv(aggregate_list = aggregate_list,
+                xdata <- sounddiv(aggregated_soundscape = aggregated_soundscape,
                                   qvalue = 0,
                                   subset = "tod",
-                                  date = date,
-                                  lat = lat,
-                                  lon = lon,
                                   minfreq = minfreq,
                                   maxfreq = maxfreq)
 
@@ -1882,12 +1866,9 @@ heatmapper=function(aggregated_soundscape,
                 ydata <-
                   as.data.frame(
                     sounddiv(
-                      aggregate_list = aggregate_list,
+                      aggregated_soundscape = aggregated_soundscape,
                       qvalue = 0,
                       subset = "total",
-                      date = date,
-                      lat = lat,
-                      lon = lon,
                       freqseq = TRUE,
                       nbins = nbins,
                       minfreq = minfreq,

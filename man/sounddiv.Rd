@@ -5,12 +5,9 @@
 \title{Estimate soundscape diversity using Hill numbers}
 \usage{
 sounddiv(
-  aggregate_list,
+  aggregated_soundscape,
   qvalue,
   subset = "total",
-  date,
-  lat,
-  lon,
   mintime = "default",
   maxtime = "default",
   minfreq = 0,
@@ -26,8 +23,8 @@ sounddiv(
 )
 }
 \arguments{
-\item{aggregate_list}{The list produced by the \code{\link{aggregate_df}}
-function.}
+\item{aggregated_soundscape}{The aggregated soundscape object produced by
+\code{\link{aggregate_df}} function.}
 
 \item{qvalue}{A positive integer or decimal number (>=0), most commonly
 between 0-3. This parameter modulates the sensitivity of diversity
@@ -39,15 +36,6 @@ A value of 0 corresponds to the richness, a value of 1 is the equivalent
 \item{subset}{The scale for which the soundscape diversity is computed.
 Options are 'total', 'day', night', 'dawn', 'dusk' and
 'tod' (time of day - for each unique time in the day).}
-
-\item{date}{The first day of the recording period. Used for managing
-time-objects in R. Format as "YYYY-mm-dd".}
-
-\item{lat}{The latitude of the site at which the sound files were
-collected, expressed in decimal degrees.}
-
-\item{lon}{The longitude of the site at which the sound files were
-collected, expressed in decimal degrees.}
 
 \item{mintime}{The lower time limit for which to compute the soundscape
 diversity, formatted as "HH:MM:SS". If set to default, uses the

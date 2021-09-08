@@ -1219,15 +1219,15 @@ check_thresh <- function(merged_soundscape,
                                            size = 12,
                                            face = "bold")) +
 
-    ggplot2::labs(fill="Index value") +
+    ggplot2::labs(fill="Index value")
 
-    ggplot2::annotate(geom= "label",
-                      label = "BEFORE",
-                      x = new_colnames[as.integer((length(new_colnames)/10)*9.5)],
-                      y = (maxfreq - (maxfreq / 8)),
-                      fill = "white",
-                      color = "black",
-                      fontface = 2)
+    # ggplot2::annotate(geom= "label",
+    #                   label = "BEFORE",
+    #                   x = new_colnames[as.integer((length(new_colnames)/10)*9)],
+    #                   y = (maxfreq - (maxfreq / 8)),
+    #                   fill = "white",
+    #                   color = "black",
+    #                   fontface = 2)
   )
 
   plot_after <- suppressWarnings(
@@ -1285,19 +1285,21 @@ check_thresh <- function(merged_soundscape,
                                            size = 12,
                                            face = "bold")) +
 
-    ggplot2::labs(fill="Index value") +
+    ggplot2::labs(fill="Index value")
 
-    ggplot2::annotate(geom= "label",
-                      label = "AFTER",
-                      x = new_colnames[as.integer((length(new_colnames)/10)*9.5)],
-                      y = (maxfreq - (maxfreq / 8)),
-                      fill = "white",
-                      color = "black",
-                      fontface = 2)
+    # ggplot2::annotate(geom= "label",
+    #                   label = "AFTER",
+    #                   x = new_colnames[as.integer((length(new_colnames)/10)*9)],
+    #                   y = (maxfreq - (maxfreq / 8)),
+    #                   fill = "white",
+    #                   color = "black",
+    #                   fontface = 2)
     )
 
+  library(patchwork)
 
-  plot <- suppressWarnings(gridExtra::grid.arrange(plot_before, plot_after, ncol=1, top = grid::textGrob(paste0(merged_soundscape@index, " binarization check - ", method, " algorithm"),gp= grid::gpar(fontsize=20,fontface = "bold"))))
+
+  plot <- plot_before/plot_after
 
   suppressWarnings(print(plot))
 

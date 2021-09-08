@@ -4,7 +4,13 @@
 \alias{index_calc}
 \title{Compute Acoustic Indices}
 \usage{
-index_calc(fileloc, progloc, samplerate = 41000, window = 256)
+index_calc(
+  fileloc,
+  progloc,
+  samplerate = 41000,
+  window = 256,
+  parallel = FALSE
+)
 }
 \arguments{
 \item{fileloc}{The full-length path to the sound file for which to
@@ -22,6 +28,9 @@ expressed as the number of samples. The window size of choice depends on
 the fundamental frequency, intensity and change of the signal of interest,
 and influences the temporal and frequency resolution of the analysis.
 The window size is generally a power of 2.}
+
+\item{parallel}{A boolean flag (TRUE of FALSE) indicating whether parallel processing
+should be enables for index computation. Set to FALSE by default.}
 }
 \value{
 Creates a directory with '.csv' files for the aforementioned
@@ -42,7 +51,7 @@ If the file length exceeds 60 seconds, the file is automatically cut into
 
 \emph{Background Noise (BGN)}:
 The mode of the distribution of decibel values in each
-frequency bin, representing the “background” intensity value.
+frequency bin, representing the background intensity value.
 This index captures the acoustic energy which persists throughout the
 duration of the sound file, regardless of its origin
 (biophonic, geophonic or anthrophonic).

@@ -275,15 +275,15 @@ aggregate_df <- function(binarized_soundscape,
 
   }
 
-  assertthat::on_failure(test_17) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of binarize_df(). Make sure you're supplying the dataframe produced by the binarize_df() function.")
-
-  }
+  # assertthat::on_failure(test_17) <- function(call, env){
+  #
+  #   paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of binarize_df(). Make sure you're supplying the dataframe produced by the binarize_df() function.")
+  #
+  # }
 
   assertthat::assert_that(test_15(binarized_soundscape@merged_df))
   assertthat::assert_that(test_16(binarized_soundscape@merged_df))
-  assertthat::assert_that(test_17(binarized_soundscape@merged_df))
+  # assertthat::assert_that(test_17(binarized_soundscape@merged_df))
 
   # 1.2.12. The binarized_df argument
 
@@ -352,6 +352,8 @@ aggregate_df <- function(binarized_soundscape,
   assertthat::assert_that(test_21(output))
 
   # Get a list of unique times in the dataframe, and sort chronologically
+
+  colnames(binarized_soundscape@binarized_df) <- substr(colnames(binarized_soundscape@binarized_df), 1, 8)
 
   unique_times <- sort(
     hms::as_hms(

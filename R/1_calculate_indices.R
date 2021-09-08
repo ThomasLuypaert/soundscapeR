@@ -269,6 +269,8 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 #' the fundamental frequency, intensity and change of the signal of interest,
 #' and influences the temporal and frequency resolution of the analysis.
 #' The window size is generally a power of 2.
+#' @param parallel A boolean flag (TRUE of FALSE) indicating whether parallel processing
+#' should be enables for index computation. Set to FALSE by default.
 #'
 #' @details
 #' The default duration of sound files for index computation is 60 seconds.
@@ -279,7 +281,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 #'
 #' \emph{Background Noise (BGN)}:
 #' The mode of the distribution of decibel values in each
-#' frequency bin, representing the “background” intensity value.
+#' frequency bin, representing the background intensity value.
 #' This index captures the acoustic energy which persists throughout the
 #' duration of the sound file, regardless of its origin
 #' (biophonic, geophonic or anthrophonic).
@@ -339,7 +341,11 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 #'
 #' @export
 #'
-index_calc <- function(fileloc, progloc, samplerate = 41000, window = 256) {
+index_calc <- function(fileloc,
+                       progloc,
+                       samplerate = 41000,
+                       window = 256,
+                       parallel = FALSE) {
 
   # 1. Check if function input meets expectations
 
@@ -360,7 +366,7 @@ index_calc <- function(fileloc, progloc, samplerate = 41000, window = 256) {
 
   # 2. Create output directory, and list files in fileloc + checking
 
-  base_output_directory <- paste0(fileloc, "/Output")
+  base_output_directory <- paste0(fileloc, "/", window)
 
   files <- list.files(fileloc,
     pattern = "*.wav|*.WAV|*.mp3|
@@ -412,44 +418,86 @@ index_calc <- function(fileloc, progloc, samplerate = 41000, window = 256) {
 
   #4. Calculate acoustic indices
 
-  for (i in 1:length(files)) {
+  if (parallel == FALSE){
 
-    # Alert start
+    for (i in 1:length(files)) {
 
-    message("Processing ", files[i])
+      # Alert start
 
-    # get just the name of the file
-    file_name <- basename(files[i])
+      message("Processing ", files[i])
 
-    # make a folder for results
-    output_directory <- normalizePath(
-      file.path(
-        base_output_directory, file_name
+      # get just the name of the file
+      file_name <- basename(files[i])
+
+      # make a folder for results
+      output_directory <- normalizePath(
+        file.path(
+          base_output_directory, file_name
+        )
       )
-    )
-    dir.create(output_directory, recursive = TRUE)
+      dir.create(output_directory, recursive = TRUE)
 
-    # prepare command
-    command <- sprintf(
-      'audio2csv "%s" "%s" "%s" -l 1 -p ',
-      files[i],
-      paste0(
-        progloc,
-        "/ConfigFiles/Towsey.Acoustic.Custom.yml"
-      ),
-      output_directory
-    )
+      # prepare command
+      command <- sprintf(
+        'audio2csv "%s" "%s" "%s" -l 1 -p ',
+        files[i],
+        paste0(
+          progloc,
+          "/ConfigFiles/Towsey.Acoustic.Custom.yml"
+        ),
+        output_directory
+      )
 
-    # finally, execute the command
-    system2(paste0(progloc, "/AnalysisPrograms.exe"), command)
+      # finally, execute the command
+      system2(paste0(progloc, "/AnalysisPrograms.exe"), command)
 
-    print(paste0(((i/length(files))*100), " %"))
-    Sys.sleep(0.00000000000000000000000000000000000000000000000000001)
+    }
+  }
 
+  else{
+
+    if (parallel == TRUE){
+
+      no_cores <- detectCores() - 1
+      cl <- makeCluster(no_cores)
+
+      parallel::parLapply(cl, files, function(x) {
+
+        # Alert start
+
+        message("Processing ", x)
+
+        # get just the name of the file
+        file_name <- basename(x)
+
+        # make a folder for results
+        output_directory <- normalizePath(
+          file.path(
+            base_output_directory, file_name
+          )
+        )
+        dir.create(output_directory, recursive = TRUE)
+
+        # prepare command
+        command <- sprintf(
+          'audio2csv "%s" "%s" "%s" -l 1 -p ',
+          x,
+          paste0(
+            progloc,
+            "/ConfigFiles/Towsey.Acoustic.Custom.yml"
+          ),
+          output_directory
+        )
+
+        # finally, execute the command
+        system2(paste0(progloc, "/AnalysisPrograms.exe"), command)
+
+      })
+
+    }
   }
 
     # 4.1. Check if the output folder was successfully created
-
 
   test_5 <- function(x){
 
@@ -463,6 +511,6 @@ index_calc <- function(fileloc, progloc, samplerate = 41000, window = 256) {
 
   }
 
-  assertthat::assert_that(test_5(paste0(fileloc, "/Output")))
+  assertthat::assert_that(test_5(paste0(fileloc, "/", window)))
 
 }

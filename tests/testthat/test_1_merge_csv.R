@@ -178,6 +178,114 @@ testthat::test_that("the merge_csv function works as expected when the correct a
 
 })
 
+testthat::test_that("the merge_csv function works as expected when the correct arguments are supplied", {
+
+  merged_soundscape <- merge_csv(fileloc = fpath_output,
+                                 samplerate = 44100,
+                                 window = 256,
+                                 index = "BGN",
+                                 date = "2015-09-05",
+                                 lat = -1.915867928971629,
+                                 lon = -59.48937990402315,
+                                 twilight = "sunlight")
+
+  testthat::expect_s4_class(merged_soundscape, "soundscape")
+  testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@first_day))
+  testthat::expect_equal(as.character(merged_soundscape@first_day),"2015-09-05")
+  testthat::expect_true(is.numeric(merged_soundscape@lat))
+  testthat::expect_equal(merged_soundscape@lat,-1.915867928971629)
+  testthat::expect_true(is.numeric(merged_soundscape@lon))
+  testthat::expect_equal(merged_soundscape@lon,-59.48937990402315)
+  testthat::expect_true(is.character(merged_soundscape@tz))
+  testthat::expect_equal(merged_soundscape@tz, "America/Manaus")
+  testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@sunrise))
+  testthat::expect_equal(as.character(merged_soundscape@sunrise),"2015-09-05 05:54:19")
+  testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@sunset))
+  testthat::expect_equal(as.character(merged_soundscape@sunset),"2015-09-05 17:59:12")
+  testthat::expect_true(assertthat::is.dir(merged_soundscape@fileloc))
+  testthat::expect_true(assertthat::is.readable(merged_soundscape@fileloc))
+  testthat::expect_true(is.character(merged_soundscape@index))
+  testthat::expect_equal(merged_soundscape@index, "BGN")
+  testthat::expect_true(is.double(merged_soundscape@samplerate))
+  testthat::expect_equal(merged_soundscape@samplerate, 44100)
+  testthat::expect_true(is.double(merged_soundscape@window))
+  testthat::expect_equal(merged_soundscape@window, 256)
+  testthat::expect_true(is.na(merged_soundscape@binarization_method))
+  testthat::expect_true(is.na(merged_soundscape@threshold))
+  testthat::expect_true(is.na(merged_soundscape@output))
+  testthat::expect_true(is.data.frame(merged_soundscape@merged_df))
+  testthat::expect_equal(dim(merged_soundscape@merged_df),c(128, 13))
+  testthat::expect_true(limma::isNumeric(merged_soundscape@merged_df))
+  testthat::expect_true(assertthat::not_empty(merged_soundscape@merged_df))
+  testthat::expect_true(assertthat::noNA(merged_soundscape@merged_df))
+  testthat::expect_true(is.data.frame(merged_soundscape@binarized_df))
+  testthat::expect_equal(dim(merged_soundscape@binarized_df), c(1, 1))
+  testthat::expect_equal(merged_soundscape@binarized_df[1, 1], "missing")
+  testthat::expect_equal(dim(merged_soundscape@aggregated_df), c(1, 1))
+  testthat::expect_equal(merged_soundscape@aggregated_df[1, 1], "missing")
+  testthat::expect_true(is.list(merged_soundscape@aggregated_df_per_time))
+  testthat::expect_true(all(
+    sapply(merged_soundscape@aggregated_df_per_time, function(x) is.na(x))))
+  testthat::expect_true(is.list(merged_soundscape@effort_per_time))
+  testthat::expect_true(all(
+    sapply(merged_soundscape@effort_per_time, function(x) is.na(x))))
+
+})
+
+testthat::test_that("the merge_csv function works as expected when the correct arguments are supplied", {
+
+  merged_soundscape <- merge_csv(fileloc = fpath_output,
+                                 samplerate = 44100,
+                                 window = 256,
+                                 index = "OSC",
+                                 date = "2015-09-05",
+                                 lat = -1.915867928971629,
+                                 lon = -59.48937990402315,
+                                 twilight = "sunlight")
+
+  testthat::expect_s4_class(merged_soundscape, "soundscape")
+  testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@first_day))
+  testthat::expect_equal(as.character(merged_soundscape@first_day),"2015-09-05")
+  testthat::expect_true(is.numeric(merged_soundscape@lat))
+  testthat::expect_equal(merged_soundscape@lat,-1.915867928971629)
+  testthat::expect_true(is.numeric(merged_soundscape@lon))
+  testthat::expect_equal(merged_soundscape@lon,-59.48937990402315)
+  testthat::expect_true(is.character(merged_soundscape@tz))
+  testthat::expect_equal(merged_soundscape@tz, "America/Manaus")
+  testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@sunrise))
+  testthat::expect_equal(as.character(merged_soundscape@sunrise),"2015-09-05 05:54:19")
+  testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@sunset))
+  testthat::expect_equal(as.character(merged_soundscape@sunset),"2015-09-05 17:59:12")
+  testthat::expect_true(assertthat::is.dir(merged_soundscape@fileloc))
+  testthat::expect_true(assertthat::is.readable(merged_soundscape@fileloc))
+  testthat::expect_true(is.character(merged_soundscape@index))
+  testthat::expect_equal(merged_soundscape@index, "OSC")
+  testthat::expect_true(is.double(merged_soundscape@samplerate))
+  testthat::expect_equal(merged_soundscape@samplerate, 44100)
+  testthat::expect_true(is.double(merged_soundscape@window))
+  testthat::expect_equal(merged_soundscape@window, 256)
+  testthat::expect_true(is.na(merged_soundscape@binarization_method))
+  testthat::expect_true(is.na(merged_soundscape@threshold))
+  testthat::expect_true(is.na(merged_soundscape@output))
+  testthat::expect_true(is.data.frame(merged_soundscape@merged_df))
+  testthat::expect_equal(dim(merged_soundscape@merged_df),c(256, 13))
+  testthat::expect_true(limma::isNumeric(merged_soundscape@merged_df))
+  testthat::expect_true(assertthat::not_empty(merged_soundscape@merged_df))
+  testthat::expect_true(assertthat::noNA(merged_soundscape@merged_df))
+  testthat::expect_true(is.data.frame(merged_soundscape@binarized_df))
+  testthat::expect_equal(dim(merged_soundscape@binarized_df), c(1, 1))
+  testthat::expect_equal(merged_soundscape@binarized_df[1, 1], "missing")
+  testthat::expect_equal(dim(merged_soundscape@aggregated_df), c(1, 1))
+  testthat::expect_equal(merged_soundscape@aggregated_df[1, 1], "missing")
+  testthat::expect_true(is.list(merged_soundscape@aggregated_df_per_time))
+  testthat::expect_true(all(
+    sapply(merged_soundscape@aggregated_df_per_time, function(x) is.na(x))))
+  testthat::expect_true(is.list(merged_soundscape@effort_per_time))
+  testthat::expect_true(all(
+    sapply(merged_soundscape@effort_per_time, function(x) is.na(x))))
+
+})
+
   # 2.2. Correct error message when the wrong arguments are supplied
 
     # 2.2.1. The fileloc argument is wrong
@@ -194,7 +302,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        lon = -59.48937990402315,
                        twilight = "sunlight"),
     regexp = paste0("Path ",
-                    paste0("'", getwd(), "/IDontExist", "'"),
+                    paste0("'", fpath_output, "/IDontExist", "'"),
                     " does not exist"),
     fixed = TRUE)
 
