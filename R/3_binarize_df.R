@@ -1296,7 +1296,7 @@ check_thresh <- function(merged_soundscape,
     #                   fontface = 2)
     )
 
-  library(patchwork)
+  requireNamespace("patchwork")
 
 
   plot <- plot_before/plot_after
