@@ -8,7 +8,7 @@ os:
  - osx
 
 r:
-  - 4.1
+  - 4.2.0
 
 bioc_required: true
 bioc_use_devel: true
