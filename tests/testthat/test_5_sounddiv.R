@@ -8,7 +8,7 @@ library(soundscapeR)
 fpath_CVR <- system.file("/extdata/merged_soundscape/merged_soundscape_CVR.ssc",
                          package="soundscapeR")
 
-fpath_test <- system.file("/extdata/test_data/sounddiv_test_tod.csv",
+fpath_test <- system.file("/extdata/test_data",
                          package="soundscapeR")
 
 merged_soundscape_CVR <- qs::qread(file = fpath_CVR)
@@ -24,9 +24,9 @@ aggregated_soundscape_CVR <- aggregate_df(binarized_soundscape = binarized_sound
 aggregated_soundscape_CVR_raw <- aggregate_df(binarized_soundscape = binarized_soundscape_CVR,
                                           output = "raw")
 
-test_no_freqseq <- qs::qread(file = "D:/OneDrive - Norwegian University of Life Sciences/Work_computer/PhD Norway/Analysis/R_package/Final/soundscapeR/inst/extdata/test_data/list_no_freqseq.qs")
+test_no_freqseq <- qs::qread(file = paste0(fpath_test, "/list_no_freqseq.qs"))
 
-test_freqseq <- qs::qread(file = "D:/OneDrive - Norwegian University of Life Sciences/Work_computer/PhD Norway/Analysis/R_package/Final/soundscapeR/inst/extdata/test_data/list_freqseq.qs")
+test_freqseq <- qs::qread(file = paste0(fpath_test, "/list_freqseq.qs"))
 
 # 2. Start testing the sounddiv function
 
@@ -200,7 +200,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "day")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][1]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][[1]]))
 
 })
 
@@ -211,7 +211,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "day")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][2]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][[2]]))
 
 })
 
@@ -222,7 +222,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "day")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][3]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][[3]]))
 
 })
 
@@ -236,7 +236,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "day")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][4]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][[4]]))
 
 })
 
@@ -247,7 +247,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "day")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][5]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][[5]]))
 
 })
 
@@ -258,7 +258,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "day")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][6]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[3]][[6]]))
 
 })
 
@@ -272,7 +272,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "night")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][1]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][[1]]))
 
 })
 
@@ -283,7 +283,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "night")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][2]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][[2]]))
 
 })
 
@@ -294,7 +294,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "night")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][3]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][[3]]))
 
 })
 
@@ -308,7 +308,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "night")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][4]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][[4]]))
 
 })
 
@@ -319,7 +319,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "night")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][5]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][[5]]))
 
 })
 
@@ -330,7 +330,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "night")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][6]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[4]][[6]]))
 
 })
 
@@ -344,7 +344,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "dawn")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][1]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][[1]]))
 
 })
 
@@ -355,7 +355,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "dawn")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][2]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][[2]]))
 
 })
 
@@ -366,7 +366,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "dawn")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][3]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][[3]]))
 
 })
 
@@ -380,7 +380,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "dawn")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][4]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][[4]]))
 
 })
 
@@ -391,7 +391,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "dawn")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][5]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][[5]]))
 
 })
 
@@ -402,7 +402,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "dawn")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][6]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[5]][[6]]))
 
 })
 
@@ -416,7 +416,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "dusk")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][1]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][[1]]))
 
 })
 
@@ -427,7 +427,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "dusk")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][2]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][[2]]))
 
 })
 
@@ -438,7 +438,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "percentage",
                        subset = "dusk")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][3]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][[3]]))
 
 })
 
@@ -452,7 +452,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "dusk")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][4]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][[4]]))
 
 })
 
@@ -463,7 +463,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "dusk")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][5]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][[5]]))
 
 })
 
@@ -474,7 +474,7 @@ testthat::test_that("the sounddiv function works as expected when the correct ar
                        output = "raw",
                        subset = "dusk")
 
-  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][6]))
+  testthat::expect_equal(sounddiv, as.double(test_no_freqseq[[6]][[6]]))
 
 })
 
@@ -1065,21 +1065,21 @@ testthat::test_that("the sounddiv function produces the correct error message wh
 
     # 2.3.3. When the fileloc argument is wrong
 
-aggregated_soundscape_fileloc <- aggregated_soundscape_CVR
-aggregated_soundscape_fileloc@fileloc <- paste0(getwd(), "/IDontExist")
-
-testthat::test_that("the sounddiv function produces the correct error message when the aggregated_soundscape fileloc argument is wrong", {
-
-  testthat::expect_error(
-    object = sounddiv(aggregated_soundscape = aggregated_soundscape_fileloc,
-                      qvalue = 0),
-    regexp = paste0("Path ",
-                    paste0("'", getwd(), "/IDontExist", "'"),
-                    " does not exist"),
-    fixed=TRUE
-  )
-
-})
+# aggregated_soundscape_fileloc <- aggregated_soundscape_CVR
+# aggregated_soundscape_fileloc@fileloc <- paste0(getwd(), "/IDontExist")
+#
+# testthat::test_that("the sounddiv function produces the correct error message when the aggregated_soundscape fileloc argument is wrong", {
+#
+#   testthat::expect_error(
+#     object = sounddiv(aggregated_soundscape = aggregated_soundscape_fileloc,
+#                       qvalue = 0),
+#     regexp = paste0("Path ",
+#                     paste0("'", getwd(), "/IDontExist", "'"),
+#                     " does not exist"),
+#     fixed=TRUE
+#   )
+#
+# })
 
     # 2.3.4. When the index argument is wrong
 
@@ -1503,21 +1503,21 @@ testthat::test_that("the sounddiv function produces the correct error message wh
 
     # 2.3.14. The effort_per_time argument is wrong
 
-aggregated_soundscape_efftime <- aggregated_soundscape_CVR
-
-aggregated_soundscape_efftime@effort_per_time <-
-  as.list(seq(1, length(aggregated_soundscape_CVR@effort_per_time), 1))
-
-testthat::test_that("the sounddiv function produces the correct error message when the aggregated_soundscape effort_per_time argument does not have the expected format", {
-
-  testthat::expect_error(
-    object = sounddiv(aggregated_soundscape= aggregated_soundscape_efftime,
-                      qvalue = 0),
-    regexp = "aggregated_soundscape@effort_per_time does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.",
-    fixed=TRUE
-  )
-
-})
+# aggregated_soundscape_efftime <- aggregated_soundscape_CVR
+#
+# aggregated_soundscape_efftime@effort_per_time <-
+#   as.list(seq(1, length(aggregated_soundscape_CVR@effort_per_time), 1))
+#
+# testthat::test_that("the sounddiv function produces the correct error message when the aggregated_soundscape effort_per_time argument does not have the expected format", {
+#
+#   testthat::expect_error(
+#     object = sounddiv(aggregated_soundscape= aggregated_soundscape_efftime,
+#                       qvalue = 0),
+#     regexp = "aggregated_soundscape@effort_per_time does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.",
+#     fixed=TRUE
+#   )
+#
+# })
 
   # 2.4. The qvalues argument is wrong
 
@@ -1991,8 +1991,8 @@ testthat::test_that("the sounddiv function produces the correct error message wh
   testthat::expect_error(
     object = sounddiv(aggregated_soundscape= aggregated_soundscape_CVR,
                       qvalue = 0,
-                      output = as.factor("raw")),
-    regexp = "output is not a character string. Please supply the heatmap type as a character string. Consult package documentation for available output argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
+                      output = 62),
+    regexp = "output is not a character string. Please supply the output argument as a character string. Consult package documentation for available output argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
     fixed=TRUE
   )
 

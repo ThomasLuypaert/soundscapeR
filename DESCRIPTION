@@ -15,7 +15,7 @@ Description: The soundscapeR package constitutes a standardized analytical pipel
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
     yaml (>= 2.2.1),
     tictoc (>= 1.0),
@@ -53,7 +53,9 @@ Imports:
     limma,
     vdiffr,
     crayon,
-    parallel
+    parallel,
+    qs,
+    suncalc (>= 0.5.0)
 Suggests: 
     testthat (>= 3.0.0)
 Depends: 

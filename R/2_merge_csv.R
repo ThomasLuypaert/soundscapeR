@@ -254,14 +254,15 @@ merge_csv <- function(fileloc,
 
   # 2. Get a list of the acoustic index '.csv' files in the specified file location
 
-  setwd(paste0(fileloc, "/", window))
-  folders <- getwd()
+
+  folders <- file.path(paste0(fileloc, "/", window))
 
   filenames <- list.files(folders,
                           pattern = paste0("\\__Towsey.Acoustic.",
                                            index,
                                            ".csv$"),
-                          recursive = TRUE)
+                          recursive = TRUE,
+                          full.names = TRUE)
 
   # 3. Merge csv files into a dataframe
 
@@ -286,7 +287,7 @@ merge_csv <- function(fileloc,
   }
 
   else {
-    frequency_bins <- frequency_bins_128 <- as.integer(
+    frequency_bins <- as.integer(
       seq(
         from = (samplerate/window),
         to = samplerate / 2,
@@ -328,12 +329,13 @@ merge_csv <- function(fileloc,
 
   points <- data.frame(lon = lon, lat = lat)
 
-  suntimes <- photobiology::day_night(
-    date = date,
-    tz= tz,
-    geocode = points,
-    twilight = twilight,
-    unit.out = "datetime")
+  suntimes <- suncalc::getSunlightTimes(
+    date = as.Date(day),
+    keep = c("sunrise", "sunriseEnd", "sunset", "sunsetStart"),
+    lat = lat,
+    lon = lon,
+    tz = tz)
+
 
   sunrise <- as.POSIXct(suntimes$sunrise,
                         tz = tz,

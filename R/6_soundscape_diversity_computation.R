@@ -400,10 +400,6 @@ sounddiv=function(aggregated_soundscape,
   test_17_1 <- function(x){
 
       all(sapply(x, function(x) is.data.frame(x))) &
-      all(assertthat::are_equal(
-        as.vector(sort(table(colnames(aggregated_soundscape@merged_df)))),
-        as.vector(unlist(sapply(x, function(x) ncol(x))))
-      )) &
       length(x) == ncol(aggregated_soundscape@aggregated_df)
   }
 
@@ -431,19 +427,19 @@ sounddiv=function(aggregated_soundscape,
 
   # 1.2.14. The effort_per_time argument
 
-  test_18 <- function(x){
-
-    identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
-
-  }
-
-  assertthat::on_failure(test_18) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
-
-  }
-
-  assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
+  # test_18 <- function(x){
+  #
+  #   identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
+  #
+  # }
+  #
+  # assertthat::on_failure(test_18) <- function(call, env){
+  #
+  #   paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the aggregate_df function? If so, something has gone wrong, please re-run the aggregate_df() function.")
+  #
+  # }
+  #
+  # assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
 
   # 1.3. The supplied qvalue argument is a positive integer or decimal number
 

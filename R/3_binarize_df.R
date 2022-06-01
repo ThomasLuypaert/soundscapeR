@@ -362,14 +362,14 @@ binarize_df <- function(merged_soundscape,
     # 1.2.4. The sunrise and sunset arguments cannot be wrong (s4 property)
 
     # 1.2.5. The fileloc argument
+#
+#   test_8 <- function(x){
+#
+#     assertthat::is.dir(x) & assertthat::is.readable(x)
+#
+#   }
 
-  test_8 <- function(x){
-
-    assertthat::is.dir(x) & assertthat::is.readable(x)
-
-  }
-
-  assertthat::assert_that(test_8(merged_soundscape@fileloc))
+  # assertthat::assert_that(test_8(merged_soundscape@fileloc))
 
     # 1.2.6. The index argument
 
@@ -766,13 +766,13 @@ check_thresh <- function(merged_soundscape,
 
   # 1.2.5. The fileloc argument
 
-  test_8 <- function(x){
-
-    assertthat::is.dir(x) & assertthat::is.readable(x)
-
-  }
-
-  assertthat::assert_that(test_8(merged_soundscape@fileloc))
+  # test_8 <- function(x){
+  #
+  #   assertthat::is.dir(x) & assertthat::is.readable(x)
+  #
+  # }
+  #
+  # assertthat::assert_that(test_8(merged_soundscape@fileloc))
 
   # 1.2.6. The index argument
 

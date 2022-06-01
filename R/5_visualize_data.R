@@ -253,15 +253,15 @@ heatmapper=function(aggregated_soundscape,
 
     # 1.2.4. The sunrise and sunset arguments cannot be wrong (s4 property)
 
-    # 1.2.5. The fileloc argument
-
-  test_6 <- function(x){
-
-    assertthat::is.dir(x) & assertthat::is.readable(x)
-
-  }
-
-  assertthat::assert_that(test_6(aggregated_soundscape@fileloc))
+  #   # 1.2.5. The fileloc argument
+  #
+  # test_6 <- function(x){
+  #
+  #   assertthat::is.dir(x) & assertthat::is.readable(x)
+  #
+  # }
+  #
+  # assertthat::assert_that(test_6(aggregated_soundscape@fileloc))
 
     # 1.2.6. The index argument
 
@@ -991,7 +991,8 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::ggplot(df2,
                           ggplot2::aes(time,
                                        frequency,
-                                       fill=value)) +
+                                       fill=value,
+                                       color=value)) +
 
           ggplot2::geom_tile()+
           viridis::scale_fill_viridis(
@@ -1003,7 +1004,22 @@ heatmapper=function(aggregated_soundscape,
               title.vjust = 1,
               title.hjust = 0.5,
               nrow=1),
-            breaks=seq(0, 1, 0.1))+
+            breaks=seq(0, 1, 0.1),
+            limits = c(0, 1))+
+
+          viridis::scale_color_viridis(
+            option=palette,
+            na.value="black",
+            direction = direction,
+            guide = ggplot2::guide_legend(
+              title.position = "top",
+              title.vjust = 1,
+              title.hjust = 0.5,
+              nrow=2),
+            breaks=seq(0, 1, 0.1),
+            limits = c(0, 1)
+          ) +
+
 
           ggplot2::scale_x_datetime(
             labels=scales::date_format("%H:%M", tz=tz),
@@ -1014,11 +1030,12 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::scale_y_continuous(
             limits = c(minfreq, (maxfreq+(maxfreq/10))),
             expand = c(0,0),
-            breaks = seq(minfreq, maxfreq, freqinterval))+
+            breaks = seq(minfreq, maxfreq, freqinterval),
+            label=comma)+
 
           ggplot2::labs(
-            y="Frequency (Hz) \n",
-            x="\nTime (hour of day)")+
+            y="Frequency (Hz)",
+            x="Time (hour of day)")+
 
           ggplot2::theme(
             panel.grid.major = ggplot2::element_blank(),
@@ -1035,8 +1052,8 @@ heatmapper=function(aggregated_soundscape,
               angle = 45,
               hjust=1.1,
               vjust=1),
-            axis.title.y = ggplot2::element_text(),
-            axis.title.x = ggplot2::element_text(),
+            axis.title.y = ggplot2::element_text(margin = unit(c(0, 3, 0, 0), "mm")),
+            axis.title.x = ggplot2::element_text(margin = unit(c(3, 0, 0, 0), "mm")),
             plot.margin = grid::unit(c(1,1,1,1),"cm"),
             legend.position = "top",
             legend.direction = "horizontal",
@@ -1201,7 +1218,9 @@ heatmapper=function(aggregated_soundscape,
             angle=-90,
             size=labelsize_frequency)+
 
-          ggplot2::labs(fill="OSU INCIDENCE")
+          ggplot2::labs(fill="OSU INCIDENCE") +
+
+          guides(color='none')
       }
 
       else{
@@ -1214,7 +1233,8 @@ heatmapper=function(aggregated_soundscape,
               df2,
               ggplot2::aes(time,
                            frequency,
-                           fill=value)) +
+                           fill=value,
+                           color=value)) +
 
             ggplot2::geom_tile()+
 
@@ -1227,7 +1247,20 @@ heatmapper=function(aggregated_soundscape,
                 title.vjust = 1,
                 title.hjust = 0.5,
                 nrow=1),
-              breaks=seq(0, 1, 0.1))+
+              breaks=seq(0, 1, 0.1),
+              limits = c(0, 1))+
+
+            viridis::scale_color_viridis(
+              option=palette,
+              na.value="black",
+              direction = direction,
+              guide = ggplot2::guide_legend(
+                title.position = "top",
+                title.vjust = 1,
+                title.hjust = 0.5,
+                nrow=2),
+              breaks=seq(0, 1, 0.1), limits = c(0, 1)
+            ) +
 
             ggplot2::scale_x_datetime(
               labels=scales::date_format("%H:%M", tz=tz),
@@ -1238,11 +1271,12 @@ heatmapper=function(aggregated_soundscape,
             ggplot2::scale_y_continuous(
               limits = c(minfreq, (maxfreq+(maxfreq/10))),
               expand = c(0,0),
-              breaks = seq(minfreq, maxfreq, freqinterval))+
+              breaks = seq(minfreq, maxfreq, freqinterval),
+              label=comma)+
 
             ggplot2::labs(
-              y="Frequency (Hz) \n",
-              x="\nTime (hour of day)")+
+              y="Frequency (Hz)",
+              x="Time (hour of day)")+
 
             ggplot2::theme(
               panel.grid.major = ggplot2::element_blank(),
@@ -1258,8 +1292,8 @@ heatmapper=function(aggregated_soundscape,
                 angle = 45,
                 hjust=1.1,
                 vjust=1),
-              axis.title.y = ggplot2::element_text(),
-              axis.title.x = ggplot2::element_text(),
+              axis.title.y = ggplot2::element_text(margin = unit(c(0, 3, 0, 0), "mm")),
+              axis.title.x = ggplot2::element_text(margin = unit(c(3, 0, 0, 0), "mm")),
               plot.margin = grid::unit(c(1,1,1,1),"cm"),
               legend.position = "top",
               legend.direction = "horizontal",
@@ -1400,7 +1434,9 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::geom_vline(xintercept = midnight2)+
 
-            ggplot2::labs(fill="OSU INCIDENCE")
+            ggplot2::labs(fill="OSU INCIDENCE")+
+
+            guides(color='none')
         }
       }
     }
@@ -1413,7 +1449,8 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::ggplot(
             df2, ggplot2::aes(time,
                               frequency,
-                              fill=value)) +
+                              fill=value,
+                              color=value)) +
 
           ggplot2::geom_tile()+
 
@@ -1426,7 +1463,19 @@ heatmapper=function(aggregated_soundscape,
               title.vjust = 1,
               title.hjust = 0.5,
               nrow=1),
-            breaks=seq(0, 1, 0.1))+
+            breaks=seq(0, 1, 0.1), limits = c(0, 1))+
+
+          viridis::scale_color_viridis(
+            option=palette,
+            na.value="black",
+            direction = direction,
+            guide = ggplot2::guide_legend(
+              title.position = "top",
+              title.vjust = 1,
+              title.hjust = 0.5,
+              nrow=2),
+            breaks=seq(0, 1, 0.1), limits = c(0, 1)
+          ) +
 
           ggplot2::scale_x_datetime(
             labels=scales::date_format("%H:%M", tz=tz),
@@ -1437,11 +1486,12 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::scale_y_continuous(
             limits = c(minfreq,maxfreq),
             expand = c(0,0),
-            breaks = seq(minfreq, maxfreq, freqinterval))+
+            breaks = seq(minfreq, maxfreq, freqinterval),
+            label=comma)+
 
           ggplot2::labs(
-            y="Frequency (Hz) \n",
-            x="\nTime (hour of day)")+
+            y="Frequency (Hz)",
+            x="Time (hour of day)")+
 
           ggplot2::theme(
             panel.grid.major = ggplot2::element_blank(),
@@ -1457,8 +1507,8 @@ heatmapper=function(aggregated_soundscape,
               angle = 45,
               hjust=1.1,
               vjust=1),
-            axis.title.y = ggplot2::element_text(),
-            axis.title.x = ggplot2::element_text(),
+            axis.title.y = ggplot2::element_text(margin = unit(c(0, 3, 0, 0), "mm")),
+            axis.title.x = ggplot2::element_text(margin = unit(c(3, 0, 0, 0), "mm")),
             panel.border = ggplot2::element_rect(
               colour = "black",
               fill=NA,
@@ -1471,7 +1521,9 @@ heatmapper=function(aggregated_soundscape,
               size = 12,
               face = "bold"))+
 
-          ggplot2::labs(fill="OSU INCIDENCE")
+          ggplot2::labs(fill="OSU INCIDENCE")+
+
+          guides(color='none')
 
       }
     }
@@ -1487,7 +1539,8 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::ggplot(
             df2, ggplot2::aes(time,
                               frequency,
-                              fill=value)) +
+                              fill=value,
+                              color=value)) +
 
           ggplot2::geom_tile()+
 
@@ -1500,7 +1553,19 @@ heatmapper=function(aggregated_soundscape,
               title.vjust = 1,
               title.hjust = 0.5,
               nrow=2),
-            breaks=seq(0, 1, 0.1))+
+            breaks=seq(0, 1, 0.1), limits = c(0, 1))+
+
+          viridis::scale_color_viridis(
+            option=palette,
+            na.value="black",
+            direction = direction,
+            guide = ggplot2::guide_legend(
+              title.position = "top",
+              title.vjust = 1,
+              title.hjust = 0.5,
+              nrow=2),
+            breaks=seq(0, 1, 0.1), limits = c(0, 1)
+          ) +
 
           ggplot2::scale_x_datetime(
             labels=scales::date_format("%H:%M", tz=tz),
@@ -1511,11 +1576,12 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::scale_y_continuous(
             limits = c(minfreq,(maxfreq+(maxfreq/10))),
             expand = c(0,0),
-            breaks = seq(minfreq, maxfreq, freqinterval))+
+            breaks = seq(minfreq, maxfreq, freqinterval),
+            label=comma)+
 
           ggplot2::labs(
-            y="Frequency (Hz) \n",
-            x="\nTime (hour of day)")+
+            y="Frequency (Hz)",
+            x="Time (hour of day)")+
 
           ggplot2::theme(
             panel.grid.major = ggplot2::element_blank(),
@@ -1529,8 +1595,8 @@ heatmapper=function(aggregated_soundscape,
               angle = -0,
               hjust=1.1,
               vjust=1),
-            axis.title.y = ggplot2::element_text(),
-            axis.title.x = ggplot2::element_text(),
+            axis.title.y = ggplot2::element_text(margin = unit(c(0, 3, 0, 0), "mm")),
+            axis.title.x = ggplot2::element_text(margin = unit(c(3, 0, 0, 0), "mm")),
             panel.border = ggplot2::element_rect(
               colour = "white",
               fill=NA,
@@ -1650,7 +1716,9 @@ heatmapper=function(aggregated_soundscape,
             fill="#ffcc13",
             alpha=0.25)+
 
-          ggplot2::labs(fill="OSU INCIDENCE")
+          ggplot2::labs(fill="OSU INCIDENCE")+
+
+          guides(color='none')
 
       }
 
@@ -1663,7 +1731,8 @@ heatmapper=function(aggregated_soundscape,
               df2,
               ggplot2::aes(time,
                            frequency,
-                           fill=value)) +
+                           fill=value,
+                           color=value)) +
 
             ggplot2::geom_tile()+
 
@@ -1676,7 +1745,19 @@ heatmapper=function(aggregated_soundscape,
                 title.vjust = 1,
                 title.hjust = 0.5,
                 nrow=2),
-              breaks=seq(0, 1, 0.1))+
+              breaks=seq(0, 1, 0.1), limits = c(0, 1))+
+
+            viridis::scale_color_viridis(
+              option=palette,
+              na.value="black",
+              direction = direction,
+              guide = ggplot2::guide_legend(
+                title.position = "top",
+                title.vjust = 1,
+                title.hjust = 0.5,
+                nrow=2),
+              breaks=seq(0, 1, 0.1), limits = c(0, 1)
+            ) +
 
             ggplot2::scale_x_datetime(
               labels=scales::date_format("%H:%M", tz=tz),
@@ -1693,8 +1774,8 @@ heatmapper=function(aggregated_soundscape,
               label=scales::unit_format(unit = "K"))+
 
             ggplot2::labs(
-              y="Frequency (Hz) \n",
-              x="\nTime (hour of day)")+
+              y="Frequency (Hz)",
+              x="Time (hour of day)")+
 
             ggplot2::theme(
               panel.grid.major = ggplot2::element_blank(),
@@ -1708,8 +1789,8 @@ heatmapper=function(aggregated_soundscape,
                 angle = -0,
                 hjust=1.1,
                 vjust=1),
-              axis.title.y = ggplot2::element_text(),
-              axis.title.x = ggplot2::element_text(),
+              axis.title.y = ggplot2::element_text(margin = unit(c(0, 3, 0, 0), "mm")),
+              axis.title.x = ggplot2::element_text(margin = unit(c(3, 0, 0, 0), "mm")),
               panel.border = ggplot2::element_rect(
                 colour = "white",
                 fill=NA,
@@ -1745,7 +1826,9 @@ heatmapper=function(aggregated_soundscape,
                                      maxfreq,
                                      freqinterval)))+
 
-            ggplot2::labs(fill="OSU INCIDENCE")
+            ggplot2::labs(fill="OSU INCIDENCE")+
+
+            guides(color='none')
 
         }
       }
@@ -1850,7 +1933,8 @@ heatmapper=function(aggregated_soundscape,
                   ggplot2::scale_x_time(expand = c(0,0))+
 
                   ggplot2::scale_y_continuous(
-                    expand = c(0,0))+
+                    expand = c(0,0),
+                    label=comma)+
 
                   ggplot2::theme(
                     axis.title.x = ggplot2::element_blank(),
@@ -1907,7 +1991,8 @@ heatmapper=function(aggregated_soundscape,
                     limits = c(0,(maxfreq+(maxfreq/10))))+
 
                   ggplot2::scale_y_continuous(
-                    expand = c(0,0))+
+                    expand = c(0,0),
+                    label=comma)+
 
                   ggplot2::theme(
                     axis.title.y = ggplot2::element_blank(),
