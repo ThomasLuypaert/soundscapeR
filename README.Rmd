@@ -32,15 +32,14 @@ This R-package uses spectral index output files computed using the ['AnalysisPro
 
 As such, prior to using `soundscapeR`, please head over to the ['AnalysisPrograms' download page](https://ap.qut.ecoacoustics.info/basics/installing.html?tabs=windows), and install the latest version of the software tool on your device. 
 
-# 1. Calculating acoustic indices
 
-For the first step in our workflow, we are going to calculate the spectral index files for our long-duration acoustic recordings collected at our site of interest. To do this, we will make use of the `index_calc()` function. 
+# 1. Raw acoustic data
 
-## 1.1. Raw acoustic data
+The workflow we present here makes use of eco-acoustic data, or acoustic recordings collected at large timescales (e.g. days, weeks, months or even years!), using either a regular interval (e.g. 1 minute out of every 10 minutes recorded) or continuous sampling regime. The workflow accommodates the use recordings in ultrasound, but beware that the spectral acoustic indices we use are not tested for this. 
 
-The workflow we present here makes use of eco-acoustic data, or acoustic recordings collected at large timescales (e.g. days, weeks, months or even years!), using either a regular interval (e.g. 1 minute out of every 10 minutes recorded) or continuous sampling regime. The workflow accommodates the use recordings with high sampling rates, but beware that 
+For the purposes of this vignette, a few raw sound files are provided in the package data. These sound files were collected at the Balbina Hydroelectric Reservoir in Brazilian Amazonia using a 1 min / 5 min sampling regime and a 44,100 Hz sampling rate. 
 
-For the purposes of this vignette, a few raw sound files are provided in the package data. Let's take a look at where these files are saved on your device:
+Let's take a look at where the raw data is saved on your device:
 
 ```{r}
 
@@ -51,11 +50,29 @@ print(location_soundfiles)
 
 ```
 
-Now, let's take a look at which raw sound files are included in the package: 
+Now, let's check which raw sound files are included in the package: 
 
 ```{r}
 
+list.files(location_soundfiles)
 
+```
+
+Look at that! The package contains 12 sound files collected on the 17th of October 2015, between midnight and 1 AM (00:00 - 00:55) using a 1 min / 5 min sampling regime, as previously mentioned. In the next section, we will use this sample data to demonstrate how acoustic indices are calculated. 
+
+# 2. Calculating acoustic indices
+
+For the first step in our workflow, we are going to calculate the spectral index files for the long-duration acoustic recordings collected at our site of interest. To do this, we will use the `index_calc()` function on the raw sound files contained in the package: 
+
+```{r}
+
+soundscapeR::index_calc(fileloc = location_soundfiles, 
+                        progloc = , 
+                        samplerate = 44100, 
+                        window = 256, 
+                        parallel = TRUE)
 
 
 ```
+
+

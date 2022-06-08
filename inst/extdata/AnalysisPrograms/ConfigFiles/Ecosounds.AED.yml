@@ -1,0 +1,34 @@
+---
+## General Parameters
+AnalysisName: Ecosounds.AED
+ResampleRate: 22050
+
+## Acoustic Event Detection Parameters
+# The threshold for transforming values in a matrix to black and white
+# Not mutually exclusive with Noise Removal (some noise removal methods return grey scale matrices).
+IntensityThreshold: 3.5
+SmallAreaThreshold: 150
+BandpassMinimum: ~
+BandpassMaximum: ~
+IncludeHitElementsInOutput: true
+
+## Image output options (only if SaveSonogramImages==true)
+AedEventColor: '#88FF0000'
+AedHitColor: '#4400FF00'
+
+## Noise removal parameters
+DoNoiseReduction: true
+# if null or NONE, then ignored and AED standard noise removal used
+NoiseReductionType: ~
+BgNoiseThreshold: 3.5
+
+## IAnalyzer Settings
+# Available options (case-sensitive): [False/Never | True/Always | WhenEventsDetected]
+SaveIntermediateWavFiles: Never
+# If `true` saves a data into a seperate file every `SegmentDuration` seconds. Accepts a boolean value: [false|true]
+SaveIntermediateCsvFiles: false
+# Available options (case-sensitive): [False/Never | True/Always | WhenEventsDetected]
+SaveSonogramImages: Never
+
+IndexPropertiesConfig: ".\\IndexPropertiesConfig.yml"
+...

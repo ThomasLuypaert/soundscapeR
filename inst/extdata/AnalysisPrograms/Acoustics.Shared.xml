@@ -1,0 +1,3291 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Acoustics.Shared</name>
+    </assembly>
+    <members>
+        <member name="F:Acoustics.Shared.AppConfigHelper.Iso8601FileCompatibleDateFormat">
+            <summary>
+            Warning: do not use this format to print dates as strings - it will include a colon in the time zone offset :-(.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.FfmpegExe">
+            <summary>
+            Gets FfmpegExe.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.FfprobeExe">
+            <summary>
+            Gets FfmpegExe.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.WvunpackExe">
+            <summary>
+            Gets WvunpackExe.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.SoxExe">
+            <summary>
+            Gets SoxExe.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.IsMono">
+            <summary>
+            Gets a value indicating whether we are running on the Mono platform.
+            This should always be false.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.IsLinux">
+            <summary>
+            Gets a value indicating whether the current operating system is a linux variant.
+            Note: this property actually tests what operating system we're using, unlike
+            <see cref="M:System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform)"/> which uses values from the ***build**.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.IsWindows">
+            <summary>
+            Gets a value indicating whether the current operating system is a Windows variant.
+            Note: this property actually tests what operating system we're using, unlike
+            <see cref="M:System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform)"/> which uses values from the ***build**.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.IsMacOsX">
+            <summary>
+            Gets a value indicating whether the current operating system is a OSX variant.
+            Note: this property actually tests what operating system we're using, unlike
+            <see cref="M:System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform)"/> which uses values from the ***build**.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.PseudoRuntimeIdentifier">
+            <summary>
+            Gets a pseudo (fake) runtime identifier from the information available to us.
+            This value represents a ***build** time construct.
+            </summary>
+            <remarks>
+            Note: these are not real .NET RIDs... but they're meant to simulate them.
+            </remarks>
+            <remarks>
+            This value will be more less accurate than <see cref="P:Acoustics.Shared.AppConfigHelper.RuntimeIdentifier"/>
+            which is made to return a value similar to the target runtimes we have set
+            in project files.
+            <example>
+            For Ubuntu 18 x86 64-bit <see cref="P:Acoustics.Shared.AppConfigHelper.PseudoRuntimeIdentifier"/> will return "linux-x64".
+            </example>
+            <example>
+            For Ubuntu 18 x86 64-bit <see cref="P:Acoustics.Shared.AppConfigHelper.RuntimeIdentifier"/> will return "ubuntu.18.04-x64".
+            </example>
+            </remarks>
+            <returns>An rid-like string.</returns>
+        </member>
+        <member name="P:Acoustics.Shared.AppConfigHelper.RuntimeIdentifier">
+            <summary>
+            Gets the runtime identifier as defined by Microsoft.
+            </summary>
+            <remarks>
+            This value will be more accurate than <see cref="P:Acoustics.Shared.AppConfigHelper.PseudoRuntimeIdentifier"/>
+            which is made to return a value similar to the target runtimes we have set
+            in project files.
+            <example>
+            For Ubuntu 18 x86 64-bit <see cref="P:Acoustics.Shared.AppConfigHelper.PseudoRuntimeIdentifier"/> will return "linux-x64".
+            </example>
+            <example>
+            For Ubuntu 18 x86 64-bit <see cref="P:Acoustics.Shared.AppConfigHelper.RuntimeIdentifier"/> will return "ubuntu.18.04-x64".
+            </example>
+            </remarks>
+            <value>A runtime indentifier.</value>
+        </member>
+        <member name="M:Acoustics.Shared.AppConfigHelper.FindProgramInPath(System.String)">
+            <summary>
+            Gets the path to the program.
+            </summary>
+            <remarks>
+            Copied from https://github.com/dotnet/corefx/blob/master/src/System.Diagnostics.Process/src/System/Diagnostics/Process.Unix.cs#L727.
+            </remarks>
+            <param name="program">The program to search for.</param>
+            <returns>The path if the file is found, otherwise null.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.AppConfigHelper.CheckOs(System.Boolean@,System.Boolean@,System.Boolean@)">
+            <summary>
+            Adapted from https://stackoverflow.com/a/38795621/224512.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.Base58">
+            <summary>
+            "Base58 is what you get after taking Base62 [a-zA-Z0-9] and removing any character that may
+            induce to error when introduced by hand: 0 (zero), O (uppercase 'o'), I (uppercase 'i'), and l (lowercase 'L').
+            This concept was introduced to the general public by Flickr".
+            </summary>
+            <remarks>
+            See http://icoloma.blogspot.com.au/2010/03/create-your-own-bitly-using-base58.html and
+            http://dl.dropbox.com/u/1844215/FlickrBaseEncoder.java for more.
+            </remarks>
+        </member>
+        <member name="M:Acoustics.Shared.Base58.Encode(System.Int64)">
+            <summary>
+            Convert number into alphanumeric representation.
+            </summary>
+            <param name="num">
+            The num.
+            </param>
+            <returns>
+            Alphanumeric representation of number.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Base58.Decode(System.String)">
+            <summary>
+            Convert a link into numbers.
+            </summary>
+            <param name="link">
+            The link.
+            </param>
+            <returns>
+            Numerical representation of link.
+            </returns>
+        </member>
+        <member name="T:Acoustics.Shared.SunTimes">
+            <summary>
+            Sun Times.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.SunTimes.CalculateSunRiseSetTimes(Acoustics.Shared.SunTimes.LatitudeCoords,Acoustics.Shared.SunTimes.LongitudeCoords,System.DateTime,System.DateTime@,System.DateTime@,System.Boolean@,System.Boolean@)">
+            <summary>
+            Calculate sunrise and sunset times. Returns false if time zone and longitude are incompatible.
+            </summary>
+            <param name="lat">Latitude coordinates.</param>
+            <param name="lon">Longitude coordinates.</param>
+            <param name="date">Date for which to calculate.</param>
+            <param name="riseTime">Sunrise time (output).</param>
+            <param name="setTime">Sunset time (output).</param>
+            <param name="isSunrise">Whether or not the sun rises at that day.</param>
+            <param name="isSunset">Whether or not the sun sets at that day.</param>
+        </member>
+        <member name="M:Acoustics.Shared.SunTimes.CalculateSunRiseSetTimes(System.Double,System.Double,System.DateTime,System.DateTime@,System.DateTime@,System.Boolean@,System.Boolean@)">
+            <summary>
+            Calculate sunrise and sunset times. Returns false if time zone and longitude are incompatible.
+            </summary>
+            <param name="lat">Latitude in decimal notation.</param>
+            <param name="lon">Longitude in decimal notation.</param>
+            <param name="date">Date for which to calculate.</param>
+            <param name="riseTime">Sunrise time (output).</param>
+            <param name="setTime">Sunset time (output).</param>
+            <param name="isSunrise">Whether or not the sun rises at that day.</param>
+            <param name="isSunset">Whether or not the sun sets at that day.</param>
+        </member>
+        <member name="T:Acoustics.Shared.ImageSharp.DeltaImageProcessor`2.RowIntervalOperation">
+            <summary>
+            A <see langword="struct"/> implementing the draw logic for <see cref="T:Acoustics.Shared.ImageSharp.DeltaImageProcessor`2"/>.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ImageSharp.DeltaImageProcessor`2.RowIntervalOperation.Invoke(SixLabors.ImageSharp.Memory.RowInterval@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Acoustics.Shared.ImageSharp.DeltaImageProcessor`1.#ctor(SixLabors.ImageSharp.Image{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.ImageSharp.DeltaImageProcessor`1"/> class.
+            </summary>
+            <param name="image">The image to blend.</param>
+        </member>
+        <member name="T:Acoustics.Shared.ImageSharp.DeltaPixelBlender`1">
+            <summary>
+            Blends pixels based on their differences.
+            Pixels that are equal return gray.
+            Pixels where the source is less than backdrop return black.
+            Pixels where the source is greater than the backdrop return white.
+            </summary>
+            <typeparam name="TPixel">The type of pixel to operate on.</typeparam>
+        </member>
+        <member name="T:Acoustics.Shared.ImageSharp.Drawing">
+            <summary>
+            Helpers for drawing images.
+            </summary>
+            <remarks>
+            <seealso cref="T:SixLabors.ImageSharp.ImageSharpExtensions"/>
+            </remarks>
+        </member>
+        <member name="F:Acoustics.Shared.ImageSharp.Drawing.Roboto">
+            <summary>
+            An open source sans-serif font produced by Google that is hopefully a good fallback for missing fonts.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.ImageSharp.Drawing.DefaultConfiguration">
+            <summary>
+            A predefined set of graphical options. Currently is equivalent to the default.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.ImageSharp.Drawing.NoParallelConfiguration">
+            <summary>
+            A predefined set of graphics options with parallelization disabled.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.ImageSharp.Drawing.NoAntiAlias">
+            <summary>
+            A predefined set of graphics options that have anti-aliasing disabled.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.ImageSharp.Drawing.TextOptions">
+            <summary>
+            A predefined set of options for rendering text. Currently is equivalent to the default.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.ImageSharp.Drawing.BundledFontCollection">
+            <summary>
+            Fonts bundled with AP.exe.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.ImageSharp.Drawing.BundledFonts">
+            <summary>
+            Gets (or initializes) fonts bundled with AP.exe.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ImageSharp.Drawing.GetFont(System.String,System.Single,SixLabors.Fonts.FontStyle)">
+            <summary>
+            Gets the requested font family or falls back to using <c>Roboto</c>.
+            </summary>
+            <param name="fontFamily">The name of the font family to get.</param>
+            <param name="size">The requested size of the returned font.</param>
+            <param name="style">The requested style of the returned font.</param>
+            <returns>Thr requested font, or the Roboto font if the requested font cannot be found.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.ImageSharp.Drawing.MeasureCharacters(System.String,SixLabors.Fonts.Font,SixLabors.ImageSharp.PointF)">
+            <summary>
+            Measures the placement of each character in a rendered string of text.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.ImageSharp.Drawing.NoAA">
+            <summary>
+            A specialized class the deals with drawing graphics without anti-aliasing.
+            It deals with two issues:
+            - Lines in ImageSharp are drawn on the centre pixel. Without AA they're drawn a pixel
+              off. This class draws all lines with +0.0,+0.5 coordinates.
+              See https://github.com/SixLabors/ImageSharp.Drawing/issues/28
+            - It also applies the NoAntiAliasing profile by default to all operations.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.ImageSharp.Drawing.NoAA.Bug28Offset">
+            <summary>
+            Defines behaviour for where to draw stroke relative to the true real line
+            defined by a path.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ImageSharp.Drawing.NoAA.DrawRectangle(SixLabors.ImageSharp.Color,System.Int32,System.Int32,System.Int32,System.Int32,System.Single)">
+            <summary>
+            Draws a <paramref name="thickness"/> thick (1px by default)
+            bordered rectangle with no fill with anti-aliasing disabled.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ImageSharp.Drawing.NoAA.DrawBorderInset(SixLabors.ImageSharp.Drawing.Processing.Pen,SixLabors.ImageSharp.RectangleF)">
+            <summary>
+            Draws a border line on the inside perimiter of rectangle.
+            ImageSharp by default draws lines split either side of the imaginary
+            center line.
+            </summary>
+            <remarks>
+             ImageSharp's Draw Rectangle is unpredictable and buggy, especially for
+             non-antialiased operations. See <c>Acoustics.Test.Shared.Drawing.RectangleCornerBugTest</c>.
+             This method instead draws four lines as the border.
+                           // AT 2020-11: Update bug seems to be fixed.
+            </remarks>
+        </member>
+        <member name="P:Acoustics.Shared.ConfigFile.Config.GenericConfig">
+            <summary>
+            Gets or sets the generic object graph that mirrors the configuration.
+            This object is ignored for JSON serialization in log dumping if
+            the current Type is exactly this type (not an inherited child).
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ConfigFile.ConfigFile.LoadAndCache``1(System.String,System.Func{``0})">
+            <summary>
+            Reads a config file. Supports both "dynamic" and "static" config files.
+            Additionally dumps config files into the log as JSON on first read for experimental provenance.
+            Additionally caches the contents of config file on read based on the fully-qualified path.
+            All configs returned are clones of the cached copy (even the first config).
+            </summary>
+            <remarks>
+            Support exists for processing recursive config file (where a <see cref="T:Acoustics.Shared.ConfigFile.Config"/> objected is nested in another
+            <see cref="T:Acoustics.Shared.ConfigFile.Config"/>.
+            </remarks>
+            <typeparam name="T">The type to deserialize.</typeparam>
+            <param name="path">
+            The path to the config file to read (will be expanded with <see cref="M:System.IO.Path.GetFullPath(System.String)"/>.
+            </param>
+            <param name="factory">
+            A factory used to create a new config if <typeparamref name="T"/> is exactly the type <see cref="T:Acoustics.Shared.ConfigFile.Config"/>.
+            </param>
+            <returns>The config object, or a cached copy after the first call.</returns>
+        </member>
+        <member name="T:Acoustics.Shared.ConfigFile.IConfig">
+            <summary>
+            Represents a configuration object which at a minimum has path to the config
+            file that was loaded and a callback for loaded events.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.ConfigFile.INamedProfiles`1">
+            <summary>
+            Allows a <see cref="T:Acoustics.Shared.ConfigFile.Config"/> class to have profiles.
+            </summary>
+            <typeparam name="T">The type of each expected profile.</typeparam>
+        </member>
+        <member name="P:Acoustics.Shared.ConfigFile.INamedProfiles`1.Profiles">
+            <summary>
+            Gets a collection of named profiles that allow for
+            variable and configurable algorithms to be used.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.ConfigFile.IProfiles`1">
+            <summary>
+            Allows a <see cref="T:Acoustics.Shared.ConfigFile.Config"/> class to have profiles.
+            </summary>
+            <typeparam name="T">The type of each expected profile.</typeparam>
+        </member>
+        <member name="P:Acoustics.Shared.ConfigFile.IProfiles`1.Profiles">
+            <summary>
+            Gets a collection of unnamed profiles that allow for
+            variable and configurable algorithms to be used.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.Contracts.Contract">
+            <summary>
+            This is a minimal implementation of the CodeContracts API that represents 90%
+            of our use cases. It doesn't do anything fancy and ends up being sugar for
+            standard exception throwing.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.Contracts.Contract.RequiresNotNull(System.Object,System.String,System.String)">
+            <summary>
+            Require the supplied value to be not null, otherwise throw a argument null exception.
+            </summary>
+            <param name="value">Whether or not the exception should be thrown.</param>
+            <param name="name">The name of the argument that was null.</param>
+            <param name="message">The message to add to the exception if the check fails.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Contracts.Contract.EnsuresNotNull(System.Object,System.String,System.String)">
+            <summary>
+            Ensures the supplied value to be not null, otherwise throw a argument null exception.
+            </summary>
+            <param name="value">Whether or not the exception should be thrown.</param>
+            <param name="name">The name of the argument that was null.</param>
+            <param name="message">The message to add to the exception if the check fails.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Contracts.Contract.Requires``1(System.Boolean,System.String)">
+            <summary>
+            Require the supplied boolean to be true, otherwise throw an exception.
+            </summary>
+            <typeparam name="T">The type of exception to throw.</typeparam>
+            <param name="result">Whether or not the exception should be thrown.</param>
+            <param name="message">The message to add to the exception if the check fails.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Contracts.Contract.Requires``1(System.Boolean,System.Object[])">
+            <summary>
+            Require the supplied boolean to be true, otherwise throw an exception.
+            </summary>
+            <typeparam name="T">The type of exception to throw.</typeparam>
+            <param name="result">Whether or not the exception should be thrown.</param>
+            <param name="args">The arguments to supply to the exception's constructor.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Contracts.Contract.Ensures``1(System.Boolean,System.String)">
+            <summary>
+            Require the supplied boolean to be true, otherwise throw an exception.
+            This is a mirror of <see cref="M:Acoustics.Shared.Contracts.Contract.Requires``1(System.Boolean,System.String)"/> and behaves identically.
+            If you wish to check a condition at the end of your method, move the <see cref="M:Acoustics.Shared.Contracts.Contract.Ensures``1(System.Boolean,System.String)"/> call there.
+            </summary>
+            <typeparam name="T">The type of exception to throw.</typeparam>
+            <param name="result">Whether or not the exception should be thrown.</param>
+            <param name="message">The message to add to the exception if the check fails.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Contracts.Contract.Requires(System.Boolean,System.String)">
+            <summary>
+            Require the supplied boolean to be true, otherwise throw an <see cref="T:System.ArgumentException"/>.
+            </summary>
+            <param name="result">Whether or not the exception should be thrown.</param>
+            <param name="message">The message to add to the exception if the check fails.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Contracts.Contract.Ensures(System.Boolean,System.String)">
+            <summary>
+            Require the supplied boolean to be true, otherwise throw an exception.
+            This is a mirror of <see cref="M:Acoustics.Shared.Contracts.Contract.Requires(System.Boolean,System.String)"/> and behaves identically.
+            If you wish to check a condition at the end of your method, move the <see cref="M:Acoustics.Shared.Contracts.Contract.Ensures(System.Boolean,System.String)"/> call there.
+            </summary>
+            <param name="result">Whether or not the exception should be thrown.</param>
+            <param name="message">The message to add to the exception if the check fails.</param>
+        </member>
+        <member name="T:Acoustics.Shared.Csv.Csv">
+            <summary>
+            Generic methods for reading and writing Csv file.
+            *** DO NOT CHANGE THIS CLASS UNLESS INSTRUCTED TOO ***.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.Csv.Csv.WriteToCsv``1(System.IO.FileInfo,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Serialize results to CSV - if you want the concrete type to be serialized you need to ensure
+            it is downcast before using this method.
+            </summary>
+            <typeparam name="T">The type to serialize.</typeparam>
+            <param name="destination">The file to create.</param>
+            <param name="results">The data to serialize.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Csv.Csv.WriteToCsv``1(System.IO.TextWriter,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Serialize results to CSV - if you want the concrete type to be serialized you need to ensure
+            it is downcast before using this method.
+            </summary>
+            <typeparam name="T">The type to serialize.</typeparam>
+            <param name="results">The data to serialize.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Csv.Csv.ReadFromCsv``1(System.IO.FileInfo,System.Boolean,System.Action{CsvHelper.CsvReader})">
+            <summary>
+            Read an object from a CSV file.
+            </summary>
+            <remarks>
+            IMPORTANT NOTE:
+            If I get an exception, how do I tell what line the exception is on?
+            There is a lot of information held in Exception.Data["CsvHelper"].
+            </remarks>
+        </member>
+        <member name="F:Acoustics.Shared.TwoDimensionalArray.Rotate90AntiClockWise">
+            <summary>
+            This transform should be equivalent to RotateMatrix90DegreesClockwise
+            <example>
+            1 | 2 --> 2 | 4 | 6
+            3 | 4     1 | 3 | 5
+            5 | 6
+            </example>
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.TwoDimensionalArray.Transpose">
+            <summary>
+            This is effectively a transpose
+            <code>
+            1 | 2 --> 1 | 3 | 5
+            3 | 4     2 | 4 | 6
+            5 | 6
+            </code>
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.TwoDimensionalArray.Rotate90ClockWise">
+            <summary>
+            This transform should be equivalent to RotateMatrix90DegreesClockwise
+            <example>
+            1 | 2 --> 5 | 3 | 1
+            3 | 4     6 | 4 | 2
+            5 | 6
+            </example>
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.TwoDimensionalArray.None">
+            <summary>
+            Store/Read values in the same orientation as they are in memory
+            <code>
+            1 | 2 --> 1 | 2
+            3 | 4     3 | 4
+            5 | 6     5 | 6
+            </code>
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.SpectrogramType">
+            <summary>
+            The spectrogram type.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.SpectrogramType.WaveForm">
+            <summary>
+            The wave form.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.SpectrogramType.Spectrogram">
+            <summary>
+            The spectrogram.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.Extensions.CartesianExtension">
+            <summary>
+            Extensions to the MoreLinq.Cartesian function.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.Extensions.CartesianExtension.MultiCartesian``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}},System.Func{System.Collections.Generic.IEnumerable{``0},``1})">
+            <summary>
+            Returns the Cartesian product of multiple sequences by combining each element of every set with every other element
+            and applying the user-defined projection to the pair.
+            </summary>
+            <typeparam name="TSource">The type of the elements of <paramref name="enumerables"/>.</typeparam>
+            <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+            <param name="enumerables">The sequence of sequences of element.s</param>
+            <param name="resultSelector">A projection function that combines elements from both sequences.</param>
+            <returns>A sequence representing the Cartesian product of the source sequences.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.IntervalExtensions.Grow(Acoustics.Shared.Interval{System.Double},Acoustics.Shared.Interval{System.Double},System.Double,System.Nullable{System.Int32})">
+            <summary>
+            Greedily grow the current interval to the new duration without exceeding the limits.
+            Will grow the range around the center of the current range if possible.
+            Will not fail, and will return as much range as possible, without exceeding limits.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.IntervalExtensions.NormalizeValue(Acoustics.Shared.Interval{System.Double},System.Double)">
+            <summary>
+            Normalizes a value as a unit value given the bounds of an interval.
+            </summary>
+            <param name="range">The interval to use as the bounds.</param>
+            <param name="value">The value to normalize.</param>
+            <returns>A value scaled to [0,1]. The value may exceed the bounds [0,1]; i.e. the value is not clamped.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.IntervalExtensions.Normalize(System.Double,Acoustics.Shared.Interval{System.Double})">
+            <summary>
+            Normalizes a value as a unit value given the bounds of an interval.
+            </summary>
+            <param name="value">The value to normalize.</param>
+            <param name="range">The interval to use as the bounds.</param>
+            <returns>A value scaled to [0,1]. The value may exceed the bounds [0,1]; i.e. the value is not clamped.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.IntervalExtensions.Clamp(System.Double,Acoustics.Shared.Interval{System.Double})">
+            <summary>
+            Restricts a <see cref="T:System.Double"/> to be within a specified range.
+            </summary>
+            <param name="value">The The value to clamp.</param>
+            <param name="range">The interval to clamp the value to.</param>
+            <returns>
+            The <see cref="T:System.Double"/> representing the clamped value.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.IntervalExtensions.ClampvValue(Acoustics.Shared.Interval{System.Double},System.Double)">
+            <summary>
+            Restricts a <see cref="T:System.Double"/> to be within a specified range.
+            </summary>
+            <param name="range">The interval to clamp the value to.</param>
+            <param name="value">The The value to clamp.</param>
+            <returns>
+            The <see cref="T:System.Double"/> representing the clamped value.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.FileDateHelpers.FilterFilesForDates(System.Collections.Generic.IEnumerable{System.IO.FileInfo},System.Nullable{System.TimeSpan})">
+            <summary>
+            sorts a list of files by the date assumed to be encoded in their file names
+            and then returns the list as a sorted dictionary with file DateTime as the keys.
+            </summary>
+            <param name="files">The files to filter.</param>
+            <param name="offsetHint">If you know what timezone you should have, specify a hint to enable parsing of ambiguous dates.</param>
+            <returns>A sorted dictionary FileInfo objects mapped to parsed dates.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.FileDateHelpers.FilterObjectsForDates``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.IO.FileSystemInfo},System.Func{``0,System.Nullable{System.DateTimeOffset}},System.Nullable{System.TimeSpan})">
+            <summary>
+            sorts a list of files by the date assumed to be encoded in their file names
+            and then returns the list as a sorted dictionary with file DateTime as the keys.
+            </summary>
+            <param name="offsetHint">If you know what timezone you should have, specify a hint to enable parsing of ambiguous dates.</param>
+            <returns>A sorted dictionary FileInfo objects mapped to parsed dates.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.FileDateHelpers.FilterDirectoriesForDates(System.Collections.Generic.IEnumerable{System.IO.DirectoryInfo},System.Nullable{System.TimeSpan})">
+            <summary>
+            sorts a list of files by the date assumed to be encoded in their file names
+            and then returns the list as a sorted dictionary with file DateTime as the keys.
+            </summary>
+            <param name="directories">The files to filter.</param>
+            <param name="offsetHint">If you know what timezone you should have, specify a hint to enable parsing of ambiguous dates.</param>
+            <returns>A sorted dictionary FileInfo objects mapped to parsed dates.</returns>
+        </member>
+        <member name="T:Acoustics.Shared.FilenameHelpers">
+            <summary>
+            A set of helper methods used to create/read consistently encoded filenames.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.FilenameHelpers.AnalysisResultPath(System.IO.DirectoryInfo,System.IO.FileInfo,System.String,System.String,System.String[])">
+            <summary>
+            Return an absolute path for a result file.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.FilenameHelpers.AnalysisResultPath(System.IO.DirectoryInfo,System.String,System.String,System.String,System.String[])">
+            <summary>
+            Return an absolute path for a result file.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.FilenameHelpers.AnalysisResultName(System.String,System.String,System.String,System.String[])">
+            <summary>
+            Return a relative file name only (no directory) for a result file.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.FilenameHelpers.TryParseOldStyleCsvFileName(System.String,System.String@)">
+            <summary>
+            Matches a very specific format:
+            e.g. "4c77b524-1857-4550-afaa-c0ebe5e3960a_20101013_003000+1000_Towsey.Acoustic.ACI.csv".
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.TimeSpanFormatter">
+            <summary>
+            See: http://stackoverflow.com/questions/3627922/format-timespan-in-datagridview-column.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.Interval`1">
+            <summary>
+            Represents a interval between two points on the same dimension.
+            Encoding boundness is left up to the type used.
+            </summary>
+            <typeparam name="T">
+            The type used to represent the points in this interval.
+            </typeparam>
+        </member>
+        <member name="P:Acoustics.Shared.Interval`1.Minimum">
+            <summary>
+            Gets the Minimum.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.Interval`1.Maximum">
+            <summary>
+            Gets the Maximum.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.Interval`1.Topology">
+            <summary>
+            Gets the type of topology this interval has.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.Interval`1.op_Equality(Acoustics.Shared.Interval{`0},Acoustics.Shared.Interval{`0})">
+            <summary>
+            Equals operator.
+            </summary>
+            <param name="first">The first interval.</param>
+            <param name="second">The second interval.</param>
+            <returns>True if equal, otherwise false.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.Interval`1.op_Inequality(Acoustics.Shared.Interval{`0},Acoustics.Shared.Interval{`0})">
+            <summary>
+            Not equal operator.
+            </summary>
+            <param name="first">
+            The first.
+            </param>
+            <param name="second">
+            The second.
+            </param>
+            <returns>
+            True if not equals, otherwise false.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Interval`1.Equals(Acoustics.Shared.Interval{`0})">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">
+            An object to compare with this object.
+            </param>
+        </member>
+        <member name="M:Acoustics.Shared.Interval`1.Equals(System.Object)">
+            <summary>
+            Equals another instance.
+            </summary>
+            <param name="obj">
+            The obj to compare.
+            </param>
+            <returns>
+            True if equal, otherwise false.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Interval`1.GetHashCode">
+            <summary>
+            Get Hash Code.
+            </summary>
+            <returns>
+            Hash Code.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Interval`1.ToString">
+            <summary>
+            Gets string representation of the Interval.
+            technically incorrectly representing this value.
+            </summary>
+            <returns>
+            String representation.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Interval`1.ToString(System.Boolean,System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Gets string representation of the Interval.
+            technically incorrectly representing this value.
+            </summary>
+            <param name="suppressName">
+            If true only prints interval data and not type name.
+            </param>
+            <returns>
+            String representation.
+            </returns>
+        </member>
+        <member name="T:Acoustics.Shared.Logging.Log4NetTextWriter">
+             <summary>
+             Forwards chars from a text writer to a log as well.
+             </summary>
+             <remarks>
+             We generally expect the log not to output to the console as well since
+             this class copies events to the log and then sends them to the base stream,
+             which should be the console.
+            
+             Thus using the <see cref="P:System.NoConsole.Log"/> logger is a good choice.
+             </remarks>
+        </member>
+        <member name="M:Acoustics.Shared.Logging.Logging.#ctor(System.Boolean,log4net.Core.Level,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.Logging.Logging"/> class.
+            </summary>
+            <param name="colorConsole">If True, colored logs will be used.</param>
+            <param name="defaultLevel">The default level to set for the root logger.</param>
+            <param name="quietConsole">If True limits the level on the appenders to <see cref="F:log4net.Core.Level.Error"/>.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Logging.Logging.#ctor(System.Boolean,System.Boolean,System.Boolean,log4net.Core.Level,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.Logging.Logging"/> class.
+            </summary>
+            <param name="enableMemoryLogger">If true, stores a copy of all log events in memory. Used for testing.</param>
+            <param name="enableFileLogger">If true, outputs log events to a file.</param>
+            <param name="colorConsole">If True, colored logs will be used.</param>
+            <param name="defaultLevel">The default level to set for the root logger.</param>
+            <param name="quietConsole">If True limits the level on the appenders to <see cref="F:log4net.Core.Level.Error"/>.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Logging.Logging.ModifyVerbosity(log4net.Core.Level,System.Boolean)">
+            <summary>
+            Initializes the logging system.
+            </summary>
+            <param name="defaultLevel">The default level to set for the root logger.</param>
+            <param name="quietConsole">If True limits the level on the appenders to <see cref="F:log4net.Core.Level.Error"/>.</param>
+        </member>
+        <member name="M:Acoustics.Shared.Logging.Logging.CleanLogs(System.String)">
+            <summary>
+            Rolling log file appender has no concept of cleaning up logs with a date stamp in their name.
+            This we have to clean them manually.
+            </summary>
+            <returns>A task.</returns>
+        </member>
+        <member name="T:Acoustics.Shared.MediaTypeExtGroup">
+            <summary>
+            The media type ext group.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.MediaTypeExtGroup.Extension">
+            <summary>
+            Gets or sets Extension.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.MediaTypeExtGroup.Group">
+            <summary>
+            Gets or sets Group.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.MediaTypeExtGroup.MediaType">
+            <summary>
+            Gets or sets MediaType.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.MediaTypeGroup">
+            <summary>
+            Media type group.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypeGroup.Unknown">
+            <summary>
+            Media type group is not known.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypeGroup.Any">
+            <summary>
+            Media type group can be any group (excluding Any).
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypeGroup.Audio">
+            <summary>
+            Media type group is audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypeGroup.Image">
+            <summary>
+            Media type group is image.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypeGroup.Video">
+            <summary>
+            Media type group is video.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypeGroup.Text">
+            <summary>
+            Media type group is text.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.MediaTypes">
+            <summary>
+            Utility class for handling media types and file extensions.
+            </summary>
+            <remarks>
+            see http://en.wikipedia.org/wiki/Internet_media_type#Type_image for more info.
+            </remarks>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtAsf">
+            <summary>
+            The ext asf.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtAac">
+            <summary>
+            The ext aac.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtCmd">
+            <summary>
+            The ext cmd.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtCmd1">
+            <summary>
+            The ext cmd 1.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtCss">
+            <summary>
+            The ext css.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtCsv">
+            <summary>
+            The ext csv.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtGif">
+            <summary>
+            The ext gif.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtBmp">
+            <summary>
+            The ext bmp.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtHtml">
+            <summary>
+            The ext html.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtHtml1">
+            <summary>
+            The ext html 1.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtIco">
+            <summary>
+            The ext ico.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtJpeg">
+            <summary>
+            The ext jpeg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtJpeg1">
+            <summary>
+            The ext jpeg 1.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtJson">
+            <summary>
+            The ext json.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtM4a">
+            <summary>
+            The ext m4a.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtMj2">
+            <summary>
+            The ext mj2.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtMov">
+            <summary>
+            The ext mov.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtMp3">
+            <summary>
+            The ext mp 3.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtMp4">
+            <summary>
+            The ext mp4.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtMp4a">
+            <summary>
+            The ext mp4a.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtMpg">
+            <summary>
+            The ext mpg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtOgg">
+            <summary>
+            The ext ogg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtFlac">
+            <summary>
+            The ext ogg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtOggAudio">
+            <summary>
+            The ext ogg audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtPcm">
+            <summary>
+            The ext pcm.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtPjpeg">
+            <summary>
+            The ext pjpeg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtPng">
+            <summary>
+            The ext png.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtRa">
+            <summary>
+            The ext ra.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtRaw">
+            <summary>
+            The ext raw.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtRm">
+            <summary>
+            The ext rm.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtSvg">
+            <summary>
+            The ext svg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtTextPlain">
+            <summary>
+            The ext text plain.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtTiff">
+            <summary>
+            The ext tiff.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtUnknown">
+            <summary>
+            The ext unknown.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtVcard">
+            <summary>
+            The ext vcard.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtWav">
+            <summary>
+            The ext wav.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtWavpack">
+            <summary>
+            The ext wavpack.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtWebm">
+            <summary>
+            The ext webm.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtWebmAudio">
+            <summary>
+            The ext webm audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtWma">
+            <summary>
+            The ext wma.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtWmv">
+            <summary>
+            The ext wmv.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.ExtXml">
+            <summary>
+            The ext xml.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeAsf">
+            <summary>
+            The media type asf.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeAsf1">
+            <summary>
+            The media type asf 1.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeAsf2">
+            <summary>
+            The media type asf 2.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeBin">
+            <summary>
+            The media type bin.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeCmd">
+            <summary>
+            The media type cmd.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeCss">
+            <summary>
+            The media type css.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeCsv">
+            <summary>
+            The media type csv.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeGif">
+            <summary>
+            The media type gif.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeHtml">
+            <summary>
+            The media type html : HTML; Defined in RFC 2854 : text/html.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeIco">
+            <summary>
+            The media type ico.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeJpeg">
+            <summary>
+            The media type jpeg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeJpeg1">
+            <summary>
+            The media type jpeg 1.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeJson">
+            <summary>
+            The media type json : application/json.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeJson1">
+            <summary>
+            The media type json 1 : application/x-javascript.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeJson2">
+            <summary>
+            The media type json 2.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeJson3">
+            <summary>
+            The media type json 3.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeJson4">
+            <summary>
+            The media type json 4: text/x-json.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeMp3">
+            <summary>
+            The media type mp 3.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeMp31">
+            <summary>
+            The media type mp 31.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeMp4Audio">
+            <summary>
+            The media type mp 4 audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeMp4Video">
+            <summary>
+            The media type mp 4 video.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeMpg">
+            <summary>
+            The media type mpg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeOggAudio">
+            <summary>
+            The media type ogg audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeFlacAudio">
+            <summary>
+            The media type for flac audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeFlacAudio1">
+            <summary>
+            The media type for flac audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeOggVideo">
+            <summary>
+            The media type ogg video.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypePcm">
+            <summary>
+            The media type pcm.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypePcmRaw">
+            <summary>
+            The media type for PCM - paritcularly raw bytes in a file with no header.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypePjpeg">
+            <summary>
+            The media type pjpeg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypePng">
+            <summary>
+            The media type png.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeQt">
+            <summary>
+            The media type qt.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeReal">
+            <summary>
+            The media type real.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeSvg">
+            <summary>
+            The media type svg.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeTextPlain">
+            <summary>
+            The media type text plain.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeTiff">
+            <summary>
+            The media type tiff.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeVcard">
+            <summary>
+            The media type vcard.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeVorbis">
+            <summary>
+            The media type vorbis.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWav">
+            <summary>
+            The media type wav.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWav1">
+            <summary>
+            The media type wav 1.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWav2">
+            <summary>
+            The media type wav 2.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWavpack">
+            <summary>
+            The media type wavpack.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWebMAudio">
+            <summary>
+            The media type web m audio.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWebMVideo">
+            <summary>
+            The media type web m video.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWma">
+            <summary>
+            The media type wma.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeWmv">
+            <summary>
+            The media type wmv.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeXmlText">
+            <summary>
+            The media type xml : Extensible Markup Language; Defined in RFC 3023 : text/xml.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.MediaTypeXmlApplication">
+            <summary>
+            The media type xml  : Extensible Markup Language; Defined in RFC 3023 : application/xml.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.MediaTypes.CodecWavPcm16BitLe">
+            <summary>
+            Info from ffprobe
+            STREAM codec_long_name: PCM signed 16-bit little-endian.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.CanonicaliseExtension(System.String)">
+            <summary>
+            Reduce extension string to the simplest and most significant form possible without loss of generality.
+            </summary>
+            <param name="extension">
+            The extension.
+            </param>
+            <returns>
+            Canonical extension.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.CanonicaliseMediaType(System.String)">
+            <summary>
+            Reduce media type string to the simplest and most significant form possible without loss of generality.
+            </summary>
+            <param name="mediaType">
+            The media type.
+            </param>
+            <returns>
+            Canonical media type.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.GetExtension(System.String)">
+            <summary>
+            Get an extension from a media type. (Eg. audio/mpeg -&gt; mp3).
+            </summary>
+            <param name="mediaType">
+            The media type.
+            </param>
+            <returns>
+            File extension based on media type.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.GetExtension(System.String,Acoustics.Shared.MediaTypeGroup)">
+            <summary>
+            Get an extension from a media type. (Eg. audio/mpeg -&gt; mp3).
+            </summary>
+            <param name="mediaType">
+            The media type.
+            </param>
+            <param name="mediaTypeGroup">
+            Restrict to a particular media Type Group.
+            </param>
+            <returns>
+            File extension based on media type.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.GetImageFormat(System.String)">
+            <summary>
+            The get image format.
+            </summary>
+            <param name="extension">
+            The extension.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.GetMediaType(System.String)">
+            <summary>
+            Get media type from extension (can be dangerous, as file content is not considered).
+            </summary>
+            <param name="extension">
+            File Extension.
+            </param>
+            <returns>
+            media type based on extension.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.GetMediaType(System.String,Acoustics.Shared.MediaTypeGroup)">
+            <summary>
+            Get media type from extension (can be dangerous, as file content is not considered).
+            </summary>
+            <param name="extension">
+            File Extension.
+            </param>
+            <param name="mediaTypeGroup">
+            Restrict to a particular media Type Group.
+            </param>
+            <returns>
+            media type based on extension.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.IsFileExtRecognised(System.String)">
+            <summary>
+            Check if a File extension is recognised.
+            </summary>
+            <param name="extension">
+            The extension.
+            </param>
+            <returns>
+            True if file extension is recognised, otherwise false.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.IsFileExtRecognised(System.String,Acoustics.Shared.MediaTypeGroup)">
+            <summary>
+            Check if a File extension is recognised.
+            </summary>
+            <param name="extension">
+            The extension.
+            </param>
+            <param name="mediaTypeGroup">
+            Restrict to a particular media Type Group.
+            </param>
+            <returns>
+            True if file extension is recognised, otherwise false.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.IsMediaTypeRecognised(System.String)">
+            <summary>
+            Check if a media type is recognised.
+            </summary>
+            <param name="mediaType">
+            The media type.
+            </param>
+            <returns>
+            True if media type is recognised, otherwise false.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.MediaTypes.IsMediaTypeRecognised(System.String,Acoustics.Shared.MediaTypeGroup)">
+            <summary>
+            Check if a media type is recognised.
+            </summary>
+            <param name="mediaType">
+            The media type.
+            </param>
+            <param name="mediaTypeGroup">
+            Restrict to a particular media Type Group.
+            </param>
+            <returns>
+            True if media type is recognised, otherwise false.
+            </returns>
+        </member>
+        <member name="T:Acoustics.Shared.NonClosingStreamWrapper">
+            <summary>
+            Wraps a stream for all operations except Close and Dispose, which
+            merely flush the stream and prevent further operations from being
+            carried out using this wrapper.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.NonClosingStreamWrapper"/> class.
+            Creates a new instance of the class, wrapping the specified stream.
+            </summary>
+            <param name="stream">The stream to wrap. Must not be null.</param>
+            <exception cref="T:System.ArgumentNullException">stream is null.</exception>
+        </member>
+        <member name="P:Acoustics.Shared.NonClosingStreamWrapper.BaseStream">
+            <summary>
+            Gets stream wrapped by this wrapper.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.NonClosingStreamWrapper.closed">
+            <summary>
+            Whether this stream has been closed or not.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.CheckClosed">
+            <summary>
+            Throws an InvalidOperationException if the wrapper is closed.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Begins an asynchronous read operation.
+            </summary>
+            <param name="buffer">The buffer to read the data into. </param>
+            <param name="offset">
+            The byte offset in buffer at which to begin writing data read from the stream.
+            </param>
+            <param name="count">The maximum number of bytes to read. </param>
+            <param name="callback">
+            An optional asynchronous callback, to be called when the read is complete.
+            </param>
+            <param name="state">
+            A user-provided object that distinguishes this particular
+            asynchronous read request from other requests.
+            </param>
+            <returns>
+            An IAsyncResult that represents the asynchronous read,
+            which could still be pending.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Begins an asynchronous write operation.
+            </summary>
+            <param name="buffer">The buffer to write data from.</param>
+            <param name="offset">The byte offset in buffer from which to begin writing.</param>
+            <param name="count">The maximum number of bytes to write.</param>
+            <param name="callback">
+            An optional asynchronous callback, to be called when the write is complete.
+            </param>
+            <param name="state">
+            A user-provided object that distinguishes this particular asynchronous
+            write request from other requests.
+            </param>
+            <returns>
+            An IAsyncResult that represents the asynchronous write,
+            which could still be pending.
+            </returns>
+        </member>
+        <member name="P:Acoustics.Shared.NonClosingStreamWrapper.CanRead">
+            <summary>
+            Gets a value indicating whether indicates whether or not the underlying stream can be read from.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.NonClosingStreamWrapper.CanSeek">
+            <summary>
+            Gets a value indicating whether indicates whether or not the underlying stream supports seeking.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.NonClosingStreamWrapper.CanWrite">
+            <summary>
+            Gets a value indicating whether indicates whether or not the underlying stream can be written to.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.Close">
+            <summary>
+            This method is not proxied to the underlying stream; instead, the wrapper
+            is marked as unusable for other (non-close/Dispose) operations. The underlying
+            stream is flushed if the wrapper wasn't closed before this call.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.EndRead(System.IAsyncResult)">
+            <summary>
+            Waits for the pending asynchronous read to complete.
+            </summary>
+            <param name="asyncResult">
+            The reference to the pending asynchronous request to finish.
+            </param>
+            <returns>
+            The number of bytes read from the stream, between zero (0)
+            and the number of bytes you requested. Streams only return
+            zero (0) at the end of the stream, otherwise, they should
+            block until at least one byte is available.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.EndWrite(System.IAsyncResult)">
+            <summary>
+            Ends an asynchronous write operation.
+            </summary>
+            <param name="asyncResult">A reference to the outstanding asynchronous I/O request.</param>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.Flush">
+            <summary>
+            Flushes the underlying stream.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.InitializeLifetimeService">
+            <summary>
+            Throws a NotSupportedException.
+            </summary>
+            <returns>n/a.</returns>
+        </member>
+        <member name="P:Acoustics.Shared.NonClosingStreamWrapper.Length">
+            <summary>
+            Gets returns the length of the underlying stream.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.NonClosingStreamWrapper.Position">
+            <summary>
+            Gets or sets the current position in the underlying stream.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads a sequence of bytes from the underlying stream and advances the
+            position within the stream by the number of bytes read.
+            </summary>
+            <param name="buffer">
+            An array of bytes. When this method returns, the buffer contains
+            the specified byte array with the values between offset and
+            (offset + count- 1) replaced by the bytes read from the underlying source.
+            </param>
+            <param name="offset">
+            The zero-based byte offset in buffer at which to begin storing the data
+            read from the underlying stream.
+            </param>
+            <param name="count">
+            The maximum number of bytes to be read from the
+            underlying stream.
+            </param>
+            <returns>The total number of bytes read into the buffer.
+            This can be less than the number of bytes requested if that many
+            bytes are not currently available, or zero (0) if the end of the
+            stream has been reached.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.ReadByte">
+            <summary>
+            Reads a byte from the stream and advances the position within the
+            stream by one byte, or returns -1 if at the end of the stream.
+            </summary>
+            <returns>The unsigned byte cast to an Int32, or -1 if at the end of the stream.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            Sets the position within the current stream.
+            </summary>
+            <param name="offset">A byte offset relative to the origin parameter.</param>
+            <param name="origin">
+            A value of type SeekOrigin indicating the reference
+            point used to obtain the new position.
+            </param>
+            <returns>The new position within the underlying stream.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.SetLength(System.Int64)">
+            <summary>
+            Sets the length of the underlying stream.
+            </summary>
+            <param name="value">The desired length of the underlying stream in bytes.</param>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Writes a sequence of bytes to the underlying stream and advances
+            the current position within the stream by the number of bytes written.
+            </summary>
+            <param name="buffer">
+            An array of bytes. This method copies count bytes
+            from buffer to the underlying stream.
+            </param>
+            <param name="offset">
+            The zero-based byte offset in buffer at
+            which to begin copying bytes to the underlying stream.
+            </param>
+            <param name="count">The number of bytes to be written to the underlying stream.</param>
+        </member>
+        <member name="M:Acoustics.Shared.NonClosingStreamWrapper.WriteByte(System.Byte)">
+            <summary>
+            Writes a byte to the current position in the stream and
+            advances the position within the stream by one byte.
+            </summary>
+            <param name="value">The byte to write to the stream. </param>
+        </member>
+        <member name="T:Acoustics.Shared.SortDirection">
+            <summary>
+            Sort direction.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.SortDirection.Ascending">
+            <summary>
+            Ascending sort order.
+            </summary>
+        </member>
+        <member name="F:Acoustics.Shared.SortDirection.Descending">
+            <summary>
+            Descending sort order.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.IOrderer`1">
+            <summary>
+            Orderer interface.
+            </summary>
+            <typeparam name="TOrder">Type to order.</typeparam>
+            <remarks>
+            see: http://stackoverflow.com/questions/7737355/store-multi-type-orderby-expression-as-a-property/7742446#7742446 for more info.
+            </remarks>
+        </member>
+        <member name="M:Acoustics.Shared.IOrderer`1.ApplyOrderBy(System.Linq.IQueryable{`0})">
+            <summary>
+            Apply order by to IQueryable.
+            </summary>
+            <param name="source">
+            The source.
+            </param>
+            <returns>
+            Ordered Queryable.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.IOrderer`1.ApplyThenBy(System.Linq.IOrderedQueryable{`0})">
+            <summary>
+            Apply order then by to IQueryable.
+            </summary>
+            <param name="source">
+            The source.
+            </param>
+            <returns>
+            Ordered Queryable.
+            </returns>
+        </member>
+        <member name="T:Acoustics.Shared.Orderer`2">
+            <summary>
+            Implementation of IOrderer.
+            </summary>
+            <typeparam name="TOrder">
+            Type to order.
+            </typeparam>
+            <typeparam name="TOrderProperty">
+            Type from property to order by.
+            </typeparam>
+        </member>
+        <member name="M:Acoustics.Shared.Orderer`2.#ctor(System.Linq.Expressions.Expression{System.Func{`0,`1}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.Orderer`2"/> class. Orders by ascending.
+            </summary>
+            <param name="orderExpr">
+            The order expr.
+            </param>
+        </member>
+        <member name="M:Acoustics.Shared.Orderer`2.#ctor(System.Linq.Expressions.Expression{System.Func{`0,`1}},Acoustics.Shared.SortDirection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.Orderer`2"/> class.
+            </summary>
+            <param name="orderExpr">
+            The order expr.
+            </param>
+            <param name="sortDirection">
+            The sort Direction.
+            </param>
+        </member>
+        <member name="M:Acoustics.Shared.Orderer`2.ApplyOrderBy(System.Linq.IQueryable{`0})">
+            <summary>
+            Apply order by to IQueryable.
+            </summary>
+            <param name="source">
+            The source.
+            </param>
+            <returns>
+            Ordered Queryable.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Orderer`2.ApplyThenBy(System.Linq.IOrderedQueryable{`0})">
+            <summary>
+            Apply order then by to IQueryable.
+            </summary>
+            <param name="source">
+            The source.
+            </param>
+            <returns>
+            Ordered Queryable.
+            </returns>
+        </member>
+        <member name="T:Acoustics.Shared.OrderCoordinator`1">
+            <summary>
+            Order coordinator.
+            </summary>
+            <typeparam name="T">
+            Type to order.
+            </typeparam>
+        </member>
+        <member name="M:Acoustics.Shared.OrderCoordinator`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.OrderCoordinator`1"/> class.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.OrderCoordinator`1.Orders">
+            <summary>
+            Gets Orders.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.OrderCoordinator`1.OneOrder``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},Acoustics.Shared.SortDirection)">
+            <summary>
+            Create an order with one order specified.
+            </summary>
+            <param name="orderExpr">
+            The order expr.
+            </param>
+            <param name="sortDirection">
+            The sort Direction.
+            </param>
+            <typeparam name="TOrderProperty">
+            The property being ordered by.
+            </typeparam>
+            <returns>
+            A new ordercooodrinator.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.OrderCoordinator`1.ApplyOrders(System.Linq.IQueryable{`0})">
+            <summary>
+            Apply orders.
+            </summary>
+            <param name="source">
+            The source.
+            </param>
+            <returns>
+            Queryable ordered by Orders.
+            </returns>
+            <remarks>
+            note, did not return IOrderedQueryable to support ability to return with empty Orders.
+            </remarks>
+        </member>
+        <member name="T:Acoustics.Shared.PathDiagnostics">
+            <summary>
+            Shows where how many segments of a faulty path are valid.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.PathDiagnostics.PathExistsOrDiff(System.String,Acoustics.Shared.PathDiagnostics.PathDiffReport@,System.String)">
+            <summary>
+            Checks if a path exists. If it does not it generates a report detailing
+            what aspects of the path do exist and suggests possible alternatives.
+            </summary>
+            <param name="path">The path to check.</param>
+            <param name="report">
+            A report that details errors found in the path if the <paramref name="path"/> does not exist.
+            </param>
+            <param name="root">
+            An optional root to apply to a relative path.
+            Defaults to <see cref="P:System.Environment.CurrentDirectory"/> is <paramref name="root"/> is null.
+            </param>
+            <returns>True if the path exists.</returns>
+            <exception cref="T:System.ArgumentException">
+            If the supplied <paramref name="root"/> is not itself rooted.
+            </exception>
+        </member>
+        <member name="T:Acoustics.Shared.PathDiagnostics.PathDiffReport">
+            <summary>
+            A report on a path.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.PathDiagnostics.PathDiffReport.Messages">
+            <summary>
+            Gets the messages the comprise the diff report.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.PathDiagnostics.PathDiffReport.Found">
+            <summary>
+            Gets or sets a file system info of the path in question.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.PathUtils.HasUnicodeOrUnsafeChars(System.String)">
+            <summary>
+            Detects whether the given path has unsafe or unicode characters in it.
+            </summary>
+            <remarks>
+            Searches for control characters, characters above 0x7F,
+            and any characters in <see cref="M:System.IO.Path.GetInvalidPathChars"/>.
+            </remarks>
+            <param name="path">The path string to check.</param>
+            <returns>Returns <value>True</value> if the given path contains unsafe or unicode characters.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.PathUtils.GetShortFilename(System.String)">
+            <summary>
+            Gets the short 8.3 filename for a file.
+            </summary>
+            <remarks>
+            If the current platform is not Windows based this function will simply
+            return the given input path without modification.
+            If the supplied path is null or whitespace it will be again returned without
+            modification.
+            </remarks>
+            <param name="path">The path to convert.</param>
+            <exception cref="T:System.IO.FileNotFoundException">If the requested file does not exist.</exception>
+            <returns>An 8.3 filename extracted from kernel32.dll.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.Plugins.GetPlugins``1(System.String,System.Collections.Generic.IEnumerable{System.IO.DirectoryInfo},System.String[])">
+            <summary>
+            Get plugins from directories.
+            </summary>
+            <param name="interfaceName">
+            The interface Name.
+            </param>
+            <param name="directories">
+            The directories.
+            </param>
+            <param name="searchPatterns">
+            The search Patterns.
+            </param>
+            <typeparam name="T">
+            The type of the plugins.
+            </typeparam>
+            <returns>
+            Enumerable of plugins.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Plugins.GetPlugins``1(System.String)">
+            <summary>
+            Get plugins from executing assembly.
+            </summary>
+            <param name="interfaceName">
+            The interface name.
+            </param>
+            <typeparam name="T">
+            The type of the plugins.
+            </typeparam>
+            <returns>
+            Enumerable of plugins.
+            </returns>
+        </member>
+        <member name="T:Acoustics.Shared.ProcessRunner">
+            <summary>
+            Helper class for running processes.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ProcessRunner.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.ProcessRunner"/> class.
+            </summary>
+            <remarks>
+            The. <code>KillProcessOnWaitTimeout</code> flag was removed to control complexity.
+            </remarks>
+            <param name="filePath">
+            The file path.
+            </param>
+            <exception cref="T:System.IO.FileNotFoundException">
+            Thrown if <paramref name="filePath"/> is not found on disk.
+            </exception>
+        </member>
+        <member name="P:Acoustics.Shared.ProcessRunner.ExecutableFile">
+            <summary>
+            Gets ExecutableFile.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.ProcessRunner.WaitForExit">
+            <summary>
+            Gets or sets a value indicating whether wait for process to exit if true. Defaults to true.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.ProcessRunner.WaitForExitMilliseconds">
+            <summary>
+            Gets or sets wait for the set number of milliseconds for the process to exit.
+            </summary>
+            <remarks>
+            The default value. <code>-1</code>, or any value less than. <code>0</code>,
+            means we will wait indefinitely for process exit.
+            </remarks>
+        </member>
+        <member name="P:Acoustics.Shared.ProcessRunner.MaxRetries">
+            <summary>
+            Gets or sets retry running process this many times if it is killed after running longer than WaitForExitMilliseconds.
+            Defaults to 0 (no retries).
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.ProcessRunner.StandardOutput">
+            <summary>
+            Gets StandardOutput.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.ProcessRunner.ErrorOutput">
+            <summary>
+            Gets ErrorOutput.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ProcessRunner.Stop">
+            <summary>
+            Stop the process immediately.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ProcessRunner.Run(System.String,System.String)">
+            <summary>
+            Run the process with
+            <paramref name="arguments"/>
+            in the <paramref name="workingDirectory"/>.
+            Waits indefinitely for the process to exit.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <param name="workingDirectory">
+            The working directory.
+            </param>
+        </member>
+        <member name="M:Acoustics.Shared.ProcessRunner.BuildLogOutput">
+            <summary>
+            Get a string representing the settings and results of this ProcessRunner.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.ProcessRunner.KillProcess">
+            <summary>
+            THis function kills a process... or attempts to do so gracefully.
+            Processes that currently terminating are indistinguishable from process that cannot be killed due to permission issues.
+            Processes that are terminating also do no satisy the HasExited flag.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.TempDir(System.Boolean)">
+            <summary>
+            Gets a valid temp directory.
+            Directory will exist.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.NewTempFile">
+            <summary>
+            Gets a temporary file location.
+            File will be 8.3 (eg. abcdefgh.ijk).
+            File will not exist.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.NewTempFile(System.IO.DirectoryInfo)">
+            <summary>
+            Gets a temporary file location.
+            File will be 8.3 (eg. abcdefgh.ijk).
+            File will not exist.
+            </summary>
+            <param name="tempDir">Temporary directory.</param>
+            <returns>Temp file that does not exist.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.NewTempFile(System.String)">
+            <summary>
+            Gets a temporary file location.
+            File will be 8.3 (eg. abcdefgh.[given ext]).
+            File will not exist.
+            </summary>
+            <param name="extension">File extension (without dot).</param>
+            <returns>File with extension.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.NewTempFile(System.IO.DirectoryInfo,System.String)">
+            <summary>
+            Gets a temporary file location.
+            File will be 8.3 (eg. abcdefgh.[given ext]).
+            File will not exist.
+            </summary>
+            <param name="tempDir">Temporary directory.</param>
+            <returns>File with extension.</returns>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.CopyFromStream(System.IO.Stream,System.IO.FileInfo,System.Boolean)">
+            <summary>
+            Copy from <paramref name="source"/> Stream to Working File.
+            </summary>
+            <param name="source">
+            The source stream.
+            </param>
+            <param name="destinationFile">File to write to.</param>
+            <param name="append">
+            True to append to existing file, false to replace any existing data in file.
+            </param>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.GetStrongerRandomFileName(System.Boolean)">
+            <summary>
+            We suspect the original implementation of GetRandomFileName of
+            returning colliding filenames because *we* trimmed the extension off the file.
+            <para>
+            This is a modification of the original method that can be found here:
+            http://referencesource.microsoft.com/#mscorlib/system/io/path.cs,efb113f637a6bb47.
+            </para>
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.TempFileHelper.ToBase32StringSuitableForDirName(System.Byte[])">
+            <summary>
+            Modified form of http://referencesource.microsoft.com/#mscorlib/system/io/path.cs,78811508e2f49ab8.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.MultiException.ToString">
+            <summary>
+            Get a string representation of this MultiException.
+            </summary>
+            <returns>
+            A string representation of this MultiException.
+            </returns>
+        </member>
+        <member name="M:Acoustics.Shared.Yaml.WithTagMappings``1(``0,System.Collections.Generic.Dictionary{System.String,System.Type})">
+            <summary>
+            A helper extension method that registers multiple tag mappings with
+            the <see cref="T:YamlDotNet.Serialization.SerializerBuilder"/> or the <see cref="T:YamlDotNet.Serialization.DeserializerBuilder"/>.
+            </summary>
+        </member>
+        <member name="T:Acoustics.Shared.YamlTypeTagAttribute">
+            <summary>
+            Registers a type and a tag name that will be emitted in a YAML document when
+            serializing, and will allow for unambiguous parsing when deserializing.
+            </summary>
+        </member>
+        <member name="M:Acoustics.Shared.YamlTypeTagAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Acoustics.Shared.YamlTypeTagAttribute"/> class.
+            Registers a type and a tag name that will be emitted in a YAML document when
+            serializing, and will allow for unambiguous parsing when deserializing.
+            </summary>
+            <param name="type">The type to register.</param>
+            <param name="name">The tag name to use.</param>
+        </member>
+        <member name="P:Acoustics.Shared.YamlTypeTagAttribute.Name">
+            <summary>
+            Gets the name associated with this tag mapping.
+            </summary>
+        </member>
+        <member name="P:Acoustics.Shared.YamlTypeTagAttribute.Type">
+            <summary>
+            Gets the type associated with this tag mapping.
+            </summary>
+        </member>
+        <member name="T:BTR.Core.Linq.ExpressionVisitor`1">
+            <summary>
+            This class visits every Parameter expression in an expression tree and calls a delegate
+            to optionally replace the parameter.  This is useful where two expression trees need to
+            be merged (and they don't share the same ParameterExpressions).
+            </summary>
+        </member>
+        <member name="T:BTR.Core.Linq.ExpressionVisitor">
+            <summary>
+            Expression visitor
+            (from http://blogs.msdn.com/mattwar/archive/2007/07/31/linq-building-an-iqueryable-provider-part-ii.aspx).
+            </summary>
+        </member>
+        <member name="M:System.ArrayExtensions.FastFill``1(``0[],``0[])">
+            <summary>
+            A helper method designed to fill an array with the specified values.
+            Modifies the array in place, return value is only for fluent method calling.
+            Fast is a bit of a misnomer - this operation is only faster after about a million elements!.
+            </summary>
+            <remarks>
+            https://github.com/mykohsu/Extensions/blob/master/ArrayExtensions.cs
+            Inspired from several Stack Overflow discussions and an implementation by David Walker at http://coding.grax.com/2011/11/initialize-array-to-value-in-c-very.html.
+            </remarks>
+            <typeparam name="T">They type of the array.</typeparam>
+            <param name="destinationArray">The array being filled.</param>
+            <param name="value">The value[s] to insert into the array.</param>
+        </member>
+        <member name="M:System.ArrayExtensions.Fill``1(``0[],``0)">
+            <summary>
+            A helper method designed to fill an array with the specified values.
+            Modifies the array in place, return value is only for fluent method calling.
+            </summary>
+            <remarks>
+            https://github.com/mykohsu/Extensions/blob/master/ArrayExtensions.cs
+            Inspired from several Stack Overflow discussions and an implementation by David Walker at http://coding.grax.com/2011/11/initialize-array-to-value-in-c-very.html.
+            </remarks>
+            <typeparam name="T">They type of the array.</typeparam>
+            <param name="destinationArray">The array being filled.</param>
+            <param name="value">The value[s] to insert into the array.</param>
+        </member>
+        <member name="M:System.ArrayExtensions.Print``1(``0[])">
+            <summary>
+            Debug function used to print an array to console (Debug.WriteLine()).
+            </summary>
+            <typeparam name="T">The type of the input array.</typeparam>
+            <param name="array">The array to print.</param>
+            <returns>The same array that was input.</returns>
+        </member>
+        <member name="M:System.ArrayExtensions.PrintAsLiteral``1(System.Array)">
+            <summary>
+            Prints a multi-dimensional matrix as a C# literal.
+            </summary>
+            <remarks>Assumes all ranks have a lower bound of zero.</remarks>
+            <typeparam name="T">Cast element items to T before toString is called.</typeparam>
+            <param name="array">The source array to print.</param>
+        </member>
+        <member name="M:System.ArrayExtensions.Compare``1(``0[],``0[])">
+            <summary>
+            Compares two arrays, matching each element in order using the default Equals method for the array type T.
+            </summary>
+            <typeparam name="T">The common type of each array.</typeparam>
+            <param name="arr1">The first array to compare.</param>
+            <param name="arr2">The second array to compare.</param>
+            <returns>True: If each element matches; otherwise: False.</returns>
+        </member>
+        <member name="M:System.ArrayExtensions.GetMaxValue(System.Double[])">
+            <summary>
+            retrieving the max value of a vector.
+            </summary>
+        </member>
+        <member name="M:System.ArrayExtensions.GetMinValue(System.Double[])">
+            <summary>
+            retrieving the min value of a vector.
+            </summary>
+        </member>
+        <member name="T:System.DateTimeAndTimeSpanExtensions">
+            <summary>
+            Extensions for the <c>DateTime</c> and <c>TimeSpan</c> structs.
+            </summary>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Humanise(System.TimeSpan,System.Boolean)">
+            <summary>
+            Get a human readable representation of the time span.
+            </summary>
+            <param name="timeSpan">
+            The time span.
+            </param>
+            <param name="addSuffixOrPrefix">
+            True to add a suffix or prefix as appropriate. False to not add a suffix or prefix.
+            </param>
+            <returns>
+            Human readable representation of the time span.
+            </returns>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Humanise(System.DateTimeOffset,System.DateTimeOffset,System.Boolean)">
+            <summary>
+            Get a human-readable string of difference between two DateTimes (eg. 2 hours, 2 hours ago, in 2 hours).
+            </summary>
+            <param name="first">
+            First time (should be earlier).
+            </param>
+            <param name="second">
+            Second time (should be later).
+            </param>
+            <param name="addSuffixOrPrefix">
+            The add Suffix Or Prefix.
+            </param>
+            <returns>
+            Human-readable string of difference between two DateTimes.
+            </returns>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Humanise(System.DateTime,System.DateTime,System.Boolean)">
+            <summary>
+            Get a human-readable string of difference between two DateTimes (eg. 2 hours, 2 hours ago, in 2 hours).
+            </summary>
+            <param name="first">
+            First time (should be earlier).
+            </param>
+            <param name="second">
+            Second time (should be later).
+            </param>
+            <param name="addSuffixOrPrefix">
+            The add Suffix Or Prefix.
+            </param>
+            <returns>
+            Human-readable string of difference between two DateTimes.
+            </returns>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.ToTimeZoneString(System.TimeSpan)">
+            <summary>
+            Gets the minutes and seconds of a time span in the format required for an offset from UTC.
+            </summary>
+            <param name="ts">
+            The time span.
+            </param>
+            <returns>
+            Time zone offset formatted string.
+            </returns>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.ToIso8601SafeString(System.DateTimeOffset)">
+            <summary>
+            Formats a date in an ISO8601 format that is compact
+            and does not contain colons.
+            </summary>
+            <param name="date">The date to convert to a string.</param>
+            <returns>The resulting string.</returns>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.ToJavascriptTimestamp(System.DateTimeOffset)">
+            <summary>
+            Gets the DateTimeOffset formatted as a javascript timestamp.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <returns>
+            Javascript timestamp.
+            </returns>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.ToJavascriptTimestamp(System.DateTime)">
+            <summary>
+            Gets the DateTime formatted as a javascript timestamp.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <returns>
+            Javascript timestamp.
+            </returns>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Round(System.TimeSpan,System.TimeSpan,System.MidpointRounding)">
+            <remarks>From: http://stackoverflow.com/questions/766626/is-there-a-better-way-in-c-sharp-to-round-a-datetime-to-the-nearest-5-seconds (Stackoverflow).</remarks>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Round(System.TimeSpan,System.TimeSpan)">
+            <remarks>From: http://stackoverflow.com/questions/766626/is-there-a-better-way-in-c-sharp-to-round-a-datetime-to-the-nearest-5-seconds (Stackoverflow).</remarks>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Round(System.DateTime,System.TimeSpan)">
+            <remarks>From: http://stackoverflow.com/questions/766626/is-there-a-better-way-in-c-sharp-to-round-a-datetime-to-the-nearest-5-seconds (Stackoverflow).</remarks>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Multiply(System.TimeSpan,System.Int32)">
+            <summary>
+            Multiplies a timespan by a scalar value.
+            </summary>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Divide(System.TimeSpan,System.Int32)">
+            <summary>
+            Divides a timespan by an scalar value.
+            </summary>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Multiply(System.TimeSpan,System.Double)">
+            <summary>
+            Multiplies a timespan by a double value.
+            </summary>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Divide(System.TimeSpan,System.Double)">
+            <summary>
+            Divides a timespan by an scalar value.
+            </summary>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Divide(System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Divides a timespan by an timespan and returns a scalar factor.
+            </summary>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.Modulo(System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Divides a timespan by an timespan and the remainder.
+            </summary>
+        </member>
+        <member name="M:System.DateTimeAndTimeSpanExtensions.RoundToTimeOfDay(System.DateTimeOffset,System.TimeSpan,System.DateTimeAndTimeSpanExtensions.RoundingDirection)">
+            <summary>
+            Round a date to a time of day.
+            </summary>
+            <remarks>
+            Unlike the other rounding methods (which accept an interval), this method
+            will only output values that are 24-hours apart so that values always align
+            to the supplied <paramref name="timeOfDay"/>.
+            </remarks>
+            <param name="date">The date to round.</param>
+            <param name="timeOfDay">The time of day to round to.</param>
+            <param name="direction">The behaviour of the rounding operation.</param>
+            <returns>A rounded date.</returns>
+        </member>
+        <member name="M:System.DoubleExtensions.RoundToSignificantDigits(System.Double,System.Int32)">
+            <summary>
+            Round a number to <paramref name="digits"/> significant places.
+            </summary>
+            <remarks>
+            Sourced from: http://stackoverflow.com/questions/374316/round-a-double-to-x-significant-figures.
+            </remarks>
+            <param name="d">The value to round.</param>
+            <param name="digits">The number of significant digits to keep.</param>
+            <returns>The rounded value.</returns>
+        </member>
+        <member name="M:System.DoubleExtensions.ScaleUnitToByte(System.Double)">
+            <summary>
+            Scales a unit double value, that is in the interval [0.0, 1.0] to a byte [0, 255]
+            value between 0 and 255, clamping out of bound values and rounding away from zero.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The clamped and rounded value.</returns>
+        </member>
+        <member name="T:System.DoubleSquareArrayExtensions">
+            <summary>
+            The double square array extensions.
+            </summary>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.PointIntersect(System.Double[0:,0:],System.Drawing.Point)">
+            <summary>
+            The point intersect.
+            </summary>
+            <param name="array">
+            The array.
+            </param>
+            <param name="point">
+            The point.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.PointIntersect(System.Double[0:,0:],System.Int32,System.Int32)">
+            <summary>
+            The point intersect.
+            </summary>
+            <param name="array">
+            The array.
+            </param>
+            <param name="x">
+            The x.
+            </param>
+            <param name="y">
+            The y.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.Fill``1(``0[0:,0:],``0)">
+            <summary>
+            Fills a given array with a supplied value.
+            </summary>
+            <typeparam name="T">
+            The type of the given Array.
+            </typeparam>
+            <param name="array">
+            The array to manipulate.
+            </param>
+            <param name="value">
+            The Value to insert.
+            </param>
+            <returns>
+            Returns a reference to the manipulated array.
+            </returns>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.MinMax(System.Double[0:,0:],System.Double@,System.Double@)">
+            <summary>
+            returns the min and max values in a matrix of doubles.
+            </summary>
+            <param name="data">
+            The audio data.
+            </param>
+            <param name="min">
+            The min value.
+            </param>
+            <param name="max">
+            The max value.
+            </param>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.EmptyCopy``1(``0[0:,0:])">
+            <summary>
+            returns an empty matrix with the same number of rows and columns of the input matrix.
+            </summary>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.GetColumn``1(``0[0:,0:],System.Int32)">
+            <summary>
+            retrieving a full column of a matrix
+            columnIndex is the column we want to access.
+            </summary>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.GetRow``1(``0[0:,0:],System.Int32)">
+            <summary>
+            retrieving a full row of a matrix
+            rowIndex is the row we want to access.
+            </summary>
+        </member>
+        <member name="T:System.DoubleSquareArrayExtensions.MergingDirection">
+            <summary>
+            The merging direction when adding a 2D-array to another 2D-array.
+            </summary>
+        </member>
+        <member name="M:System.DoubleSquareArrayExtensions.AddToArray``1(``0[0:,0:],``0[0:,0:],System.DoubleSquareArrayExtensions.MergingDirection,System.Int32)">
+            <summary>
+            adding a 2D-array to another 2D-array either by "column" or by "row".
+            </summary>
+        </member>
+        <member name="M:System.IO.ExtensionsIO.CopyToStream(System.IO.Stream,System.IO.Stream)">
+            <summary>
+            Copy from <paramref name="source"/> Stream to <paramref name="destination"/> Stream.
+            Only needed before .Net 4.0.
+            </summary>
+            <param name="source">
+            The source.
+            </param>
+            <param name="destination">
+            The destination.
+            </param>
+            <remarks>
+            http://stackoverflow.com/questions/1933742/how-is-the-stream-copytostream-method-implemented-in-net-4.
+            </remarks>
+        </member>
+        <member name="M:System.ExtensionsString.Truncate(System.String,System.Int32,System.String,System.Boolean)">
+            <summary>
+            Truncate a string to a desired length, specifying an ellipsis to add if the text is longer than length.
+            </summary>
+            <param name="text">
+            String to truncate.
+            </param>
+            <param name="length">
+            The length.
+            </param>
+            <param name="ellipsis">
+            The ellipsis.
+            </param>
+            <param name="keepFullWordAtEnd">
+            The keep full word at end.
+            </param>
+            <returns>
+            Truncated string.
+            </returns>
+        </member>
+        <member name="M:System.ExtensionsString.IsGuid(System.String)">
+            <summary>
+            Attempts to convert a string to a guid.
+            </summary>
+            <param name="s">
+            String to convert.
+            </param>
+            <returns>Returns true if successful, otherwise false.
+            </returns>
+        </member>
+        <member name="M:System.ExtensionsString.ParseCommaSeparatedList(System.String)">
+            <summary>Convert comma separated list to List of string.
+            </summary>
+            <param name="value">
+            String to parse.
+            </param>
+            <returns>List of strings.
+            </returns>
+        </member>
+        <member name="M:System.ExtensionsString.StringToUtf8ByteArray(System.String)">
+            <summary>
+            Converts the String to UTF8 Byte array.
+            </summary>
+            <param name="string">The string to encode.</param>
+            <returns>Xml string as byte array.</returns>
+        </member>
+        <member name="M:System.ExtensionsString.ByteArrayToString(System.Byte[],System.Text.Encoding)">
+            <summary>
+            </summary>
+            <param name="bytes">
+            The bytes.
+            </param>
+            <param name="encoding">
+            The encoding.
+            </param>
+        </member>
+        <member name="M:System.ExtensionsString.Contains(System.String,System.String,System.StringComparison)">
+            <summary>
+            Contains overload allowing a StringComparison to be specified (easier case-insensitive string compare).
+            </summary>
+            <param name="source">
+            The source string.
+            </param>
+            <param name="toCheck">
+            The string to check.
+            </param>
+            <param name="comp">
+            The comparison.
+            </param>
+            <returns>
+            True if <paramref name="source"/> contains <paramref name="toCheck"/> using <paramref name="comp"/>, otherwise false.
+            </returns>
+            <remarks>
+            from: http://stackoverflow.com/questions/444798/case-insensitive-containsstring.
+            </remarks>
+        </member>
+        <member name="T:System.Xml.Linq.ExtensionsXml">
+            <summary>
+            Xml Extension methods.
+            </summary>
+        </member>
+        <member name="M:System.Xml.Linq.ExtensionsXml.AbsoluteXPath(System.Xml.Linq.XElement)">
+            <summary>
+            Get the absolute XPath to a given XElement
+            (e.g. "/people/person[6]/name[1]/last[1]").
+            </summary>
+            <param name="element">
+            The element to get the index of.
+            </param>
+            <remarks>
+            Extension methods for the .NET 3.5 System.Xml.Linq namespace.
+            From: http://seattlesoftware.wordpress.com/2009/03/13/get-the-xpath-to-an-xml-element-xelement/.
+            </remarks>
+            <returns>
+            The absolute x path.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="element" /> is <c>null</c>.</exception>
+        </member>
+        <member name="M:System.Xml.Linq.ExtensionsXml.IndexPosition(System.Xml.Linq.XElement)">
+            <summary>
+            Get the index of the given XElement relative to its
+            siblings with identical names. If the given element is
+            the root, -1 is returned.
+            </summary>
+            <param name="element">
+            The element to get the index of.
+            </param>
+            <remarks>
+            Extension methods for the .NET 3.5 System.Xml.Linq namespace.
+            From: http://seattlesoftware.wordpress.com/2009/03/13/get-the-xpath-to-an-xml-element-xelement/.
+            </remarks>
+            <returns>
+            The index position.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="element" /> is <c>null</c>.</exception>
+            <exception cref="T:System.InvalidOperationException">element has been removed from its parent.</exception>
+        </member>
+        <member name="M:System.Xml.Linq.ExtensionsXml.SerializeObject``1(``0)">
+            <summary>
+            Serialize an object into an XML string.
+            </summary>
+            <typeparam name="T">Type of object to serialise.</typeparam>
+            <param name="obj">Object to serialise.</param>
+            <returns>Object serialised as xml string.</returns>
+        </member>
+        <member name="M:System.Xml.Linq.ExtensionsXml.DeserializeObject``1(System.String)">
+            <summary>
+            Reconstruct an object from an XML string.
+            </summary>
+            <typeparam name="T">
+            Type of object to deserialise.
+            </typeparam>
+            <param name="xml">
+            serialized xml string.
+            </param>
+            <returns>
+            Deserialised object T.
+            </returns>
+        </member>
+        <member name="M:System.MathExtensions.Clamp(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Restricts a <see cref="T:System.Byte"/> to be within a specified range.
+            </summary>
+            <param name="value">The The value to clamp.</param>
+            <param name="min">The minimum value. If value is less than min, min will be returned.</param>
+            <param name="max">The maximum value. If value is greater than max, max will be returned.</param>
+            <returns>
+            The <see cref="T:System.Byte"/> representing the clamped value.
+            </returns>
+        </member>
+        <member name="M:System.MathExtensions.Clamp(System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+            Restricts a <see cref="T:System.UInt32"/> to be within a specified range.
+            </summary>
+            <param name="value">The The value to clamp.</param>
+            <param name="min">The minimum value. If value is less than min, min will be returned.</param>
+            <param name="max">The maximum value. If value is greater than max, max will be returned.</param>
+            <returns>
+            The <see cref="T:System.Int32"/> representing the clamped value.
+            </returns>
+        </member>
+        <member name="M:System.MathExtensions.Clamp(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Restricts a <see cref="T:System.Int32"/> to be within a specified range.
+            </summary>
+            <param name="value">The The value to clamp.</param>
+            <param name="min">The minimum value. If value is less than min, min will be returned.</param>
+            <param name="max">The maximum value. If value is greater than max, max will be returned.</param>
+            <returns>
+            The <see cref="T:System.Int32"/> representing the clamped value.
+            </returns>
+        </member>
+        <member name="M:System.MathExtensions.Clamp(System.Single,System.Single,System.Single)">
+            <summary>
+            Restricts a <see cref="T:System.Single"/> to be within a specified range.
+            </summary>
+            <param name="value">The The value to clamp.</param>
+            <param name="min">The minimum value. If value is less than min, min will be returned.</param>
+            <param name="max">The maximum value. If value is greater than max, max will be returned.</param>
+            <returns>
+            The <see cref="T:System.Single"/> representing the clamped value.
+            </returns>
+        </member>
+        <member name="M:System.MathExtensions.Clamp(System.Double,System.Double,System.Double)">
+            <summary>
+            Restricts a <see cref="T:System.Double"/> to be within a specified range.
+            </summary>
+            <param name="value">The The value to clamp.</param>
+            <param name="min">The minimum value. If value is less than min, min will be returned.</param>
+            <param name="max">The maximum value. If value is greater than max, max will be returned.</param>
+            <returns>
+            The <see cref="T:System.Double"/> representing the clamped value.
+            </returns>
+        </member>
+        <member name="T:System.ObjectExtensions">
+            <summary>
+            The object extensions.
+            </summary>
+        </member>
+        <member name="T:System.ProcessExtensions.ParentProcessUtilities">
+            <summary>
+            A utility class to determine a process parent.
+            http://stackoverflow.com/a/3346055.
+            </summary>
+        </member>
+        <member name="M:System.ReflectionExtensions.GetProperty``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Gets the property from the expression.
+            </summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <param name="expression">The expression.</param>
+            <returns>The <see cref="T:System.Reflection.PropertyInfo"/> for the expression.</returns>
+        </member>
+        <member name="M:System.ReflectionExtensions.GetMemberExpression``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Gets the member expression.
+            </summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <typeparam name="T"></typeparam>
+            <param name="expression">The expression.</param>
+        </member>
+        <member name="P:System.SystemExtensions.ExecutingDirectory">
+            <summary>
+            Gets ExecutingDirectory.
+            </summary>
+        </member>
+        <member name="M:System.SystemExtensions.BinaryDeserialize(System.Byte[])">
+            <summary>Deserialize byte array to object.
+            </summary>
+            <param name="bytes">
+            The bytes.
+            </param>
+            <returns>Deserialized object.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.BinaryDeserialize(System.Byte[],System.Runtime.Serialization.SerializationBinder)">
+            <summary>
+            Deserialize byte array to object.
+            </summary>
+            <param name="bytes">
+            The bytes.
+            </param>
+            <param name="binder">
+            The binder.
+            </param>
+            <returns>
+            Deserialized object.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.BinarySerialize(System.Object)">
+            <summary>
+            Convert an object to it's binary serialized form.
+            </summary>
+            <param name="o">
+            Object to serialize.
+            </param>
+            <returns>Serialized object.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.Utf8ByteArrayToString(System.Byte[])">
+            <summary>
+            To convert a Byte Array of Unicode values (UTF-8 encoded) to a complete String.
+            </summary>
+            <param name="characters">
+            Unicode Byte Array to be converted to String.
+            </param>
+            <returns>
+            String converted from Unicode Byte Array.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.TryParseGuidRegex(System.String,System.Guid@)">
+            <summary>
+            Converts the string representation of a Guid to its Guid
+            equivalent. A return value indicates whether the operation
+            succeeded.
+            </summary>
+            <param name="s">
+            A string containing a Guid to convert.
+            </param>
+            <param name="value">
+            The value.
+            </param>
+            <value>
+            <see langword="true"/> if <paramref name="s"/> was converted
+            successfully; otherwise, <see langword="false"/>.
+            </value>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown if <pararef name="s"/> is <see langword="null"/>.
+            </exception>
+            <returns>
+            The try parse guid.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.ToDescriptionString(System.Enum)">
+            <summary>
+            Get description for enum.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <returns>
+            Description text from DescriptionAttribute.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.ToByteDisplay(System.Int64)">
+            <summary>
+            Convert a byte count to human-readable format.
+            </summary>
+            <param name="byteCount">
+            Number of bytes.
+            </param>
+            <returns>
+            Byte count in human-readable format.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.HasValue``2(System.Collections.Generic.Dictionary{``0,``1},System.String)">
+            <summary>
+            Check if a dictionary has a value for a key.
+            </summary>
+            <param name="dictionary">
+            The dictionary.
+            </param>
+            <param name="key">
+            The dictionary key.
+            </param>
+            <typeparam name="TKey">
+            Type of key.
+            </typeparam>
+            <typeparam name="TValue">
+            Type of Value.
+            </typeparam>
+            <returns>
+            True if <paramref name="dictionary"/> contains and has a value for <paramref name="key"/>, otherwise false.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.ToDictionary(System.Collections.Specialized.NameValueCollection)">
+            <summary>Convert NameValueCollection to a Dictionary.
+            </summary>
+            <param name="collection">
+            The collection.
+            </param>
+            <returns>Dictionary from NameValueCollection.
+            </returns>
+        </member>
+        <member name="M:System.SystemExtensions.Page``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            Paging for LINQ to SQL.
+            </summary>
+            <typeparam name="TSource">IQueryable of 'object type' to page.</typeparam>
+            <param name="source">IQueryable to page.</param>
+            <param name="page">Page number (begins at 1).</param>
+            <param name="pageSize">Number of items per page.</param>
+            <returns>Paged LINQ to SQL.</returns>
+        </member>
+        <member name="M:System.SystemExtensions.Page``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
+            <summary>
+            Paging for LINQ.
+            </summary>
+            <typeparam name="TSource">IEnumerable of 'object type' to page.</typeparam>
+            <param name="source">IEnumerable to page.</param>
+            <param name="page">Page number (begins at 1).</param>
+            <param name="pageSize">Number of items per page.</param>
+            <returns>Paged LINQ.</returns>
+        </member>
+        <member name="M:System.SystemExtensions.PageByIndex``1(System.Linq.IQueryable{``0},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Page IQueryable object using startIndex and number of items.
+            </summary>
+            <typeparam name="T">IQueryable of 'object type' to page.</typeparam>
+            <param name="value">IQueryable to page.</param>
+            <param name="startIndex">Index of first item to return.</param>
+            <param name="length">number of items to return.</param>
+            <returns>Paged IQueryable object.</returns>
+        </member>
+        <member name="T:System.LoggedConsole">
+            <summary>
+            This class is designed to be an abstraction to the system console.
+            Messages normally written to the System.Console Out and Error are additionally logged in this class.
+            The logging appenders filter out messages for this class and print them in a clean format.
+            </summary>
+        </member>
+        <member name="M:System.LoggedConsole.ReadHiddenLine">
+            <summary>
+            Reads a line from the console while hiding input - good for passwords.
+            </summary>
+        </member>
+        <member name="T:System.NoConsole">
+            <summary>
+            A quiet logger that only logs to the log file. Requires appropriate logger
+            configuration.
+            </summary>
+        </member>
+        <member name="T:SixLabors.ImageSharp.ImageSharpExtensions">
+            <summary>
+            Image extension methods.
+            </summary>
+        </member>
+        <member name="F:SixLabors.ImageSharp.ImageSharpExtensions.ColorRegExError">
+            <summary>
+            The color reg ex error.
+            </summary>
+        </member>
+        <member name="F:SixLabors.ImageSharp.ImageSharpExtensions.RegExHexColor">
+            <summary>
+            The reg ex hex color.
+            </summary>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.ToByteArray(SixLabors.ImageSharp.Image,SixLabors.ImageSharp.Formats.IImageEncoder)">
+            <summary>
+            Convert an image to a byte array.
+            </summary>
+            <param name="image">
+            The image.
+            </param>
+            <param name="imageFormat">
+            The image Format.
+            </param>
+            <returns>
+            Byte array representing image.
+            </returns>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.ToHexString(SixLabors.ImageSharp.Color,System.Boolean)">
+            <summary>
+            The to hex string.
+            </summary>
+            <param name="color">
+            The color.
+            </param>
+            <param name="includeAlpha">
+            The include alpha.
+            </param>
+            <returns>
+            Color as hex string.
+            </returns>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.ModifySpectrogram(SixLabors.ImageSharp.Image,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Resize <paramref name="sourceImage"/> to match <paramref name="height"/> and <paramref name="width"/>.
+            Removes DC value if <paramref name="removeBottomRow"/> is true.
+            </summary>
+            <param name="sourceImage">
+            The source Image.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+            <param name="width">
+            The width.
+            </param>
+            <param name="removeBottomRow">
+            True to remove the DC Value (bottom row of pixels).
+            </param>
+            <returns>
+            Modified image.
+            </returns>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.ToImage(System.Byte[])">
+            <summary>
+            Get Image from byte array.
+            </summary>
+            <param name="bytes">
+            The byte array.
+            </param>
+            <returns>
+            Image from byte array.
+            </returns>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.ColorFromHexString(System.String)">
+            <summary>
+            Supports 4 formats:
+            #RRGGBBAA
+            RRGGBBAA
+            #RRGGBB
+            RRGGBB.
+            </summary>
+            <param name="color">
+            A textual representation of a color.
+            </param>
+            <returns>
+            The <c>Color</c> parsed from the input.
+            </returns>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.FillRectangle(SixLabors.ImageSharp.Processing.IImageProcessingContext,SixLabors.ImageSharp.Drawing.Processing.IBrush,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Fill a rectangle with a brush.
+            </summary>
+            <remarks>
+            Will short-circuit return if height or width less than or equal to zero.
+            This is a "safer" operation.
+            </remarks>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.FillWithBlend(SixLabors.ImageSharp.Processing.IImageProcessingContext,SixLabors.ImageSharp.Drawing.Processing.IBrush,SixLabors.ImageSharp.Drawing.IPath[])">
+            <summary>
+            Fills a rectangle with color that blends with the background.
+            If the given <paramref name="brush"/> contains an alpha component,
+            that component will be used as the <c>BlendPercentage</c> value.
+            </summary>
+            <remarks>
+            Apparently blending pixels with transparency is not supported for Rgb24 images.
+            See the FillDoesNotBlendByDefault.Test smoke test.
+            BUG: Blending does not occur with fill https://github.com/SixLabors/ImageSharp.Drawing/issues/38.
+            </remarks>
+            <param name="context">The drawing context.</param>
+            <param name="brush">The brush to fill with.</param>
+            <param name="paths">If specified, a collection of regions to fill.</param>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.FillWithBlend(SixLabors.ImageSharp.Processing.IImageProcessingContext,SixLabors.ImageSharp.Drawing.Processing.IBrush,SixLabors.ImageSharp.RectangleF)">
+            <summary>
+            Fills a rectangle with color that blends with the background.
+            If the given <paramref name="brush"/> contains an alpha component,
+            that component will be used as the <c>BlendPercentage</c> value.
+            </summary>
+            <remarks>
+            Apparently blending pixels with transparency is not supported for Rgb24 images.
+            See the FillDoesNotBlendByDefault.Test smoke test.
+            BUG: Blending does not occur with fill https://github.com/SixLabors/ImageSharp.Drawing/issues/38.
+            </remarks>
+            <param name="context">The drawing context.</param>
+            <param name="brush">The brush to fill with.</param>
+            <param name="region">A rectangular region to fill.</param>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.GetBrightness(SixLabors.ImageSharp.PixelFormats.Rgb24)">
+            <summary>
+                  Returns the Hue-Saturation-Lightness (HSL) lightness
+                  for this <see cref='T:System.Drawing.Color'/> .
+            </summary>
+            <remarks>
+            Implementation from https://referencesource.microsoft.com/#System.Drawing/commonui/System/Drawing/Color.cs,23adaaa39209cc1f.
+            </remarks>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.DrawTextSafe(SixLabors.ImageSharp.Processing.IImageProcessingContext,System.String,SixLabors.Fonts.Font,SixLabors.ImageSharp.Color,SixLabors.ImageSharp.PointF,SixLabors.ImageSharp.Drawing.Processing.TextGraphicsOptions)">
+            <summary>
+            Draws text onto an image.
+            </summary>
+            <remarks>
+            Historically this method drew a subset of glyphs if the text was located to the left
+            of the image (i.e. with a negative x coordinate).
+            </remarks>
+            <param name="context"></param>
+            <param name="text"></param>
+            <param name="font"></param>
+            <param name="color"></param>
+            <param name="location"></param>
+            <param name="textOptions"></param>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.Crop``1(SixLabors.ImageSharp.Image{``0},SixLabors.ImageSharp.Rectangle)">
+            <summary>
+            Crop an image using a <paramref name="crop"/> Rectangle.
+            </summary>
+            <param name="source">
+            Source image.
+            </param>
+            <param name="crop">
+            Crop rectangle.
+            </param>
+            <returns>
+            Cropped image.
+            </returns>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.CropIntersection``1(SixLabors.ImageSharp.Image{``0},SixLabors.ImageSharp.Rectangle)">
+            <summary>
+            Crop an image using a <paramref name="crop"/> Rectangle.
+            If <paramref name="crop"/> spills over <paramref name="source"/> only intersecting areas are returned.
+            </summary>
+            <param name="source">
+            Source image.
+            </param>
+            <param name="crop">
+            Crop rectangle.
+            </param>
+            <returns>
+            Cropped image.
+            </returns>
+        </member>
+        <member name="M:SixLabors.ImageSharp.ImageSharpExtensions.CropInverse``1(SixLabors.ImageSharp.Image{``0},SixLabors.ImageSharp.Rectangle)">
+            <summary>
+            Draw a crop of an image onto a rectangle surface. Unlike crop, it treats the rectangle coordinates
+            as the source of truth and returns a new image, with a section of <paramref name="source"/> drawn on top.
+            </summary>
+            <param name="source">
+            Source image.
+            </param>
+            <param name="crop">
+            Crop rectangle.
+            </param>
+            <returns>
+            Cropped image.
+            </returns>
+        </member>
+        <member name="M:log4net.LogExtensions.Prompt(log4net.ILog,System.Object)">
+            <summary>
+            Log a message object with the <see cref="F:LogExtensions.PromptLevel"/> level.
+            Use this method only for interactive prompts that the user must see.
+            </summary>
+            <param name="log">
+            The log.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+        </member>
+        <member name="M:log4net.LogExtensions.Success(log4net.ILog,System.Object)">
+            <summary>
+            Log a message object with the <see cref="F:LogExtensions.SuccessLevel"/> level -
+            equivalent to <see cref="F:log4net.Core.Level.Notice"/>.
+            </summary>
+            <param name="log">
+            The log.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+        </member>
+        <member name="M:log4net.LogExtensions.Success(log4net.ILog,System.String,System.Object[])">
+            <summary>
+            Log a message object with the <see cref="F:LogExtensions.SuccessLevel"/> level -
+            equivalent to <see cref="F:log4net.Core.Level.Notice"/>.
+            </summary>
+            <param name="log">The logger to use.</param>
+            <param name="format">
+            The string format.
+            </param>
+            <param name="args">
+            The args to the format string.
+            </param>
+        </member>
+        <member name="M:log4net.LogExtensions.Verbose(log4net.ILog,System.Object)">
+            <summary>
+            Log a message object with the <see cref="F:log4net.Core.Level.Verbose"/> level.
+            Verbose is the most detailed log level.
+            </summary>
+            <remarks>
+            <para>
+            See the <see cref="M:Verbose(object)"/> form for more detailed information.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:log4net.LogExtensions.Verbose(log4net.ILog,System.String,System.Object[])">
+            <summary>
+            Log a message object with the <see cref="F:log4net.Core.Level.Verbose"/> level.
+            Verbose is the most detailed log level.
+            </summary>
+            <remarks>
+            <para>
+            See the <see cref="M:Verbose(object)"/> form for more detailed information.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:log4net.LogExtensions.Verbose(log4net.ILog,System.String,System.Exception)">
+            <summary>
+            Log a message object with the <see cref="F:log4net.Core.Level.Verbose"/> level including
+                        the stack trace of the <see cref="T:System.Exception"/> passed
+                        as a parameter.
+            Verbose is the most detailed log level.
+            </summary>
+            <param name="log">The logger to use.</param>
+            <param name="message">The message object to log.</param>
+            <param name="exception">The exception to log, including its stack trace.</param>
+            <remarks>
+            <para>
+            See the <see cref="M:Verbose(object)"/> form for more detailed information.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:log4net.LogExtensions.IsVerboseEnabled(log4net.ILog)">
+            <summary>
+            Gets a value indicating whether the Verbose logging level is enabled.
+            </summary>
+            <param name="log">The logger to use.</param>
+            <returns>True if the Verbose logging level is enabled.</returns>
+        </member>
+        <member name="M:log4net.LogExtensions.Trace(log4net.ILog,System.Object)">
+            <summary>
+            Log a message object with the <see cref="F:log4net.Core.Level.Trace"/> level including
+                        the stack trace of the <see cref="T:System.Exception"/> passed
+                        as a parameter.
+            Verbose is the most detailed log level.
+            </summary>
+            <param name="log">The logger to use.</param>
+            <param name="message">The message object to log.</param>
+            <remarks>
+            <para>
+            See the <see cref="M:Verbose(object)"/> form for more detailed information.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:log4net.LogExtensions.Trace(log4net.ILog,System.String,System.Object[])">
+            <summary>
+            Log a message object with the <see cref="F:log4net.Core.Level.Trace"/> level.
+            Trace is the most detailed log level.
+            </summary>
+            <remarks>
+            <para>
+            See the <see cref="M:Trace(object)"/> form for more detailed information.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:log4net.LogExtensions.Trace(log4net.ILog,System.Object,System.Exception)">
+            <summary>
+            Log a message object with the <see cref="F:log4net.Core.Level.Trace"/> level including
+                        the stack trace of the <see cref="T:System.Exception"/> passed
+                        as a parameter.
+            Trace is the most detailed log level.
+            </summary>
+            <param name="log">The logger to use.</param>
+            <param name="message">The message object to log.</param><param name="exception">The exception to log, including its stack trace.</param>
+            <remarks>
+            <para>
+            See the <see cref="M:Trace(object)"/> form for more detailed information.
+            </para>
+            </remarks>
+            <seealso cref="M:Trace(object)"/><seealso cref="P:log4net.ILog.IsTraceEnabled"/>
+        </member>
+        <member name="T:QutSensors.Shared.StatDescriptiveResult">
+            <summary>
+            The result class the holds the analysis results.
+            </summary>
+            <remarks>
+            From: http://www.codeproject.com/KB/recipes/DescriptiveStatisticClass.aspx.
+            </remarks>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Count">
+            <summary>
+            Count.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.FirstQuartile">
+            <summary>
+            First quartile, at 25 percentile.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.GeometricMean">
+            <summary>
+            Geometric mean.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.HarmonicMean">
+            <summary>
+            Harmonic mean.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.IQR">
+            <summary>
+            Interquartile range.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Kurtosis">
+            <summary>
+            Kurtosis of the data distribution.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Max">
+            <summary>
+            Maximum value.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Mean">
+            <summary>
+            Arithmatic mean.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Median">
+            <summary>
+            Median, or second quartile, or at 50 percentile.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Min">
+            <summary>
+            Minimum value.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Range">
+            <summary>
+            The range of the values.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Skewness">
+            <summary>
+            Skewness of the data distribution.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.StdDev">
+            <summary>
+            Sample standard deviation.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Sum">
+            <summary>
+            Sum.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.SumOfError">
+            <summary>
+            Sum of Error.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.SumOfErrorSquare">
+            <summary>
+            The sum of the squares of errors.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.ThirdQuartile">
+            <summary>
+            Third quartile, at 75 percentile.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.Variance">
+            <summary>
+            Sample variance.
+            </summary>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptiveResult.SortedData">
+            <summary>
+            SortedData is used to calculate percentiles.
+            </summary>
+        </member>
+        <member name="M:QutSensors.Shared.StatDescriptiveResult.Percentile(System.Double)">
+            <summary>
+            Calcuate Percentile.
+            </summary>
+            <param name="percent">
+            Pecentile, between 0 to 100.
+            </param>
+            <returns>
+            Calcuated Percentile.
+            </returns>
+        </member>
+        <member name="T:QutSensors.Shared.StatDescriptive">
+            <summary>
+            Descriptive class.
+            </summary>
+            <remarks>
+            From: http://www.codeproject.com/KB/recipes/DescriptiveStatisticClass.aspx.
+            </remarks>
+        </member>
+        <member name="F:QutSensors.Shared.StatDescriptive.Result">
+            <summary>
+            Descriptive results.
+            </summary>
+        </member>
+        <member name="M:QutSensors.Shared.StatDescriptive.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:QutSensors.Shared.StatDescriptive"/> class.
+            Descriptive analysis default constructor.
+            </summary>
+        </member>
+        <member name="M:QutSensors.Shared.StatDescriptive.#ctor(System.Double[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:QutSensors.Shared.StatDescriptive"/> class.
+            Descriptive analysis constructor.
+            </summary>
+            <param name="dataVariable">
+            Data array.
+            </param>
+        </member>
+        <member name="M:QutSensors.Shared.StatDescriptive.Analyze">
+            <summary>
+            Run the analysis to obtain descriptive information of the data.
+            </summary>
+        </member>
+        <member name="M:QutSensors.Shared.StatDescriptive.Percentile(System.Double[],System.Double)">
+            <summary>
+            Calculate percentile of a sorted data set.
+            </summary>
+            <param name="sortedData">Sorted Data used to calculate percentile.
+            </param>
+            <param name="p">Percentile (1 - 100) to calculate.
+            </param>
+            <returns>
+            The percentile.
+            </returns>
+        </member>
+        <member name="M:QutSensors.Shared.StatDescriptive.GreatestCommonDivisior(System.Int64,System.Int64)">
+            <summary>
+            Get the greatest common divisor of two numbers.
+            </summary>
+            <param name="a">
+            First number.
+            </param>
+            <param name="b">
+            Second number.
+            </param>
+            <returns>
+            Greatest common divisor.
+            </returns>
+        </member>
+        <member name="M:QutSensors.Shared.StatDescriptive.LowestCommonMultiple(System.Int64,System.Int64)">
+            <summary>
+            Get the lowest common multiple of two numbers.
+            </summary>
+            <param name="a">
+            First number.
+            </param>
+            <param name="b">
+            Second number.
+            </param>
+            <returns>
+            Lowest common multiple.
+            </returns>
+        </member>
+    </members>
+</doc>

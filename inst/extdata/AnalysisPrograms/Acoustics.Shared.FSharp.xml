@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>Acoustics.Shared.FSharp</name></assembly>
+<members>
+<member name="M:System.Reflection.ReflectionHelpers.typeofM``1(``0)">
+<summary>
+ Get the type of a module. This works by using some member in the module type to refer to the module.
+ &lt;example&gt; typeofM SomeModule.someBinding returns typeof&lt;SomeModule&gt; &lt;/example&gt;
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_UnaryPlus(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the given rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_UnaryNegation(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the negation of a rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Subtraction(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the difference of two rational numbers
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Multiply(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the product of two rational numbers
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_LessThanOrEqual(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ This operator is for use from other .NET languages
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_LessThan(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ This operator is for use from other .NET languages
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Inequality(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ This operator is for use from other .NET languages
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_GreaterThanOrEqual(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ This operator is for use from other .NET languages
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_GreaterThan(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ This operator is for use from other .NET languages
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Explicit(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the result of converting the given rational number to a floating point number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Explicit(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the result of converting the given rational number to a big integer
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Explicit(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the result of converting the given rational number to an integer
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Equality(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ This operator is for use from other .NET languages
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Division(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the ratio of two rational numbers
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.op_Addition(Microsoft.FSharp.Math.BigRational,Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the sum of two rational numbers
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.Zero">
+<summary>
+ Get zero as a rational number
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.Sign">
+<summary>
+ Return the sign of a rational number; 0, +1 or -1
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.One">
+<summary>
+ Get one as a rational number
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.Numerator">
+<summary>
+ Return the numerator of the normalized rational number
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.IsZero">
+<summary>
+ Indicates whether this number is equal to zero.
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.IsPositive">
+<summary>
+ Return a boolean indicating if this rational number is strictly positive
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.IsOne">
+<summary>
+ Indicates whether this number is equal to one.
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.IsNegative">
+<summary>
+ Return a boolean indicating if this rational number is strictly negative
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.IsInteger">
+<summary>
+ Indicates whether this number is an integer; denominator is one
+</summary>
+</member>
+<member name="P:Microsoft.FSharp.Math.BigRational.Denominator">
+<summary>
+ Return the denominator of the normalized rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.ToInt32(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the result of converting the given rational number to an integer
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.ToDouble(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the result of converting the given rational number to a floating point number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.ToBigInt(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the result of converting the given rational number to a big integer
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.Reciprocal(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Returns the multiplicative inverse of a rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.Pow(Microsoft.FSharp.Math.BigRational,System.Int32)">
+<summary>
+ Return the result of raising the given rational number to the given power
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.Parse(System.String)">
+<summary>
+ Return the result of converting the string to a rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.FromInt(System.Int32)">
+<summary>
+ Return the result of converting the given integer to a rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.FromBigInt(System.Numerics.BigInteger)">
+<summary>
+ Return the result of converting the given big integer to a rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRational.Abs(Microsoft.FSharp.Math.BigRational)">
+<summary>
+ Return the absolute value of a rational number
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.BigRational">
+<summary>
+ The type of arbitrary-sized rational numbers.
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRationalLarge.op_UnaryPlus(Microsoft.FSharp.Math.BigRationalLarge)">
+<summary>
+ Return the given rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRationalLarge.op_UnaryNegation(Microsoft.FSharp.Math.BigRationalLarge)">
+<summary>
+ Return the negation of a rational number
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRationalLarge.op_Subtraction(Microsoft.FSharp.Math.BigRationalLarge,Microsoft.FSharp.Math.BigRationalLarge)">
+<summary>
+ Return the difference of two rational numbers
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRationalLarge.op_Multiply(Microsoft.FSharp.Math.BigRationalLarge,Microsoft.FSharp.Math.BigRationalLarge)">
+<summary>
+ Return the product of two rational numbers
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRationalLarge.op_Division(Microsoft.FSharp.Math.BigRationalLarge,Microsoft.FSharp.Math.BigRationalLarge)">
+<summary>
+ Return the ratio of two rational numbers
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRationalLarge.op_Addition(Microsoft.FSharp.Math.BigRationalLarge,Microsoft.FSharp.Math.BigRationalLarge)">
+<summary>
+ Return the sum of two rational numbers
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.BigRationalLarge.ToBigInteger(Microsoft.FSharp.Math.BigRationalLarge)">
+<summary>
+ Returns the integer part of a rational number.
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.OpsData`1">
+<summary>
+ The value stored for the dictionary of numeric operations. If none is present then this indicates
+ no operations are known for this type.
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.SpecializedGenericImpl.mergedNonZeroEntriesM``1(Microsoft.FSharp.Math.Matrix{``0},Microsoft.FSharp.Math.Matrix{``0})">
+<summary>
+ Non-zero entries from two sequences
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.SpecializedGenericImpl.mergeSorted``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,System.Int32}},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1})">
+<summary>
+ Merge two sorted sequences
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SpecializedGenericImpl">
+<summary>
+ Generic operations that, when used on floating point types, use the specialized versions in DoubleImpl
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.DoubleImpl">
+<summary>
+ Implementations of operations specific to floating point types
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.GenericImpl.cptMulDenseMatrixGU``1(Microsoft.FSharp.Math.DenseMatrix{``0},Microsoft.FSharp.Math.DenseMatrix{``0})">
+<summary>
+Point-wise multiplication 
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.GenericImpl.initSparseMatrixGU``1(System.Int32,System.Int32,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Math.INumeric{``0}},System.Collections.Generic.IEnumerable{System.Tuple{System.Int32,System.Int32,``0}})">
+<summary>
+ Create a matrix from a sparse sequence 
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.GenericImpl">
+<summary>
+ Implementations of operations that will work for any type
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.kat">
+<summary>
+ katal, SI unit of catalytic activity
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.Sv">
+<summary>
+ sievert, SI unit of does equivalent
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.Gy">
+<summary>
+ gray, SI unit of absorbed dose
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.Bq">
+<summary>
+ becquerel, SI unit of activity referred to a radionuclide
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.lx">
+<summary>
+ lux, SI unit of illuminance
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.lm">
+<summary>
+ lumen, SI unit of luminous flux
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.H">
+<summary>
+ henry, SI unit of inductance
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.T">
+<summary>
+ tesla, SI unit of magnetic flux density
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.Wb">
+<summary>
+ weber, SI unit of magnetic flux
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.S">
+<summary>
+ siemens, SI unit of electric conductance
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.ohm">
+<summary>
+ ohm, SI unit of electric resistance
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.F">
+<summary>
+ farad, SI unit of capacitance
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.V">
+<summary>
+ volt, SI unit of electric potential difference, electromotive force
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.C">
+<summary>
+ coulomb, SI unit of electric charge, amount of electricity
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.W">
+<summary>
+ watt, SI unit of power, radiant flux
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.J">
+<summary>
+ joule, SI unit of energy, work, amount of heat
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.Pa">
+<summary>
+ pascal, SI unit of pressure, stress
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.N">
+<summary>
+ newton, SI unit of force
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.Hz">
+<summary>
+ hertz, SI unit of frequency
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.cd">
+<summary>
+ candela, SI unit of luminous intensity
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.mol">
+<summary>
+ mole, SI unit of amount of substance
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.K">
+<summary>
+ kelvin, SI unit of thermodynamic temperature
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.A">
+<summary>
+ ampere, SI unit of electric current
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.s">
+<summary>
+ second, SI unit of time
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.kg">
+<summary>
+ kilogram, SI unit of mass
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule.m">
+<summary>
+ metre (or meter), SI unit of length
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.SIModule">
+<summary>
+ The International System of Units (SI)
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.Interval.IntervalTypes.rightClosed``1(Microsoft.FSharp.Math.Interval{``0},Microsoft.FSharp.Math.Limit{``0})">
+<summary>
+ ]
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.Interval.IntervalTypes.rightOpen``1(Microsoft.FSharp.Math.Interval{``0},Microsoft.FSharp.Math.Limit{``0})">
+<summary>
+ )
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.Interval.IntervalTypes.leftClosed``1(Microsoft.FSharp.Math.Interval{``0},Microsoft.FSharp.Math.Limit{``0})">
+<summary>
+ [
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Math.Interval.IntervalTypes.leftOpen``1(Microsoft.FSharp.Math.Interval{``0},Microsoft.FSharp.Math.Limit{``0})">
+<summary>
+ (
+</summary>
+</member>
+<member name="T:Microsoft.FSharp.Math.Interval.IntervalTypes">
+<summary>
+ http://en.wikipedia.org/wiki/Interval_(mathematics)#Classification_of_intervals
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Seq.op_DotPlusDot``1(``0,``0)">
+<summary>
+ Combine two elements into a seq
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Seq.op_DotPlus``1(``0,System.Collections.Generic.IEnumerable{``0})">
+<summary>
+ Prepend an element to a seq
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Seq.op_PlusDot``1(System.Collections.Generic.IEnumerable{``0},``0)">
+<summary>
+ Append an element to a seq
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Seq.op_PlusPlus``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+<summary>
+ Concat two seqs
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.initJagged``1(System.Int32,System.Int32,Microsoft.FSharp.Core.FSharpFunc{System.Int32,Microsoft.FSharp.Core.FSharpFunc{System.Int32,``0}})">
+<summary>
+ Initalises an i x j square jagged array
+ i : Rows
+ j : Columns
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.mapJagged``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Apply a function to every element of a jagged arrray
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.foldri``2(Microsoft.FSharp.Core.FSharpFunc{System.Int32,Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``0}}},``0,``1[])">
+<summary>
+ Implementation stolen from Vector&lt;_&gt;.foldi
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.foldi``2(Microsoft.FSharp.Core.FSharpFunc{System.Int32,Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``0}}},``0,``1[])">
+<summary>
+ Implementation stolen from Vector&lt;_&gt;.foldi
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.Parallel.initJagged2P``1(System.Int32,System.Int32,Microsoft.FSharp.Core.FSharpFunc{System.Int32,Microsoft.FSharp.Core.FSharpFunc{System.Int32,``0}})">
+<summary>
+ Initalises an i x j square jagged array
+ This routine is parrallised on both the row and column
+ i : Rows
+ j : Columns
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.Parallel.initJagged``1(System.Int32,System.Int32,Microsoft.FSharp.Core.FSharpFunc{System.Int32,Microsoft.FSharp.Core.FSharpFunc{System.Int32,``0}})">
+<summary>
+ Initalises an i x j square jagged array
+ This routine is parrallised on the row only
+ i : Rows
+ j : Columns
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.Parallel.mapJagged2P``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Jagged map with paralellisation on all elements (both dimensions)
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Array.Parallel.mapJagged``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Jagged map with paralellisation on first dimension only
+</summary>
+</member>
+<member name="M:Microsoft.FSharp.Collections.Map.merge``2(Microsoft.FSharp.Collections.FSharpMap{``0,``1},Microsoft.FSharp.Collections.FSharpMap{``0,``1})">
+<summary>
+ Merges two maps together. If there is a key conflict simple keeps value from the second list.
+</summary>
+</member>
+<member name="M:MQUTeR.FSharp.Shared.Equality.GetHashCode``1(Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ http://musingmarc.blogspot.com/2008/03/sometimes-you-make-hash-of-things.html
+</summary>
+</member>
+<member name="M:MQUTeR.FSharp.Shared.Logger.TimedAction``1(System.String,Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,``0})">
+<summary>
+ Executes a function and prints timing results
+</summary>
+</member>
+<member name="M:MQUTeR.FSharp.Shared.Logger.PrintTime(System.TimeSpan)">
+<summary>
+ Format and print elapsed time returned by Stopwatch
+</summary>
+</member>
+<member name="M:MQUTeR.FSharp.Shared.Logger.FormattedTime(System.TimeSpan)">
+ <summary>
+ TimeSpan pretty printer
+ </summary>
+ <param name="ts">The TimeSpan to format</param>
+ <returns>A formatted string</returns>
+</member>
+<member name="M:MQUTeR.FSharp.Shared.Maths.zscore``4(Microsoft.FSharp.Core.FSharpFunc{``2,System.Double},Microsoft.FSharp.Core.FSharpFunc{``3,System.Double},Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``0,``1,``3)">
+<summary>
+ Note: Z-scores produce floats no matter what input is given
+</summary>
+</member>
+<member name="M:MQUTeR.FSharp.Shared.Maths.euclideanDist``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+<summary>
+ Note: euclidean distance produce floats no matter what input is given
+ a unique dist function is run for each data type
+ after that the distances are mapped to a cartesian plane
+</summary>
+</member>
+</members>
+</doc>

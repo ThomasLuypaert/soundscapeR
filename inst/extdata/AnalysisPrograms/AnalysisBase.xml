@@ -1,0 +1,1305 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AnalysisBase</name>
+    </assembly>
+    <members>
+        <member name="T:AnalysisBase.AbstractStrongAnalyser">
+            <summary>
+            Provides sensible defaults for some of the functionality required by <c>IAnalyser2</c>.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AbstractStrongAnalyser.DisplayName">
+            <inheritdoc/>
+        </member>
+        <member name="P:AnalysisBase.AbstractStrongAnalyser.Identifier">
+            <inheritdoc/>
+        </member>
+        <member name="P:AnalysisBase.AbstractStrongAnalyser.Description">
+            <inheritdoc/>
+        </member>
+        <member name="P:AnalysisBase.AbstractStrongAnalyser.DefaultSettings">
+            <inheritdoc/>
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.ParseConfig(System.IO.FileInfo)">
+            <inheritdoc cref="M:AnalysisBase.IAnalyser2.ParseConfig(System.IO.FileInfo)"/>
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.BeforeAnalyze(AnalysisBase.AnalysisSettings)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.Analyze``1(AnalysisBase.AnalysisSettings,AnalysisBase.SegmentSettings{``0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.WriteEventsFile(System.IO.FileInfo,System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.EventBase})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.WriteSummaryIndicesFile(System.IO.FileInfo,System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.SummaryIndexBase})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.WriteSpectrumIndicesFiles(System.IO.DirectoryInfo,System.String,System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.SpectralIndexBase})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.ConvertEventsToSummaryIndices(System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.EventBase},System.TimeSpan,System.TimeSpan,System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:AnalysisBase.AbstractStrongAnalyser.SummariseResults(AnalysisBase.AnalysisSettings,AnalysisBase.FileSegment,AnalysisBase.ResultBases.EventBase[],AnalysisBase.ResultBases.SummaryIndexBase[],AnalysisBase.ResultBases.SpectralIndexBase[],AnalysisBase.AnalysisResult2[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:AnalysisBase.AnalysisCoordinator">
+             <summary>
+             Prepares, runs and completes analyses.
+            
+             *** DO NOT CHANGE THIS CLASS UNLESS INSTRUCTED TOO ***.
+             </summary>
+             <remarks>
+             <para>
+             The process to analyze files can be complex. The overall idea is
+             to begin with an analysis type and a list of audio objects and segments.
+             Then those files are segmented using default settings from the analysis and
+             possible modifications to the defaults by a user.
+             Each segment is analyzed, and the results are put into either a purpose-created
+             folder (which might be deleted once that analysis is complete), or a known location for later use.
+             </para>
+             <para>
+             Temp files can also be stored in sub folders named by analysis name and files named by segment id
+             when another analysis is run, the files are overwritten.
+             </para>
+             </remarks>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.#ctor(AnalysisBase.ISourcePreparer,AnalysisBase.SaveBehavior,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.AnalysisCoordinator"/> class but also allows for advanced
+            channel mapping options.
+            </summary>
+            <param name="sourcePreparer">The source preparer to use.</param>
+            <param name="saveIntermediateWavFiles">Defines when intermediate WAVE files should be saved.</param>
+            <param name="isParallel">Whether or not to run the analysis with multiple threads.</param>
+            <param name="uniqueDirectoryPerSegment">Whether or not to create unique directories per segment (in both temp and output directories).</param>
+        </member>
+        <member name="P:AnalysisBase.AnalysisCoordinator.SourcePreparer">
+            <summary>
+            Gets SourcePreparer.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisCoordinator.UniqueDirectoryPerSegment">
+            <summary>
+            Gets a value indicating whether to create
+            uniquely named sub directories for each run,
+            or reuse a single folder named using the analysis name.
+            Applies to both temp and output directories.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisCoordinator.IsParallel">
+            <summary>
+            Gets a value indicating whether to run in parallel.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.GetAnalyzers``1(System.Reflection.Assembly)">
+            <summary>
+            Get analyzers using a method that is compatible with MONO environment..
+            </summary>
+            <param name="assembly">
+            The assembly.
+            </param>
+            <returns>
+            The System.Collections.Generic.IEnumerable`1[T -&gt; AnalysisBase.IAnalyzer2].
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.GetNamedDirectory(System.IO.DirectoryInfo,AnalysisBase.IAnalyser2,System.String[])">
+            <summary>
+            Gets a named output directory. For example, if <paramref name="baseDir"/> is "C:\Temp" and
+            <paramref name="analyzer"/> is the indices analysis, the result will be "C:\Temp\Towsey.Acoustic".
+            </summary>
+            <param name="baseDir">The base output directory (either normal output or a temp directory).</param>
+            <param name="analyzer">The <see cref="T:AnalysisBase.IAnalyser2"/> to extract the identifier from.</param>
+            <param name="subFolders">An optional list of sub folders to append to the path.</param>
+            <returns>A combined directory made up of all the path fragments.</returns>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.Run``1(AnalysisBase.Segment.ISegment{``0},AnalysisBase.IAnalyser2,AnalysisBase.AnalysisSettings)">
+            <summary>
+            Analyze one file segment using the analysis and settings.
+            </summary>
+            <param name="segment">
+            The file Segment.
+            </param>
+            <param name="analysis">
+            The analysis.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+            <returns>
+            The analysis results.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.Run``1(AnalysisBase.Segment.ISegment{``0}[],AnalysisBase.IAnalyser2,AnalysisBase.AnalysisSettings)">
+            <summary>
+            Analyze one or more file segments using the same analysis and settings.
+            Note each segment could be sourced from separate original audio files!
+            If using a remote source preparer the segments could even be downloaded from a remote source!.
+            </summary>
+            <param name="segments">
+            The file Segments.
+            </param>
+            <param name="analysis">
+            The analysis.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+            <returns>
+            The analysis results.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.ValidateResult``1(AnalysisBase.AnalysisSettings,AnalysisBase.AnalysisResult2,AnalysisBase.SegmentSettings{``0},System.TimeSpan,System.Boolean)">
+            <summary>
+            This method simply ensures that certain requirements are fulfilled by IAnalyzer2.Analyze results.
+            It only runs when the program is built as DEBUG.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.CreateRunDirectory``1(System.IO.DirectoryInfo,AnalysisBase.IAnalyser2,AnalysisBase.Segment.ISegment{``0})">
+            <summary>
+            Create a directory for an analysis to be run.
+            Will be in the form [analysisId][sep][token][sep][...files...].
+            </summary>
+            <param name="unique">Whether or not we are using the unique folder scheme.</param>
+            <returns>
+            The created directory.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.RunParallel``1(System.Collections.Generic.ICollection{AnalysisBase.Segment.ISegment{``0}},AnalysisBase.IAnalyser2,AnalysisBase.AnalysisSettings)">
+            <summary>
+            Analyze segments of an audio file in parallel.
+            </summary>
+            <param name="analysisSegments">
+            The analysis Segments.
+            </param>
+            <param name="analysis">
+            The analysis.
+            </param>
+            <param name="clonedSettings">
+            The settings.
+            </param>
+            <returns>
+            The analysis results.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.RunSequential``1(System.Collections.Generic.ICollection{AnalysisBase.Segment.ISegment{``0}},AnalysisBase.IAnalyser2,AnalysisBase.AnalysisSettings)">
+            <summary>
+            Analyze segments of an audio file in sequence.
+            </summary>
+            <param name="analysisSegments">
+            The analysis Segments.
+            </param>
+            <param name="analysis">
+            The analysis.
+            </param>
+            <param name="clonedSettings">
+            The settings.
+            </param>
+            <returns>
+            The analysis results.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.AnalysisCoordinator.PrepareFileAndAnalyzeSegment``1(AnalysisBase.Segment.ISegment{``0},AnalysisBase.IAnalyser2,AnalysisBase.AnalysisSettings,System.Boolean)">
+            <summary>
+            Prepare the resources for an analysis, and the run the analysis.
+            </summary>
+            <param name="segment">The segment to analyze.</param>
+            <param name="analyzer">The analysis.</param>
+            <param name="localCopyOfSettings">The settings.</param>
+            <param name="parallelized">
+            Set to true if this method was invoked in a parallelized context.
+            </param>
+            <returns>
+            The results from the analysis.
+            </returns>
+        </member>
+        <member name="T:AnalysisBase.AnalysisResult">
+            <summary>
+            Analysis Results.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.AnalysisResult.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.AnalysisResult"/> class.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.AnalysisIdentifierString">
+            <summary>
+            Gets AnalysisIdentifierString.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.ScoreString">
+            <summary>
+            Gets ScoreString.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.AdditionalInfoString">
+            <summary>
+            Gets AdditionalInfoString.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.MinOffsetMsString">
+            <summary>
+            Gets MinOffsetMsString.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.MaxOffsetMsString">
+            <summary>
+            Gets MaxOffsetMsString.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.MinFrequencyHzString">
+            <summary>
+            Gets MinFrequencyHzString.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.MaxFrequencyHzString">
+            <summary>
+            Gets MaxFrequencyHzString.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.AnalysisIdentifier">
+            <summary>
+            Gets or sets Analysis Identifier.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.Data">
+            <summary>
+            Gets or sets results.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.SettingsUsed">
+            <summary>
+            Gets or sets the settings used to produce the results.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.DisplayItems">
+            <summary>
+            Gets DisplayItems which contains indexes to display and optional item names.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.OutputFiles">
+            <summary>
+            Gets OutputFiles.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.EventsFile">
+            <summary>
+            Gets or sets the location of the events file for this analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.IndicesFile">
+            <summary>
+            Gets or sets the location of the indices file for this analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.ImageFile">
+            <summary>
+            Gets or sets the debug image file for this analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.AudioDuration">
+            <summary>
+            Gets or sets the duration of the analysed segment.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult.SegmentStartOffset">
+            <summary>
+            Gets or sets the offset of the segment from the original entire audio file.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.AnalysisResult2">
+            <summary>
+            The strong typed analysis results.
+            DO NOT CHANGE THIS CLASS UNLESS YOU ARE TOLD TO.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.AnalysisResult2.#ctor(AnalysisBase.AnalysisSettings,AnalysisBase.SegmentSettingsBase,System.TimeSpan)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.AnalysisResult2"/> class.
+            This is the standard result class for <c>IAnalyser2</c> results.
+            </summary>
+            <param name="settingsUsed">
+                Represents the settings used for the analysis.
+            </param>
+            <param name="segmentSettings">The settings for the segment that was analyzed.</param>
+            <param name="durationAnalyzed">
+                Records the actual duration analyzed by the analysis.
+            </param>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.AnalysisIdentifier">
+            <summary>
+            Gets or sets Analysis Identifier.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.Events">
+            <summary>
+            Gets or sets event results.
+            Should typically contain many results.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.NewEvents">
+            <summary>
+            Gets or sets event results.
+            Should typically contain many results.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SummaryIndices">
+            <summary>
+            Gets or sets summary indices results.
+            Should typically contain just 1 result.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SpectralIndices">
+            <summary>
+            Gets or sets spectral indices results.
+            Should typically contain just 1 result.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.MiscellaneousResults">
+            <summary>
+            Gets a loosely typed dictionary that can store arbitrary result data.
+            Added as a cheap form of extensibility.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SettingsUsed">
+            <summary>
+            Gets a the settings used to run the analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SegmentSettings">
+            <summary>
+            Gets the segment settings used.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.EventsFile">
+            <summary>
+            Gets or sets the location of the events file for this analysis.
+            Should be null if not written or used.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SummaryIndicesFile">
+            <summary>
+            Gets or sets the location of the indices file for this analysis.
+            Should be null if not written or used.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SpectraIndicesFiles">
+            <summary>
+            Gets or sets the location of the indices file for this analysis.
+            Should be null if not written or used.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.ImageFile">
+            <summary>
+            Gets or sets the debug image file for this analysis.
+            Should be null if not written or used.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.OutputFiles">
+            <summary>
+            Gets a list of other files that were written (optional).
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SegmentAudioDuration">
+            <summary>
+            Gets the duration of the analyzed segment.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisResult2.SegmentStartOffset">
+            <summary>
+            Gets the offset of the segment from the original entire audio file.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.AnalysisResult2.CompareTo(AnalysisBase.AnalysisResult2)">
+            <summary>
+            Defines an innate order of Analysis results based on the <c>SegmentStartOffset</c>.
+            </summary>
+            <param name="other">The other AnalysisResult to compare to.</param>
+            <returns>A integer representing the relative order between the two instances.</returns>
+        </member>
+        <member name="T:AnalysisBase.AnalysisSettings">
+            <summary>
+            The analysis settings for processing one audio file.
+            </summary>
+            <remarks>
+            <para>
+            All members in this class are prefixed either with. <code>Segment</code> or. <code>Analysis</code>.
+            Members prefixed with Segment change per segment.
+            Members prefixed with Analysis are invariant for the Analysis.
+            </para>
+            This class MUST be deeply serializable as it crosses serialization boundaries.
+            <para>
+            </para>
+            <para>
+            The only files and folders an analysis may access are the audio file,
+            configuration file and any file or folder in the working directory.
+            The working directory may be deleted after the analysis is complete.
+            </para>
+            </remarks>
+        </member>
+        <member name="F:AnalysisBase.AnalysisSettings.instanceId">
+            <summary>
+            Used to track instances of this class through parallelism - must be readonly.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.AnalysisSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.AnalysisSettings"/> class.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.InstanceId">
+            <summary>
+            Gets the instance tracking integer.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisTempDirectory">
+            <summary>
+            Gets or sets the temp directory that is the base of the folder structure that analyses can use.
+            The contents of this directory may be deleted after the analysis is finished.
+            If this value is null, AnalysisCoordinator will fallback to AnalysisTempDirectoryFallback.
+            Analysis implementations must not set this.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.IsAnalysisTempDirectoryValid">
+            <summary>
+            Gets a value indicating whether <see cref="P:AnalysisBase.AnalysisSettings.AnalysisTempDirectory"/> is not null and exists.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisTempDirectoryFallback">
+            <summary>
+            Gets a base temp directory. The directory will exist and it will be unique.
+            Anything put here will be deleted when the analysis is complete.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisChannelSelection">
+            <summary>
+            Gets or sets the ChannelSelection array - a list of channels to extract from the audio.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisMixDownToMono">
+            <summary>
+            Gets or sets a value indicating whether to mix all selected channels down into one mono channel.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisOutputDirectory">
+            <summary>
+            Gets or sets the output directory that is the base of the folder structure that analyses can use.
+            Analysis implementations must not set this.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisImageSaveBehavior">
+            <summary>
+            Gets or sets the AnalysisImageSaveBehavior for images
+            The save behavior defines whether intermediate results generated by the segment should be saved or not.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisDataSaveBehavior">
+            <summary>
+            Gets or sets a value indicating whether intermediate data files should be saved.
+            The save behavior defines whether intermediate results generated by the segment should be saved or not.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisMinSegmentDuration">
+            <summary>
+            Gets or sets the minimum audio file duration the analysis can process.
+            This is the min duration without including overlap. Overlap will be added.
+            This should be set to an initial value by an analysis.
+            This value is used in <see cref="M:AnalysisBase.AnalysisCoordinator.PrepareAnalysisSegments``1(AnalysisBase.ISourcePreparer,AnalysisBase.Segment.ISegment{``0}[],AnalysisBase.AnalysisSettings)"/>
+            TODO: a chunk of audio without the overlap is a 'segment step'.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisMaxSegmentDuration">
+            <summary>
+            Gets or sets the maximum audio file duration the analysis can process.
+            This is the max duration without including overlap. Overlap will be added. This means that a segment may be larger than this value.
+            This should be set to an initial value by an analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.SegmentOverlapDuration">
+            <summary>
+            Gets or sets the duration for segments to overlap.
+            This should be set to an initial value by an analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.SegmentMediaType">
+            <summary>
+            Gets or sets the media type the analysis expects.
+            This should be set to an initial value by an analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisTargetSampleRate">
+            <summary>
+            Gets or sets the audio sample rate the analysis expects (in hertz).
+            This is initially set to the value of the <c>DefaultTargetSampleRateKey</c> setting in the AP.Settings.json.
+            This used to be set by a constant in each implementation of an analysis.
+            A null value indicates that no sample rate modification will be done.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.ConfigFile">
+            <summary>
+            Gets or sets the configuration file to use to run the analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.ConfigDict">
+            <summary>
+            Gets or sets the config dictionary.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.Configuration">
+            <summary>
+            Gets or sets the object of other configuration properties. Should be mutually exclusive with ConfigFile.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalysisSettings.AnalysisAnalyzerSpecificConfiguration">
+            <summary>
+            Gets or sets an object that can be used to store arbitrary configuration or options.
+            This is useful for passing information between BeforeAnalyze and Analyze.
+            DO NOT STORE MUTABLE STATE IN THIS OBJECT.
+            The object provided must be serializable!.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.AnalysisSettings.Clone">
+            <remarks>
+            Does a deep clone.
+            </remarks>
+        </member>
+        <member name="P:AnalysisBase.AnalyzerConfig.SegmentDuration">
+            <summary>
+            Gets or sets the length of audio block to process.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalyzerConfig.SegmentOverlap">
+            <summary>
+            Gets or sets the amount that each audio block should overlap.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.AnalyzerConfig.ResampleRate">
+             <summary>
+             Gets or sets the default sample rate to re-encode all input audio as.
+             </summary>
+             <remarks>
+             ResampleRate must be 2× the desired Nyquist.
+            
+             Default value = 22050.
+            
+             Once upon a time we used 17640.
+            
+             Units=samples.
+            
+             Users of this value should always fallback to a default appropriate for the analysis. Currently that default
+             must be non-null, but we're considering allowing it to be null to support variable sample rate analysis.
+             </remarks>
+             <value>The resample rate measured in _samples_.</value>
+        </member>
+        <member name="P:AnalysisBase.AnalyzerConfig.RequireDateInFilename">
+            <summary>
+            Gets or sets a value indicating whether a file must have a date in the file name.
+            </summary>
+            <remarks>
+            If true, an unambiguous date-time must be provided in the source file's name.
+            If true, an exception will be thrown if no such date is found.
+            If false, and a valid date is still found in file name, it will still be parsed.
+            Supports formats like:
+                 prefix_20140101T235959+1000.wav,  where +1000 is in this case the time-zone offset for Brisbane.
+                 prefix_20140101T235959+Z.wav,     where +Z is the zero time-zone offset.
+                 prefix_20140101-235959+1000.wav
+                 prefix_20140101-235959+Z.wav
+            For more info on dates, see "dates.md" at https://github.com/QutEcoacoustics/audio-analysis/tree/master/docs.
+            </remarks>
+        </member>
+        <member name="T:AnalysisBase.FileSegment">
+            <summary>
+            Represents a segment of a target file. It can also store the parent file that a new segment has been derived
+            from. A segment is just a stored start and end for a target file - it represents a future, or a request.
+            Other functions can take the segment request, cut out the selected range, and return a new file segment.
+            New file segments, or segments that represent a whole file, will not have the segment properties set
+            because they do not represent a request anymore.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.#ctor(System.IO.FileInfo,System.Int32,System.TimeSpan,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.FileSegment"/> class.
+            Use this constructor if you know all the information about a segment beforehand.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.#ctor(System.IO.FileInfo,System.Int32,System.TimeSpan,AnalysisBase.FileSegment.FileDateBehavior)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.FileSegment"/> class.
+            Use this constructor if you know all the information about a segment beforehand (except for the date it was created).
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.#ctor(System.IO.FileInfo,AnalysisBase.TimeAlignment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.FileSegment"/> class.
+            Allow specifying an absolutely aligned (to the nearest minute) file segment.
+            Implies `FileDateBehavior.Required`.
+            NOTE: Start offset will be set to start of file, and end offset set to the end of the file.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.#ctor(System.IO.FileInfo,AnalysisBase.TimeAlignment,Acoustics.Tools.Audio.IAudioUtility,AnalysisBase.FileSegment.FileDateBehavior)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.FileSegment"/> class.
+            Allow specifying an absolutely aligned (to the nearest minute) file segment.
+            Implies `FileDateBehavior.Required`.
+            NOTE: Start offset will be set to start of file, and end offset set to the end of the file.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.FileSegment.FileDateBehavior">
+            <summary>
+            How FileSegment should try and parse the file's absolute date.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.FileSegment.FileDateBehavior.Try">
+            <summary>
+            Try and parse the file's absolute date
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.FileSegment.FileDateBehavior.Required">
+            <summary>
+            Parse the file's absolute date and fail if unsuccessful
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.FileSegment.FileDateBehavior.None">
+            <summary>
+            Do no try and parse the file's date at all.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.Alignment">
+            <summary>
+            Gets the style of alignment padding to use - indicates that bad start dates *should* be shifted to the
+            nearest minute.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.SegmentStartOffset">
+            <summary>
+            Gets or sets SegmentStartOffset - the value that represents what starting point of the target file should
+            be used.
+            </summary>
+            <remarks>
+            These properties are the source for <see cref="P:AnalysisBase.Segment.ISegment`1.StartOffsetSeconds"/> and are maintained
+            as nullables for backwards compatibility. However as far as <see cref="T:AnalysisBase.Segment.ISegment`1"/> is concerned
+            null is not a valid value.
+            </remarks>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.SegmentEndOffset">
+            <summary>
+            Gets or sets SegmentEndOffset - the value that represents what ending point of the target file should be used.
+            </summary>
+            <remarks>
+            These properties are the source for <see cref="P:AnalysisBase.Segment.ISegment`1.EndOffsetSeconds"/> and are maintained
+            as nullables for backwards compatibility. However as far as <see cref="T:AnalysisBase.Segment.ISegment`1"/> is concerned
+            null is not a valid value.
+            </remarks>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.IsSegmentSet">
+            <summary>
+            Gets a value indicating whether gets ISegmentSet - whether or not either of the segment properties have been set.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.TargetFileDuration">
+            <summary>
+            Gets the entire audio file duration FOR THE TARGET FILE.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.TargetFileSampleRate">
+            <summary>
+            Gets the TARGET FILE'S audio file Sample rate.
+            May be required when doing analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.TargetFileStartDate">
+            <summary>
+            Gets the TargetFileStartDate.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.Clone">
+            <remarks>
+            Constructs a new instance of this <type>FileSegment</type> by copying
+            important attributes.
+            </remarks>
+        </member>
+        <member name="P:AnalysisBase.FileSegment.Source">
+            <summary>
+            Gets the target file for this file segment.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.Validate">
+            <summary>
+            Validate the <see cref="T:AnalysisBase.FileSegment"/> properties.
+            </summary>
+            <returns>
+            True if properties are valid, otherwise false.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.Equals(AnalysisBase.Segment.ISegment{System.IO.FileInfo})">
+            <summary>
+            Determines if two FileSegments represent the same part of a source file.
+            It compares <see cref="P:AnalysisBase.FileSegment.Source"/>, <see cref="P:AnalysisBase.FileSegment.StartOffsetSeconds"/>, and <see cref="P:AnalysisBase.FileSegment.EndOffsetSeconds"/>.
+            </summary>
+            <param name="other">The other file segment to compare with.</param>
+            <returns>True if the segments are considered equal.</returns>
+        </member>
+        <member name="M:AnalysisBase.FileSegment.ToString">
+            <summary>
+            Returns a friendly string representation of this object.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.IAnalyser2">
+            <summary>
+            Interface a compatible analysis must implement.
+            This is a strong typed version of <c>IAnalyser</c> intentionally removed from the old inheritance tree.
+            DO NOT MODIFY THIS FILE UNLESS INSTRUCTED TO!.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.IAnalyser2.DisplayName">
+            <summary>
+            Gets the name to display for the analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.IAnalyser2.Identifier">
+            <summary>
+            Gets Identifier. This should be a dotted uniquely identifying name. E.g. <code>Towsey.MultiAnalyser</code>.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.IAnalyser2.Description">
+            <summary>
+            Gets a user friendly string describing the analyzer. Intending for printing in the console.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.IAnalyser2.DefaultSettings">
+            <summary>
+            Gets the initial (default) settings for the analysis.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.ParseConfig(System.IO.FileInfo)">
+            <summary>
+            An (optional) method for returning a strongly typed config file.
+            </summary>
+            <param name="file">The file that represents the config to read.</param>
+            <returns>Ideally a strongly typed config, but as a fallback, a base <see cref="T:Acoustics.Shared.ConfigFile.Config"/> can be returned.</returns>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.BeforeAnalyze(AnalysisBase.AnalysisSettings)">
+            <summary>
+            A hook to modify analysis settings before an analysis is run.
+            Ideally run once (whereas Analyze is run N times).
+            </summary>
+            <param name="analysisSettings">The analysis Settings.</param>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.Analyze``1(AnalysisBase.AnalysisSettings,AnalysisBase.SegmentSettings{``0})">
+            <summary>
+            Run analysis using the given analysis settings.
+            </summary>
+            <param name="analysisSettings">
+                The analysis Settings.
+            </param>
+            <param name="segmentSettings">The settings unique to the current segment being analyzed.</param>
+            <returns>
+            The results of the analysis.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.WriteEventsFile(System.IO.FileInfo,System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.EventBase})">
+            <summary>
+            Ensures abstract types are downcast by the analyzer and written to file.
+            </summary>
+            <param name="destination">The file to write to.</param>
+            <param name="results">The results to write.</param>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.WriteSummaryIndicesFile(System.IO.FileInfo,System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.SummaryIndexBase})">
+            <summary>
+            Ensures abstract types are downcast by the analyzer and written to file.
+            </summary>
+            <param name="destination">The file to write to.</param>
+            <param name="results">The results to write.</param>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.WriteSpectrumIndicesFiles(System.IO.DirectoryInfo,System.String,System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.SpectralIndexBase})">
+            <summary>
+            Ensures abstract types are downcast by the analyzer and written to file.
+            </summary>
+            <param name="destination">The file to write to.</param>
+            <param name="results">The results to write.</param>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.ConvertEventsToSummaryIndices(System.Collections.Generic.IEnumerable{AnalysisBase.ResultBases.EventBase},System.TimeSpan,System.TimeSpan,System.Double)">
+            <summary>
+            Allows Events to be rendered as Summary Indices.
+            </summary>
+            <remarks>
+            This method used to be used on every segment but we are phasing out
+            segment-level results. Thus it is recommended it only be used at the end of the analysis
+            when the full result set (and when <paramref name="duration"/> equals the full recording length)
+            is available.
+            </remarks>
+            <param name="events">The events to process.</param>
+            <param name="unitTime">The unit time of the summary indices to produce.</param>
+            <param name="duration">The duration of audio for the period analyzed that produced <c>events</c>.</param>
+            <param name="scoreThreshold">A threshold to filter out low-scoring events.</param>
+            <returns>A set of summary indices that describe the input events.</returns>
+        </member>
+        <member name="M:AnalysisBase.IAnalyser2.SummariseResults(AnalysisBase.AnalysisSettings,AnalysisBase.FileSegment,AnalysisBase.ResultBases.EventBase[],AnalysisBase.ResultBases.SummaryIndexBase[],AnalysisBase.ResultBases.SpectralIndexBase[],AnalysisBase.AnalysisResult2[])">
+            <summary>
+            Post-processing for an entire analysis.
+            </summary>
+            <param name="settings">The settings used for the analysis.</param>
+            <param name="inputFileSegment">A reference to the original audio file that was analyzed.</param>
+            <param name="events">The events produced so far.</param>
+            <param name="indices">The summary indices produced so far.</param>
+            <param name="spectralIndices">The spectra produced so far.</param>
+            <param name="results">The raw result objects produced so far.</param>
+        </member>
+        <member name="T:AnalysisBase.ISourcePreparer">
+            <summary>
+            Interface for preparing source files.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.ISourcePreparer.PrepareFile(System.IO.DirectoryInfo,System.String,System.String,System.TimeSpan,System.TimeSpan,System.Int32)">
+            <summary>
+            Prepare an audio file. This will be a single segment of a larger audio file, modified based on the analysisSettings.
+            </summary>
+            <param name="outputDirectory">
+            The analysis Base Directory.
+            </param>
+            <param name="source">
+            The source audio file.
+            </param>
+            <param name="outputMediaType">
+            The output Media Type.
+            </param>
+            <param name="startOffset">
+            The start Offset from start of entire original file.
+            </param>
+            <param name="endOffset">
+            The end Offset from start of entire original file.
+            </param>
+            <param name="targetSampleRateHz">
+            The target Sample Rate Hz.
+            </param>
+            <returns>
+            The prepared file.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.ISourcePreparer.PrepareFile``1(System.IO.DirectoryInfo,AnalysisBase.Segment.ISegment{``0},System.String,System.Nullable{System.Int32},System.IO.DirectoryInfo,System.Int32[],System.Nullable{System.Boolean})">
+            <summary>
+            Prepare an audio file. This will be a single segment of a larger audio file, modified based on the analysisSettings.
+            </summary>
+            <param name="outputDirectory">
+                The analysis Base Directory.
+            </param>
+            <param name="source">
+                The source audio file.
+            </param>
+            <param name="outputMediaType">
+                The output Media Type.
+            </param>
+            <param name="targetSampleRateHz">
+                The target Sample Rate Hz.
+            </param>
+            <param name="temporaryFilesDirectory">
+                The directory for temporary files.
+            </param>
+            <returns>
+            The prepared file.
+            </returns>
+        </member>
+        <member name="M:AnalysisBase.ISourcePreparer.CalculateSegments``1(System.Collections.Generic.IEnumerable{AnalysisBase.Segment.ISegment{``0}},AnalysisBase.AnalysisSettings)">
+            <summary>
+            Calculate the file segments for analysis.
+            </summary>
+            <param name="fileSegments">
+            The file segments.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+            <returns>
+            Enumerable of file segments.
+            </returns>
+            <remarks>
+            This API does not fit with the other two. We should consider factoring it out.
+            </remarks>
+        </member>
+        <member name="T:AnalysisBase.ResultBases.EventBase">
+            <summary>
+            The base class for all Event style results.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.ResultBases.EventBase.SegmentStartSeconds">
+            <summary>
+            Gets or sets the time (in seconds) from start of the file/recording to start of the current audio segment.
+            </summary>
+            <remarks>
+            <see cref="P:AnalysisBase.ResultBases.EventBase.EventStartSeconds"/> will always be greater than or equal to <see cref="P:AnalysisBase.ResultBases.EventBase.SegmentStartSeconds"/>.
+            </remarks>
+        </member>
+        <member name="P:AnalysisBase.ResultBases.EventBase.Score">
+            <summary>
+            Gets or sets a score for the event.
+            </summary>
+            <remarks>
+            <para>
+            The meaning, range, and behaviour of the value is purposely undefined.
+            It varies with each algorithm used and we recommend that you <b>only</b> compare values as relative
+            measures between events produced by the same algorithm.
+            </para>
+            <para>
+            If a particular recogniser wishes to define semantics for this value, it should:
+            - Override this property and add relevant documentation.
+            - Or add a new property (that possibly aliases this value) that defines and documents its semantics.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:AnalysisBase.ResultBases.EventBase.EventStartSeconds">
+            <summary>
+            Gets or sets the Event's Start Seconds.
+            IMPORTANT: This field is time offset relative to the recording.
+            It automatically updates <see cref="P:AnalysisBase.ResultBases.ResultBase.ResultStartSeconds"/> when set.
+            </summary>
+            <remarks>
+            2017-09: This field USED to be offset relative to the current segment.
+            2017-09: This field is NOW equivalent to <see cref="P:AnalysisBase.ResultBases.ResultBase.ResultStartSeconds"/>.
+            </remarks>
+        </member>
+        <member name="M:AnalysisBase.ResultBases.EventBase.SetEventStartRelative(System.TimeSpan,System.Double)">
+            <summary>
+            Sets both the Segment start and the Event start.
+            <paramref name="segmentStart"/> is measured relative to the start of the recording.
+            <paramref name="eventStartSegmentRelative"/> is measured relative to the start of the segment.
+            This method sets both <see cref="P:AnalysisBase.ResultBases.EventBase.SegmentStartSeconds"/> and <see cref="P:AnalysisBase.ResultBases.EventBase.EventStartSeconds"/> which
+            are both measured relative to the start of the recording.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.ResultBases.EventIndex">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:AnalysisBase.ResultBases.ResultBase">
+            <summary>
+            This is the base type for every type of result we produce.
+            This includes: events, summary indices, and spectral indices.
+            These classes will hold much redundant information - the flat format is useful for CSV output.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.ResultBases.ResultBase.FileName">
+            <summary>
+            Gets or sets the filename of the audio file this result produced.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.ResultBases.ResultBase.ResultStartSeconds">
+            <summary>
+            Gets or sets the result start time in seconds.
+            This is relative to the start of the recording.
+            This basically allows every sort of result to be sorted/time indexed from the start of the file/recording.
+            </summary>
+            <remarks>
+            I.e. the time since the start of the original audio recording.
+            E.g. Given segment 78 of a 120min audio file, with a segment size of 60 seconds, this property would hold 78 minutes.
+            And again: StartOffset is the time offset between the start of the recording and the start of the current result.
+            </remarks>
+        </member>
+        <member name="P:AnalysisBase.ResultBases.ResultBase.SegmentDurationSeconds">
+            <summary>
+            Gets or sets the duration of audio segment that produced this result.
+            This is tracked because there is typically some error in cutting out segments of an audio file and it is
+            useful to know how much audio was actually used to generate the result.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.ResultBases.ResultBase.ResultMinute">
+            <summary>
+            Gets the ResultMinute.
+            This is the floored integer minute of <see cref="P:AnalysisBase.ResultBases.ResultBase.ResultStartSeconds"/>.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.ResultBases.ResultBase.CompareTo(AnalysisBase.ResultBases.ResultBase)">
+            <summary>
+            Defines an innate order of Analysis results based on the <c>SegmentStartOffset</c>.
+            </summary>
+            <param name="other">The other AnalysisResult to compare to.</param>
+            <returns>A integer representing the relative order between the two instances.</returns>
+        </member>
+        <member name="T:AnalysisBase.ResultBases.SummaryIndexBase">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:AnalysisBase.SaveBehavior">
+            <summary>
+            Determines if data should be saved per segment.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.SaveBehavior.False">
+            <summary>
+            Never save the associated resource. This is a synonym for <c>Never</c> and is provided for compatibility.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.SaveBehavior.Never">
+            <summary>
+            Never save the associated resource.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.SaveBehavior.True">
+            <summary>
+            Always save the associated resource. This is a synonym for <c>Always</c> and is  provided for compatibility.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.SaveBehavior.Always">
+            <summary>
+            Always save the associated resource.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.SaveBehavior.WhenEventsDetected">
+            <summary>
+            Only save the associated resource when events have been found in the segment
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.SegmentSettingsBase">
+            <summary>
+            Contains settings specific to the current block of audio that will be analyzed.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.InstanceId">
+            <summary>
+            Gets a unique identifier for this object. Tradionally used for debugging paralleism issues.
+            Has no useful semantics other than for debugging.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentTempDirectory">
+            <summary>
+            Gets the temp directory for a single analysis run.
+            Anything put here will be deleted when the analysis is complete.
+            Analysis implementations must not set this.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentOutputDirectory">
+            <summary>
+            Gets the output directory for a single analysis run.
+            Analysis implementations must not set this.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentAudioFile">
+            <summary>
+            Gets the audio file for the analysis.
+            Analysis implementations must not set this.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentEventsFile">
+            <summary>
+            Gets the events file for the analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentSummaryIndicesFile">
+            <summary>
+            Gets the summary indices file for the analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentSpectrumIndicesDirectory">
+            <summary>
+            Gets the spectrum indices directory where spectra should be written for the analysis.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentImageFile">
+            <summary>
+            Gets an output image file - most likely a spectrogram
+            Analysis implementations must not set this.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.AnalysisIdealSegmentDuration">
+            <summary>
+            Gets or sets the ideal duration of audio for the segment being analyzed.
+            This number represents what was requested for cutting whereas the actual
+            duration of audio provided by <c>SegmentAudioFile</c> may differ slightly due to
+            inaccuracies in cutting audio.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettingsBase.SegmentStartOffset">
+            <summary>
+            Gets or sets the start offset of the current analysis segment.
+            For a large file, analyzed in minute segments, this will store Minute offsets (e.g. min 1, min 2, min 3...).
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.SegmentSettings`1.Segment">
+            <summary>
+            Gets the segment from which audio segments are extracted for analysis.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.SegmentSplitException">
+            <summary>
+            Represents an error thrown when some aspect of a segment split is not allowed.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.Segment.InvalidSegmentException">
+            <summary>
+            An exception thrown when an <see cref="T:AnalysisBase.Segment.ISegment`1"/> has invalid data set.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.Segment.ISegment`1">
+            <summary>
+            Represents a range of audio from a source object.
+            SEGMENTS ARE NOT HIERARCHICAL CONSTRUCTS.
+            </summary>
+            <typeparam name="TSource">The type of source file used.</typeparam>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISegment`1.Source">
+            <summary>
+            Gets the source audio object.
+            <remarks>
+            It is expected that <typeparamref name="TSource" /> will be a path or FileInfo for local sources.
+            For remote sources, <typeparamref name="TSource" /> could be an arbitrary object.
+            The <see cref="T:AnalysisBase.ISourcePreparer"/> for each format handles these differences.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISegment`1.SourceMetadata">
+            <summary>
+            Gets information about the source.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISegment`1.StartOffsetSeconds">
+            <summary>
+            Gets the start of the segment, represented by seconds from the start of the audio object.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISegment`1.EndOffsetSeconds">
+            <summary>
+            Gets the end of the segment, represented by seconds from the start of the audio object.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.Segment.ISegment`1.SplitSegment(System.Double,System.Double)">
+            <summary>
+            Allows for the creation of a new segment, keeping the original source but changing the offsets.
+            </summary>
+            <param name="newStart">The new start offset to use for this segment.</param>
+            <param name="newEnd">The new end offset to use for this segment.</param>
+            <returns>A segment from the same source, with new offsets.</returns>
+        </member>
+        <member name="T:AnalysisBase.Segment.ISourceMetadata">
+            <summary>
+            Information about a source audio object.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISourceMetadata.Duration">
+            <summary>
+            Gets Duration - the length of the source audio object.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISourceMetadata.SampleRate">
+            <summary>
+            Gets SampleRate - the number of samples per second in the source audio object.
+            Store sample rate of original audio object.
+            May need original SR during the analysis, esp if have upsampled from the original SR.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISourceMetadata.Identifier">
+            <summary>
+            Gets Identifier - a string that uniquely identifies the source audio object.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.ISourceMetadata.RecordedDate">
+            <summary>
+            Gets the date the source audio object started recording at.
+            </summary>
+        </member>
+        <member name="M:AnalysisBase.Segment.SourceMetadata.#ctor(System.TimeSpan,System.Int32,System.String,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AnalysisBase.Segment.SourceMetadata"/> class.
+            </summary>
+            <param name="duration">The duration of the source audio object.</param>
+            <param name="sampleRate">The sample rate of the source audio object.</param>
+            <param name="identifier">A unique textual identifier.</param>
+            <param name="recordedDate">The Date the audio recording was recorded.</param>
+        </member>
+        <member name="P:AnalysisBase.Segment.SourceMetadata.Duration">
+            <summary>
+            Gets Duration - the length of the source audio object.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.SourceMetadata.SampleRate">
+            <summary>
+            Gets SampleRate - the number of samples per second in the source audio object.
+            Store sample rate of original audio object.
+            May need original SR during the analysis, esp if have upsampled from the original SR.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.SourceMetadata.Identifier">
+            <summary>
+            Gets Identifier - a string that uniquely identifies the source audio object.
+            </summary>
+        </member>
+        <member name="P:AnalysisBase.Segment.SourceMetadata.RecordedDate">
+            <summary>
+            Gets the date the source audio object started recording at.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.Status.Unknown">
+            <summary>
+            Unknown or not set.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.Status.InDevelopment">
+            <summary>
+            Code exists and it may run without failure.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.Status.Alpha">
+            <summary>
+            The analysis works as determined by at least one unit test.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.Status.Beta">
+            <summary>
+            The analysis is covered by a suite of external tests as well as internal unit tests.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.Status.Maintained">
+            <summary>
+            Works, internal tests, external tests, wide spread utility.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.Status.Unmaintained">
+            <summary>
+            Not maintined, or updated. May work but most likely stale and out of date.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.Status.Retired">
+            <summary>
+            Does not work, or you are advised not to use due to fundamental problems.
+            </summary>
+        </member>
+        <member name="T:AnalysisBase.TimeAlignment">
+            <summary>
+            Indicates the automatic alignment style used to produce segments that align
+            to the nearest minute in absolute time.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.TimeAlignment.None">
+            <summary>
+            No alignment is done
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.TimeAlignment.TrimBoth">
+            <summary>
+            Alignment to the nearest minute is done.
+            Both start and end fractional components are discarded.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.TimeAlignment.TrimStart">
+            <summary>
+            Alignment to the nearest minute is done.
+            The end fractional component is discarded but the start fractional component is kept.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.TimeAlignment.TrimEnd">
+            <summary>
+            Alignment to the nearest minute is done.
+            The start fractional component is discarded but the end fractional component is kept.
+            </summary>
+        </member>
+        <member name="F:AnalysisBase.TimeAlignment.TrimNeither">
+            <summary>
+            Alignment to the nearest minute is done.
+            Neither start or end fractional components are discarded.
+            </summary>
+        </member>
+    </members>
+</doc>

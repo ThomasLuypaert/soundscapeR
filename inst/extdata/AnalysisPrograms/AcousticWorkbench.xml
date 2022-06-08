@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AcousticWorkbench</name>
+    </assembly>
+    <members>
+        <member name="F:AcousticWorkbench.Service.ClientTimeout">
+            <summary>
+            The amount of time to wait for a request to be processed.
+            </summary>
+            <remarks>
+            We dynamically scale this value to the number of CPU cores multiplied by 10 seconds each so that in cases
+            where there is back pressure the async requests do not prematurely timeout. This is important because the
+            timeout calculation for HttpClient *includes* the time the request is waiting to be sent as well as the
+            total request time.
+            </remarks>
+        </member>
+    </members>
+</doc>

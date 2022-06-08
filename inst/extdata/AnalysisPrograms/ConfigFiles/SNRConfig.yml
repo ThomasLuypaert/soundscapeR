@@ -1,0 +1,14 @@
+---
+FrameSize: 512
+FrameOverlap: 0.5
+WindowFunction: Hamming
+NpointSmoothFFT: 256
+NoiseReductionType: LowestPercentile
+SegmentationThresholdK1: 2
+SegmentationThresholdK2: 3
+K1K2Latency: 50
+VocalGap: 50
+MinVocalDuraton: 100
+IntensityThreshold: 6
+SmallAreaThreshold: 200
+...

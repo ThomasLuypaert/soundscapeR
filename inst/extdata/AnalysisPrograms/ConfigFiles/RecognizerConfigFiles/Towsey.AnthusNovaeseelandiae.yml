@@ -1,0 +1,86 @@
+---
+
+# Australasian Pipit = Towsey.Anthus novaeseelandiae
+# Resample rate must be 2 X the desired Nyquist
+ResampleRate: 16000
+# SegmentDuration: units=seconds;
+SegmentDuration: 60
+# SegmentOverlap: units=seconds;
+SegmentOverlap: 0
+
+# Each of these profiles will be analyzed
+# This profile is required for the species-specific recogniser and must have the current name.
+Profiles:
+    PipitSyllable: !UpwardTrackParameters
+        ComponentName: Whip
+        SpeciesName: AnthusNovaeseelandiae
+        FrameSize: 512
+        FrameStep: 256
+        WindowFunction: HANNING
+        # min and max of the freq band to search
+        MinHertz: 2000
+        MaxHertz: 7000
+        # min and max bandwidth of the events that are found
+        MinBandwidthHertz: 500
+        MaxBandwidthHertz: 6000
+        # Scan the frequency band at these thresholds
+        DecibelThresholds:
+            - 6.0
+            - 9.0
+            - 12.0
+
+#################### POST-PROCESSING of EVENTS ###################
+
+PostProcessing:
+# The following generic post-processing steps are determined by config settings.
+# Step 1: Combine overlapping events - events derived from all profiles.
+# Step 2: Combine possible syllable sequences and filter on excess syllable count.
+# Step 3: Remove events whose bandwidth is too small or large.
+# Step 4: Remove events that have excessive noise in their side-bands.
+    PostProcessInDecibelGroups: false
+    # 1: Combine overlapping events
+    CombineOverlappingEvents: true
+
+    # 2: Combine possible syllable sequences
+    SyllableSequence:
+        CombinePossibleSyllableSequence: false
+        SyllableStartDifference: 0.25
+        SyllableHertzGap: 3000
+        FilterSyllableSequence: false
+        SyllableMaxCount: 0
+        ExpectedPeriod: 0
+
+    # 3: Remove events whose duration lies outside 3 SDs of an expected value.
+    #Duration:
+        ExpectedDuration: 0.0
+        DurationStandardDeviation: 0.0
+
+    # 4: Remove events whose bandwidth lies outside 3 SDs of an expected value.
+    Bandwidth:
+        ExpectedBandwidth: 4000
+        BandwidthStandardDeviation: 400
+
+    # 5: Filter the events for excess activity in their sidebands, i.e. upper and lower buffer zones
+    SidebandActivity:
+        LowerHertzBuffer: 0 #200
+        UpperHertzBuffer: 0
+        MaxAverageSidebandDecibels: 0.0 #9.0
+
+# Options to save results files
+# 1: Available options for saving spectrograms (case-sensitive): [False/Never | True/Always | WhenEventsDetected]
+# "True" is useful when debugging but "WhenEventsDetected" is required for operational use.
+#SaveSonogramImages: True
+SaveSonogramImages: WhenEventsDetected
+
+# 2: Available options for saving data files (case-sensitive): [False/Never | True/Always | WhenEventsDetected]
+SaveIntermediateWavFiles: Never
+SaveIntermediateCsvFiles: false
+
+# 3: DisplayCsvImage is obsolete - ensure it remains set to: false
+DisplayCsvImage: false
+## End section for AnalyzeLongRecording
+
+# Other config files to reference
+HighResolutionIndicesConfig: "../Towsey.Acoustic.HiResIndicesForRecognisers.yml"
+
+...

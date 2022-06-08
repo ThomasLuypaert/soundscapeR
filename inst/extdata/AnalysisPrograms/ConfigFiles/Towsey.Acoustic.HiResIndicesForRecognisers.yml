@@ -1,0 +1,61 @@
+---
+# Summary: Calculates acoustic indices at high temporal resolution, i.e. every 0.1 - 0.2 seconds
+#
+# The csv files this analysis outputs can be used to construct:
+#     1. long-duration false-color spectrograms
+#     2. a focused stack of zooming false-color spectrograms
+#     3. the tiles for zooming false-color spectrograms
+#
+#
+
+
+# BgNoiseNeighborhood: units=seconds (default IndexCalculationDuration = 60 seconds)
+# BG noise for any location is calculated by extending the region of index calculation from 5 seconds before start to 5 sec after end of current index interval.
+#    Ten seconds is considered a minimum interval to obtain a reliable estimate of BG noise.
+#    The  BG noise interval is not extended beyond start or end of recording segment.
+#    Consequently for a 60sec Index calculation duration, the  BG noise is calculated form the 60sec segment only.
+BgNoiseNeighborhood: 5
+DoNoiseReduction: true
+BgNoiseThreshold: 3.0
+SonogramBackgroundThreshold: 4.0
+
+# FRAME LENGTH. units=samples
+# FrameWidth is used without overlap to calculate the spectral indices. Typical value=512
+FrameLength: 512
+# FrameStep = zero for this analysis because NOT generating standard spectrograms
+FrameStep: 0
+
+
+
+#Default values in code are LowFreqBound=500Hz & MidFreqBound=4000
+LowFreqBound: 1000
+MidFreqBound: 8000
+
+DisplayWeightedIndices: false
+
+# ######################## HIGH RESOLUTION SPECTROGRAMS
+# IndexCalculationDuration: units=seconds (use 0.1 or 0.2 for hi-resolution)
+# The Timespan (in seconds) over which summary and spectral indices are calculated
+IndexCalculationDuration: 0.1
+HiResColourMap1: BGN-POW-EVN
+# PHN = combination of positive, horizontal and negative slope indices.
+HiResColourMap2: PHN-RVT-SPT
+SaveTwoMapsSpectrograms: true
+SaveRidgeSpectrograms: true
+SaveGrayScaleSpectrograms: true
+# One-minute standard spectrograms. WE DO NOT DO THIS ANY MORE.
+# Available options (case-sensitive): [False/Never | True/Always | WhenEventsDetected]
+SaveSonogramImages: Never
+
+
+
+# ######################## LOW RESOLUTION SPECTROGRAMS
+LowResolution: 60.0
+LowResColourMap1: ACI-ENT-EVN
+LowResColourMap2: BGN-POW-EVN
+
+
+IndexPropertiesConfig: './IndexPropertiesConfig.HiRes.yml'
+SpectrogramConfig: './SpectrogramConfigHiRes.yml'
+...
+

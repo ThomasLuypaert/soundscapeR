@@ -34,10 +34,43 @@ spectral index files for our long-duration acoustic recordings collected
 at our site of interest. To do this, we will make use of the
 `index_calc()` function.
 
+## 1.1. Raw acoustic data
+
+The workflow we present here makes use of eco-acoustic data, or acoustic
+recordings collected at large timescales (e.g. days, weeks, months or
+even years!), using either a regular interval (e.g. 1 minute out of
+every 10 minutes recorded) or continuous sampling regime. The workflow
+accommodates the use recordings in ultrasound, but beware that the
+spectral acoustic indices we use are not tested for this.
+
 For the purposes of this vignette, a few raw sound files are provided in
-the package data.
+the package data. These sound files were collected at the Balbina
+Hydroelectric Reservoir in Brazilian Amazonia using a 1 min / 5 min
+sampling regime and a 44,100 Hz sampling rate.
+
+Let’s take a look at where the raw data is saved on your device:
 
 ``` r
-system.file("extdata")
-#> [1] ""
+location_soundfiles <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
+                              "/raw_sound_files")
+
+print(location_soundfiles)
+#> [1] "C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/raw_sound_files"
 ```
+
+Now, let’s check which raw sound files are included in the package:
+
+``` r
+list.files(location_soundfiles)
+#>  [1] "G10_Coata_20151017_000000Z.wav" "G10_Coata_20151017_000500Z.wav"
+#>  [3] "G10_Coata_20151017_001000Z.wav" "G10_Coata_20151017_001500Z.wav"
+#>  [5] "G10_Coata_20151017_002000Z.wav" "G10_Coata_20151017_002500Z.wav"
+#>  [7] "G10_Coata_20151017_003000Z.wav" "G10_Coata_20151017_003500Z.wav"
+#>  [9] "G10_Coata_20151017_004000Z.wav" "G10_Coata_20151017_004500Z.wav"
+#> [11] "G10_Coata_20151017_005000Z.wav" "G10_Coata_20151017_005500Z.wav"
+```
+
+Look at that! The package contains 12 sound files collected on the 17th
+of October 2015, between midnight and 1 AM (00:00 - 00:55) using a 1 min
+/ 5 min sampling regime, as previously mentioned. We will use this
+sample data to demonstrate how acoustic indices are calculated:

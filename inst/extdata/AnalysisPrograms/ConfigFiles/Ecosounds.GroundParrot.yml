@@ -1,0 +1,19 @@
+---
+## General Parameters
+AnalysisName: Ecosounds.GroundParrot
+ResampleRate: 22050
+
+# default value is 4.0/15.0 = 0.2666
+EprNormalizedMinScore: ~
+
+## IAnalyzer Settings
+# Available options (case-sensitive): [False/Never | True/Always | WhenEventsDetected]
+SaveIntermediateWavFiles: Never
+# If `true` saves a data into a seperate file every `SegmentDuration` seconds. Accepts a boolean value: [false|true]
+SaveIntermediateCsvFiles: false
+# Available options (case-sensitive): [False/Never | True/Always | WhenEventsDetected]
+SaveSonogramImages: Never
+
+IndexPropertiesConfig: ".\\IndexPropertiesConfig.yml"
+AedConfig: ".\\Ecosounds.AED.yml"
+...
