@@ -20,6 +20,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
+[![Codecov test coverage](https://codecov.io/gh/ThomasLuypaert/soundscapeR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ThomasLuypaert/soundscapeR?branch=master)
+[![R-CMD-check](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 |  |  |
