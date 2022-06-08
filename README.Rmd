@@ -36,11 +36,25 @@ As such, prior to using `soundscapeR`, please head over to the ['AnalysisProgram
 
 For the first step in our workflow, we are going to calculate the spectral index files for our long-duration acoustic recordings collected at our site of interest. To do this, we will make use of the `index_calc()` function. 
 
-For the purposes of this vignette, a few raw sound files are provided in the package data. 
+## 1.1. Raw acoustic data
+
+The workflow we present here makes use of eco-acoustic data, or acoustic recordings collected at large timescales (e.g. days, weeks, months or even years!), using either a regular interval (e.g. 1 minute out of every 10 minutes recorded) or continuous sampling regime. The workflow accommodates the use recordings with high sampling rates, but beware that 
+
+For the purposes of this vignette, a few raw sound files are provided in the package data. Let's take a look at where these files are saved on your device:
 
 ```{r}
 
-base::system.file("extdata", package = "soundscapeR", mustWork = TRUE)
+location_soundfiles <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
+                              "/raw_sound_files")
+
+print(location_soundfiles)
+
+```
+
+Now, let's take a look at which raw sound files are included in the package: 
+
+```{r}
+
 
 
 
