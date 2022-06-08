@@ -458,8 +458,8 @@ index_calc <- function(fileloc,
 
     if (parallel == TRUE){
 
-      no_cores <- detectCores() - 1
-      cl <- makeCluster(no_cores)
+      no_cores <- parallel::detectCores() - 1
+      cl <- parallel::makeCluster(no_cores)
 
       parallel::parLapply(cl, files, function(x) {
 

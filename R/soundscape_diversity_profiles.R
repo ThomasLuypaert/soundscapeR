@@ -59,6 +59,10 @@ sounddiv_profile_internal <- function(aggregate_list, qvalues=seq(0, 5, 0.1), su
                                       dawnstart=0, dawnend=5400, duskstart=5400, duskend=0,
                                       display="plot", output="percentage"){
 
+  # 0. Providing binding for global variable
+
+  rownames_aggregate_list <- NULL
+
   # Data preparations
 
   tz <- lutz::tz_lookup_coords(lat=lat, lon=lon, method="accurate")
@@ -460,6 +464,10 @@ sounddiv_prof <- function(aggregate_list,
                           display="plot",
                           output="percentage"){
 
+  # 0. Providing binding for global variable
+
+  rownames_aggregate_list <- NULL
+
   # Data preparations
 
   tz <- lutz::tz_lookup_coords(lat = lat,
@@ -629,7 +637,7 @@ sounddiv_prof <- function(aggregate_list,
 
 
 
-  if (class(aggregate_list[[3]])=="data.frame"){
+  if (methods::is(object = aggregate_list[[3]], class2 = "data.frame")){
     sounddiv_profile <- sounddiv_profile_internal(aggregate_list=aggregate_list, qvalues=qvalues, subset=subset,
                                                   minfreq=minfreq, maxfreq=maxfreq,
                                                   mintime=mintime, maxtime=maxtime,
@@ -694,7 +702,7 @@ sounddiv_prof <- function(aggregate_list,
 
   else{
 
-    if (class(aggregate_list[[3]])=="list"){
+    if (methods::is(object = aggregate_list[[3]], class2 = "list")){
 
       sounddiv_profile <- vector("list", 0)
       sounddiv_profile_point <- vector("list", 0)

@@ -590,21 +590,22 @@ binarize_df <- function(merged_soundscape,
   colnames(thresh_df) <- colnames(merged_soundscape@merged_df)
   rownames(thresh_df) <- rownames(merged_soundscape@merged_df)
 
-  binarized_soundscape <- new("soundscape",
-                              first_day = merged_soundscape@first_day,
-                              lat = merged_soundscape@lat,
-                              lon = merged_soundscape@lon,
-                              tz = merged_soundscape@tz,
-                              sunrise = merged_soundscape@sunrise,
-                              sunset = merged_soundscape@sunset,
-                              fileloc = merged_soundscape@fileloc,
-                              index = merged_soundscape@index,
-                              samplerate = merged_soundscape@samplerate,
-                              window = merged_soundscape@window,
-                              binarization_method = method,
-                              threshold = as.numeric(threshold),
-                              merged_df = merged_soundscape@merged_df,
-                              binarized_df = thresh_df)
+  binarized_soundscape <- methods::new("soundscape",
+                                       first_day = merged_soundscape@first_day,
+                                       lat = merged_soundscape@lat,
+                                       lon = merged_soundscape@lon,
+                                       tz = merged_soundscape@tz,
+                                       sunrise = merged_soundscape@sunrise,
+                                       sunset = merged_soundscape@sunset,
+                                       fileloc = merged_soundscape@fileloc,
+                                       index = merged_soundscape@index,
+                                       samplerate = merged_soundscape@samplerate,
+                                       window = merged_soundscape@window,
+                                       binarization_method = method,
+                                       threshold = as.numeric(threshold),
+                                       merged_df = merged_soundscape@merged_df,
+                                       binarized_df = thresh_df)
+
 
   binarized_soundscape
 
@@ -645,6 +646,11 @@ binarize_df <- function(merged_soundscape,
 check_thresh <- function(merged_soundscape,
                          method,
                          value = NULL){
+
+  # 0.0. Create binding for global variables
+
+  time <- NULL
+
 
   # 0. Check if the arguments are missing
 
@@ -1061,7 +1067,7 @@ check_thresh <- function(merged_soundscape,
 
   # time_1 and time_2
 
-  test_13 <- function(x, y){
+  test_13_1 <- function(x, y){
 
     lubridate::is.POSIXct(x) &
       lubridate::is.POSIXct(y)
@@ -1072,13 +1078,13 @@ check_thresh <- function(merged_soundscape,
 
   # new_colnames
 
-  test_14 <- function(x){
+  test_14_1 <- function(x){
 
     !any(!sapply(x, FUN = lubridate::is.POSIXct))
 
   }
 
-  assertthat::assert_that(test_14(new_colnames))
+  assertthat::assert_that(test_14_1(new_colnames))
 
   # 4. Lengthen the df_after data frame
 

@@ -404,25 +404,26 @@ aggregate_df <- function(binarized_soundscape,
   aggregated_df <- rlist::list.cbind(aggregated_df)
   colnames(aggregated_df) <- unique_times
 
-  aggregated_soundscape <- new("soundscape",
-                               first_day = binarized_soundscape@first_day,
-                               lat = binarized_soundscape@lat,
-                               lon = binarized_soundscape@lon,
-                               tz = binarized_soundscape@tz,
-                               sunrise = binarized_soundscape@sunrise,
-                               sunset = binarized_soundscape@sunset,
-                               fileloc = binarized_soundscape@fileloc,
-                               index = binarized_soundscape@index,
-                               samplerate = binarized_soundscape@samplerate,
-                               window = binarized_soundscape@window,
-                               binarization_method = binarized_soundscape@binarization_method,
-                               threshold = binarized_soundscape@threshold,
-                               output = output,
-                               merged_df = binarized_soundscape@merged_df,
-                               binarized_df = binarized_soundscape@binarized_df,
-                               aggregated_df = aggregated_df,
-                               aggregated_df_per_time = aggregate_per_time,
-                               effort_per_time = sampling_effort_per_time)
+  aggregated_soundscape <- methods::new("soundscape",
+                                        first_day = binarized_soundscape@first_day,
+                                        lat = binarized_soundscape@lat,
+                                        lon = binarized_soundscape@lon,
+                                        tz = binarized_soundscape@tz,
+                                        sunrise = binarized_soundscape@sunrise,
+                                        sunset = binarized_soundscape@sunset,
+                                        fileloc = binarized_soundscape@fileloc,
+                                        index = binarized_soundscape@index,
+                                        samplerate = binarized_soundscape@samplerate,
+                                        window = binarized_soundscape@window,
+                                        binarization_method = binarized_soundscape@binarization_method,
+                                        threshold = binarized_soundscape@threshold,
+                                        output = output,
+                                        merged_df = binarized_soundscape@merged_df,
+                                        binarized_df = binarized_soundscape@binarized_df,
+                                        aggregated_df = aggregated_df,
+                                        aggregated_df_per_time = aggregate_per_time,
+                                        effort_per_time = sampling_effort_per_time)
+
 
   aggregated_soundscape
 

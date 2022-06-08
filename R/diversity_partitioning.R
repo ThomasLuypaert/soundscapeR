@@ -50,13 +50,13 @@ sounddiv_part <- function(df_list, qvalue, hier_table, type="total",minfreq="def
                                twilight="sunlight",dawnstart=0, dawnend=5400, duskstart=5400,
                                duskend=0,output="percentage"){
 
-  if (class(df_list)=="data.frame"){
+  if(methods::is(object = df_list, class2 = "data.frame")){
     errorCondition(message = "Invalid df_list class - please supply a list of dataframes")
   }
 
   else{
 
-    if (class(df_list)=="list"){
+    if (methods::is(df_list, object = "list")){
 
       # Checking whether the arguments supplied are single values or vectors of values
       # If arguments are single values, turns them into vector of repeated values of the
@@ -520,13 +520,13 @@ sounddiv_pairdis <- function(df_list, qvalue, hier_table="default",
                              twilight="sunlight",dawnstart=0,dawnend=5400, duskstart=5400,
                              duskend=0,output="percentage"){
 
-  if (class(df_list)=="data.frame"){
+  if (methods::is(object = df_list, class2 = "data.frame")){
     errorCondition(message = "Invalid df_list class - please supply a list of dataframes")
   }
 
   else{
 
-    if (class(df_list)=="list"){
+    if (methods::is(object = df_list, class2 = "list")){
 
       # Checking whether the arguments supplied are single values or vectors of values
       # If arguments are single values, turns them into vector of repeated values of the

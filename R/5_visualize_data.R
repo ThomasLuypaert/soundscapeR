@@ -161,6 +161,10 @@ heatmapper=function(aggregated_soundscape,
                     width=100,
                     height=100){
 
+  # 0.0. Setting binding for global variables
+
+  time <- value <- comma <- unit <- guides <- richness_smooth <- NULL
+
   # 0. Check if the arguments are missing
 
   test_0 <- function(x){

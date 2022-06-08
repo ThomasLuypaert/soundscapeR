@@ -40,7 +40,6 @@ pair_dis_modified <- function(countable,qvalue,tree,hierarchy,metric){
     if(missing(qvalue)) stop("q value is missing")
     if(qvalue < 0) stop("q value needs to be possitive (equal or higher than zero)")
     if(identical(sort(rownames(otutable)),sort(tree$tip.label)) == FALSE) stop("OTU names in the OTU table and tree do not ")
-    if(ape::is.ultrametric(tree) == FALSE) stop("Tree needs to be ultrametric")
     if (qvalue==1){qvalue=0.99999}
     otutable <- as.data.frame(otutable)
     wj <- rep(1/ncol(otutable),ncol(otutable))
@@ -65,7 +64,6 @@ pair_dis_modified <- function(countable,qvalue,tree,hierarchy,metric){
     if(missing(qvalue)) stop("q value is missing")
     if(qvalue < 0) stop("q value needs to be possitive (equal or higher than zero)")
     if (qvalue==1){qvalue=0.99999} # change q to the limit of the unity (0.99999) if q=1
-    if(ape::is.ultrametric(tree) == FALSE) stop("Tree needs to be ultrametric")
     if(identical(sort(rownames(otutable)),sort(tree$tip.label)) == FALSE) stop("OTU names in the OTU table and tree do not match")
     otutable <- as.data.frame(otutable)
     wj <- rep(1/ncol(otutable),ncol(otutable))

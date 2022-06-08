@@ -344,18 +344,18 @@ merge_csv <- function(fileloc,
                        tz = tz,
                        format = "%Y-%m-%d %H:%M:%S")
 
-  merged_soundscape <- new("soundscape",
-                           fileloc = fileloc,
-                           index = index,
-                           samplerate = samplerate,
-                           window = window,
-                           first_day = day,
-                           lat = lat,
-                           lon = lon,
-                           tz = tz,
-                           sunrise = sunrise,
-                           sunset = sunset,
-                           merged_df = merged_df)
+  merged_soundscape <- methods::new("soundscape",
+                                    fileloc = fileloc,
+                                    index = index,
+                                    samplerate = samplerate,
+                                    window = window,
+                                    first_day = day,
+                                    lat = lat,
+                                    lon = lon,
+                                    tz = tz,
+                                    sunrise = sunrise,
+                                    sunset = sunset,
+                                    merged_df = merged_df)
 
 
   merged_soundscape
