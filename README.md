@@ -27,14 +27,20 @@ As such, prior to using `soundscapeR`, please head over to the
 page](https://ap.qut.ecoacoustics.info/basics/installing.html?tabs=windows),
 and install the latest version of the software tool on your device.
 
-# 1. Calculating acoustic indices
+*!) In the latest version of `soundscapeR`, ‘AnalysisPrograms’ is
+automatically installed*
 
-For the first step in our workflow, we are going to calculate the
-spectral index files for our long-duration acoustic recordings collected
-at our site of interest. To do this, we will make use of the
-`index_calc()` function.
+Let’s take a look where the software tool is saved on your device:
 
-## 1.1. Raw acoustic data
+``` r
+location_software <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
+                              "/AnalysisPrograms")
+
+print(location_software)
+#> [1] "C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/AnalysisPrograms"
+```
+
+# 1. Raw acoustic data
 
 The workflow we present here makes use of eco-acoustic data, or acoustic
 recordings collected at large timescales (e.g. days, weeks, months or
@@ -62,15 +68,33 @@ Now, let’s check which raw sound files are included in the package:
 
 ``` r
 list.files(location_soundfiles)
-#>  [1] "G10_Coata_20151017_000000Z.wav" "G10_Coata_20151017_000500Z.wav"
-#>  [3] "G10_Coata_20151017_001000Z.wav" "G10_Coata_20151017_001500Z.wav"
-#>  [5] "G10_Coata_20151017_002000Z.wav" "G10_Coata_20151017_002500Z.wav"
-#>  [7] "G10_Coata_20151017_003000Z.wav" "G10_Coata_20151017_003500Z.wav"
-#>  [9] "G10_Coata_20151017_004000Z.wav" "G10_Coata_20151017_004500Z.wav"
-#> [11] "G10_Coata_20151017_005000Z.wav" "G10_Coata_20151017_005500Z.wav"
+#>  [1] "256"                            "G10_Coata_20151017_000000Z.wav"
+#>  [3] "G10_Coata_20151017_000500Z.wav" "G10_Coata_20151017_001000Z.wav"
+#>  [5] "G10_Coata_20151017_001500Z.wav" "G10_Coata_20151017_002000Z.wav"
+#>  [7] "G10_Coata_20151017_002500Z.wav" "G10_Coata_20151017_003000Z.wav"
+#>  [9] "G10_Coata_20151017_003500Z.wav" "G10_Coata_20151017_004000Z.wav"
+#> [11] "G10_Coata_20151017_004500Z.wav" "G10_Coata_20151017_005000Z.wav"
+#> [13] "G10_Coata_20151017_005500Z.wav"
 ```
 
 Look at that! The package contains 12 sound files collected on the 17th
 of October 2015, between midnight and 1 AM (00:00 - 00:55) using a 1 min
-/ 5 min sampling regime, as previously mentioned. We will use this
-sample data to demonstrate how acoustic indices are calculated:
+/ 5 min sampling regime, as previously mentioned. In the next section,
+we will use this sample data to demonstrate how acoustic indices are
+calculated.
+
+# 2. Calculating acoustic indices
+
+For the first step in our workflow, we are going to calculate the
+spectral index files for the long-duration acoustic recordings collected
+at our site of interest. To do this, we will use the `index_calc()`
+function on the raw sound files contained in the package:
+
+``` r
+soundscapeR::index_calc(fileloc = location_soundfiles, 
+                        progloc = location_software, 
+                        samplerate = 44100, 
+                        window = 256, 
+                        parallel = TRUE)
+#> [1] TRUE
+```

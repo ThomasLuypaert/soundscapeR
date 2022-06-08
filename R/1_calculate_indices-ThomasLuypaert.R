@@ -261,6 +261,8 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 #' compute indices.
 #' @param progloc The full-length path to the location of
 #' 'AnalysisPrograms.exe'.
+#' @param outputloc The full-length path to the location where you wish to save the output files.
+#' Defaults to the same location as the fileloc.
 #' @param samplerate The number of times the sound was sampled each second.
 #' This is a fixed parameter determined by your recording setup, although
 #' downsampling to a lower sampling rate is possible.
@@ -343,6 +345,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 #'
 index_calc <- function(fileloc,
                        progloc,
+                       outputloc = NULL,
                        samplerate = 44100,
                        window = 256,
                        parallel = FALSE) {
@@ -364,9 +367,25 @@ index_calc <- function(fileloc,
 
   assertthat::assert_that(test_1(fileloc))
 
+  if(!is.null(outputloc)){
+
+    assertthat::assert_that(test_1(outputloc))
+
+  }
+
   # 2. Create output directory, and list files in fileloc + checking
 
+  if(is.null(outputloc)){
+
   base_output_directory <- paste0(fileloc, "/", window)
+
+  }
+
+  else{
+
+    base_output_directory <- paste0(outputloc, "/", window)
+
+  }
 
   files <- list.files(fileloc,
     pattern = "*.wav|*.WAV|*.mp3|

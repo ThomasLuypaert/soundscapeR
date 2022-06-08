@@ -32,6 +32,19 @@ This R-package uses spectral index output files computed using the ['AnalysisPro
 
 As such, prior to using `soundscapeR`, please head over to the ['AnalysisPrograms' download page](https://ap.qut.ecoacoustics.info/basics/installing.html?tabs=windows), and install the latest version of the software tool on your device. 
 
+*!) In the latest version of `soundscapeR`, 'AnalysisPrograms' is automatically installed*
+
+Let's take a look where the software tool is saved on your device:
+
+```{r}
+
+location_software <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
+                              "/AnalysisPrograms")
+
+print(location_software)
+
+```
+
 
 # 1. Raw acoustic data
 
@@ -67,7 +80,7 @@ For the first step in our workflow, we are going to calculate the spectral index
 ```{r}
 
 soundscapeR::index_calc(fileloc = location_soundfiles, 
-                        progloc = , 
+                        progloc = location_software, 
                         samplerate = 44100, 
                         window = 256, 
                         parallel = TRUE)
