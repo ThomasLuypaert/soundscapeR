@@ -28,14 +28,32 @@ knitr::opts_chunk$set(
 
 # 0. Priors
 
-This R-package uses spectral index output files computed using the ['AnalysisPrograms'](https://ap.qut.ecoacoustics.info/) software tool, developed by the [QUT Ecoacoustics Group](https://research.ecosounds.org/). Although all the steps in the analytical pipeline can be performed using  `soundscapeR`, the package requires 'AnalysisPrograms' in the background.
+## 0.1. Acknowledgements
 
-As such, prior to using `soundscapeR`, please head over to the ['AnalysisPrograms' download page](https://ap.qut.ecoacoustics.info/basics/installing.html?tabs=windows), and check out the great work of this group! 
+This R-package uses spectral index output files computed using the 'AnalysisPrograms' software tool, developed by the [QUT Ecoacoustics Group](https://research.ecosounds.org/). Although all the steps in the analytical pipeline can be performed using  `soundscapeR`, the package requires 'AnalysisPrograms' in the background.
+
+As such, prior to using `soundscapeR`, feel free to head over to the ['AnalysisPrograms' website](https://ap.qut.ecoacoustics.info/), and check out their great work! 
 
 **!) In the latest version of `soundscapeR`, 'AnalysisPrograms' is automatically installed when calculating acoustic indices for the first time**
 
+## 0.2. Workflow background
 
-# 1. Raw acoustic data
+The workflow presented in this tutorial is published in Luypaert et al. (2022): A framework for quantifying soundscape diversity using Hill numbers. You can access the publication's pre-print [here](https://www.biorxiv.org/content/10.1101/2022.01.11.475919v1). This workflow facilitates the computation, exploration, visualization and diversity quantification of soundscapes using Hill numbers. It can be used to calculate measures of soundscape richness, evenness and diversity. Moreover, the soundscape diverity metrics presented in the manuscript have been successfully used as a proxy for the taxonomic diversity of sound-producing organisms in tropical rainforests without the need for species identification from sound files. 
+
+**The analytical pipeline consists of the following steps:**
+
+1. Computation of the spectral CVR-index
+2. Chronological concatenation of spectral index files per site
+3. Binarization of spectral index files to obtain detection/non-detection of sound
+4. Computation of the incidence frequency for each Operational Sound Unit (OSU) in the acoustic trait space
+5. Quantification of the soundscape diversity metrics 
+
+The `soundscapeR` R-package presented in this tutorial represents the software implementation of the analytical pipeline described above. In addition to containing the functions to perform the pipeline's core steps, the `soundscapeR` R-package provides several functions for the exploration and visualization of soundscapes. 
+
+
+# 1. The workflow
+
+## 1.1. Raw acoustic data
 
 The workflow we present here makes use of eco-acoustic data, or acoustic recordings collected at large timescales (e.g. days, weeks, months or even years!), using either a regular interval (e.g. 1 minute out of every 10 minutes recorded) or continuous sampling regime. The workflow accommodates the use recordings in ultrasound, but beware that the spectral acoustic indices we use are not tested for this. 
 
@@ -62,7 +80,7 @@ list.files(location_soundfiles)
 
 Look at that! The package contains 12 sound files collected on the 17th of October 2015, between midnight and 1 AM (00:00 - 00:55) using a 1 min / 5 min sampling regime, as previously mentioned. In the next section, we will use this sample data to demonstrate how acoustic indices are calculated. 
 
-# 2. Calculating acoustic indices
+## 1.2. Calculating acoustic indices
 
 For the first step in our workflow, we are going to calculate the spectral index files for the long-duration acoustic recordings collected at our site of interest. To do this, we will use the `index_calc()` function on the raw sound files contained in the package. 
 
@@ -110,7 +128,7 @@ Great, using the simple `index_calc` command, we've computed 14 spectral acousti
 
 For the rest of this tutorial, we will be using the Acoustic Cover Index (CVR). Per sound file, this index captures the fraction of cells in each noise-reduced frequency bin whose value exceeds a 3 dB threshold. 
 
-# 3. Merging acoustic indices chronologically
+## 1.3. Merging acoustic indices chronologically
 
 Next up, we will merge the spectral CVR-index files chronologically, resulting in a time-by-frequency data frame containing the index values. To do this, we can use the `merge_csv` function:
 
