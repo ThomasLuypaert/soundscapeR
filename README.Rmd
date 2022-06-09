@@ -55,6 +55,16 @@ The `soundscapeR` R-package presented in this tutorial represents the software i
 
 ## 1.1. Raw acoustic data
 
+$$\\[0.1in]$$
+
+```{r Fig_1, fig.align = 'center', out.width = "100%", fig.cap = "A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape.", echo=FALSE}
+knitr::include_graphics(here::here("man/figures/Fig_1_Ecoacoustic_data.png"))
+```
+$$\\[0.001in]$$
+***Fig 1:*** *A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape.*
+
+$$\\[0.1in]$$
+
 The workflow we present here makes use of eco-acoustic data, or acoustic recordings collected at large timescales (e.g. days, weeks, months or even years!), using either a regular interval (e.g. 1 minute out of every 10 minutes recorded) or continuous sampling regime. The workflow accommodates the use recordings in ultrasound, but beware that the spectral acoustic indices we use are not tested for this. 
 
 For the purposes of this vignette, a few raw sound files are provided in the package data. These sound files were collected at the Balbina Hydroelectric Reservoir in Brazilian Amazonia using a 1 min / 5 min sampling regime and a 44,100 Hz sampling rate. 
@@ -82,6 +92,16 @@ Look at that! The package contains 12 sound files collected on the 17th of Octob
 
 ## 1.2. Calculating acoustic indices
 
+$$\\[0.1in]$$
+
+```{r Fig_2, fig.align = 'center', out.width = "100%", fig.cap = "A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin.", echo=FALSE}
+knitr::include_graphics(here::here("man/figures/Fig_2_Index_computation.png"))
+```
+$$\\[0.001in]$$
+***Fig 2:*** *A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin.*
+
+$$\\[0.1in]$$
+
 For the first step in our workflow, we are going to calculate the spectral index files for the long-duration acoustic recordings collected at our site of interest. To do this, we will use the `index_calc()` function on the raw sound files contained in the package. 
 
 First, we will specify the location where we will save the output files:
@@ -94,6 +114,8 @@ location_output <- paste0(base::system.file("extdata", package = "soundscapeR", 
 print(location_output)
 
 ```
+
+
 Next, we will compute the spectral indices:
 
 ```{r, results='hide', message=FALSE, warning=FALSE}
@@ -130,7 +152,20 @@ For the rest of this tutorial, we will be using the Acoustic Cover Index (CVR). 
 
 ## 1.3. Merging acoustic indices chronologically
 
-Next up, we will merge the spectral CVR-index files chronologically, resulting in a time-by-frequency data frame containing the index values. To do this, we can use the `merge_csv` function:
+Next up, we will merge the spectral CVR-index files chronologically, resulting in a time-by-frequency data frame containing the index values. 
+
+$$\\[0.1in]$$
+
+
+```{r Fig_3, fig.align = 'left', out.width = "100%", fig.cap = "A theoretical representation of the chronological concatenation step. The all spectral index vectors resulting from the index computation step are merged chronologically, resulting in a time-by-frequency data frame containing the spectral index values.", echo=FALSE}
+knitr::include_graphics(here::here("man/figures/Fig_3_Chronological_concatenation.png"))
+```
+$$\\[0.001in]$$
+***Fig 3:*** *A theoretical representation of the chronological concatenation step. The all spectral index vectors resulting from the index computation step are merged chronologically, resulting in a time-by-frequency data frame containing the spectral index values. On the right, a visual representation of the spectral index values in the time-by-frequency data frame for seven 24-hour samples of the soundscape.*
+
+$$\\[0.1in]$$
+
+To do this, we can use the `merge_csv` function:
 
 ```{r}
 

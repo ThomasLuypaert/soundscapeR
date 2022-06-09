@@ -55,13 +55,28 @@ the need for species identification from sound files.
     Unit (OSU) in the acoustic trait space
 5.  Quantification of the soundscape diversity metrics
 
-In addition to containing the functions to perform these core steps, the
-`soundscapeR` R-package provides several functions for the exploration
-and visualization of soundscapes.
+The `soundscapeR` R-package presented in this tutorial represents the
+software implementation of the analytical pipeline described above. In
+addition to containing the functions to perform the pipeline’s core
+steps, the `soundscapeR` R-package provides several functions for the
+exploration and visualization of soundscapes.
 
 # 1. The workflow
 
 ## 1.1. Raw acoustic data
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_1_Ecoacoustic_data.png" title="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." alt="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." width="100%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 1:*** *A theoretical representation of long-duration eco-acoustic
+data collection. Data is collected over a 7-day acoustic survey period
+using a continuous sampling regime. The sound files are grouped per
+24-hour period and considered a sample of the soundscape.*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
 The workflow we present here makes use of eco-acoustic data, or acoustic
 recordings collected at large timescales (e.g. days, weeks, months or
@@ -104,6 +119,23 @@ we will use this sample data to demonstrate how acoustic indices are
 calculated.
 
 ## 1.2. Calculating acoustic indices
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_2_Index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 2:*** *A theoretical representation of how spectral indices are
+computed. First, each 1-minute sound file is subjected to a Fast Fourier
+Transformation, which extracts information on the amplitude variation
+across the time-frequency domain. Next, the resulting spectrogram is
+subjected to a noise-removal step. Finally, a mathematical equation
+(spectral index) is applied to the amplitude values in each frequency
+bin, resulting in a spectral index vector with one index value per
+frequency bin.*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
 For the first step in our workflow, we are going to calculate the
 spectral index files for the long-duration acoustic recordings collected
@@ -179,6 +211,23 @@ noise-reduced frequency bin whose value exceeds a 3 dB threshold.
 
 Next up, we will merge the spectral CVR-index files chronologically,
 resulting in a time-by-frequency data frame containing the index values.
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_3_Chronological_concatenation.png" title="A theoretical representation of the chronological concatenation step. The all spectral index vectors resulting from the index computation step are merged chronologically, resulting in a time-by-frequency data frame containing the spectral index values." alt="A theoretical representation of the chronological concatenation step. The all spectral index vectors resulting from the index computation step are merged chronologically, resulting in a time-by-frequency data frame containing the spectral index values." width="100%" style="display: block; margin: auto auto auto 0;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 3:*** *A theoretical representation of the chronological
+concatenation step. The all spectral index vectors resulting from the
+index computation step are merged chronologically, resulting in a
+time-by-frequency data frame containing the spectral index values. On
+the right, a visual representation of the spectral index values in the
+time-by-frequency data frame for seven 24-hour samples of the
+soundscape.*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
 To do this, we can use the `merge_csv` function:
 
 ``` r
