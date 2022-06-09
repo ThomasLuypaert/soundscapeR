@@ -30,20 +30,9 @@ knitr::opts_chunk$set(
 
 This R-package uses spectral index output files computed using the ['AnalysisPrograms'](https://ap.qut.ecoacoustics.info/) software tool, developed by the [QUT Ecoacoustics Group](https://research.ecosounds.org/). Although all the steps in the analytical pipeline can be performed using  `soundscapeR`, the package requires 'AnalysisPrograms' in the background.
 
-As such, prior to using `soundscapeR`, please head over to the ['AnalysisPrograms' download page](https://ap.qut.ecoacoustics.info/basics/installing.html?tabs=windows), and install the latest version of the software tool on your device. 
+As such, prior to using `soundscapeR`, please head over to the ['AnalysisPrograms' download page](https://ap.qut.ecoacoustics.info/basics/installing.html?tabs=windows), and check out the great work of this group! 
 
-*!) In the latest version of `soundscapeR`, 'AnalysisPrograms' is automatically installed*
-
-Let's take a look where the software tool is saved on your device:
-
-```{r}
-
-location_software <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
-                              "/AnalysisPrograms")
-
-print(location_software)
-
-```
+**!) In the latest version of `soundscapeR`, 'AnalysisPrograms' is automatically installed when calculating acoustic indices for the first time**
 
 
 # 1. Raw acoustic data
@@ -75,17 +64,182 @@ Look at that! The package contains 12 sound files collected on the 17th of Octob
 
 # 2. Calculating acoustic indices
 
-For the first step in our workflow, we are going to calculate the spectral index files for the long-duration acoustic recordings collected at our site of interest. To do this, we will use the `index_calc()` function on the raw sound files contained in the package: 
+For the first step in our workflow, we are going to calculate the spectral index files for the long-duration acoustic recordings collected at our site of interest. To do this, we will use the `index_calc()` function on the raw sound files contained in the package. 
+
+First, we will specify the location where we will save the output files:
 
 ```{r}
 
-soundscapeR::index_calc(fileloc = location_soundfiles, 
-                        progloc = location_software, 
+location_output <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
+                              "/processed_output_files")
+
+print(location_output)
+
+```
+Next, we will compute the spectral indices:
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+
+soundscapeR::index_calc(fileloc = location_soundfiles,
+                        outputloc = location_output,
                         samplerate = 44100, 
                         window = 256, 
-                        parallel = TRUE)
+                        parallel = FALSE)
 
 
 ```
+
+Awesome, first step completed! Note that, with long-duration eco-acoustic data, this step can take a while. To speed up the process, you can set `parallel = TRUE`. 
+
+Now, let's take a look at which indices we've computed for one of the sound files:
+
+```{r}
+
+# Get the location where the output of the first sound file is saved
+
+output_location_1 <- paste0(location_output, "/256/G10_Coata_20151017_000000Z.wav/Towsey.Acoustic")
+
+# Grab the files containing acoustic index output
+
+list.files(output_location_1)[grep(pattern = ".csv",
+                                   x = list.files(output_location_1))][-7]
+
+
+```
+Great, using the simple `index_calc` command, we've computed 14 spectral acoustic indices, each of which a captures different aspect of the acoustic structure of sound files. For an overview of the different indices, please consult the \code{\link[soundscapeR]{index_calc}} documentation, the QUT AnalysisPrograms Tutorial [website](https://ap.qut.ecoacoustics.info/tutorials/01-usingap/practical?tabs=windows), or the Towsey (2017) technical [report](https://eprints.qut.edu.au/110634/1/QUTePrints110634_TechReport_Towsey2017August_AcousticIndices%20v3.pdf). 
+
+For the rest of this tutorial, we will be using the Acoustic Cover Index (CVR). Per sound file, this index captures the fraction of cells in each noise-reduced frequency bin whose value exceeds a 3 dB threshold. 
+
+# 3. Merging acoustic indices chronologically
+
+Next up, we will merge the spectral CVR-index files chronologically, resulting in a time-by-frequency data frame containing the index values. To do this, we can use the `merge_csv` function:
+
+```{r}
+
+merged_CVR_index <- soundscapeR::merge_csv(fileloc = location_output, 
+                                           samplerate = 44100, 
+                                           window = 256, 
+                                           index = "CVR", 
+                                           date = "2015-10-17", 
+                                           lat = -1.48819, 
+                                           lon = -59.7872)
+
+```
+
+As you may have noticed, this function requires us to provide some additional background information regarding how the data was collected and processed. This is because, using the `merge_csv` function, we are creating a new type of data object which stores all the relevant information for that acoustic data collection! As we continue to go through the workflow, the data object will continue to be updated, and will form the basis of all subsequent functions. Let's take a look at this newly created object:
+
+```{r}
+
+# Let's see what class this object is:
+
+summary(merged_CVR_index)
+
+```
+
+This new data object is an 'S4' object of the class *soundscape*.
+
+```{r}
+
+# Let's see what sort of information this object holds
+
+merged_CVR_index
+
+
+```
+
+As we can see, this objects holds two types of information: (i) metadata information regarding the data collection and processing steps; and (ii) soundscape information, which will continue to be updated as we move throughout our analytical pipeline. To access the information stored in this object, we will use the '@' symbol. Let's take a look at which types of data are stored in the object so far:
+
+```{r}
+
+# Let's check what sort of data collection metadata is stored in the object
+
+print(paste0("First day of data collection: ", merged_CVR_index@first_day))
+print(paste0("Latitude at data collection site: ", merged_CVR_index@lat))
+print(paste0("Longitude at data collection site: ", merged_CVR_index@lon))
+print(paste0("Time zone at data collection site: ", merged_CVR_index@tz))
+print(paste0("Sunrise at time of data collection: ", merged_CVR_index@sunrise))
+print(paste0("Sunset at time of data collection: ", merged_CVR_index@sunset))
+
+```
+
+The `merge_csv` function has automatically calculated a bunch of important ecological information regarding the place and time of year at which the data was collected, such as sunrise and sunset times, timezones, and location coordinates. 
+
+Let's continue looking at the data stored in the *soundscape* object:
+
+```{r}
+
+# Let's check what sort of metadata the object has stored regarding past data processing steps
+
+print(paste0("Where are the raw sound files located: ", merged_CVR_index@fileloc))
+print(paste0("What acoustic index are we using: ", merged_CVR_index@index, " index"))
+print(paste0("What was the samplerate used to collect the data: ", merged_CVR_index@samplerate, " Hz"))
+print(paste0("What was the window length used during the FFT: ", merged_CVR_index@window, " samples"))
+
+
+
+```
+The *soundscape* object has recorded where our raw data files are stored, which acoustic index we're working with, what the sampling rate was during data collection, and which window length was used during the acoustic index calculation. Finally, let's take a look at the structure of the data frame we obtained by merging the CVR-index files chronologically: 
+
+```{r}
+
+head(merged_CVR_index@merged_df)[,1:5]
+
+```
+As we previously mentioned, this data frame contains the spectral CVR-index files we calculated, and concatenated them chronologically, resulting in the time-of-recording as column names, the frequency bins as row names, and the CVR-index for each time-frequency pair as values. Each column contains the spectral index values of a single sound file. 
+
+Let's inspect this data frame a little closer:
+
+```{r}
+
+# How many columns does the data frame contain?
+
+paste0("The data frame contains: ", ncol(merged_CVR_index@merged_df), " columns")
+
+# What are the column names?
+
+colnames(merged_CVR_index@merged_df)
+
+```
+
+As we said, the number of columns equals the number of sound files collected during the acoustic survey - in this case, the 12 files contained in the package's sample data. The name of each column correponds to the time of day at which the recording was collected. Next, let's take a look at the rows:
+
+```{r}
+
+# How many rows does the data frame contain?
+
+paste0("The data frame contains: ", nrow(merged_CVR_index@merged_df), " rows")
+
+# What do these row names look like?
+
+  # The first five names
+
+paste0("The first five rownames: ", paste0(rownames(merged_CVR_index@merged_df)[1:5], collapse = ", "))
+
+  # The last five names
+
+paste0("The last five rownames: ", paste0(rownames(merged_CVR_index@merged_df)[123:128], collapse = ", "))
+
+
+```
+The data frame contains 128 rows, each corresponding to a unique frequency bin. The frequency bins range from 0 - 22,050 Hz, and are of approximately 172 Hz width. Now, let's inspect the CVR-index values:
+
+```{r}
+
+# What is the minimum CVR-index value in our data frame?
+
+paste0("The minimum CVR-value in our data frame is: ", min(merged_CVR_index@merged_df))
+
+# What is the maximum CVR-index value in our data frame?
+
+paste0("The max CVR-value in our data frame is: ", max(merged_CVR_index@merged_df))
+
+
+```
+As we can see, in our dataset, the CVR-index values range between 0 - 0.50. Remember, CVR-index values capture the proportion of cells in each noise-reduced frequency bin of a sound file that exceeds a 3-dB amplitude threshold. As such, the values can technically range between 0-1. 
+
+Alright, that is enough theory for now! Let's proceed with the workflow. 
+
+
+
 
 

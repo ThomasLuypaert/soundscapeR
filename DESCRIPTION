@@ -48,7 +48,8 @@ Suggests:
     geiger,
     crayon,
     parallel,
-    assertthat
+    assertthat, 
+    sf
 Depends: 
     R (>= 3.5.0)
 URL: https://github.com/ThomasLuypaert/soundscapeR

@@ -25,20 +25,11 @@ requires ‘AnalysisPrograms’ in the background.
 As such, prior to using `soundscapeR`, please head over to the
 [‘AnalysisPrograms’ download
 page](https://ap.qut.ecoacoustics.info/basics/installing.html?tabs=windows),
-and install the latest version of the software tool on your device.
+and check out the great work of this group!
 
-*!) In the latest version of `soundscapeR`, ‘AnalysisPrograms’ is
-automatically installed*
-
-Let’s take a look where the software tool is saved on your device:
-
-``` r
-location_software <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
-                              "/AnalysisPrograms")
-
-print(location_software)
-#> [1] "C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/AnalysisPrograms"
-```
+**!) In the latest version of `soundscapeR`, ‘AnalysisPrograms’ is
+automatically installed when calculating acoustic indices for the first
+time**
 
 # 1. Raw acoustic data
 
@@ -68,13 +59,12 @@ Now, let’s check which raw sound files are included in the package:
 
 ``` r
 list.files(location_soundfiles)
-#>  [1] "256"                            "G10_Coata_20151017_000000Z.wav"
-#>  [3] "G10_Coata_20151017_000500Z.wav" "G10_Coata_20151017_001000Z.wav"
-#>  [5] "G10_Coata_20151017_001500Z.wav" "G10_Coata_20151017_002000Z.wav"
-#>  [7] "G10_Coata_20151017_002500Z.wav" "G10_Coata_20151017_003000Z.wav"
-#>  [9] "G10_Coata_20151017_003500Z.wav" "G10_Coata_20151017_004000Z.wav"
-#> [11] "G10_Coata_20151017_004500Z.wav" "G10_Coata_20151017_005000Z.wav"
-#> [13] "G10_Coata_20151017_005500Z.wav"
+#>  [1] "G10_Coata_20151017_000000Z.wav" "G10_Coata_20151017_000500Z.wav"
+#>  [3] "G10_Coata_20151017_001000Z.wav" "G10_Coata_20151017_001500Z.wav"
+#>  [5] "G10_Coata_20151017_002000Z.wav" "G10_Coata_20151017_002500Z.wav"
+#>  [7] "G10_Coata_20151017_003000Z.wav" "G10_Coata_20151017_003500Z.wav"
+#>  [9] "G10_Coata_20151017_004000Z.wav" "G10_Coata_20151017_004500Z.wav"
+#> [11] "G10_Coata_20151017_005000Z.wav" "G10_Coata_20151017_005500Z.wav"
 ```
 
 Look at that! The package contains 12 sound files collected on the 17th
@@ -88,13 +78,290 @@ calculated.
 For the first step in our workflow, we are going to calculate the
 spectral index files for the long-duration acoustic recordings collected
 at our site of interest. To do this, we will use the `index_calc()`
-function on the raw sound files contained in the package:
+function on the raw sound files contained in the package.
+
+First, we will specify the location where we will save the output files:
 
 ``` r
-soundscapeR::index_calc(fileloc = location_soundfiles, 
-                        progloc = location_software, 
+location_output <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
+                              "/processed_output_files")
+
+print(location_output)
+#> [1] "C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/processed_output_files"
+```
+
+Next, we will compute the spectral indices:
+
+``` r
+soundscapeR::index_calc(fileloc = location_soundfiles,
+                        outputloc = location_output,
                         samplerate = 44100, 
                         window = 256, 
-                        parallel = TRUE)
-#> [1] TRUE
+                        parallel = FALSE)
 ```
+
+Awesome, first step completed! Note that, with long-duration
+eco-acoustic data, this step can take a while. To speed up the process,
+you can set `parallel = TRUE`.
+
+Now, let’s take a look at which indices we’ve computed for one of the
+sound files:
+
+``` r
+# Get the location where the output of the first sound file is saved
+
+output_location_1 <- paste0(location_output, "/256/G10_Coata_20151017_000000Z.wav/Towsey.Acoustic")
+
+# Grab the files containing acoustic index output
+
+list.files(output_location_1)[grep(pattern = ".csv",
+                                   x = list.files(output_location_1))][-7]
+#>  [1] "G10_Coata_20151017_000000Z__Towsey.Acoustic.ACI.csv"
+#>  [2] "G10_Coata_20151017_000000Z__Towsey.Acoustic.BGN.csv"
+#>  [3] "G10_Coata_20151017_000000Z__Towsey.Acoustic.CVR.csv"
+#>  [4] "G10_Coata_20151017_000000Z__Towsey.Acoustic.DIF.csv"
+#>  [5] "G10_Coata_20151017_000000Z__Towsey.Acoustic.ENT.csv"
+#>  [6] "G10_Coata_20151017_000000Z__Towsey.Acoustic.EVN.csv"
+#>  [7] "G10_Coata_20151017_000000Z__Towsey.Acoustic.OSC.csv"
+#>  [8] "G10_Coata_20151017_000000Z__Towsey.Acoustic.PMN.csv"
+#>  [9] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RHZ.csv"
+#> [10] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RNG.csv"
+#> [11] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RPS.csv"
+#> [12] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RVT.csv"
+#> [13] "G10_Coata_20151017_000000Z__Towsey.Acoustic.SPT.csv"
+#> [14] "G10_Coata_20151017_000000Z__Towsey.Acoustic.SUM.csv"
+```
+
+Great, using the simple `index_calc` command, we’ve computed 14 spectral
+acoustic indices, each of which a captures different aspect of the
+acoustic structure of sound files. For an overview of the different
+indices, please consult the documentation, the QUT AnalysisPrograms
+Tutorial
+[website](https://ap.qut.ecoacoustics.info/tutorials/01-usingap/practical?tabs=windows),
+or the Towsey (2017) technical
+[report](https://eprints.qut.edu.au/110634/1/QUTePrints110634_TechReport_Towsey2017August_AcousticIndices%20v3.pdf).
+
+For the rest of this tutorial, we will be using the Acoustic Cover Index
+(CVR). Per sound file, this index captures the fraction of cells in each
+noise-reduced frequency bin whose value exceeds a 3 dB threshold.
+
+# 3. Merging acoustic indices chronologically
+
+Next up, we will merge the spectral CVR-index files chronologically,
+resulting in a time-by-frequency data frame containing the index values.
+To do this, we can use the `merge_csv` function:
+
+``` r
+merged_CVR_index <- soundscapeR::merge_csv(fileloc = location_output, 
+                                           samplerate = 44100, 
+                                           window = 256, 
+                                           index = "CVR", 
+                                           date = "2015-10-17", 
+                                           lat = -1.48819, 
+                                           lon = -59.7872)
+```
+
+As you may have noticed, this function requires us to provide some
+additional background information regarding how the data was collected
+and processed. This is because, using the `merge_csv` function, we are
+creating a new type of data object which stores all the relevant
+information for that acoustic data collection! As we continue to go
+through the workflow, the data object will continue to be updated, and
+will form the basis of all subsequent functions. Let’s take a look at
+this newly created object:
+
+``` r
+# Let's see what class this object is:
+
+summary(merged_CVR_index)
+#>     Length      Class       Mode 
+#>          1 soundscape         S4
+```
+
+This new data object is an ‘S4’ object of the class *soundscape*.
+
+``` r
+# Let's see what sort of information this object holds
+
+merged_CVR_index
+#> 
+#> 1.  Soundscape metadata 
+#> 
+#>     Sampling point metadata:  
+#> 
+#>     First day of recording:  2015-10-17 
+#>     Latitude of sampling point:  -1.48819 
+#>     Longitude of sampling point:  -59.7872 
+#>     Time zone of sampling point:  America/Manaus 
+#>     Sunrise time at sampling point:  05:41:20 
+#>     Sunset time at sampling point:  17:50:01 
+#> 
+#>     Acoustic index metadata:  
+#> 
+#>     Path to raw sound files:  C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/processed_output_files 
+#>     Spectral index used:  CVR 
+#>     Sampling rate of the recording:  44100  Hz 
+#>     Window size used in FFT:  256  samples 
+#>     Frequency resolution:  172.2656  Hz 
+#>     Temporal resolution:  0.005804989  ms 
+#> 
+#>     Workflow update:  
+#> 
+#>     The workflow goes as follows:  Merge - Binarize - Aggregate
+#>     The binarization step has not yet been performed. 
+#>     It appears your next step is: 'binarize_df()' 
+#> 
+#> 
+#> 2.  Soundscape data 
+#> 
+#>     Merged data frame data:  
+#> 
+#> Columns 1 to 5 and rows 1 to 5 displayed 
+#> 
+#>         00:00:00   00:05:00   00:10:00   00:15:00   00:20:00
+#> 22050 0.15539429 0.16100629 0.15578133 0.13101113 0.16536043
+#> 21877 0.17900339 0.19990324 0.18442187 0.17513304 0.21209482
+#> 21705 0.14746009 0.17639090 0.15432995 0.14126754 0.16197388
+#> 21533 0.08234156 0.10401548 0.09124335 0.08485728 0.08795356
+#> 21360 0.01219158 0.01538462 0.01451379 0.01306241 0.01509434
+#> 
+#>     Binarized data frame data:  
+#> 
+#>     The binarization step has not yet been performed. 
+#> 
+#>     Aggregated data frame data:  
+#> 
+#>     The aggregation step has not yet been performed.
+```
+
+As we can see, this objects holds two types of information: (i) metadata
+information regarding the data collection and processing steps; and (ii)
+soundscape information, which will continue to be updated as we move
+throughout our analytical pipeline. To access the information stored in
+this object, we will use the ‘@’ symbol. Let’s take a look at which
+types of data are stored in the object so far:
+
+``` r
+# Let's check what sort of data collection metadata is stored in the object
+
+print(paste0("First day of data collection: ", merged_CVR_index@first_day))
+#> [1] "First day of data collection: 2015-10-17"
+print(paste0("Latitude at data collection site: ", merged_CVR_index@lat))
+#> [1] "Latitude at data collection site: -1.48819"
+print(paste0("Longitude at data collection site: ", merged_CVR_index@lon))
+#> [1] "Longitude at data collection site: -59.7872"
+print(paste0("Time zone at data collection site: ", merged_CVR_index@tz))
+#> [1] "Time zone at data collection site: America/Manaus"
+print(paste0("Sunrise at time of data collection: ", merged_CVR_index@sunrise))
+#> [1] "Sunrise at time of data collection: 2015-10-17 05:41:20"
+print(paste0("Sunset at time of data collection: ", merged_CVR_index@sunset))
+#> [1] "Sunset at time of data collection: 2015-10-17 17:50:01"
+```
+
+The `merge_csv` function has automatically calculated a bunch of
+important ecological information regarding the place and time of year at
+which the data was collected, such as sunrise and sunset times,
+timezones, and location coordinates.
+
+Let’s continue looking at the data stored in the *soundscape* object:
+
+``` r
+# Let's check what sort of metadata the object has stored regarding past data processing steps
+
+print(paste0("Where are the raw sound files located: ", merged_CVR_index@fileloc))
+#> [1] "Where are the raw sound files located: C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/processed_output_files"
+print(paste0("What acoustic index are we using: ", merged_CVR_index@index, " index"))
+#> [1] "What acoustic index are we using: CVR index"
+print(paste0("What was the samplerate used to collect the data: ", merged_CVR_index@samplerate, " Hz"))
+#> [1] "What was the samplerate used to collect the data: 44100 Hz"
+print(paste0("What was the window length used during the FFT: ", merged_CVR_index@window, " samples"))
+#> [1] "What was the window length used during the FFT: 256 samples"
+```
+
+The *soundscape* object has recorded where our raw data files are
+stored, which acoustic index we’re working with, what the sampling rate
+was during data collection, and which window length was used during the
+acoustic index calculation. Finally, let’s take a look at the structure
+of the data frame we obtained by merging the CVR-index files
+chronologically:
+
+``` r
+head(merged_CVR_index@merged_df)[,1:5]
+#>         00:00:00   00:05:00   00:10:00   00:15:00   00:20:00
+#> 22050 0.15539429 0.16100629 0.15578133 0.13101113 0.16536043
+#> 21877 0.17900339 0.19990324 0.18442187 0.17513304 0.21209482
+#> 21705 0.14746009 0.17639090 0.15432995 0.14126754 0.16197388
+#> 21533 0.08234156 0.10401548 0.09124335 0.08485728 0.08795356
+#> 21360 0.01219158 0.01538462 0.01451379 0.01306241 0.01509434
+#> 21188 0.01103048 0.01344944 0.01190131 0.01451379 0.01490082
+```
+
+As we previously mentioned, this data frame contains the spectral
+CVR-index files we calculated, and concatenated them chronologically,
+resulting in the time-of-recording as column names, the frequency bins
+as row names, and the CVR-index for each time-frequency pair as values.
+Each column contains the spectral index values of a single sound file.
+
+Let’s inspect this data frame a little closer:
+
+``` r
+# How many columns does the data frame contain?
+
+paste0("The data frame contains: ", ncol(merged_CVR_index@merged_df), " columns")
+#> [1] "The data frame contains: 12 columns"
+
+# What are the column names?
+
+colnames(merged_CVR_index@merged_df)
+#>  [1] "00:00:00" "00:05:00" "00:10:00" "00:15:00" "00:20:00" "00:25:00"
+#>  [7] "00:30:00" "00:35:00" "00:40:00" "00:45:00" "00:50:00" "00:55:00"
+```
+
+As we said, the number of columns equals the number of sound files
+collected during the acoustic survey - in this case, the 12 files
+contained in the package’s sample data. The name of each column
+correponds to the time of day at which the recording was collected.
+Next, let’s take a look at the rows:
+
+``` r
+# How many rows does the data frame contain?
+
+paste0("The data frame contains: ", nrow(merged_CVR_index@merged_df), " rows")
+#> [1] "The data frame contains: 128 rows"
+
+# What do these row names look like?
+
+  # The first five names
+
+paste0("The first five rownames: ", paste0(rownames(merged_CVR_index@merged_df)[1:5], collapse = ", "))
+#> [1] "The first five rownames: 22050, 21877, 21705, 21533, 21360"
+
+  # The last five names
+
+paste0("The last five rownames: ", paste0(rownames(merged_CVR_index@merged_df)[123:128], collapse = ", "))
+#> [1] "The last five rownames: 1033, 861, 689, 516, 344, 172"
+```
+
+The data frame contains 128 rows, each corresponding to a unique
+frequency bin. The frequency bins range from 0 - 22,050 Hz, and are of
+approximately 172 Hz width. Now, let’s inspect the CVR-index values:
+
+``` r
+# What is the minimum CVR-index value in our data frame?
+
+paste0("The minimum CVR-value in our data frame is: ", min(merged_CVR_index@merged_df))
+#> [1] "The minimum CVR-value in our data frame is: 0"
+
+# What is the maximum CVR-index value in our data frame?
+
+paste0("The max CVR-value in our data frame is: ", max(merged_CVR_index@merged_df))
+#> [1] "The max CVR-value in our data frame is: 0.502177068214804"
+```
+
+As we can see, in our dataset, the CVR-index values range between 0 -
+0.50. Remember, CVR-index values capture the proportion of cells in each
+noise-reduced frequency bin of a sound file that exceeds a 3-dB
+amplitude threshold. As such, the values can technically range between
+0-1.
+
+Alright, that is enough theory for now! Let’s proceed with the workflow.

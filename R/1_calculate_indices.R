@@ -11,9 +11,6 @@
 #' @description Alters and saves the configuration file used by
 #' external software 'AnalysisPrograms.exe' for the computation of
 #' acoustic indices.
-#'
-#' @param progloc The full-length path to the location of the
-#' 'AnalysisPrograms.exe' software.
 #' @param samplerate The number of times the sound was sampled each second.
 #' This is a fixed parameter determined by your recording setup, although
 #'  downsampling to a lower sampling rate is possible.
@@ -31,11 +28,33 @@
 #' used by the AnalysisPrograms software for index computation.
 #'
 #' @export
-index_config <- function(progloc, samplerate = 41000, window = 256) {
+index_config <- function(samplerate = 41000, window = 256) {
+
+  # 0. Check if AnalysisPrograms is already installed properly
+
+  extdata_folder <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE))
+
+  if(!file.exists(paste0(extdata_folder, "/AnalysisPrograms/AnalysisPrograms"))){
+
+    unzip(zipfile = paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
+                           "/AnalysisPrograms.zip"),
+          exdir = gsub(pattern = ".zip", replacement = "", paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
+                                                                  "/AnalysisPrograms.zip")))
+
+    print("Installing AnalysisPrograms software tool")
+    Sys.sleep(0.000000000000000000000000000000000001)
+
+  }
+
+  else{
+
+  }
+
+  location_software <- paste0(extdata_folder, "/AnalysisPrograms/AnalysisPrograms")
 
   # 1. Check if function inputs meet expectations
 
-    # 1.1. progloc is an existing, writable directory
+  # 1.1. location_software is an existing, writable directory
 
   test_1 <- function(x){
     assertthat::is.dir(x)
@@ -47,7 +66,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   }
 
-  assertthat::assert_that(test_1(progloc))
+  assertthat::assert_that(test_1(location_software))
 
   test_1_1 <- function(x){
     assertthat::is.writeable(x)
@@ -59,9 +78,9 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   }
 
-  assertthat::assert_that(test_1_1(progloc))
+  assertthat::assert_that(test_1_1(location_software))
 
-    # 1.2. samplerate is a single, positive integer
+  # 1.2. samplerate is a single, positive integer
 
   test_2 <- function(x){
     assertthat::is.count(x)
@@ -75,7 +94,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   assertthat::assert_that(test_2(samplerate))
 
-    # 1.3. window is a single, positive integer
+  # 1.3. window is a single, positive integer
 
   test_3 <- function(x){
     assertthat::is.count(x)
@@ -89,7 +108,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   assertthat::assert_that(test_3(window))
 
-    # 1.4. produce a warning message if window is not a power of two
+  # 1.4. produce a warning message if window is not a power of two
 
   if(!as.integer(log(window, base=2)) == (log(window, base = 2))){
     cat("\n Chosen window size is not a power of two. This is a warning message, \n if your window size was chosen purposefully, proceed as planned by pressing Y. \n If you want to abort, press N.", "\n")
@@ -104,7 +123,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
       if(regexpr(question1, 'n', ignore.case = TRUE) == 1){
         print("Index computation aborted.")
         Sys.sleep(0.0000000000000000000000000001)
-       stop()
+        stop()
       } else {
         print("The option you have chosen is not valid - index computation aborted")
 
@@ -120,11 +139,11 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   config <- as.data.frame(
     yaml::read_yaml(file = paste0(
-      progloc, "/ConfigFiles/Towsey.Acoustic.yml"
+      location_software, "/ConfigFiles/Towsey.Acoustic.yml"
     ))
   )
 
-    # 2.1. Check if the configuration file can be read and is writable
+  # 2.1. Check if the configuration file can be read and is writable
 
   test_5_1 <- function(x){
 
@@ -140,9 +159,9 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
   }
 
   assertthat::assert_that(test_5_1(
-    paste0(progloc, "/ConfigFiles/Towsey.Acoustic.yml")))
+    paste0(location_software, "/ConfigFiles/Towsey.Acoustic.yml")))
 
-    # 2.1. check if yaml config file succesfully imported as dataframe
+  # 2.1. check if yaml config file succesfully imported as dataframe
 
   test_5_2 <- function(x){
     is.data.frame(x)
@@ -163,7 +182,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
   config$ResampleRate <- as.integer(samplerate)
   config$FrameLength <- as.integer(window)
 
-    # 3.1. check if the segment duration was succesfully changed to 60 seconds
+  # 3.1. check if the segment duration was succesfully changed to 60 seconds
 
   test_6 <- function(x){
     assertthat::are_equal(x, 60)
@@ -177,10 +196,10 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   assertthat::assert_that(test_6(config$SegmentDuration))
 
-    # 3.2. check if the index calculation duration was successfully changed to 60 seconds.
+  # 3.2. check if the index calculation duration was successfully changed to 60 seconds.
 
   test_7 <- function(x){
-  assertthat::are_equal(x, 60)
+    assertthat::are_equal(x, 60)
   }
 
   assertthat::on_failure(test_7) <- function(call, env){
@@ -191,7 +210,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   assertthat::assert_that(test_7(config$IndexCalculationDuration))
 
-    # 3.3. check if the sampling rate was successfully changed to the specified value.
+  # 3.3. check if the sampling rate was successfully changed to the specified value.
 
   test_8 <- function(x){
     assertthat::are_equal(x, as.integer(samplerate))
@@ -205,7 +224,7 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
   assertthat::assert_that(test_8(config$ResampleRate))
 
-    # 3.4. check if the window was successfully changed to the specified value.
+  # 3.4. check if the window was successfully changed to the specified value.
 
   test_9 <- function(x){
     assertthat::are_equal(x, as.integer(window))
@@ -223,14 +242,14 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 
 
   yaml::write_yaml(config, file <- paste0(
-    progloc, "/ConfigFiles/Towsey.Acoustic.Custom.yml"
+    location_software, "/ConfigFiles/Towsey.Acoustic.Custom.yml"
   ))
 
-    # 4.1. check if configuration file successfully changed.
+  # 4.1. check if configuration file successfully changed.
 
   config_2 <- as.data.frame(
     yaml::read_yaml(file = paste0(
-      progloc, "/ConfigFiles/Towsey.Acoustic.Custom.yml"
+      location_software, "/ConfigFiles/Towsey.Acoustic.Custom.yml"
     ))
   )
 
@@ -259,8 +278,8 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 #'
 #' @param fileloc The full-length path to the sound file for which to
 #' compute indices.
-#' @param progloc The full-length path to the location of
-#' 'AnalysisPrograms.exe'.
+#' @param outputloc The full-length path to the location where you wish to save the output files.
+#' Defaults to the same location as the fileloc.
 #' @param samplerate The number of times the sound was sampled each second.
 #' This is a fixed parameter determined by your recording setup, although
 #' downsampling to a lower sampling rate is possible.
@@ -342,14 +361,36 @@ index_config <- function(progloc, samplerate = 41000, window = 256) {
 #' @export
 #'
 index_calc <- function(fileloc,
-                       progloc,
-                       samplerate = 41000,
+                       outputloc = NULL,
+                       samplerate = 44100,
                        window = 256,
                        parallel = FALSE) {
 
+  # 0. Check if AnalysisPrograms is already installed properly
+
+  extdata_folder <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE))
+
+  if(!file.exists(paste0(extdata_folder, "/AnalysisPrograms/AnalysisPrograms"))){
+
+    unzip(zipfile = paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
+                           "/AnalysisPrograms.zip"),
+          exdir = gsub(pattern = ".zip", replacement = "", paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
+                                                                  "/AnalysisPrograms.zip")))
+
+    print("Installing AnalysisPrograms software tool")
+    Sys.sleep(0.000000000000000000000000000000000001)
+
+  }
+
+  else{
+
+  }
+
+  location_software <- paste0(extdata_folder, "/AnalysisPrograms/AnalysisPrograms")
+
   # 1. Check if function input meets expectations
 
-    # 1.1. fileloc is an existing directory
+  # 1.1. fileloc is an existing directory
 
   test_1 <- function(x){
     assertthat::is.dir(x)
@@ -364,17 +405,33 @@ index_calc <- function(fileloc,
 
   assertthat::assert_that(test_1(fileloc))
 
+  if(!is.null(outputloc)){
+
+    assertthat::assert_that(test_1(outputloc))
+
+  }
+
   # 2. Create output directory, and list files in fileloc + checking
 
-  base_output_directory <- paste0(fileloc, "/", window)
+  if(is.null(outputloc)){
+
+    base_output_directory <- paste0(fileloc, "/", window)
+
+  }
+
+  else{
+
+    base_output_directory <- paste0(outputloc, "/", window)
+
+  }
 
   files <- list.files(fileloc,
-    pattern = "*.wav|*.WAV|*.mp3|
+                      pattern = "*.wav|*.WAV|*.mp3|
                       *.ogg|*.flac|*.wv|*.webm|*.wma",
-    full.names = TRUE
+                      full.names = TRUE
   )
 
-    # 2.1. check if 'files' is a character vector, not empty, without NAs
+  # 2.1. check if 'files' is a character vector, not empty, without NAs
 
   test_4_1 <- function(x){
     is.vector(x, mode = "character")
@@ -414,9 +471,12 @@ index_calc <- function(fileloc,
 
   #3. Edit the configuration file
 
-  index_config(progloc, samplerate = samplerate, window = window)
+  index_config(samplerate = samplerate, window = window)
 
   #4. Calculate acoustic indices
+
+  print("Starting index computation... this might take a while ...")
+  Sys.sleep(0.0000000000000000000000000000000000000000000000000001)
 
   if (parallel == FALSE){
 
@@ -442,14 +502,14 @@ index_calc <- function(fileloc,
         'audio2csv "%s" "%s" "%s" -l 1 -p ',
         files[i],
         paste0(
-          progloc,
+          location_software,
           "/ConfigFiles/Towsey.Acoustic.Custom.yml"
         ),
         output_directory
       )
 
       # finally, execute the command
-      system2(paste0(progloc, "/AnalysisPrograms.exe"), command)
+      system2(paste0(location_software, "/AnalysisPrograms.exe"), command)
 
     }
   }
@@ -458,8 +518,8 @@ index_calc <- function(fileloc,
 
     if (parallel == TRUE){
 
-      no_cores <- parallel::detectCores() - 1
-      cl <- parallel::makeCluster(no_cores)
+      no_cores <- detectCores() - 1
+      cl <- makeCluster(no_cores)
 
       parallel::parLapply(cl, files, function(x) {
 
@@ -483,21 +543,21 @@ index_calc <- function(fileloc,
           'audio2csv "%s" "%s" "%s" -l 1 -p ',
           x,
           paste0(
-            progloc,
+            location_software,
             "/ConfigFiles/Towsey.Acoustic.Custom.yml"
           ),
           output_directory
         )
 
         # finally, execute the command
-        system2(paste0(progloc, "/AnalysisPrograms.exe"), command)
+        system2(paste0(location_software, "/AnalysisPrograms.exe"), command)
 
       })
 
     }
   }
 
-    # 4.1. Check if the output folder was successfully created
+  # 4.1. Check if the output folder was successfully created
 
   test_5 <- function(x){
 
@@ -511,6 +571,16 @@ index_calc <- function(fileloc,
 
   }
 
+  if(is.null(outputloc)){
+
   assertthat::assert_that(test_5(paste0(fileloc, "/", window)))
+
+  }
+
+  else{
+
+    assertthat::assert_that(test_5(paste0(outputloc, "/", window)))
+
+  }
 
 }
