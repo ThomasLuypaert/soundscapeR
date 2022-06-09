@@ -209,6 +209,8 @@ noise-reduced frequency bin whose value exceeds a 3 dB threshold.
 
 ## 1.3. Merging acoustic indices chronologically
 
+### 1.3.1. The `merge_csv` function
+
 Next up, we will merge the spectral CVR-index files chronologically,
 resulting in a time-by-frequency data frame containing the index values.
 
@@ -239,6 +241,8 @@ merged_CVR_index <- soundscapeR::merge_csv(fileloc = location_output,
                                            lat = -1.48819, 
                                            lon = -59.7872)
 ```
+
+### 1.3.2. Introducing the *soundscape* object
 
 As you may have noticed, this function requires us to provide some
 additional background information regarding how the data was collected
@@ -445,6 +449,48 @@ amplitude threshold. As such, the values can technically range between
 
 Alright, that is enough theory for now! Let’s proceed with the workflow.
 
+## 1.4. The concept of Operational Sound Units (OSUs)
+
+Biodiversity metrics are usually based on taxonomic species and their
+abundance. Yet, using this workflow, we wish to quantify the acoustic
+diversity of sounds emanating from the landscape without a taxonomic
+link to the source organisms, hereafter referred to as the soundscape
+diversity. Hence, to quantify this *soundscape diversity*, we require a
+unit of measurement that groups sounds by their shared properties
+without the need for taxonomic identification.
+
+In analogy to the Operational Taxonomic Units used in genetic research,
+in our workflow, we propose a novel unit of diversity measurement: the
+Operational Sound Unit (OSU). This unit of measurement groups sounds by
+their shared spectro-temporal properties, and is obtained by dividing
+the acoustic trait space into many discrete spectro-temporal bins which
+are the soundscape equivalent of time-frequency bins in a spectrogram.
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_5_OSUs.png" title="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." alt="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." width="100%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 4:*** *“A conceptual visualization of Operational Sound Units
+(OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the
+acoustic trait space can be divided into sections which we define as
+OSUs. These OSUs are delineated by the frequency-bin width of the
+spectral index vector (frequency domain) and the recording interval of
+the sampling regime (temporal domain), and groups sounds by their shared
+properties in acoustic trait space.”*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+Practically, we have already performed the steps needed to obtain this
+unit of measurement: each time-frequency cell in the chronologically
+concatenated data frame delineates a unique section of the 24-hour
+acoustic trait space, and thus represents an OSU.
+
+In the next section, we will convert the raw CVR-values of each OSU into
+detection/non-detection values per 24-hour sample of the acoustic trait
+space using the `binarize_df` function.
+
 ## 1.4. Binarization of the CVR-index values
 
 For the rest of the workflow, instead of using the limited data produced
@@ -481,6 +527,21 @@ acoustic trait space while removing low-amplitude or transient sounds,
 which potentially have a non-biological origin, from the data. In this
 way, we hope to capture the acoustic structure of the soundscape while
 removing background noise.
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_4_binarization.png" title="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." alt="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." width="100%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 5:*** *“A visualization showing the binarization step, starting
+from the chronologically concatenated CVR-index values for a 24-hour
+soundscape sample. Next, a threshold value is applied, which is derived
+using a binarization algorithm. Based on this threshold value, the raw
+CVR-values are transformed into binary detection (1) / non-detection (0)
+values.”*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
 To do this, we make use of the binarization algorithms available in the
 R-package. For this example, we will use the ‘IsoData’ binarization
