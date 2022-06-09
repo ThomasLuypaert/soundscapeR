@@ -36,7 +36,7 @@ index_config <- function(samplerate = 41000, window = 256) {
 
   if(!file.exists(paste0(extdata_folder, "/AnalysisPrograms/AnalysisPrograms"))){
 
-    unzip(zipfile = paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
+    utils::unzip(zipfile = paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
                            "/AnalysisPrograms.zip"),
           exdir = gsub(pattern = ".zip", replacement = "", paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
                                                                   "/AnalysisPrograms.zip")))
@@ -372,7 +372,7 @@ index_calc <- function(fileloc,
 
   if(!file.exists(paste0(extdata_folder, "/AnalysisPrograms/AnalysisPrograms"))){
 
-    unzip(zipfile = paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
+    utils::unzip(zipfile = paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
                            "/AnalysisPrograms.zip"),
           exdir = gsub(pattern = ".zip", replacement = "", paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE),
                                                                   "/AnalysisPrograms.zip")))
@@ -518,8 +518,8 @@ index_calc <- function(fileloc,
 
     if (parallel == TRUE){
 
-      no_cores <- detectCores() - 1
-      cl <- makeCluster(no_cores)
+      no_cores <- parallel::detectCores() - 1
+      cl <- parallel::makeCluster(no_cores)
 
       parallel::parLapply(cl, files, function(x) {
 
