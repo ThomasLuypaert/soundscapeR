@@ -444,3 +444,95 @@ amplitude threshold. As such, the values can technically range between
 0-1.
 
 Alright, that is enough theory for now! Let’s proceed with the workflow.
+
+## 1.4. Binarization of the CVR-index values
+
+For the rest of the workflow, instead of using the limited data produced
+by the raw sound files available in the package, we will be using a
+*soundscape* object created by CVR-index computation and chronological
+concatenation of real-life long-duration eco-acoustic data. This data
+was collected at the Balbina Hydroelectric Reservoir in Brazilian
+Amazonia, using a 44,100 Hz sampling rate and a 1 min / 5 min sampling
+regime. The CVR-index was calculated using a 256-frame window during the
+Fast Fourier Transformation.
+
+This object is available in the package, and can be loaded as follows:
+
+``` r
+location_soundscape_obj <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
+                              "/merged_soundscape")
+
+merged_soundscape_CVR <- qs::qread(paste0(location_soundscape_obj, "/merged_soundscape_CVR.ssc"))
+
+# Include only first 5 days of recording
+
+merged_soundscape_CVR@merged_df <- merged_soundscape_CVR@merged_df[,1:1440]
+```
+
+Now that we have a soundscape object using real eco-acoustic data, we
+can proceed with the next step of the workflow: binarization of the
+CVR-index values using the `binarize_df` function.
+
+Instead of using the raw CVR-values, we determine a threshold value
+using a site-specific binarization algorithm, and convert the CVR-index
+value into binary detection (1) / non-detection (0) values based on this
+threshold. This step is aimed at detecting the presence of sound in
+acoustic trait space while removing low-amplitude or transient sounds,
+which potentially have a non-biological origin, from the data. In this
+way, we hope to capture the acoustic structure of the soundscape while
+removing background noise.
+
+To do this, we make use of the binarization algorithms available in the
+R-package. For this example, we will use the ‘IsoData’ binarization
+algorithm:
+
+``` r
+bin_soundscape_CVR <- soundscapeR::binarize_df(merged_soundscape = merged_soundscape_CVR, method = "IsoData")
+```
+
+We can see that the *soundscape* object produced by the `binarize_df`
+function has now been updated with some new metadata:
+
+``` r
+# Which threshold algorithm was used for binarization?
+
+paste0("The ", bin_soundscape_CVR@binarization_method, " method was used for binarzation")
+#> [1] "The IsoData method was used for binarzation"
+
+# Which threshold was used for binarization?
+
+paste0("The threshold used for binarization was: ", bin_soundscape_CVR@threshold)
+#> [1] "The threshold used for binarization was: 0.09"
+```
+
+Additionally, a new data frame has been added to the object. Let’s
+inspect this data frame:
+
+``` r
+# What are the dimensions of the binarized dataframe?
+
+dim(bin_soundscape_CVR@binarized_df)
+#> [1]  128 1440
+
+# What are the unique values contained in this data frame?
+
+unique(unlist(bin_soundscape_CVR@binarized_df))
+#> [1] 1 0
+```
+
+As expected, the new binarized data frame contains the same number of
+rows and columns as the merged data frame. However, whereas previously
+we had CVR-index values ranging between anywhere between 0-1, due to the
+binarization step, the values are now strictly 0 or 1.
+
+In addition to the ‘IsoData’ algorithm, other types of algorithms are
+available. The performance of each binarization algorithm can be
+visually inspected using the before-after plots produced by the
+`check_thresh` function:
+
+``` r
+soundscapeR::check_thresh(merged_soundscape = merged_soundscape_CVR, method = "Otsu")
+#> Loading required namespace: patchwork
+```
+
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />

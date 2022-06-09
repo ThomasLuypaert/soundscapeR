@@ -1074,7 +1074,7 @@ check_thresh <- function(merged_soundscape,
 
   }
 
-  assertthat::assert_that(test_13(x=time_1, y=time_2))
+  assertthat::assert_that(test_13_1(x=time_1, y=time_2))
 
   # new_colnames
 
