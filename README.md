@@ -13,6 +13,24 @@ Haugaasen
 |-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![soundscaper hexsticker](man/figures/soundscaper_hexsticker.png) | The goal of `soundscapeR` is to provide a standardized analytical pipeline for the computation, exploration, visualization and diversity quantification of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings, and can handle both audible and ultrasonic recordings. More information about the workflow can be found in Luypaert et al. (2022) |
 
+# Table of Contents
+
+-   [Priors](#priors)
+    -   [Acknowledgements](#acknowledgements)
+    -   [Workflow background](#workflow-background)
+-   [The workflow](#the-workflow)
+    -   [Raw acoustic data](#raw-acoustic-data)
+    -   [Calculating acoustic indices](#calculating-acoustic-indices)
+    -   [Merging acoustic indices
+        chronologically](#merging-acoustic-indices-chronologically)
+        -   [The `merge_csv` function](#the-%60merge_csv%60-function)
+        -   [Introducing the *soundscape*
+            object](#introducing-the-*soundscape*-object)
+    -   [The concept of Operational Sound Units
+        (OSUs)](#the-concept-of-operational-sound-units-(osus))
+    -   [Binarization of the CVR-index
+        values](#binarization-of-the-cvr-index-values)
+
 # 0. Priors
 
 ## 0.1. Acknowledgements
@@ -596,4 +614,4 @@ soundscapeR::check_thresh(merged_soundscape = merged_soundscape_CVR, method = "O
 #> Loading required namespace: patchwork
 ```
 
-<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
