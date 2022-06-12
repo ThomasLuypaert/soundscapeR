@@ -129,6 +129,8 @@ reduced effort. Using this acoustic data, the taxonomic diversity of the
 sound-producing community can be derived by isolating and identifying
 species’ calls, thus providing an objective and permanent record of the
 biological community at a given moment in time and space.
+<<<<<<< HEAD
+=======
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
@@ -136,6 +138,166 @@ biological community at a given moment in time and space.
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
+***Fig 1:*** *The benefits of Passive Acoustic Monitoring over
+conventional active acoustic sampling by an in-situ observer.*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+Yet, obtaining species-level information at large spatio-temporal scales
+and taxonomic breath presents numerous difficulties, such as the
+time-consuming and knowledge-demanding nature of aural annotation of
+sound files, and the paucity of reliable automated species identifiers
+and reference databases for most taxa and regions.
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_2_Limitation_of_PAM.png" title="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." alt="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." width="75%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 2:*** *The factors limiting the extraction of taxonomic
+information from acoustic data at broad spatial and temporal scales. The
+field of soundscape ecology attempts to derive ecological information
+from this big acoustic data while overcoming some of these limitations.*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+In addition to taxonomic information, species’ sounds also carry
+functional significance. Acoustic signals are crucial for a broad range
+of social interactions including courting behaviour, territorial
+defence, predator avoidance, and food sharing. Efficient communication
+between individuals of the same species has important implications for
+fitness. As such, species’ sounds are subject to selective pressures at
+multiple scales, resulting in a wide variety of of acoustic traits that
+are expressed in the timing, frequency and amplitude features of
+acoustic signals.
+
+Several hypotheses aim to explain the processes governing the variation
+in the acoustic traits in a biological community:  
+  
+
+1.  **The Acoustic Niche Hypothesis** (also known as the theory of
+    acoustic niche partitioning):  
+    The Acoustic Niche Hypothesis views the time-frequency space
+    (hereafter referred to as *acoustic space*) in which species can
+    produce vocalizations as a core ecological resource for which
+    sound-producing sympatric species compete. This leads to the
+    partitioning of the acoustic niche in the time-frequency domain to
+    avoid spectro-temporal overlap in vocalizations between individuals
+    of different species.  
+      
+
+2.  **The Acoustic Adaptation Hypothesis**:  
+    The Acoustic Adaptation Hypothesis states that the physical
+    properties of the surrounding habitat influence the efficacy of
+    sound propagation through absorption, reverberation and scattering,
+    and thus, place a selective pressure on acoustic signals to optimize
+    propagation distance. In areas with dense vegetation, vocalizations
+    degrade much more rapidly than in open areas. However, because of
+    frequency-dependent attenuation, low-frequency vocalizations retain
+    their acoustic properties much better in these dense habitats than
+    high-frequency vocalizations. Additionally, also the temporal
+    patterning of vocalizations affects sound attenuation. For instance,
+    short notes repeated at longer intervals are less affected by
+    reverberations. As such, under the Acoustic Adaptation Hypothesis,
+    we expect a greater proportion of low-frequency sounds with slower
+    rates of syllable repetition in densely vegetated ecosystems, and
+    conversely, more high-frequency sounds with more repetition in open
+    habitats.  
+      
+
+3.  **The Morphological Constraint Hypothesis**:  
+    The Morphological Constraint Hypothesis posits that acoustic traits
+    are constrained by morphological parameters such as body size and
+    the diversity of acoustic traits has emerged as a by-product of
+    selection for optimal morphology. For instance, body mass has a
+    strong negative relationship with sound frequency in many species.
+    This relationship comes about because body mass is correlated with
+    the size of the sound-producing organ (syrinx/larynx/…), and larger
+    organs tend to have lower sound-production frequencies.  
+      
+
+4.  **The Phylogenetic Constraint Hypothesis**:  
+    In analogy with the Morphological Constraint Hypothesis, the
+    Phylogenetic Constraint Hypothesis states that it is the
+    evolutionary ancestry of a species that limits the range of sound
+    frequencies an animal can produce. For example, when deviations from
+    the negative allometric relationship between body size and
+    vocalization frequency occur, this could be the result of an
+    evolutionary history that caused variation in the morphology of the
+    sound-producing organ.  
+      
+
+5.  **The Sexual Selection Hypothesis**:  
+    The Sexual Selection Hypothesis suggests that, if sound frequency is
+    an indicator of an individual’s size see the Morphological
+    Constraint Hypothesis), dominance, or fighting ability, the
+    frequency of acoustic signals might be the result of sexual
+    selection.  
+      
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_3_ANH.PNG" title="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." alt="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." width="100%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 2:*** *A theoretical visualization of the various ways in which
+species can partition their acoustic niche. A. Spatial Niche
+Partitioning implies the production of vocalizations in different parts
+of 3D-space to avoid overlap acoustic signals. This has been
+demonstrated for
+[cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x);
+B. Spectral Niche Partitioning implies the shifting of the dominant
+frequency peak between individuals of different species to avoid signal
+overlap. This has been demonstrated for
+[frogs](https://pubmed.ncbi.nlm.nih.gov/25101228/); C. Temporal Niche
+Partitioning implies a shift in the time of peak vocal activity between
+individuals of different species to minimize signal overlap. This has
+been demonstrated between [bird and cicada
+species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false).
+Note that, in this image, seasonal partitioning of the acoustic niche
+was omitted.*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+These diverse selective pressures vary across space, thus driving
+variation in acoustic trait diversity in the landscape. The field of
+soundscape ecology makes use of this acoustic trait variation, using the
+soundscape, or the combination of all sounds produced in the landscape,
+to make inference about ecological processes at a landscape-scale. The
+value of soundscape research lies in its ability to detect ecological
+signals from big acoustic data collected at broad spatial and temporal
+scales with minimized cost and effort, and crucially, without the need
+for species identification. To achieve this, researchers make use of
+acoustic indices, or mathematical formulae which extract information on
+the diversity of acoustic traits across the time-frequency domain of
+sound files. To date, over 60 acoustic indices have been developed, each
+of which reflects some aspect of the diversity of acoustic traits in a
+sound file. These acoustic indices have been succesfully used as
+descriptors of landscape configuration and ecosystem health, diel
+patterns in different environments, seasonal changes in soundscapes, and
+habitat identity, among others. Finally, acoustic indices have also
+found success as proxies for taxoomic diversity. Following the Acoustic
+Niche Hypothesis, more speciose communities should experience increased
+competition for acoustic niche space, and thus increased partitioning of
+the acoustic niche. This can be measured by quantifying the diversity of
+acoustic signals in acoustic trait space.
+
+## 1.2. Workflow background
+
+# 2. The workflow
+
+## 2.1. Raw acoustic data
+>>>>>>> 28dd6e275364a682133c07a92de485c3c2fb23d8
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Fig_1_Benefits_of_PAM.png" title="The benefits of Passive Acoustic Monitoring over conventional active acoustic sampling by an in-situ observer." alt="The benefits of Passive Acoustic Monitoring over conventional active acoustic sampling by an in-situ observer." width="75%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+<<<<<<< HEAD
 ***Fig 1:*** *The benefits of Passive Acoustic Monitoring over
 conventional active acoustic sampling by an in-situ observer.*
 
@@ -294,6 +456,8 @@ acoustic signals in acoustic trait space.
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
+=======
+>>>>>>> 28dd6e275364a682133c07a92de485c3c2fb23d8
 ***Fig 4:*** *A theoretical representation of long-duration eco-acoustic
 data collection. Data is collected over a 7-day acoustic survey period
 using a continuous sampling regime. The sound files are grouped per
