@@ -145,7 +145,7 @@ Passive Acoustic Monitoring offers numerous opportunities for ecological monitor
 
 $$\\[0.1in]$$
 
-```{r Fig_1, fig.align = 'center', out.width = "75%", fig.cap = "The benefits of Passive Acoustic Monitoring over conventional active acoustic sampling by an in-situ observer.", echo=FALSE}
+```{r Fig_1, fig.align = 'centre', out.width = "75%", fig.cap = "The benefits of Passive Acoustic Monitoring over conventional active acoustic sampling by an in-situ observer.", echo=FALSE}
 knitr::include_graphics(here::here("man/figures/Fig_1_Benefits_of_PAM.png"))
 ```
 $$\\[0.001in]$$
@@ -158,7 +158,7 @@ Yet, obtaining species-level information at large spatio-temporal scales and tax
 
 $$\\[0.1in]$$
 
-```{r Fig_2, fig.align = 'center', out.width = "75%", fig.cap = "The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations.", echo=FALSE}
+```{r Fig_2, fig.align = 'centre', out.width = "75%", fig.cap = "The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations.", echo=FALSE}
 knitr::include_graphics(here::here("man/figures/Fig_2_Limitation_of_PAM.png"))
 ```
 $$\\[0.001in]$$
