@@ -149,7 +149,7 @@ and reference databases for most taxa and regions.
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
-<img src="man/figures/Fig_2_Limitation_of_PAM.png" title="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." alt="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." width="75%" />
+<img src="man/figures/Fig_2_Limitation_of_PAM.png" title="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." alt="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." width="75%" style="display: block; margin: auto;" />
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
