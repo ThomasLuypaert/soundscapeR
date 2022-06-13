@@ -53,7 +53,7 @@ Thomas Luypaert, Anderson S. Bueno, Carlos A. Peres, Torbjørn Haugaasen
     -   [Theoretical background](#theoretical-background)
     -   [Workflow background](#workflow-background)
 -   [The workflow](#the-workflow)
-    -   [Raw acoustic data](#raw-acoustic-data)
+    -   [Collection of acoustic data](#collection-of-acoustic-data)
     -   [Calculating acoustic indices](#calculating-acoustic-indices)
     -   [Merging acoustic indices
         chronologically](#merging-acoustic-indices-chronologically)
@@ -317,46 +317,23 @@ manuscript have been successfully used as a proxy for the taxonomic
 diversity of sound-producing organisms in tropical rainforests without
 the need for species identification from sound files.
 
-**The analytical pipeline consists of the following steps:**
+**The workflow pipeline consists of the following steps:**
 
-1.  Computation of the spectral CVR-index
-2.  Chronological concatenation of spectral index files per site
-3.  Binarization of spectral index files to obtain
-    detection/non-detection of sound
-4.  Computation of the incidence frequency for each Operational Sound
-    Unit (OSU) in the acoustic trait space
-5.  Quantification of the soundscape diversity metrics
-
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
-
-<img src="man/figures/Fig_4_total_workflow.png" title="An overview of the workflow steps. First, acoustic data is collected over the course of several days using a continuous or regular-interval (e.g. 1 min / 10 min) sampling regime. Sound files are grouped per 24-hour period, which represents a single sample of the acoustic trait place. Next, the properties of the recorded sounds are measured using the CVR-index. For each sound file, this metric measures which proportion of cells in each noise-reduced frequency bin exceed a 3-dB threshold. When the spectral CVR-index values are calculated for all 1-minute sound files per 24-hour period, they are merged chronologically, resulting in a time-by-frequency data frame of CVR-index values. Each cell in this data frame delineated a unique section of the 24-hour acoustic trait space, grouping sounds by their shared temporal properties, thus capturing our concept of Operation Sound Units (OSUs). Subsequently, to determine the presence/absence of sound in each OSU for each 24-hour sample of the soundscape, we apply a site-specific binarization algorithm which turn raw CVR-index values into a binary detection (1) / non-detection (0) variable. To determine the relative abundance of each OSU across the acoustic survey period, per OSU, we take the mean of this binary variable across all soundscape samples. Finally, now that we have a unit of diversity measurement (OSUs) and their relative abundance, we can calculate the soundscape richness, evenness, and diversity." alt="An overview of the workflow steps. First, acoustic data is collected over the course of several days using a continuous or regular-interval (e.g. 1 min / 10 min) sampling regime. Sound files are grouped per 24-hour period, which represents a single sample of the acoustic trait place. Next, the properties of the recorded sounds are measured using the CVR-index. For each sound file, this metric measures which proportion of cells in each noise-reduced frequency bin exceed a 3-dB threshold. When the spectral CVR-index values are calculated for all 1-minute sound files per 24-hour period, they are merged chronologically, resulting in a time-by-frequency data frame of CVR-index values. Each cell in this data frame delineated a unique section of the 24-hour acoustic trait space, grouping sounds by their shared temporal properties, thus capturing our concept of Operation Sound Units (OSUs). Subsequently, to determine the presence/absence of sound in each OSU for each 24-hour sample of the soundscape, we apply a site-specific binarization algorithm which turn raw CVR-index values into a binary detection (1) / non-detection (0) variable. To determine the relative abundance of each OSU across the acoustic survey period, per OSU, we take the mean of this binary variable across all soundscape samples. Finally, now that we have a unit of diversity measurement (OSUs) and their relative abundance, we can calculate the soundscape richness, evenness, and diversity." width="100%" />
-
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
-
-***Fig 4:*** *An overview of the workflow steps. First, acoustic data is
-collected over the course of several days using a continuous or
-regular-interval (e.g. 1 min / 10 min) sampling regime. Sound files are
-grouped per 24-hour period, which represents a single sample of the
-acoustic trait place. Next, the properties of the recorded sounds are
-measured using the CVR-index. For each sound file, this metric measures
-which proportion of cells in each noise-reduced frequency bin exceed a
-3-dB threshold. When the spectral CVR-index values are calculated for
-all 1-minute sound files per 24-hour period, they are merged
-chronologically, resulting in a time-by-frequency data frame of
-CVR-index values. Each cell in this data frame delineated a unique
-section of the 24-hour acoustic trait space, grouping sounds by their
-shared temporal properties, thus capturing our concept of Operation
-Sound Units (OSUs). Subsequently, to determine the presence/absence of
-sound in each OSU for each 24-hour sample of the soundscape, we apply a
-site-specific binarization algorithm which turn raw CVR-index values
-into a binary detection (1) / non-detection (0) variable. To determine
-the relative abundance of each OSU across the acoustic survey period,
-per OSU, we take the mean of this binary variable across all soundscape
-samples. Finally, now that we have a unit of diversity measurement
-(OSUs) and their relative abundance, we can calculate the soundscape
-richness, evenness, and diversity.*
-
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+1.  Collection of acoustic data  
+      
+2.  Measuring the acoustic properties of sound per 24h soundscape
+    sample + Computing the spectral CVR-index per 1-min sound file +
+    Chronological concatenation of spectral index files per site  
+      
+3.  The concept of OSUs  
+      
+4.  Determining the presence / absence of sound per 24h soundscape
+    sample  
+      
+5.  Determining the relative abundance of each OSU during the acoustic
+    survey period  
+      
+6.  Quantification of soundscape diversity metrics
 
 The `soundscapeR` R-package presented in this tutorial represents the
 software implementation of the analytical pipeline described above. In
@@ -366,11 +343,18 @@ exploration and visualization of soundscapes.
 
 # 2. The workflow
 
-## 2.1. Raw acoustic data
+## 2.1. Collection of acoustic data
+
+The workflow we present here makes use of eco-acoustic data, or acoustic
+recordings collected at large timescales (e.g. days, weeks, months or
+even years!), using either a regular interval (e.g. 1 minute out of
+every 10 minutes recorded) or continuous sampling regime. The workflow
+accommodates the use recordings in ultrasound, but beware that the
+spectral acoustic indices we use are not tested for this.
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
-<img src="man/figures/Fig_1_Ecoacoustic_data.png" title="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." alt="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." width="100%" />
+<img src="man/figures/Step_1_data_collection.png" title="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." alt="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." width="100%" />
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
@@ -380,13 +364,6 @@ using a continuous sampling regime. The sound files are grouped per
 24-hour period and considered a sample of the soundscape.*
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
-
-The workflow we present here makes use of eco-acoustic data, or acoustic
-recordings collected at large timescales (e.g. days, weeks, months or
-even years!), using either a regular interval (e.g. 1 minute out of
-every 10 minutes recorded) or continuous sampling regime. The workflow
-accommodates the use recordings in ultrasound, but beware that the
-spectral acoustic indices we use are not tested for this.
 
 For the purposes of this vignette, a few raw sound files are provided in
 the package data. These sound files were collected at the Balbina
@@ -423,9 +400,14 @@ calculated.
 
 ## 2.2. Calculating acoustic indices
 
+For the first step in our workflow, we are going to calculate the
+spectral index files for the long-duration acoustic recordings collected
+at our site of interest. To do this, we will use the `index_calc()`
+function on the raw sound files contained in the package.
+
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
-<img src="man/figures/Fig_2_Index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/Step_2_index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
@@ -439,11 +421,6 @@ bin, resulting in a spectral index vector with one index value per
 frequency bin.*
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
-
-For the first step in our workflow, we are going to calculate the
-spectral index files for the long-duration acoustic recordings collected
-at our site of interest. To do this, we will use the `index_calc()`
-function on the raw sound files contained in the package.
 
 First, we will specify the location where we will save the output files:
 
@@ -516,22 +493,6 @@ noise-reduced frequency bin whose value exceeds a 3 dB threshold.
 
 Next up, we will merge the spectral CVR-index files chronologically,
 resulting in a time-by-frequency data frame containing the index values.
-
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
-
-<img src="man/figures/Fig_3_Chronological_concatenation.png" title="A theoretical representation of the chronological concatenation step. The all spectral index vectors resulting from the index computation step are merged chronologically, resulting in a time-by-frequency data frame containing the spectral index values." alt="A theoretical representation of the chronological concatenation step. The all spectral index vectors resulting from the index computation step are merged chronologically, resulting in a time-by-frequency data frame containing the spectral index values." width="100%" style="display: block; margin: auto auto auto 0;" />
-
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
-
-***Fig 7:*** *A theoretical representation of the chronological
-concatenation step. The all spectral index vectors resulting from the
-index computation step are merged chronologically, resulting in a
-time-by-frequency data frame containing the spectral index values. On
-the right, a visual representation of the spectral index values in the
-time-by-frequency data frame for seven 24-hour samples of the
-soundscape.*
-
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
 To do this, we can use the `merge_csv` function:
 
@@ -771,7 +732,7 @@ are the soundscape equivalent of time-frequency bins in a spectrogram.
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
-<img src="man/figures/Fig_5_OSUs.png" title="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." alt="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/Step_3_OSUs.png" title="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." alt="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." width="100%" style="display: block; margin: auto;" />
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
@@ -833,7 +794,7 @@ removing background noise.
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
-<img src="man/figures/Fig_4_binarization.png" title="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." alt="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/Step_4_binarization.png" title="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." alt="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." width="100%" style="display: block; margin: auto;" />
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
