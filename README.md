@@ -49,7 +49,6 @@ Thomas Luypaert, Anderson S. Bueno, Carlos A. Peres, Torbjørn Haugaasen
 
 -   [Priors](#priors)
     -   [Acknowledgements](#acknowledgements)
-    -   [Workflow background](#workflow-background)
 -   [Background](#background)
     -   [Theoretical background](#theoretical-background)
     -   [Workflow background](#workflow-background)
@@ -83,36 +82,6 @@ check out their great work!
 **!) In the latest version of `soundscapeR`, ‘AnalysisPrograms’ is
 automatically installed when calculating acoustic indices for the first
 time**
-
-## 0.2. Workflow background
-
-The workflow presented in this tutorial is published in Luypaert et
-al. (2022): A framework for quantifying soundscape diversity using Hill
-numbers. You can access the publication’s pre-print
-[here](https://www.biorxiv.org/content/10.1101/2022.01.11.475919v1).
-This workflow facilitates the computation, exploration, visualization
-and diversity quantification of soundscapes using Hill numbers. It can
-be used to calculate measures of soundscape richness, evenness and
-diversity. Moreover, the soundscape diverity metrics presented in the
-manuscript have been successfully used as a proxy for the taxonomic
-diversity of sound-producing organisms in tropical rainforests without
-the need for species identification from sound files.
-
-**The analytical pipeline consists of the following steps:**
-
-1.  Computation of the spectral CVR-index
-2.  Chronological concatenation of spectral index files per site
-3.  Binarization of spectral index files to obtain
-    detection/non-detection of sound
-4.  Computation of the incidence frequency for each Operational Sound
-    Unit (OSU) in the acoustic trait space
-5.  Quantification of the soundscape diversity metrics
-
-The `soundscapeR` R-package presented in this tutorial represents the
-software implementation of the analytical pipeline described above. In
-addition to containing the functions to perform the pipeline’s core
-steps, the `soundscapeR` R-package provides several functions for the
-exploration and visualization of soundscapes.
 
 # 1. Background
 
@@ -236,11 +205,11 @@ in the acoustic traits in a biological community:
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
-<img src="man/figures/Fig_3_ANH.PNG" title="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." alt="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." width="100%" />
+<img src="man/figures/Fig_3_ANH.PNG" title="A theoretical visualization of the various ways in which species can partition their acoustic niche. A. Spatial Niche Partitioning implies the production of vocalizations in different parts of 3D-space to avoid overlap acoustic signals. This has been demonstrated for [cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x); B. Spectral Niche Partitioning implies the shifting of the dominant frequency peak between individuals of different species to avoid signal overlap. This has been demonstrated for [frogs](https://pubmed.ncbi.nlm.nih.gov/25101228/); C. Temporal Niche Partitioning implies a shift in the time of peak vocal activity between individuals of different species to minimize signal overlap. This has been demonstrated between [bird and cicada species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false). Note that, in this image, seasonal partitioning of the acoustic niche was omitted." alt="A theoretical visualization of the various ways in which species can partition their acoustic niche. A. Spatial Niche Partitioning implies the production of vocalizations in different parts of 3D-space to avoid overlap acoustic signals. This has been demonstrated for [cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x); B. Spectral Niche Partitioning implies the shifting of the dominant frequency peak between individuals of different species to avoid signal overlap. This has been demonstrated for [frogs](https://pubmed.ncbi.nlm.nih.gov/25101228/); C. Temporal Niche Partitioning implies a shift in the time of peak vocal activity between individuals of different species to minimize signal overlap. This has been demonstrated between [bird and cicada species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false). Note that, in this image, seasonal partitioning of the acoustic niche was omitted." width="100%" />
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
-***Fig 2:*** *A theoretical visualization of the various ways in which
+***Fig 3:*** *A theoretical visualization of the various ways in which
 species can partition their acoustic niche. A. Spatial Niche
 Partitioning implies the production of vocalizations in different parts
 of 3D-space to avoid overlap acoustic signals. This has been
@@ -272,7 +241,7 @@ acoustic indices, or mathematical formulae which extract information on
 the diversity of acoustic traits across the time-frequency domain of
 sound files. To date, over 60 acoustic indices have been developed, each
 of which reflects some aspect of the diversity of acoustic traits in a
-sound file. These acoustic indices have been succesfully used as
+sound file. These acoustic indices have been successfully used as
 descriptors of landscape configuration and ecosystem health, diel
 patterns in different environments, seasonal changes in soundscapes, and
 habitat identity, among others. Finally, acoustic indices have also
@@ -282,7 +251,87 @@ competition for acoustic niche space, and thus increased partitioning of
 the acoustic niche. This can be measured by quantifying the diversity of
 acoustic signals in acoustic trait space.
 
+Despite the advances of soundscape ecology, several aspects of
+soundscape diversity quantification remain unexplored. For instance,
+most acoustic indices capture acoustic patterns using either
+time-averaged spectrograms (collapsed in the temporal domain) or
+measures of amplitude variation over time (collapsed in the frequency
+domain). These indices are fundamentally limited in their ability to
+detect diversity patterns across both the spectral and temporal
+dimensions simultaneously. However, since spectro-temporal partitioning
+of the acoustic niche might be one of the processes dictating acoustic
+assembly, considering both dimensions of the acoustic trait space
+simultaneously may be key to shedding new insights on how the acoustic
+niche is structured. Moreover, most existing acoustic indices are
+calculated over relatively short-duration timescales (*e.g.* 1 minute
+sound files). Yet, the assembly processes that structure the presence
+and distribution of sound in the acoustic trait space should also be
+considered at broader temporal scales. As many species repeat their
+vocalizations at circadian timescales, some of the temporal partitioning
+likely occurs within this 24-hour period. Still, for the field of
+soundscape ecology, explicit quantification of the relationships between
+sounds occurring within a 24-hour period at a landscape scale has been
+scarce. Finally, many acoustic indices measure diversity by using
+entropy-based indices such as the Shannon and Simpson index. However,
+entropy metrics lack a fixed range and have counter-intuitive behaviors
+which can easily lead to misinterpretation of results. For instance, the
+indices do not abide by the replication principle, which states that,
+when the underlying diversity of the system being measured doubles, so
+should the index value.
+
+**In the novel workflow, we aim to address some of these unexplored
+areas by**:
+
+1.  Considering both the spectral and temporal dimensions simultaneously
+    when measuring soundscape diversity
+2.  Measuring the presence and relationship between sounds in acoustic
+    trait space at a 24-hour scale
+3.  Using the ecologically-intuitive statistical framework of Hill
+    numbers to measure biodiversity
+
+As we renounced the identification of species from sound files, we now
+lack a unit of diversity measurement. Hence, in analogy to the
+Operational Taxonomic Units used in genetic research, we propose a new
+units of soundscape diversity measurement: the Operational Sound Unit
+(OSU). This unit groups sounds by their shard spectro-temporal
+properties in the 24-hour acoustic trait space, and is the soundscape
+equivalent of time-frequecy bins in a spectrogram. We adopt OSUs to
+quantify soundscape diversity using three new metrics of soundscape
+diversity: (i) soundscape richness; (ii) soundscape evenness; and (iii)
+soundscape diversity. Moreover, the analytical framework presented here
+can be used to decompose the regional metacommunity soundscape diversity
+(gamma) into its local diversity (alpha) and a community turnover
+component (beta) using a simple multiplicative relationship.
+
 ## 1.2. Workflow background
+
+The workflow presented in this tutorial is published in Luypaert et
+al. (2022): A framework for quantifying soundscape diversity using Hill
+numbers. You can access the publication’s pre-print
+[here](https://www.biorxiv.org/content/10.1101/2022.01.11.475919v1).
+This workflow facilitates the computation, exploration, visualization
+and diversity quantification of soundscapes using Hill numbers. It can
+be used to calculate measures of soundscape richness, evenness and
+diversity. Moreover, the soundscape diverity metrics presented in the
+manuscript have been successfully used as a proxy for the taxonomic
+diversity of sound-producing organisms in tropical rainforests without
+the need for species identification from sound files.
+
+**The analytical pipeline consists of the following steps:**
+
+1.  Computation of the spectral CVR-index
+2.  Chronological concatenation of spectral index files per site
+3.  Binarization of spectral index files to obtain
+    detection/non-detection of sound
+4.  Computation of the incidence frequency for each Operational Sound
+    Unit (OSU) in the acoustic trait space
+5.  Quantification of the soundscape diversity metrics
+
+The `soundscapeR` R-package presented in this tutorial represents the
+software implementation of the analytical pipeline described above. In
+addition to containing the functions to perform the pipeline’s core
+steps, the `soundscapeR` R-package provides several functions for the
+exploration and visualization of soundscapes.
 
 # 2. The workflow
 
@@ -695,13 +744,13 @@ are the soundscape equivalent of time-frequency bins in a spectrogram.
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
-***Fig 7:*** *“A conceptual visualization of Operational Sound Units
+***Fig 7:*** *A conceptual visualization of Operational Sound Units
 (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the
 acoustic trait space can be divided into sections which we define as
 OSUs. These OSUs are delineated by the frequency-bin width of the
 spectral index vector (frequency domain) and the recording interval of
 the sampling regime (temporal domain), and groups sounds by their shared
-properties in acoustic trait space.”*
+properties in acoustic trait space.*
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
@@ -757,12 +806,12 @@ removing background noise.
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
-***Fig 8:*** *“A visualization showing the binarization step, starting
+***Fig 8:*** *A visualization showing the binarization step, starting
 from the chronologically concatenated CVR-index values for a 24-hour
 soundscape sample. Next, a threshold value is applied, which is derived
 using a binarization algorithm. Based on this threshold value, the raw
 CVR-values are transformed into binary detection (1) / non-detection (0)
-values.”*
+values.*
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
