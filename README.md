@@ -54,12 +54,12 @@ Thomas Luypaert, Anderson S. Bueno, Carlos A. Peres, Torbjørn Haugaasen
     -   [Workflow background](#workflow-background)
 -   [The workflow](#the-workflow)
     -   [Collection of acoustic data](#collection-of-acoustic-data)
-    -   [Calculating acoustic indices](#calculating-acoustic-indices)
-    -   [Merging acoustic indices
-        chronologically](#merging-acoustic-indices-chronologically)
-        -   [The `merge_csv` function](#the-%60merge_csv%60-function)
-        -   [Introducing the *soundscape*
-            object](#introducing-the-*soundscape*-object)
+    -   [Measuring acoustic properties per 24h soundscape
+        sample](#measuring-acoustic-properties-per-24h-soundscape-sample)
+        -   [A. Calculating spectral acoustic
+            indices](#a.-calculating-spectral-acoustic-indices)
+        -   [B. Merging the spectral index values
+            chronologically](#b.-merging-the-spectral-index-values-chronologically)
     -   [The concept of Operational Sound Units
         (OSUs)](#the-concept-of-operational-sound-units-(osus))
     -   [Binarization of the CVR-index
@@ -319,21 +319,16 @@ the need for species identification from sound files.
 
 **The workflow pipeline consists of the following steps:**
 
-1.  Collection of acoustic data  
-      
-2.  Measuring the acoustic properties of sound per 24h soundscape
-    sample + Computing the spectral CVR-index per 1-min sound file +
-    Chronological concatenation of spectral index files per site  
-      
-3.  The concept of OSUs  
-      
-4.  Determining the presence / absence of sound per 24h soundscape
-    sample  
-      
-5.  Determining the relative abundance of each OSU during the acoustic
-    survey period  
-      
-6.  Quantification of soundscape diversity metrics
+-   Collection of acoustic data
+-   Measuring the acoustic properties of sound per 24h soundscape sample
+    -   Computing the spectral CVR-index per 1-min sound file
+    -   Merging the spectral CVR-index files chronologically per site
+-   The concept of OSUs
+-   Determining the presence / absence of sound per 24h soundscape
+    sample
+-   Determining the relative abundance of each OSU during the acoustic
+    survey period
+-   Quantification of soundscape diversity metrics
 
 The `soundscapeR` R-package presented in this tutorial represents the
 software implementation of the analytical pipeline described above. In
@@ -345,12 +340,35 @@ exploration and visualization of soundscapes.
 
 ## 2.1. Collection of acoustic data
 
-The workflow we present here makes use of eco-acoustic data, or acoustic
-recordings collected at large timescales (e.g. days, weeks, months or
-even years!), using either a regular interval (e.g. 1 minute out of
-every 10 minutes recorded) or continuous sampling regime. The workflow
-accommodates the use recordings in ultrasound, but beware that the
-spectral acoustic indices we use are not tested for this.
+Before assessing the soundscape diversity, acoustic data needs to be
+collected. For this, several decisions need to be made.
+
+First, the sampling rate and bit-depth of the acoustic recorder need to
+be chosen. These parameters will dictate the frequency and amplitude
+resolution respectively. The sampling rate should be twice the desired
+maximal frequency, a principle known as the [Nyquist-Shannon sampling
+theorem](https://www.techtarget.com/whatis/definition/Nyquist-Theorem).
+The choice of sampling rate and bit-depth constitutes a trade-off
+between the desired resolution on the one hand, and the available device
+storage and battery life on the other hand. This is because higher
+sampling rates and bit-depths are more storage- and energy-demanding.
+
+Next, the recording schedule and duration for each site should be
+decided. The workflow we present here makes use of eco-acoustic data, or
+acoustic recordings collected at large timescales (e.g. days, weeks,
+months or even years!). For soundscape studies, sound files are usually
+recorded for 1-minute durations (see
+[here](https://research.ecosounds.org/2019/08/09/analyzing-data-in-one-minute-chunks.html)
+why). Furthermore, the soundscape can be recorded either using a
+continuous (1440 minutes / day) or regular interval (*e.g.* 1 min / 5
+min - or 288 minutes / day) sampling regime. However, it should be noted
+that sparse sampling regimes are generally discouraged for soundscape
+studies, as the require soundscapes to be recorded for long period of
+time before the soundcape variability is captured adequately, which in
+turn introduces issues related to seasonal variation. Ultimately,
+regardless of which acoustic survey sampling design is chosen, if
+multiple soundscapes are to be compared across a landscape, the same
+sampling design should be used.
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
@@ -398,16 +416,52 @@ of October 2015, between midnight and 1 AM (00:00 - 00:55) using a 1 min
 we will use this sample data to demonstrate how acoustic indices are
 calculated.
 
-## 2.2. Calculating acoustic indices
+## 2.2. Measuring acoustic properties per 24h soundscape sample
 
-For the first step in our workflow, we are going to calculate the
-spectral index files for the long-duration acoustic recordings collected
-at our site of interest. To do this, we will use the `index_calc()`
-function on the raw sound files contained in the package.
+### A. Calculating spectral acoustic indices
+
+For the first step in our workflow, we will make use of ***spectral
+acoustic indices*** to capture the acoustic properties of sound in our
+1-minute recordings. Doing so, we greatly condense the amount of
+information contained in these sound files while retaining important
+data on their time-frequency features. For more information on spectral
+acoustic indices are their use, check out
+[this](https://research.ecosounds.org/research/eadm-towsey/long-duration-audio-recordings-of-the-environment)
+website. To calculate these spectral indices, we will use the
+`index_calc()` function. This function calls on the ‘AnalysisPrograms’
+software tool, developed by the QUT Ecoacoustic group, to compute a
+series of spectral acoustic indices.
+
+In case the duration of each sound file is longer than 1 minute, the
+function cuts the files into 1-minute segments. Next, the sound files
+will be converted from relatively uninformative amplitude-over-time
+format to the much more informative amplitude time-frequency format (a
+spectrogram). To do this, the function uses a ***Fast Fourier
+Transformation*** (FFT - check out this [excellent
+video](https://www.youtube.com/watch?v=spUNpyF58BY) if you want to learn
+more about the FFT). For the FFT, two parameters need to be chosen: (i)
+the window length; (ii) the sampling rate. As we previously mentioned,
+the sampling rate is chosen during acoustic data collection and should
+we twice the desired maximal frequency. The window length is typically a
+power of 2, and dictates the resolution of time-frequency bins in the
+spectrogram that is produced by the FFT. The temporal resolution (TR) is
+given by: TR = window length / 2. The frequency resolution (FR) is given
+by: FR = sampling rate / window length. The temporal and frequency
+resolution are inversely correlated - the higher the frequency
+resolution, the lower the temporal resolution, and vice-versa. For more
+information on the choice of window length in the context of our
+workflow, consult [Luypaert et
+al. (2022)](https://www.biorxiv.org/content/10.1101/2022.01.11.475919v1).
+Finally, the function performs a noise-reduction step to each
+spectrogram (see
+[here](https://eprints.qut.edu.au/110634/1/QUTePrints110634_TechReport_Towsey2017August_AcousticIndices%20v3.pdf))
+and applies a mathematical equation (acoustic index) to each
+noise-reduced frequency bin to produce a vector of spectral index values
+(Fig. 6A).
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
-<img src="man/figures/Step_2_index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/Step_2_1_index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
 
 ![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
 
@@ -421,6 +475,8 @@ bin, resulting in a spectral index vector with one index value per
 frequency bin.*
 
 ![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+We will try this out on the raw sound files contained in the package.
 
 First, we will specify the location where we will save the output files:
 
@@ -483,16 +539,35 @@ Tutorial
 or the Towsey (2017) technical
 [report](https://eprints.qut.edu.au/110634/1/QUTePrints110634_TechReport_Towsey2017August_AcousticIndices%20v3.pdf).
 
-For the rest of this tutorial, we will be using the Acoustic Cover Index
-(CVR). Per sound file, this index captures the fraction of cells in each
-noise-reduced frequency bin whose value exceeds a 3 dB threshold.
+For the rest of this tutorial, following [Luypaert et
+al. (2022)](https://www.biorxiv.org/content/10.1101/2022.01.11.475919v1),
+we will be using the Acoustic Cover Index (CVR) to capture the acoustic
+features of our recorded sounds. Per sound file, this index captures the
+fraction of cells in each noise-reduced frequency bin whose value
+exceeds a 3 dB threshold.
 
-## 2.3. Merging acoustic indices chronologically
+### B. Merging the spectral index values chronologically
 
-### 2.3.1. The `merge_csv` function
+#### The `merge_csv` function
 
 Next up, we will merge the spectral CVR-index files chronologically,
 resulting in a time-by-frequency data frame containing the index values.
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+
+<img src="man/figures/Step_2_2_index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
+
+![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+
+***Fig 7:*** *A theoretical representation of the chronological
+concatenation step. All the spectral index vectors resulting from the
+index computation at a site are merged chronologically, resulting in a
+time-by-frequency data frame containing the spectral index values. On
+the right, a visual representation of the spectral index values in the
+time-by-frequency data frame for 7 24-hour samples of the acoustic trait
+space.*
+
+![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
 
 To do this, we can use the `merge_csv` function:
 
@@ -506,7 +581,7 @@ merged_CVR_index <- soundscapeR::merge_csv(fileloc = location_output,
                                            lon = -59.7872)
 ```
 
-### 2.3.2. Introducing the *soundscape* object
+#### Introducing the *soundscape* object
 
 As you may have noticed, this function requires us to provide some
 additional background information regarding how the data was collected
@@ -605,10 +680,10 @@ print(paste0("Sunset at time of data collection: ", merged_CVR_index@sunset))
 #> [1] "Sunset at time of data collection: 2015-10-17 17:50:01"
 ```
 
-The `merge_csv` function has automatically calculated a bunch of
-important ecological information regarding the place and time of year at
-which the data was collected, such as sunrise and sunset times,
-timezones, and location coordinates.
+The `merge_csv` function has automatically calculated a set of important
+ecological information regarding the place and time of year at which the
+data was collected, such as sunrise and sunset times, timezones, and
+location coordinates.
 
 Let’s continue looking at the data stored in the *soundscape* object:
 
@@ -627,9 +702,9 @@ print(paste0("What was the window length used during the FFT: ", merged_CVR_inde
 
 The *soundscape* object has recorded where our raw data files are
 stored, which acoustic index we’re working with, what the sampling rate
-was during data collection, and which window length was used during the
-acoustic index calculation. Finally, let’s take a look at the structure
-of the data frame we obtained by merging the CVR-index files
+was used during data collection, and which window length was used during
+the acoustic index calculation. Finally, let’s take a look at the
+structure of the data frame we obtained by merging the CVR-index files
 chronologically:
 
 ``` r
@@ -751,9 +826,10 @@ unit of measurement: each time-frequency cell in the chronologically
 concatenated data frame delineates a unique section of the 24-hour
 acoustic trait space, and thus represents an OSU.
 
-In the next section, we will convert the raw CVR-values of each OSU into
-detection/non-detection values per 24-hour sample of the acoustic trait
-space using the `binarize_df` function.
+In the next section, based on the CVR-index values of OSUs in the
+recorded soundscape, we will determine whether sound is considered
+present (1) or absent (0) for every OSU in each 24h sample of the
+acoustic trait space. We will do this using the `binarize_df` function.
 
 ## 2.4. Binarization of the CVR-index values
 
@@ -860,4 +936,4 @@ soundscapeR::check_thresh(merged_soundscape = merged_soundscape_CVR, method = "O
 #> Loading required namespace: patchwork
 ```
 
-<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="75%" />
