@@ -4,16 +4,7 @@
 \alias{merge_csv}
 \title{Import and Merge Acoustic Index '.csv' Files}
 \usage{
-merge_csv(
-  fileloc,
-  samplerate,
-  window,
-  index,
-  date,
-  lat,
-  lon,
-  twilight = "sunlight"
-)
+merge_csv(fileloc, samplerate, window, index, date, lat, lon)
 }
 \arguments{
 \item{fileloc}{The full-length path to the directory where the
@@ -43,11 +34,6 @@ collected. Coordinates should be specified in decimal degrees as a
 \item{lon}{The longitude of the site at which the sound files were
 collected. Coordinates should be specified in decimal degrees as a
  numerical variable.}
-
-\item{twilight}{A character string of the twilight
-method to be used for sunrise and sunset determination.
-Options can be found in the
- \code{\link[photobiology]{day_night}} documentation.}
 }
 \value{
 Returns a time-by-frequency dataframe of acoustic index values

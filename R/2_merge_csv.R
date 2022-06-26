@@ -34,11 +34,6 @@
 #'  collected. Coordinates should be specified in decimal degrees as a
 #'   numerical variable.
 #'
-#' @param twilight A character string of the twilight
-#' method to be used for sunrise and sunset determination.
-#' Options can be found in the
-#'  \code{\link[photobiology]{day_night}} documentation.
-#'
 #' @return Returns a time-by-frequency dataframe of acoustic index values
 #' for all files in the recording period.
 #'
@@ -50,8 +45,7 @@ merge_csv <- function(fileloc,
                       index,
                       date,
                       lat,
-                      lon,
-                      twilight = "sunlight") {
+                      lon) {
 
   #0. Check if the arguments are missing
 
