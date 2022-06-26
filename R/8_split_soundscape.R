@@ -71,13 +71,9 @@ split_soundscape <- methods::new("soundscape",
                                  window = binarized_soundscape@window,
                                  binarization_method = binarized_soundscape@binarization_method,
                                  threshold = binarized_soundscape@threshold,
-                                 output = output,
                                  merged_df = binarized_soundscape@merged_df,
                                  binarized_df = binarized_soundscape@binarized_df,
-                                 aggregated_df = aggregated_df,
-                                 split_df = sample_list,
-                                 aggregated_df_per_time = aggregate_per_time,
-                                 effort_per_time = sampling_effort_per_time)
+                                 split_df = sample_list,)
 
 
 split_soundscape
