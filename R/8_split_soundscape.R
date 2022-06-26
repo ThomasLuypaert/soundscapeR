@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-split_soundscape <- function(binarized_soundscape,
+split_df <- function(binarized_soundscape,
                               dailyfiles = 1440,
                               maxdays = 10){
 
