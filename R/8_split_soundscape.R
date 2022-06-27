@@ -7,8 +7,6 @@
 #'
 #' @return Returns an updated soundscape object containing the binarized_df, but split per 24h sample of the acoustic trait space.
 #' @export
-#'
-#' @examples
 split_df <- function(binarized_soundscape,
                      dailyfiles = 1440,
                      maxdays = 10){
