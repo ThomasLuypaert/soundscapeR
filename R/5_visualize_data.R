@@ -640,8 +640,8 @@ heatmapper=function(aggregated_soundscape,
 
   }
 
-  assertthat::assert_that(test_25(minfreq))
-  assertthat::assert_that(test_26(maxfreq))
+  # assertthat::assert_that(test_25(minfreq))
+  # assertthat::assert_that(test_26(maxfreq))
 
   # 1.9. Check if the nbins argument abides by the
   # expected format
