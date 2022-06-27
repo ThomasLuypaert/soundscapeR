@@ -222,29 +222,6 @@ merge_csv <- function(fileloc,
   assertthat::assert_that(test_8(lat))
   assertthat::assert_that(test_9(lon))
 
-  # 1.8. Check if the twilight argument has the correct format and is one of the
-  # available options
-
-  # 1.11. Check if the supplied twilight argument is one
-  # of the available options
-
-  test_10 <- function(x){
-
-    (assertthat::is.string(x) &
-       x %in% c("none","rim","refraction","sunlight","civil",
-                "nautical","astronomical")) |
-      (is.vector(x, mode="double") & (length(x) == 1 | length(x) ==2))
-
-  }
-
-  assertthat::on_failure(test_10) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.")
-
-  }
-
-  assertthat::assert_that(test_10(twilight))
-
 
   # 2. Get a list of the acoustic index '.csv' files in the specified file location
 
