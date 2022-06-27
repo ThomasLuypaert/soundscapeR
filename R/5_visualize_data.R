@@ -47,11 +47,6 @@
 #'   frequency range to compute the soundscape richness
 #'   (q=0), expressed as a single positive integer.
 #'
-#' @param twilight A character string of the twilight
-#' method to be used for sunrise and sunset annotation.
-#' Options can be found in the
-#'  \code{\link[photobiology]{day_night}} documentation.
-#'
 #' @param labelsize_time If annotate=TRUE, can be used to
 #'  alter the size of temporal spectrum annotation. Please
 #'   provide as a single positive integer with a value > 0.
@@ -139,11 +134,10 @@ heatmapper=function(aggregated_soundscape,
                     timeinterval="1 hour",
                     mintime="default",
                     maxtime="default",
-                    freqinterval=1000,
-                    minfreq="default",
+                    freqinterval=2000,
+                    minfreq=0,
                     maxfreq="default",
                     nbins=10,
-                    twilight="sunlight",
                     labelsize_time=4,
                     labelsize_frequency=4,
                     labelsize_polar=3,
@@ -662,25 +656,6 @@ heatmapper=function(aggregated_soundscape,
   assertthat::assert_that(test_27(nbins))
 
 
-  # 1.10. Check if the supplied twilight argument is one
-  # of the available options
-
-  test_28 <- function(x){
-
-    (assertthat::is.string(x) &
-       x %in% c("none","rim","refraction","sunlight","civil",
-                "nautical","astronomical")) |
-      (is.vector(x, mode="double") & (length(x) == 1 | length(x) ==2))
-
-  }
-
-  assertthat::on_failure(test_28) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.")
-
-  }
-
-  assertthat::assert_that(test_28(twilight))
 
   # 1.11. Check if the labelsize arguments follow the
   # expected format.
@@ -908,17 +883,11 @@ heatmapper=function(aggregated_soundscape,
 
   else{}
 
-  if(minfreq=="default"){
-
-    minfreq <-  min(df2$frequency)
-
-  }
-
-  else{minfreq <- minfreq}
+  minfreq <- minfreq
 
   if(maxfreq=="default"){
 
-    maxfreq <- max(df2$frequency)
+    maxfreq <- max(as.numeric(df2$frequency))
 
   }
 
@@ -1241,6 +1210,8 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::labs(fill="OSU INCIDENCE") +
 
           ggplot2::guides(color='none')
+
+        plot
       }
 
       else{
@@ -1457,6 +1428,9 @@ heatmapper=function(aggregated_soundscape,
             ggplot2::labs(fill="OSU INCIDENCE")+
 
             ggplot2::guides(color='none')
+
+          plot
+
         }
       }
     }
@@ -1544,6 +1518,8 @@ heatmapper=function(aggregated_soundscape,
           ggplot2::labs(fill="OSU INCIDENCE")+
 
           ggplot2::guides(color='none')
+
+        plot
 
       }
     }
@@ -1740,6 +1716,8 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::guides(color='none')
 
+        plot
+
       }
 
       else{
@@ -1849,6 +1827,8 @@ heatmapper=function(aggregated_soundscape,
             ggplot2::labs(fill="OSU INCIDENCE")+
 
             ggplot2::guides(color='none')
+
+          plot
 
         }
       }

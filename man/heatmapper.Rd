@@ -11,11 +11,10 @@ heatmapper(
   timeinterval = "1 hour",
   mintime = "default",
   maxtime = "default",
-  freqinterval = 1000,
-  minfreq = "default",
+  freqinterval = 2000,
+  minfreq = 0,
   maxfreq = "default",
   nbins = 10,
-  twilight = "sunlight",
   labelsize_time = 4,
   labelsize_frequency = 4,
   labelsize_polar = 3,
@@ -74,11 +73,6 @@ as a numeric value. Defaults to the maximum frequency of
 number of the frequency-bins by which to divide the
  frequency range to compute the soundscape richness
  (q=0), expressed as a single positive integer.}
-
-\item{twilight}{A character string of the twilight
-method to be used for sunrise and sunset annotation.
-Options can be found in the
- \code{\link[photobiology]{day_night}} documentation.}
 
 \item{labelsize_time}{If annotate=TRUE, can be used to
 alter the size of temporal spectrum annotation. Please

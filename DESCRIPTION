@@ -20,7 +20,7 @@ Imports:
     yaml (>= 2.2.1),
     lubridate, 
     hms, 
-    ggplot2, 
+    ggplot2 (> 3.3.0), 
     dplyr, 
     stringr,
     autothresholdr (>= 1.3.5),
