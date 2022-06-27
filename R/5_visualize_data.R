@@ -1224,7 +1224,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE") +
 
-          guides(color='none')
+          ggplot2::guides(color='none')
       }
 
       else{
@@ -1440,7 +1440,7 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::labs(fill="OSU INCIDENCE")+
 
-            guides(color='none')
+            ggplot2::guides(color='none')
         }
       }
     }
@@ -1527,7 +1527,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE")+
 
-          guides(color='none')
+          ggplot2::guides(color='none')
 
       }
     }
@@ -1722,7 +1722,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE")+
 
-          guides(color='none')
+          ggplot2::guides(color='none')
 
       }
 
@@ -1832,7 +1832,7 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::labs(fill="OSU INCIDENCE")+
 
-            guides(color='none')
+            ggplot2::guides(color='none')
 
         }
       }
