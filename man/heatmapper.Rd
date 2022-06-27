@@ -12,7 +12,7 @@ heatmapper(
   mintime = "default",
   maxtime = "default",
   freqinterval = 1000,
-  minfreq = 0,
+  minfreq = "default",
   maxfreq = "default",
   nbins = 10,
   twilight = "sunlight",

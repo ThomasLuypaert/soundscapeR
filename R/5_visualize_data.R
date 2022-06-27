@@ -140,7 +140,7 @@ heatmapper=function(aggregated_soundscape,
                     mintime="default",
                     maxtime="default",
                     freqinterval=1000,
-                    minfreq=0,
+                    minfreq="default",
                     maxfreq="default",
                     nbins=10,
                     twilight="sunlight",
@@ -908,6 +908,22 @@ heatmapper=function(aggregated_soundscape,
 
   else{}
 
+  if(minfreq=="default"){
+
+    minfreq <-  min(df2$frequency)
+
+  }
+
+  else{minfreq <- minfreq}
+
+  if(maxfreq=="default"){
+
+    maxfreq <- max(df2$frequency)
+
+  }
+
+  else{maxfreq <- maxfreq}
+
   if (mintime=="default"){
     mintime <- min(
       as.POSIXct(
@@ -1224,7 +1240,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE") +
 
-          guides(color='none')
+          ggplot2::guides(color='none')
       }
 
       else{
@@ -1440,7 +1456,7 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::labs(fill="OSU INCIDENCE")+
 
-            guides(color='none')
+            ggplot2::guides(color='none')
         }
       }
     }
@@ -1527,7 +1543,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE")+
 
-          guides(color='none')
+          ggplot2::guides(color='none')
 
       }
     }
@@ -1722,7 +1738,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE")+
 
-          guides(color='none')
+          ggplot2::guides(color='none')
 
       }
 
@@ -1832,7 +1848,7 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::labs(fill="OSU INCIDENCE")+
 
-            guides(color='none')
+            ggplot2::guides(color='none')
 
         }
       }
