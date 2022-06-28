@@ -1211,7 +1211,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::guides(color='none')
 
-        plot
+
       }
 
       else{
@@ -1429,7 +1429,7 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::guides(color='none')
 
-          plot
+
 
         }
       }
@@ -1471,18 +1471,6 @@ heatmapper=function(aggregated_soundscape,
             breaks=seq(0, 1, 0.1), limits = c(0, 1)
           ) +
 
-          ggplot2::scale_x_datetime(
-            labels=scales::date_format("%H:%M", tz=tz),
-            breaks = scales::breaks_width(timeinterval),
-            expand = c(0,0),
-            limits = c(mintime,maxtime))+
-
-          ggplot2::scale_y_continuous(
-            limits = c(minfreq,maxfreq),
-            expand = c(0,0),
-            breaks = seq(minfreq, maxfreq, freqinterval),
-            label=comma)+
-
           ggplot2::labs(
             y="Frequency (Hz)",
             x="Time (hour of day)")+
@@ -1517,9 +1505,21 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE")+
 
-          ggplot2::guides(color='none')
+          ggplot2::guides(color='none')+
 
-        plot
+          ggplot2::scale_x_datetime(
+            labels=scales::date_format("%H:%M", tz=tz),
+            breaks = scales::breaks_width(timeinterval),
+            expand = c(0,0),
+            limits = c(mintime,maxtime))+
+
+          ggplot2::scale_y_continuous(
+            limits = c(minfreq,maxfreq),
+            expand = c(0,0),
+            breaks = seq(minfreq, maxfreq, freqinterval),
+            label=comma)
+
+
 
       }
     }
@@ -1716,7 +1716,7 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::guides(color='none')
 
-        plot
+
 
       }
 
@@ -2046,6 +2046,7 @@ heatmapper=function(aggregated_soundscape,
       }
     }
   }
+
 }
 
 
