@@ -43,10 +43,6 @@
 #' @param maxtime The upper time limit for which to compute the soundscape
 #'  diversity, formatted as "HH:MM:SS". If set to default, uses the
 #'  latest time for which data exists in the dataframe.
-#' @param twilight A character string of the twilight method to be used
-#'  for sunrise and sunset as the boundary between day and night.
-#' Options can be found in the \code{\link[photobiology]{day_night}}
-#'  documentation.
 #' @param dawnstart A numeric argument. If subset == 'dawn', used to determine
 #' the start of dawn. By default, dawn starts at sunrise. Expressed as
 #' the time in seconds before sunrise.
@@ -82,7 +78,6 @@ sounddiv=function(aggregated_soundscape,
                   maxtime="default",
                   minfreq=0,
                   maxfreq="default",
-                  twilight="sunlight",
                   dawnstart=0,
                   dawnend=5400,
                   duskstart=5400,
@@ -573,26 +568,6 @@ sounddiv=function(aggregated_soundscape,
 
   assertthat::assert_that(test_16(minfreq))
   assertthat::assert_that(test_17(maxfreq))
-
-  # 1.7. The supplied twilight argument is one
-  # of the available options
-
-  test_18 <- function(x){
-
-    (assertthat::is.string(x) &
-       x %in% c("none","rim","refraction","sunlight","civil",
-                "nautical","astronomical")) |
-      (is.vector(x, mode="double") & (length(x) == 1 | length(x) ==2))
-
-  }
-
-  assertthat::on_failure(test_18) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.")
-
-  }
-
-  assertthat::assert_that(test_18(twilight))
 
   # 1.8. The dawnstart, dawnend, duskstart and duskend arguments are either
   # zero or a single positive integer

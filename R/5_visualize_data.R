@@ -937,12 +937,6 @@ heatmapper=function(aggregated_soundscape,
         tz = tz))
   }
 
-  if (maxfreq=="default"){
-    maxfreq <- max(df2$frequency)
-  }
-
-  else{maxfreq <- maxfreq}
-
   day <- as.POSIXct(
     strptime(
       paste(substr(aggregated_soundscape@first_day, 1, 12),
@@ -1020,7 +1014,7 @@ heatmapper=function(aggregated_soundscape,
             limits = c(minfreq, (maxfreq+(maxfreq/10))),
             expand = c(0,0),
             breaks = seq(minfreq, maxfreq, freqinterval),
-            label=comma)+
+            label=scales::comma)+
 
           ggplot2::labs(
             y="Frequency (Hz)",
@@ -1263,7 +1257,7 @@ heatmapper=function(aggregated_soundscape,
               limits = c(minfreq, (maxfreq+(maxfreq/10))),
               expand = c(0,0),
               breaks = seq(minfreq, maxfreq, freqinterval),
-              label=comma)+
+              label=scales::comma)+
 
             ggplot2::labs(
               y="Frequency (Hz)",
@@ -1517,7 +1511,7 @@ heatmapper=function(aggregated_soundscape,
             limits = c(minfreq,maxfreq),
             expand = c(0,0),
             breaks = seq(minfreq, maxfreq, freqinterval),
-            label=comma)
+            label=scales::comma)
 
 
 
@@ -1573,7 +1567,7 @@ heatmapper=function(aggregated_soundscape,
             limits = c(minfreq,(maxfreq+(maxfreq/10))),
             expand = c(0,0),
             breaks = seq(minfreq, maxfreq, freqinterval),
-            label=comma)+
+            label=scales::comma)+
 
           ggplot2::labs(
             y="Frequency (Hz)",
@@ -1934,7 +1928,7 @@ heatmapper=function(aggregated_soundscape,
 
                   ggplot2::scale_y_continuous(
                     expand = c(0,0),
-                    label=comma)+
+                    label=scales::comma)+
 
                   ggplot2::theme(
                     axis.title.x = ggplot2::element_blank(),
@@ -1992,7 +1986,7 @@ heatmapper=function(aggregated_soundscape,
 
                   ggplot2::scale_y_continuous(
                     expand = c(0,0),
-                    label=comma)+
+                    label=scales::comma)+
 
                   ggplot2::theme(
                     axis.title.y = ggplot2::element_blank(),

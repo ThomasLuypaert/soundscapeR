@@ -1766,46 +1766,6 @@ testthat::test_that("the sounddiv function produces the correct error message wh
 
 })
 
-  # 2.8. The wrong twilight argument is supplied
-
-testthat::test_that("the sounddiv function produces the correct error message when the twilight argument is not a character string", {
-
-  testthat::expect_error(
-    object = sounddiv(aggregated_soundscape= aggregated_soundscape_CVR,
-                      qvalue = 0,
-                      subset = "total",
-                      twilight = as.factor("sunlight")),
-    regexp = "twilight is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.",
-    fixed=TRUE
-  )
-
-})
-
-testthat::test_that("the sounddiv function produces the correct error message when the twilight argument is not one of the available options", {
-
-  testthat::expect_error(
-    object = sounddiv(aggregated_soundscape= aggregated_soundscape_CVR,
-                      qvalue = 0,
-                      subset = "total",
-                      twilight = "I'm not an option"),
-    regexp = "twilight is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.",
-    fixed=TRUE
-  )
-
-})
-
-testthat::test_that("the sounddiv function produces the correct error message when the twilight argument is not one of the available options", {
-
-  testthat::expect_error(
-    object = sounddiv(aggregated_soundscape= aggregated_soundscape_CVR,
-                      qvalue = 0,
-                      subset = "total",
-                      twilight = as.vector(2.15, mode="integer")),
-    regexp = "twilight is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.",
-    fixed=TRUE
-  )
-
-})
 
   # 2.9. The wrong dawnstart, dawnend, duskstart or duskend arguments are supplied
 

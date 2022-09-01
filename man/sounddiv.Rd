@@ -12,7 +12,6 @@ sounddiv(
   maxtime = "default",
   minfreq = 0,
   maxfreq = "default",
-  twilight = "sunlight",
   dawnstart = 0,
   dawnend = 5400,
   duskstart = 5400,
@@ -52,11 +51,6 @@ the lowest available frequency in the dataframe.}
 \item{maxfreq}{A numeric value indicating the upper frequency limit
 for which to compute the soundscape diversity. If set to default,
 uses the highest available frequency in the dataframe.}
-
-\item{twilight}{A character string of the twilight method to be used
- for sunrise and sunset as the boundary between day and night.
-Options can be found in the \code{\link[photobiology]{day_night}}
- documentation.}
 
 \item{dawnstart}{A numeric argument. If subset == 'dawn', used to determine
 the start of dawn. By default, dawn starts at sunrise. Expressed as

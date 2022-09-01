@@ -18,8 +18,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "fileloc argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
@@ -34,8 +33,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "samplerate argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
@@ -50,8 +48,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "window argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
@@ -66,8 +63,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        window = 256,
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "index argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
@@ -82,8 +78,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        window = 256,
                        index = "CVR",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "date argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
@@ -98,8 +93,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        window = 256,
                        index = "CVR",
                        date = "2015-09-05",
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "lat argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
@@ -114,8 +108,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        window = 256,
                        index = "CVR",
                        date = "2015-09-05",
-                       lat = -1.915867928971629,
-                       twilight = "sunlight"),
+                       lat = -1.915867928971629),
     regexp = "lon argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
@@ -132,8 +125,7 @@ testthat::test_that("the merge_csv function works as expected when the correct a
                                  index = "CVR",
                                  date = "2015-09-05",
                                  lat = -1.915867928971629,
-                                 lon = -59.48937990402315,
-                                 twilight = "sunlight")
+                                 lon = -59.48937990402315)
 
   testthat::expect_s4_class(merged_soundscape, "soundscape")
   testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@first_day))
@@ -186,8 +178,7 @@ testthat::test_that("the merge_csv function works as expected when the correct a
                                  index = "BGN",
                                  date = "2015-09-05",
                                  lat = -1.915867928971629,
-                                 lon = -59.48937990402315,
-                                 twilight = "sunlight")
+                                 lon = -59.48937990402315)
 
   testthat::expect_s4_class(merged_soundscape, "soundscape")
   testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@first_day))
@@ -240,8 +231,7 @@ testthat::test_that("the merge_csv function works as expected when the correct a
                                  index = "OSC",
                                  date = "2015-09-05",
                                  lat = -1.915867928971629,
-                                 lon = -59.48937990402315,
-                                 twilight = "sunlight")
+                                 lon = -59.48937990402315)
 
   testthat::expect_s4_class(merged_soundscape, "soundscape")
   testthat::expect_true(lubridate::is.POSIXct(merged_soundscape@first_day))
@@ -299,8 +289,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = paste0("Path ",
                     paste0("'", fpath_output, "/IDontExist", "'"),
                     " does not exist"),
@@ -320,8 +309,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "samplerate is not a single, positive integer. Consult the package documentation for more information on the samplerate.",
     fixed = TRUE)
 
@@ -337,8 +325,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "samplerate is not a single, positive integer. Consult the package documentation for more information on the samplerate.",
     fixed = TRUE)
 
@@ -354,8 +341,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "samplerate is not a single, positive integer. Consult the package documentation for more information on the samplerate.",
     fixed = TRUE)
 
@@ -373,8 +359,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "window is not a single, positive integer. Consult the package documentation for more information on the window.",
     fixed = TRUE)
 
@@ -390,8 +375,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "window is not a single, positive integer. Consult the package documentation for more information on the window.",
     fixed = TRUE)
 
@@ -407,8 +391,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "window is not a single, positive integer. Consult the package documentation for more information on the window.",
     fixed = TRUE)
 
@@ -426,8 +409,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = as.factor("CVR"),
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "index is not a character string of one of the available spectral acoustic indices. Please consult package documentation for available options. Pay attention to capital letters and the presence of excess spaces.",
     fixed = TRUE)
 
@@ -443,8 +425,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "I'm not an option!",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "index is not a character string of one of the available spectral acoustic indices. Please consult package documentation for available options. Pay attention to capital letters and the presence of excess spaces.",
     fixed = TRUE)
 
@@ -462,8 +443,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = as.factor("2015-09-05"),
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "date is not a character string. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.",
     fixed = TRUE)
 
@@ -478,8 +458,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "05-09-2015",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "date is not a valid date. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.",
     fixed = TRUE)
 
@@ -494,8 +473,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "05/09/2015",
                        lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "date is not a valid date. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.",
     fixed = TRUE)
 
@@ -512,8 +490,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = "1°55'00.1",
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "lat is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -528,8 +505,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = "59°28'25.7",
-                       twilight = "sunlight"),
+                       lon = "59°28'25.7"),
     regexp = "lon is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -544,8 +520,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = "1°54'57.2",
-                       lon = "59°28'25.7",
-                       twilight = "sunlight"),
+                       lon = "59°28'25.7"),
     regexp = "lat is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -560,8 +535,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = 91,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "lat is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -576,8 +550,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -91,
-                       lon = -59.48937990402315,
-                       twilight = "sunlight"),
+                       lon = -59.48937990402315),
     regexp = "lat is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -592,8 +565,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = 181,
-                       twilight = "sunlight"),
+                       lon = 181),
     regexp = "lon is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -608,8 +580,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -1.915867928971629,
-                       lon = -181,
-                       twilight = "sunlight"),
+                       lon = -181),
     regexp = "lon is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -624,8 +595,7 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = 91,
-                       lon = 181,
-                       twilight = "sunlight"),
+                       lon = 181),
     regexp = "lat is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed = TRUE)
 
@@ -640,43 +610,8 @@ testthat::test_that("the merge_csv function provides the correct error when the 
                        index = "CVR",
                        date = "2015-09-05",
                        lat = -91,
-                       lon = -181,
-                       twilight = "sunlight"),
+                       lon = -181),
     regexp = "lat is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
-    fixed = TRUE)
-
-})
-
-    # 2.2.7. The twilight argument is wrong
-
-testthat::test_that("the merge_csv function provides the correct error when the twilight argument is not a character string", {
-
-  testthat::expect_error(
-    object = merge_csv(fileloc = fpath_output,
-                       samplerate = 44100,
-                       window = 256,
-                       index = "CVR",
-                       date = "2015-09-05",
-                       lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = as.factor("sunlight")),
-    regexp = "twilight is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.",
-    fixed = TRUE)
-
-})
-
-testthat::test_that("the merge_csv function provides the correct error when the twilight argument is not one of the available options", {
-
-  testthat::expect_error(
-    object = merge_csv(fileloc = fpath_output,
-                       samplerate = 44100,
-                       window = 256,
-                       index = "CVR",
-                       date = "2015-09-05",
-                       lat = -1.915867928971629,
-                       lon = -59.48937990402315,
-                       twilight = "I'm not an option!"),
-    regexp = "twilight is not a valid twilight argument. The twilight argument needs to be either a character string indicating one of the following: none, rim, refraction, sunlight, civil, nautical or astronomical - or a numeric vector of length 1 or 2 indicating the solar elevation angle(s) in degrees (negative if below the horizon). For more information, please consult the soundscapeR and photobiology package documentations.",
     fixed = TRUE)
 
 })
