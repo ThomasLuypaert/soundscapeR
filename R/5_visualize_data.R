@@ -1644,17 +1644,6 @@ heatmapper=function(aggregated_soundscape,
             size=0.2)+
 
           ggplot2::annotate(
-            geom="label",
-            size=labelsize_polar,
-            y=seq(minfreq,
-                  maxfreq,
-                  freqinterval),
-            x=min(df2$time),
-            label=as.character(seq(minfreq,
-                                   maxfreq,
-                                   freqinterval)))+
-
-          ggplot2::annotate(
             geom="rect",
             xmin =min(df2$time),
             xmax=sunrise,
@@ -1708,7 +1697,18 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::labs(fill="OSU INCIDENCE")+
 
-          ggplot2::guides(color='none')
+          ggplot2::guides(color='none')+
+
+          ggplot2::annotate(
+            geom="label",
+            size=labelsize_polar,
+            y=seq(minfreq,
+                  maxfreq,
+                  freqinterval),
+            x=min(df2$time),
+            label=as.character(seq(minfreq,
+                                   maxfreq,
+                                   freqinterval)))
 
 
 
