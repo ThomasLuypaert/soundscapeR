@@ -878,10 +878,30 @@ heatmapper=function(aggregated_soundscape,
   df2 <- lengthen(aggregated_soundscape = aggregated_soundscape)
 
   if(zero.black==TRUE){
-    df2[df2==0] <- NA
+
+    color_vector <- viridis::viridis(
+      length(
+        sort(
+          unique(
+            unlist(aggregated_soundscape@aggregated_df)))),
+      direction = direction,
+      option = palette)
+
+    color_vector[1] <- "#000000"
+
   }
 
-  else{}
+  else{
+
+    color_vector <- viridis::viridis(
+    length(
+      sort(
+        unique(
+          unlist(aggregated_soundscape@aggregated_df)))),
+    direction = direction,
+    option = palette)
+
+    }
 
   minfreq <- minfreq
 
@@ -978,10 +998,10 @@ heatmapper=function(aggregated_soundscape,
                                        color=value)) +
 
           ggplot2::geom_tile()+
-          viridis::scale_fill_viridis(
-            option=palette,
-            na.value="black",
-            direction = direction,
+
+          ggplot2::scale_fill_gradientn(
+            colors = color_vector,
+            na.value = "grey45",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
@@ -990,18 +1010,16 @@ heatmapper=function(aggregated_soundscape,
             breaks=seq(0, 1, 0.1),
             limits = c(0, 1))+
 
-          viridis::scale_color_viridis(
-            option=palette,
-            na.value="black",
-            direction = direction,
+          ggplot2::scale_color_gradientn(
+            colors = color_vector,
+            na.value = "grey45",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
               title.hjust = 0.5,
-              nrow=2),
+              nrow=1),
             breaks=seq(0, 1, 0.1),
-            limits = c(0, 1)
-          ) +
+            limits = c(0, 1))+
 
 
           ggplot2::scale_x_datetime(
@@ -1223,10 +1241,9 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::geom_tile()+
 
-            viridis::scale_fill_viridis(
-              option=palette,
-              na.value="black",
-              direction = direction,
+            ggplot2::scale_fill_gradientn(
+              colors = color_vector,
+              na.value = "grey45",
               guide = ggplot2::guide_legend(
                 title.position = "top",
                 title.vjust = 1,
@@ -1235,17 +1252,16 @@ heatmapper=function(aggregated_soundscape,
               breaks=seq(0, 1, 0.1),
               limits = c(0, 1))+
 
-            viridis::scale_color_viridis(
-              option=palette,
-              na.value="black",
-              direction = direction,
+            ggplot2::scale_color_gradientn(
+              colors = color_vector,
+              na.value = "grey45",
               guide = ggplot2::guide_legend(
                 title.position = "top",
                 title.vjust = 1,
                 title.hjust = 0.5,
-                nrow=2),
-              breaks=seq(0, 1, 0.1), limits = c(0, 1)
-            ) +
+                nrow=1),
+              breaks=seq(0, 1, 0.1),
+              limits = c(0, 1))+
 
             ggplot2::scale_x_datetime(
               labels=scales::date_format("%H:%M", tz=tz),
@@ -1442,28 +1458,27 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::geom_tile()+
 
-          viridis::scale_fill_viridis(
-            option=palette,
-            na.value="black",
-            direction = direction,
+          ggplot2::scale_fill_gradientn(
+            colors = color_vector,
+            na.value = "grey45",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
               title.hjust = 0.5,
               nrow=1),
-            breaks=seq(0, 1, 0.1), limits = c(0, 1))+
+            breaks=seq(0, 1, 0.1),
+            limits = c(0, 1))+
 
-          viridis::scale_color_viridis(
-            option=palette,
-            na.value="black",
-            direction = direction,
+          ggplot2::scale_color_gradientn(
+            colors = color_vector,
+            na.value = "grey45",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
               title.hjust = 0.5,
-              nrow=2),
-            breaks=seq(0, 1, 0.1), limits = c(0, 1)
-          ) +
+              nrow=1),
+            breaks=seq(0, 1, 0.1),
+            limits = c(0, 1))+
 
           ggplot2::labs(
             y="Frequency (Hz)",
@@ -1534,28 +1549,27 @@ heatmapper=function(aggregated_soundscape,
 
           ggplot2::geom_tile()+
 
-          viridis::scale_fill_viridis(
-            option=palette,
-            na.value="black",
-            direction = direction,
+          ggplot2::scale_fill_gradientn(
+            colors = color_vector,
+            na.value = "grey45",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
               title.hjust = 0.5,
-              nrow=2),
-            breaks=seq(0, 1, 0.1), limits = c(0, 1))+
+              nrow=1),
+            breaks=seq(0, 1, 0.1),
+            limits = c(0, 1))+
 
-          viridis::scale_color_viridis(
-            option=palette,
-            na.value="black",
-            direction = direction,
+          ggplot2::scale_color_gradientn(
+            colors = color_vector,
+            na.value = "grey45",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
               title.hjust = 0.5,
-              nrow=2),
-            breaks=seq(0, 1, 0.1), limits = c(0, 1)
-          ) +
+              nrow=1),
+            breaks=seq(0, 1, 0.1),
+            limits = c(0, 1))+
 
           ggplot2::scale_x_datetime(
             labels=scales::date_format("%H:%M", tz=tz),
@@ -1728,28 +1742,27 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::geom_tile()+
 
-            viridis::scale_fill_viridis(
-              option=palette,
-              na.value="black",
-              direction = direction,
+            ggplot2::scale_fill_gradientn(
+              colors = color_vector,
+              na.value = "grey45",
               guide = ggplot2::guide_legend(
                 title.position = "top",
                 title.vjust = 1,
                 title.hjust = 0.5,
-                nrow=2),
-              breaks=seq(0, 1, 0.1), limits = c(0, 1))+
+                nrow=1),
+              breaks=seq(0, 1, 0.1),
+              limits = c(0, 1))+
 
-            viridis::scale_color_viridis(
-              option=palette,
-              na.value="black",
-              direction = direction,
+            ggplot2::scale_color_gradientn(
+              colors = color_vector,
+              na.value = "grey45",
               guide = ggplot2::guide_legend(
                 title.position = "top",
                 title.vjust = 1,
                 title.hjust = 0.5,
-                nrow=2),
-              breaks=seq(0, 1, 0.1), limits = c(0, 1)
-            ) +
+                nrow=1),
+              breaks=seq(0, 1, 0.1),
+              limits = c(0, 1))+
 
             ggplot2::scale_x_datetime(
               labels=scales::date_format("%H:%M", tz=tz),
