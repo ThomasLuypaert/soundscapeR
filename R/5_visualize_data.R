@@ -1219,7 +1219,7 @@ heatmapper=function(aggregated_soundscape,
             angle=-90,
             size=labelsize_frequency)+
 
-          ggplot2::labs(fill="OSU INCIDENCE") +
+          ggplot2::labs(fill="OSU RELATIVE ABUNDANCE") +
 
           ggplot2::guides(color='none')
 
@@ -1435,7 +1435,7 @@ heatmapper=function(aggregated_soundscape,
 
             ggplot2::geom_vline(xintercept = midnight2)+
 
-            ggplot2::labs(fill="OSU INCIDENCE")+
+            ggplot2::labs(fill="OSU RELATIVE ABUNDANCE")+
 
             ggplot2::guides(color='none')
 
@@ -1512,7 +1512,7 @@ heatmapper=function(aggregated_soundscape,
               size = 12,
               face = "bold"))+
 
-          ggplot2::labs(fill="OSU INCIDENCE")+
+          ggplot2::labs(fill="OSU RELATIVE ABUNDANCE")+
 
           ggplot2::guides(color='none')+
 
@@ -1709,7 +1709,7 @@ heatmapper=function(aggregated_soundscape,
             fill="#ffcc13",
             alpha=0.25)+
 
-          ggplot2::labs(fill="OSU INCIDENCE")+
+          ggplot2::labs(fill="OSU RELATIVE ABUNDANCE")+
 
           ggplot2::guides(color='none')+
 
@@ -1831,7 +1831,7 @@ heatmapper=function(aggregated_soundscape,
                                      maxfreq,
                                      freqinterval)))+
 
-            ggplot2::labs(fill="OSU INCIDENCE")+
+            ggplot2::labs(fill="OSU RELATIVE ABUNDANCE")+
 
             ggplot2::guides(color='none')
 
