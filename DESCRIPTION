@@ -1,6 +1,6 @@
 Package: soundscapeR
 Type: Package
-Title: Visualization and Quantification of Soundscape Diversity
+Title: Visualization and Quantification of Soundscape Diversity using Hill Numbers
 Version: 0.1.0
 Authors@R: c(
     person("Thomas", "Luypaert", email = "thomas.luypaert@nmbu.no", role = c("cre", "aut")),
@@ -9,17 +9,18 @@ Authors@R: c(
     person("Torbjørn", "Haugaasen", email="torbjorn.haugaasen@nmbu.no", role="aut"))
 Maintainer: Thomas Luypaert <thomas.luypaert@nmbu.no>
 Description: The soundscapeR package constitutes a standardized analytical pipeline for 
-    the computation, visualization and diversity quantification of soundscapes. 
+    the exploration, computation, visualization, and comparison of soundscape diveristy using Hill numbers. 
     The package is designed to work with either continuous or regular-interval long-duration
     acoustic recordings.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Imports: 
     yaml (>= 2.2.1),
     lubridate, 
     hms, 
+    limma,
     ggplot2 (> 3.3.0), 
     dplyr, 
     stringr,
@@ -32,24 +33,26 @@ Imports:
     grid (>= 2.6.3),
     patchwork (>= 1.0.0),
     hilldiv (>= 1.5.1),
-    photobiology (>= 0.10.2),
     utils (>= 3.6.3),
     suncalc (>= 0.5.0),
     rlist,
     methods,
-    magrittr
+    magrittr,
+    data.table, 
+    vegan, 
+    tidyr,
+    ggrepel
 Suggests: 
     covr,
+    qs,
+    sf,
     testthat (>= 3.0.0), 
-    qs, 
     vdiffr,
-    limma,
     pracma,
     geiger,
     crayon,
     parallel,
     assertthat, 
-    sf, 
     here
 Depends: 
     R (>= 3.5.0)
