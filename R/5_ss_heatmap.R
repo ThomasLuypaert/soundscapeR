@@ -190,7 +190,7 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_1) <- function(call, env){
 
-    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape', or is empty. Please supply the aggregated_soundscape object produced by the ss_aggregate() function. Consult the package documentation for further information.")
+    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape'. Please supply the aggregated_soundscape object produced by the ss_aggregate() or ss_create() functions. Consult the package documentation for further information.")
 
   }
 
@@ -220,13 +220,13 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_3) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
   assertthat::on_failure(test_4) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
@@ -248,18 +248,6 @@ ss_heatmap=function(aggregated_soundscape,
   }
 
   assertthat::assert_that(test_5(aggregated_soundscape@tz))
-
-    # 1.2.4. The sunrise and sunset arguments cannot be wrong (s4 property)
-
-  #   # 1.2.5. The fileloc argument
-  #
-  # test_6 <- function(x){
-  #
-  #   assertthat::is.dir(x) & assertthat::is.readable(x)
-  #
-  # }
-  #
-  # assertthat::assert_that(test_6(aggregated_soundscape@fileloc))
 
     # 1.2.6. The index argument
 
@@ -462,48 +450,6 @@ ss_heatmap=function(aggregated_soundscape,
     assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
   }
 
-  # 1.2.13. The aggregated_df_per_time argument
-
-  # test_17 <- function(x){
-  #
-  #   all(
-  #
-  #   all(sapply(x, function(x) is.data.frame(x))) &
-  #     assertthat::are_equal(
-  #       as.vector(sort(table(colnames(aggregated_soundscape@merged_df)))),
-  #       as.vector(unlist(sapply(x, function(x) ncol(x))))
-  #     ) &
-  #     all(sapply(x, function(x) nrow(x)==nrow(aggregated_soundscape@merged_df))) &
-  #     all(names(x) == unique(colnames(aggregated_soundscape@merged_df))) &
-  #     length(x) == ncol(aggregated_soundscape@aggregated_df)
-  #
-  #   )
-  #
-  # }
-  #
-  # assertthat::on_failure(test_17) <- function(call, env){
-  #
-  #   paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
-  #
-  # }
-
-  # assertthat::assert_that(test_17(aggregated_soundscape@aggregated_df_per_time))
-
-  # 1.2.14. The effort_per_time argument
-#
-#   test_18 <- function(x){
-#
-#     identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
-#
-#   }
-#
-#   assertthat::on_failure(test_18) <- function(call, env){
-#
-#     paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
-#
-#   }
-#
-#   assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
 
   # 1.3. Check if supplied type argument is one of
   # available options
@@ -1544,7 +1490,7 @@ ss_heatmap=function(aggregated_soundscape,
 
     if (type=="polar"){
 
-      print("Please bear with us, making polar heatmaps take a bit longer...")
+      print("Please bear with us, making polar heatmaps takes a bit longer...")
       Sys.sleep(0.0001)
 
       if (annotate==TRUE){
@@ -1741,7 +1687,7 @@ ss_heatmap=function(aggregated_soundscape,
 
       else{
 
-        print("Please bear with us, making polar heatmaps take a bit longer...")
+        print("Please bear with us, making polar heatmaps takes a bit longer...")
         Sys.sleep(0.0001)
 
         if (annotate==FALSE){
