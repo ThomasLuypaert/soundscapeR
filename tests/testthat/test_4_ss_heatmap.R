@@ -366,7 +366,7 @@ aggregated_soundscape_CVR_df_1 <- aggregated_soundscape_CVR
 aggregated_soundscape_CVR_df_2 <- aggregated_soundscape_CVR
 aggregated_soundscape_CVR_df_3 <- aggregated_soundscape_CVR
 aggregated_soundscape_CVR_df_4 <- aggregated_soundscape_CVR
-aggregated_soundscape_CVR_df_5 <- aggregated_soundscape_CVR
+
 aggregated_soundscape_CVR_df_1@merged_df <- aggregated_soundscape_CVR_df_1@merged_df[FALSE,]
 aggregated_soundscape_CVR_df_2@merged_df[1,1] <- NA
 aggregated_soundscape_CVR_df_3@merged_df[1,1] <- "I'm not numeric"
@@ -376,8 +376,8 @@ rownames(aggregated_soundscape_CVR_df_4@merged_df) <-
 testthat::test_that("the ss_heatmap function produces the correct error message when the aggregate_soundscape merged_df argument is empty", {
 
   testthat::expect_error(
-    object = ss_heatmap(aggregate_soundscape = aggregate_soundscape_CVR_df_1),
-    regexp = "aggregate_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_df_1),
+    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -386,8 +386,8 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 testthat::test_that("the ss_heatmap function produces the correct error message when the aggregate_soundscape merged_df argument contains NA values", {
 
   testthat::expect_error(
-    object = ss_heatmap(aggregate_soundscape = aggregate_soundscape_CVR_df_2),
-    regexp = "aggregate_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_df_2),
+    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -396,8 +396,8 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 testthat::test_that("the ss_heatmap function produces the correct error message when the aggregate_soundscape merged_df argument contains non-numeric values", {
 
   testthat::expect_error(
-    object = ss_heatmap(aggregate_soundscape = aggregate_soundscape_CVR_df_3),
-    regexp = "aggregate_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_df_3),
+    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -406,8 +406,8 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 testthat::test_that("the ss_heatmap function produces the correct error message when the aggregate_soundscape merged_df argument has incorrect row names", {
 
   testthat::expect_error(
-    object = ss_heatmap(aggregate_soundscape = aggregate_soundscape_CVR_df_4),
-    regexp = "aggregate_soundscape@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.",
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_df_4),
+    regexp = "aggregated_soundscape@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.",
     fixed=TRUE
   )
 
