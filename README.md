@@ -6,64 +6,31 @@ Thomas Luypaert, Anderson S. Bueno, Carlos A. Peres, Torbjørn Haugaasen
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml)
+[![code
+coverage](https://codecov.io/gh/ThomasLuypaert/soundscapeR/branch/master/graph/badge.svg)](https://codecov.io/gh/ThomasLuypaert/soundscapeR)
 <!-- badges: end -->
 
 |                                                                   |                                                                                                                                                                                                                                                                                                                                                                                                                         |
 |-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![soundscaper hexsticker](man/figures/soundscaper_hexsticker.png) | The goal of `soundscapeR` is to provide a standardized analytical pipeline for the computation, exploration, visualization and diversity quantification of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings, and can handle both audible and ultrasonic recordings. More information about the workflow can be found in Luypaert et al. (2022) |
 
-# Table of Contents
-
--   Priors
-    -   Acknowledgements
-    -   Workflow background
--   The workflow
-    -   Raw acoustic data
-    -   Calculating acoustic indices
-    -   Merging acoustic indices chronologically
-        -   The merge_csv function
-        -   Introducing the soundscape object
-    -   The concept of Operational Sound Units (OSUs)
-    -   Binarization of the CVR-index values
-
-0.  [Priors](github.com/ThomasLuypaert/soundscapeR#0-priors) 0.1.
-    [Acknowledgements](github.com/ThomasLuypaert/soundscapeR#01-acknowlegements)
-    0.2. [Workflow
-    background](github.com/ThomasLuypaert/soundscapeR#02-workflow-background)
-
-1.  [The workflow](github.com/ThomasLuypaert/soundscapeR#1-the-workflow)
-    1.1. [Raw acoustic
-    data](github.com/ThomasLuypaert/soundscapeR#11-raw-acoustic-data)
-    1.2. [Calculating acoustic
-    indices](github.com/ThomasLuypaert/soundscapeR#12-calculating-acoustic-indices)
-    1.3. [Merging acoustic indices
-    chronologically](github.com/ThomasLuypaert/soundscapeR#13-merging-acoustic-indices-chronologically)
-    1.3.1. [The `merge_csv`
-    function](github.com/ThomasLuypaert/soundscapeR#131-the-merge_csv-function)
-    1.3.1. [Introducing the *soundscape*
-    object](github.com/ThomasLuypaert/soundscapeR#132-introducing-the-soundscape-object)
-    1.4. [The concept of Operational Sound Units
-    (OSUs)](github.com/ThomasLuypaert/soundscapeR#14-the-concept-of-operational-sound-units-osus)
-    1.5. [Binarization of CVR-index
-    values](github.com/ThomasLuypaert/soundscapeR#15-binarization-of-the-cvr-index-values)
-
--   [Priors](#priors)
-    -   [Acknowledgements](#acknowledgements)
--   [Background](#background)
-    -   [Theoretical background](#theoretical-background)
-    -   [Workflow background](#workflow-background)
--   [The workflow](#the-workflow)
-    -   [Collection of acoustic data](#collection-of-acoustic-data)
-    -   [Measuring acoustic properties per 24h soundscape
-        sample](#measuring-acoustic-properties-per-24h-soundscape-sample)
-        -   [A. Calculating spectral acoustic
-            indices](#a.-calculating-spectral-acoustic-indices)
-        -   [B. Merging the spectral index values
-            chronologically](#b.-merging-the-spectral-index-values-chronologically)
-    -   [The concept of Operational Sound Units
-        (OSUs)](#the-concept-of-operational-sound-units-(osus))
-    -   [Binarization of the CVR-index
-        values](#binarization-of-the-cvr-index-values)
+- [Priors](#priors)
+  - [Acknowledgements](#acknowledgements)
+- [Background](#background)
+  - [Theoretical background](#theoretical-background)
+  - [Workflow background](#workflow-background)
+- [The workflow](#the-workflow)
+  - [Collection of acoustic data](#collection-of-acoustic-data)
+  - [Measuring acoustic properties per 24h soundscape
+    sample](#measuring-acoustic-properties-per-24h-soundscape-sample)
+    - [A. Calculating spectral acoustic
+      indices](#a.-calculating-spectral-acoustic-indices)
+    - [B. Merging the spectral index values
+      chronologically](#b.-merging-the-spectral-index-values-chronologically)
+  - [The concept of Operational Sound Units
+    (OSUs)](#the-concept-of-operational-sound-units-(osus))
+  - [Binarization of the CVR-index
+    values](#binarization-of-the-cvr-index-values)
 
 # 0. Priors
 
@@ -99,16 +66,23 @@ sound-producing community can be derived by isolating and identifying
 species’ calls, thus providing an objective and permanent record of the
 biological community at a given moment in time and space.
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Fig_1_Benefits_of_PAM.png" title="The benefits of Passive Acoustic Monitoring over conventional active acoustic sampling by an in-situ observer." alt="The benefits of Passive Acoustic Monitoring over conventional active acoustic sampling by an in-situ observer." width="75%" />
+<div class="figure" style="text-align: centre">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+<img src="man/figures/Fig_1_Benefits_of_PAM.png" alt="The benefits of Passive Acoustic Monitoring over conventional active acoustic sampling by an in-situ observer." width="75%" />
+<p class="caption">
+The benefits of Passive Acoustic Monitoring over conventional active
+acoustic sampling by an in-situ observer.
+</p>
 
-***Fig 1:*** *The benefits of Passive Acoustic Monitoring over
-conventional active acoustic sampling by an in-situ observer.*
+</div>
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.001in]$$ ***Fig 1:*** *The benefits of Passive Acoustic
+Monitoring over conventional active acoustic sampling by an in-situ
+observer.*
+
+$$\\[0.1in]$$
 
 Yet, obtaining species-level information at large spatio-temporal scales
 and taxonomic breath presents numerous difficulties, such as the
@@ -116,18 +90,27 @@ time-consuming and knowledge-demanding nature of aural annotation of
 sound files, and the paucity of reliable automated species identifiers
 and reference databases for most taxa and regions.
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Fig_2_Limitation_of_PAM.png" title="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." alt="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." width="75%" />
+<div class="figure" style="text-align: centre">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+<img src="man/figures/Fig_2_Limitation_of_PAM.png" alt="The factors limiting the extraction of taxonomic information from acoustic data at broad spatial and temporal scales. The field of soundscape ecology attempts to derive ecological information from this big acoustic data while overcoming some of these limitations." width="75%" />
+<p class="caption">
+The factors limiting the extraction of taxonomic information from
+acoustic data at broad spatial and temporal scales. The field of
+soundscape ecology attempts to derive ecological information from this
+big acoustic data while overcoming some of these limitations.
+</p>
 
-***Fig 2:*** *The factors limiting the extraction of taxonomic
-information from acoustic data at broad spatial and temporal scales. The
-field of soundscape ecology attempts to derive ecological information
-from this big acoustic data while overcoming some of these limitations.*
+</div>
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.001in]$$ ***Fig 2:*** *The factors limiting the extraction of
+taxonomic information from acoustic data at broad spatial and temporal
+scales. The field of soundscape ecology attempts to derive ecological
+information from this big acoustic data while overcoming some of these
+limitations.*
+
+$$\\[0.1in]$$
 
 In addition to taxonomic information, species’ sounds also carry
 functional significance. Acoustic signals are crucial for a broad range
@@ -203,16 +186,35 @@ in the acoustic traits in a biological community:
     selection.  
       
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Fig_3_ANH.PNG" title="A theoretical visualization of the various ways in which species can partition their acoustic niche. A. Spatial Niche Partitioning implies the production of vocalizations in different parts of 3D-space to avoid overlap acoustic signals. This has been demonstrated for [cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x); B. Spectral Niche Partitioning implies the shifting of the dominant frequency peak between individuals of different species to avoid signal overlap. This has been demonstrated for [frogs](https://pubmed.ncbi.nlm.nih.gov/25101228/); C. Temporal Niche Partitioning implies a shift in the time of peak vocal activity between individuals of different species to minimize signal overlap. This has been demonstrated between [bird and cicada species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false). Note that, in this image, seasonal partitioning of the acoustic niche was omitted." alt="A theoretical visualization of the various ways in which species can partition their acoustic niche. A. Spatial Niche Partitioning implies the production of vocalizations in different parts of 3D-space to avoid overlap acoustic signals. This has been demonstrated for [cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x); B. Spectral Niche Partitioning implies the shifting of the dominant frequency peak between individuals of different species to avoid signal overlap. This has been demonstrated for [frogs](https://pubmed.ncbi.nlm.nih.gov/25101228/); C. Temporal Niche Partitioning implies a shift in the time of peak vocal activity between individuals of different species to minimize signal overlap. This has been demonstrated between [bird and cicada species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false). Note that, in this image, seasonal partitioning of the acoustic niche was omitted." width="100%" />
+<div class="figure" style="text-align: centre">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+<img src="man/figures/Fig_3_ANH.PNG" alt="A theoretical visualization of the various ways in which species can partition their acoustic niche. A. Spatial Niche Partitioning implies the production of vocalizations in different parts of 3D-space to avoid overlap acoustic signals. This has been demonstrated for [cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x); B. Spectral Niche Partitioning implies the shifting of the dominant frequency peak between individuals of different species to avoid signal overlap. This has been demonstrated for [frogs](https://pubmed.ncbi.nlm.nih.gov/25101228/); C. Temporal Niche Partitioning implies a shift in the time of peak vocal activity between individuals of different species to minimize signal overlap. This has been demonstrated between [bird and cicada species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false). Note that, in this image, seasonal partitioning of the acoustic niche was omitted." width="100%" />
+<p class="caption">
+A theoretical visualization of the various ways in which species can
+partition their acoustic niche. A. Spatial Niche Partitioning implies
+the production of vocalizations in different parts of 3D-space to avoid
+overlap acoustic signals. This has been demonstrated for
+[cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x);
+B. Spectral Niche Partitioning implies the shifting of the dominant
+frequency peak between individuals of different species to avoid signal
+overlap. This has been demonstrated for
+[frogs](https://pubmed.ncbi.nlm.nih.gov/25101228/); C. Temporal Niche
+Partitioning implies a shift in the time of peak vocal activity between
+individuals of different species to minimize signal overlap. This has
+been demonstrated between [bird and cicada
+species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false).
+Note that, in this image, seasonal partitioning of the acoustic niche
+was omitted.
+</p>
 
-***Fig 3:*** *A theoretical visualization of the various ways in which
-species can partition their acoustic niche. A. Spatial Niche
-Partitioning implies the production of vocalizations in different parts
-of 3D-space to avoid overlap acoustic signals. This has been
+</div>
+
+$$\\[0.001in]$$ ***Fig 3:*** *A theoretical visualization of the various
+ways in which species can partition their acoustic niche. A. Spatial
+Niche Partitioning implies the production of vocalizations in different
+parts of 3D-space to avoid overlap acoustic signals. This has been
 demonstrated for
 [cicadas](https://onlinelibrary.wiley.com/doi/10.1046/j.1095-8312.2002.00030.x);
 B. Spectral Niche Partitioning implies the shifting of the dominant
@@ -226,7 +228,7 @@ species](https://academic.oup.com/beheco/article/26/3/839/234674?login=false).
 Note that, in this image, seasonal partitioning of the acoustic niche
 was omitted.*
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
 These diverse selective pressures vary across space, thus driving
 variation in acoustic trait diversity in the landscape. The field of
@@ -319,16 +321,15 @@ the need for species identification from sound files.
 
 **The workflow pipeline consists of the following steps:**
 
--   Collection of acoustic data
--   Measuring the acoustic properties of sound per 24h soundscape sample
-    -   Computing the spectral CVR-index per 1-min sound file
-    -   Merging the spectral CVR-index files chronologically per site
--   The concept of OSUs
--   Determining the presence / absence of sound per 24h soundscape
-    sample
--   Determining the relative abundance of each OSU during the acoustic
-    survey period
--   Quantification of soundscape diversity metrics
+- Collection of acoustic data
+- Measuring the acoustic properties of sound per 24h soundscape sample
+  - Computing the spectral CVR-index per 1-min sound file
+  - Merging the spectral CVR-index files chronologically per site
+- The concept of OSUs
+- Determining the presence / absence of sound per 24h soundscape sample
+- Determining the relative abundance of each OSU during the acoustic
+  survey period
+- Quantification of soundscape diversity metrics
 
 The `soundscapeR` R-package presented in this tutorial represents the
 software implementation of the analytical pipeline described above. In
@@ -370,18 +371,27 @@ regardless of which acoustic survey sampling design is chosen, if
 multiple soundscapes are to be compared across a landscape, the same
 sampling design should be used.
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Step_1_data_collection.png" title="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." alt="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." width="100%" />
+<div class="figure" style="text-align: centre">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+<img src="man/figures/Step_1_data_collection.png" alt="A theoretical representation of long-duration eco-acoustic data collection. Data is collected over a 7-day acoustic survey period using a continuous sampling regime. The sound files are grouped per 24-hour period and considered a sample of the soundscape." width="100%" />
+<p class="caption">
+A theoretical representation of long-duration eco-acoustic data
+collection. Data is collected over a 7-day acoustic survey period using
+a continuous sampling regime. The sound files are grouped per 24-hour
+period and considered a sample of the soundscape.
+</p>
 
-***Fig 5:*** *A theoretical representation of long-duration eco-acoustic
-data collection. Data is collected over a 7-day acoustic survey period
-using a continuous sampling regime. The sound files are grouped per
-24-hour period and considered a sample of the soundscape.*
+</div>
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.001in]$$ ***Fig 5:*** *A theoretical representation of
+long-duration eco-acoustic data collection. Data is collected over a
+7-day acoustic survey period using a continuous sampling regime. The
+sound files are grouped per 24-hour period and considered a sample of
+the soundscape.*
+
+$$\\[0.1in]$$
 
 For the purposes of this vignette, a few raw sound files are provided in
 the package data. These sound files were collected at the Balbina
@@ -391,23 +401,25 @@ sampling regime and a 44,100 Hz sampling rate.
 Let’s take a look at where the raw data is saved on your device:
 
 ``` r
+
 location_soundfiles <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
                               "/raw_sound_files")
 
 print(location_soundfiles)
-#> [1] "C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/raw_sound_files"
+#> [1] "C:/Program Files/R/R-4.2.2/library/soundscapeR/extdata/raw_sound_files"
 ```
 
 Now, let’s check which raw sound files are included in the package:
 
 ``` r
+
 list.files(location_soundfiles)
-#>  [1] "G10_Coata_20151017_000000Z.wav" "G10_Coata_20151017_000500Z.wav"
-#>  [3] "G10_Coata_20151017_001000Z.wav" "G10_Coata_20151017_001500Z.wav"
-#>  [5] "G10_Coata_20151017_002000Z.wav" "G10_Coata_20151017_002500Z.wav"
-#>  [7] "G10_Coata_20151017_003000Z.wav" "G10_Coata_20151017_003500Z.wav"
-#>  [9] "G10_Coata_20151017_004000Z.wav" "G10_Coata_20151017_004500Z.wav"
-#> [11] "G10_Coata_20151017_005000Z.wav" "G10_Coata_20151017_005500Z.wav"
+#>  [1] "G4_Aline_20150711_000000Z.wav" "G4_Aline_20150711_000500Z.wav"
+#>  [3] "G4_Aline_20150711_001000Z.wav" "G4_Aline_20150711_001500Z.wav"
+#>  [5] "G4_Aline_20150711_002000Z.wav" "G4_Aline_20150711_002500Z.wav"
+#>  [7] "G4_Aline_20150711_003000Z.wav" "G4_Aline_20150711_003500Z.wav"
+#>  [9] "G4_Aline_20150711_004000Z.wav" "G4_Aline_20150711_004500Z.wav"
+#> [11] "G4_Aline_20150711_005000Z.wav" "G4_Aline_20150711_005500Z.wav"
 ```
 
 Look at that! The package contains 12 sound files collected on the 17th
@@ -459,39 +471,52 @@ and applies a mathematical equation (acoustic index) to each
 noise-reduced frequency bin to produce a vector of spectral index values
 (Fig. 6A).
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Step_2_1_index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
-
-***Fig 6:*** *A theoretical representation of how spectral indices are
-computed. First, each 1-minute sound file is subjected to a Fast Fourier
+<img src="man/figures/Step_2_1_index_computation.png" alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" />
+<p class="caption">
+A theoretical representation of how spectral indices are computed.
+First, each 1-minute sound file is subjected to a Fast Fourier
 Transformation, which extracts information on the amplitude variation
 across the time-frequency domain. Next, the resulting spectrogram is
 subjected to a noise-removal step. Finally, a mathematical equation
 (spectral index) is applied to the amplitude values in each frequency
 bin, resulting in a spectral index vector with one index value per
-frequency bin.*
+frequency bin.
+</p>
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+</div>
 
-We will try this out on the raw sound files contained in the package.
+$$\\[0.001in]$$ ***Fig 6:*** *A theoretical representation of how
+spectral indices are computed. First, each 1-minute sound file is
+subjected to a Fast Fourier Transformation, which extracts information
+on the amplitude variation across the time-frequency domain. Next, the
+resulting spectrogram is subjected to a noise-removal step. Finally, a
+mathematical equation (spectral index) is applied to the amplitude
+values in each frequency bin, resulting in a spectral index vector with
+one index value per frequency bin.*
+
+$$\\[0.1in]$$ We will try this out on the raw sound files contained in
+the package.
 
 First, we will specify the location where we will save the output files:
 
 ``` r
+
 location_output <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
                               "/processed_output_files")
 
 print(location_output)
-#> [1] "C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/processed_output_files"
+#> [1] "C:/Program Files/R/R-4.2.2/library/soundscapeR/extdata/processed_output_files"
 ```
 
 Next, we will compute the spectral indices:
 
 ``` r
-soundscapeR::index_calc(fileloc = location_soundfiles,
+
+soundscapeR::ss_index_calc(fileloc = location_soundfiles,
                         outputloc = location_output,
                         samplerate = 44100, 
                         window = 256, 
@@ -506,6 +531,7 @@ Now, let’s take a look at which indices we’ve computed for one of the
 sound files:
 
 ``` r
+
 # Get the location where the output of the first sound file is saved
 
 output_location_1 <- paste0(location_output, "/256/G10_Coata_20151017_000000Z.wav/Towsey.Acoustic")
@@ -514,20 +540,7 @@ output_location_1 <- paste0(location_output, "/256/G10_Coata_20151017_000000Z.wa
 
 list.files(output_location_1)[grep(pattern = ".csv",
                                    x = list.files(output_location_1))][-7]
-#>  [1] "G10_Coata_20151017_000000Z__Towsey.Acoustic.ACI.csv"
-#>  [2] "G10_Coata_20151017_000000Z__Towsey.Acoustic.BGN.csv"
-#>  [3] "G10_Coata_20151017_000000Z__Towsey.Acoustic.CVR.csv"
-#>  [4] "G10_Coata_20151017_000000Z__Towsey.Acoustic.DIF.csv"
-#>  [5] "G10_Coata_20151017_000000Z__Towsey.Acoustic.ENT.csv"
-#>  [6] "G10_Coata_20151017_000000Z__Towsey.Acoustic.EVN.csv"
-#>  [7] "G10_Coata_20151017_000000Z__Towsey.Acoustic.OSC.csv"
-#>  [8] "G10_Coata_20151017_000000Z__Towsey.Acoustic.PMN.csv"
-#>  [9] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RHZ.csv"
-#> [10] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RNG.csv"
-#> [11] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RPS.csv"
-#> [12] "G10_Coata_20151017_000000Z__Towsey.Acoustic.RVT.csv"
-#> [13] "G10_Coata_20151017_000000Z__Towsey.Acoustic.SPT.csv"
-#> [14] "G10_Coata_20151017_000000Z__Towsey.Acoustic.SUM.csv"
+#> character(0)
 ```
 
 Great, using the simple `index_calc` command, we’ve computed 14 spectral
@@ -553,26 +566,39 @@ exceeds a 3 dB threshold.
 Next up, we will merge the spectral CVR-index files chronologically,
 resulting in a time-by-frequency data frame containing the index values.
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Step_2_2_index_computation.png" title="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+<img src="man/figures/Step_2_2_index_computation.png" alt="A theoretical representation of how spectral indices are computed. First, each 1-minute sound file is subjected to a Fast Fourier Transformation, which extracts information on the amplitude variation across the time-frequency domain. Next, the resulting spectrogram is subjected to a noise-removal step. Finally, a mathematical equation (spectral index) is applied to the amplitude values in each frequency bin, resulting in a spectral index vector with one index value per frequency bin." width="100%" />
+<p class="caption">
+A theoretical representation of how spectral indices are computed.
+First, each 1-minute sound file is subjected to a Fast Fourier
+Transformation, which extracts information on the amplitude variation
+across the time-frequency domain. Next, the resulting spectrogram is
+subjected to a noise-removal step. Finally, a mathematical equation
+(spectral index) is applied to the amplitude values in each frequency
+bin, resulting in a spectral index vector with one index value per
+frequency bin.
+</p>
 
-***Fig 7:*** *A theoretical representation of the chronological
-concatenation step. All the spectral index vectors resulting from the
-index computation at a site are merged chronologically, resulting in a
-time-by-frequency data frame containing the spectral index values. On
-the right, a visual representation of the spectral index values in the
-time-by-frequency data frame for 7 24-hour samples of the acoustic trait
-space.*
+</div>
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.001in]$$ ***Fig 7:*** *A theoretical representation of the
+chronological concatenation step. All the spectral index vectors
+resulting from the index computation at a site are merged
+chronologically, resulting in a time-by-frequency data frame containing
+the spectral index values. On the right, a visual representation of the
+spectral index values in the time-by-frequency data frame for 7 24-hour
+samples of the acoustic trait space.*
+
+$$\\[0.1in]$$
 
 To do this, we can use the `merge_csv` function:
 
 ``` r
-merged_CVR_index <- soundscapeR::merge_csv(fileloc = location_output, 
+
+merged_CVR_index <- soundscapeR::ss_index_merge(fileloc = location_output, 
                                            samplerate = 44100, 
                                            window = 256, 
                                            index = "CVR", 
@@ -593,6 +619,7 @@ will form the basis of all subsequent functions. Let’s take a look at
 this newly created object:
 
 ``` r
+
 # Let's see what class this object is:
 
 summary(merged_CVR_index)
@@ -603,6 +630,7 @@ summary(merged_CVR_index)
 This new data object is an ‘S4’ object of the class *soundscape*.
 
 ``` r
+
 # Let's see what sort of information this object holds
 
 merged_CVR_index
@@ -620,7 +648,7 @@ merged_CVR_index
 #> 
 #>     Acoustic index metadata:  
 #> 
-#>     Path to raw sound files:  C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/processed_output_files 
+#>     Path to raw sound files:  C:/Program Files/R/R-4.2.2/library/soundscapeR/extdata/processed_output_files 
 #>     Spectral index used:  CVR 
 #>     Sampling rate of the recording:  44100  Hz 
 #>     Window size used in FFT:  256  samples 
@@ -641,11 +669,11 @@ merged_CVR_index
 #> Columns 1 to 5 and rows 1 to 5 displayed 
 #> 
 #>         00:00:00   00:05:00   00:10:00   00:15:00   00:20:00
-#> 22050 0.15539429 0.16100629 0.15578133 0.13101113 0.16536043
-#> 21877 0.17900339 0.19990324 0.18442187 0.17513304 0.21209482
-#> 21705 0.14746009 0.17639090 0.15432995 0.14126754 0.16197388
-#> 21533 0.08234156 0.10401548 0.09124335 0.08485728 0.08795356
-#> 21360 0.01219158 0.01538462 0.01451379 0.01306241 0.01509434
+#> 22050 0.13226899 0.14910498 0.14320271 0.16381229 0.14968553
+#> 21877 0.16545718 0.16855346 0.19738752 0.19187228 0.19758104
+#> 21705 0.13971940 0.14000968 0.15403967 0.16032898 0.16477987
+#> 21533 0.08688921 0.08243832 0.09453314 0.09840348 0.08959845
+#> 21360 0.01209482 0.01190131 0.01499758 0.01673924 0.01344944
 #> 
 #>     Binarized data frame data:  
 #> 
@@ -664,6 +692,7 @@ this object, we will use the ‘@’ symbol. Let’s take a look at which
 types of data are stored in the object so far:
 
 ``` r
+
 # Let's check what sort of data collection metadata is stored in the object
 
 print(paste0("First day of data collection: ", merged_CVR_index@first_day))
@@ -688,10 +717,11 @@ location coordinates.
 Let’s continue looking at the data stored in the *soundscape* object:
 
 ``` r
+
 # Let's check what sort of metadata the object has stored regarding past data processing steps
 
 print(paste0("Where are the raw sound files located: ", merged_CVR_index@fileloc))
-#> [1] "Where are the raw sound files located: C:/Users/thlu/AppData/Local/Programs/R/R-4.2.0/library/soundscapeR/extdata/processed_output_files"
+#> [1] "Where are the raw sound files located: C:/Program Files/R/R-4.2.2/library/soundscapeR/extdata/processed_output_files"
 print(paste0("What acoustic index are we using: ", merged_CVR_index@index, " index"))
 #> [1] "What acoustic index are we using: CVR index"
 print(paste0("What was the samplerate used to collect the data: ", merged_CVR_index@samplerate, " Hz"))
@@ -708,14 +738,15 @@ structure of the data frame we obtained by merging the CVR-index files
 chronologically:
 
 ``` r
+
 head(merged_CVR_index@merged_df)[,1:5]
 #>         00:00:00   00:05:00   00:10:00   00:15:00   00:20:00
-#> 22050 0.15539429 0.16100629 0.15578133 0.13101113 0.16536043
-#> 21877 0.17900339 0.19990324 0.18442187 0.17513304 0.21209482
-#> 21705 0.14746009 0.17639090 0.15432995 0.14126754 0.16197388
-#> 21533 0.08234156 0.10401548 0.09124335 0.08485728 0.08795356
-#> 21360 0.01219158 0.01538462 0.01451379 0.01306241 0.01509434
-#> 21188 0.01103048 0.01344944 0.01190131 0.01451379 0.01490082
+#> 22050 0.13226899 0.14910498 0.14320271 0.16381229 0.14968553
+#> 21877 0.16545718 0.16855346 0.19738752 0.19187228 0.19758104
+#> 21705 0.13971940 0.14000968 0.15403967 0.16032898 0.16477987
+#> 21533 0.08688921 0.08243832 0.09453314 0.09840348 0.08959845
+#> 21360 0.01209482 0.01190131 0.01499758 0.01673924 0.01344944
+#> 21188 0.01199806 0.01112724 0.01557813 0.01877117 0.01364296
 ```
 
 As we previously mentioned, this data frame contains the spectral
@@ -727,6 +758,7 @@ Each column contains the spectral index values of a single sound file.
 Let’s inspect this data frame a little closer:
 
 ``` r
+
 # How many columns does the data frame contain?
 
 paste0("The data frame contains: ", ncol(merged_CVR_index@merged_df), " columns")
@@ -746,6 +778,7 @@ correponds to the time of day at which the recording was collected.
 Next, let’s take a look at the rows:
 
 ``` r
+
 # How many rows does the data frame contain?
 
 paste0("The data frame contains: ", nrow(merged_CVR_index@merged_df), " rows")
@@ -769,6 +802,7 @@ frequency bin. The frequency bins range from 0 - 22,050 Hz, and are of
 approximately 172 Hz width. Now, let’s inspect the CVR-index values:
 
 ``` r
+
 # What is the minimum CVR-index value in our data frame?
 
 paste0("The minimum CVR-value in our data frame is: ", min(merged_CVR_index@merged_df))
@@ -777,7 +811,7 @@ paste0("The minimum CVR-value in our data frame is: ", min(merged_CVR_index@merg
 # What is the maximum CVR-index value in our data frame?
 
 paste0("The max CVR-value in our data frame is: ", max(merged_CVR_index@merged_df))
-#> [1] "The max CVR-value in our data frame is: 0.502177068214804"
+#> [1] "The max CVR-value in our data frame is: 0.491243347847121"
 ```
 
 As we can see, in our dataset, the CVR-index values range between 0 -
@@ -805,21 +839,32 @@ their shared spectro-temporal properties, and is obtained by dividing
 the acoustic trait space into many discrete spectro-temporal bins which
 are the soundscape equivalent of time-frequency bins in a spectrogram.
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Step_3_OSUs.png" title="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." alt="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
+<img src="man/figures/Step_3_OSUs.png" alt="A conceptual visualization of Operational Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the acoustic trait space can be divided into sections which we define as OSUs. These OSUs are delineated by the frequency-bin width of the spectral index vector (frequency domain) and the recording interval of the sampling regime (temporal domain), and groups sounds by their shared properties in acoustic trait space." width="100%" />
+<p class="caption">
+A conceptual visualization of Operational Sound Units (OSUs) in the
+24-hour acoustic trait space. Each 24-hour sample of the acoustic trait
+space can be divided into sections which we define as OSUs. These OSUs
+are delineated by the frequency-bin width of the spectral index vector
+(frequency domain) and the recording interval of the sampling regime
+(temporal domain), and groups sounds by their shared properties in
+acoustic trait space.
+</p>
 
-***Fig 8:*** *A conceptual visualization of Operational Sound Units
-(OSUs) in the 24-hour acoustic trait space. Each 24-hour sample of the
-acoustic trait space can be divided into sections which we define as
-OSUs. These OSUs are delineated by the frequency-bin width of the
-spectral index vector (frequency domain) and the recording interval of
-the sampling regime (temporal domain), and groups sounds by their shared
-properties in acoustic trait space.*
+</div>
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.001in]$$ ***Fig 8:*** *A conceptual visualization of Operational
+Sound Units (OSUs) in the 24-hour acoustic trait space. Each 24-hour
+sample of the acoustic trait space can be divided into sections which we
+define as OSUs. These OSUs are delineated by the frequency-bin width of
+the spectral index vector (frequency domain) and the recording interval
+of the sampling regime (temporal domain), and groups sounds by their
+shared properties in acoustic trait space.*
+
+$$\\[0.1in]$$
 
 Practically, we have already performed the steps needed to obtain this
 unit of measurement: each time-frequency cell in the chronologically
@@ -845,8 +890,9 @@ Fast Fourier Transformation.
 This object is available in the package, and can be loaded as follows:
 
 ``` r
+
 location_soundscape_obj <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
-                              "/merged_soundscape")
+                              "/ss_binarize_test")
 
 merged_soundscape_CVR <- qs::qread(paste0(location_soundscape_obj, "/merged_soundscape_CVR.ssc"))
 
@@ -868,33 +914,45 @@ which potentially have a non-biological origin, from the data. In this
 way, we hope to capture the acoustic structure of the soundscape while
 removing background noise.
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+$$\\[0.1in]$$
 
-<img src="man/figures/Step_4_binarization.png" title="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." alt="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
 
-![\\\\\[0.001in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.001in%5D "\\[0.001in]")
-
-***Fig 9:*** *A visualization showing the binarization step, starting
-from the chronologically concatenated CVR-index values for a 24-hour
-soundscape sample. Next, a threshold value is applied, which is derived
-using a binarization algorithm. Based on this threshold value, the raw
+<img src="man/figures/Step_4_binarization.png" alt="A visualization showing the binarization step, starting from the chronologically concatenated CVR-index values for a 24-hour soundscape sample. Next, a threshold value is applied, which is derived using a binarization algorithm. Based on this threshold value, the raw CVR-values are transformed into binary detection (1) / non-detection (0) values." width="100%" />
+<p class="caption">
+A visualization showing the binarization step, starting from the
+chronologically concatenated CVR-index values for a 24-hour soundscape
+sample. Next, a threshold value is applied, which is derived using a
+binarization algorithm. Based on this threshold value, the raw
 CVR-values are transformed into binary detection (1) / non-detection (0)
-values.*
+values.
+</p>
 
-![\\\\\[0.1in\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5C%5B0.1in%5D "\\[0.1in]")
+</div>
+
+$$\\[0.001in]$$ ***Fig 9:*** *A visualization showing the binarization
+step, starting from the chronologically concatenated CVR-index values
+for a 24-hour soundscape sample. Next, a threshold value is applied,
+which is derived using a binarization algorithm. Based on this threshold
+value, the raw CVR-values are transformed into binary detection (1) /
+non-detection (0) values.*
+
+$$\\[0.1in]$$
 
 To do this, we make use of the binarization algorithms available in the
 R-package. For this example, we will use the ‘IsoData’ binarization
 algorithm:
 
 ``` r
-bin_soundscape_CVR <- soundscapeR::binarize_df(merged_soundscape = merged_soundscape_CVR, method = "IsoData")
+
+bin_soundscape_CVR <- soundscapeR::ss_binarize(merged_soundscape = merged_soundscape_CVR, method = "IsoData")
 ```
 
 We can see that the *soundscape* object produced by the `binarize_df`
 function has now been updated with some new metadata:
 
 ``` r
+
 # Which threshold algorithm was used for binarization?
 
 paste0("The ", bin_soundscape_CVR@binarization_method, " method was used for binarzation")
@@ -903,13 +961,14 @@ paste0("The ", bin_soundscape_CVR@binarization_method, " method was used for bin
 # Which threshold was used for binarization?
 
 paste0("The threshold used for binarization was: ", bin_soundscape_CVR@threshold)
-#> [1] "The threshold used for binarization was: 0.09"
+#> [1] "The threshold used for binarization was: 0.1"
 ```
 
 Additionally, a new data frame has been added to the object. Let’s
 inspect this data frame:
 
 ``` r
+
 # What are the dimensions of the binarized dataframe?
 
 dim(bin_soundscape_CVR@binarized_df)
@@ -932,7 +991,8 @@ visually inspected using the before-after plots produced by the
 `check_thresh` function:
 
 ``` r
-soundscapeR::check_thresh(merged_soundscape = merged_soundscape_CVR, method = "Otsu")
+
+soundscapeR::ss_threshold_check(merged_soundscape = merged_soundscape_CVR, method = "Otsu")
 #> Loading required namespace: patchwork
 ```
 
