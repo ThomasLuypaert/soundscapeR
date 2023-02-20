@@ -3,17 +3,27 @@ library(soundscapeR)
 
 # 1. Load the path name to the ss_index_merge output folder
 
-zipped_file <- list.files(
+
+extdata_files <- list.files(
   system.file("extdata/ss_index_merge_test",
               package = "soundscapeR"), full.names = TRUE)
 
-out_dir <-  gsub(pattern = "/output.zip", replacement = "", zipped_file)
+if(any(extdata_files == "output$")){
 
-unzip(zipfile = zipped_file,
-      exdir = out_dir)
+  fpath_output <-  system.file("extdata/ss_index_merge_test/output",
+                               package = "soundscapeR")
+} else{
 
-fpath_output <-  system.file("extdata/ss_index_merge_test/output",
-                             package = "soundscapeR")
+  out_dir <-  gsub(pattern = "/output.zip", replacement = "", extdata_files)
+
+  unzip(zipfile = extdata_files,
+        exdir = out_dir)
+
+  fpath_output <-  system.file("extdata/ss_index_merge_test/output",
+                               package = "soundscapeR")
+
+}
+
 
 # 2. Start testing the ss_index_merge function
 
@@ -618,3 +628,8 @@ testthat::test_that("the ss_index_merge function provides the correct error when
     fixed = TRUE)
 
 })
+
+
+# Removing the unzipped output folder
+
+unlink(fpath_output, recursive=TRUE)
