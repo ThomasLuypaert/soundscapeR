@@ -368,25 +368,18 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_12) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
+    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.")
 
   }
 
   assertthat::on_failure(test_13) <- function(call, env){
 
-    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
-
-  }
-
-  assertthat::on_failure(test_14) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
+    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.")
 
   }
 
   assertthat::assert_that(test_12(aggregated_soundscape@merged_df))
   assertthat::assert_that(test_13(aggregated_soundscape@merged_df))
-  assertthat::assert_that(test_14(aggregated_soundscape@merged_df))
 
     # 1.2.12. The binarized_df argument
 
