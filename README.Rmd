@@ -20,40 +20,12 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml)
+[![code coverage](https://codecov.io/gh/ThomasLuypaert/soundscapeR/branch/master/graph/badge.svg)](https://codecov.io/gh/ThomasLuypaert/soundscapeR)
 <!-- badges: end -->
 
 |  |  |
 |---|---|
 |![soundscaper hexsticker](man/figures/soundscaper_hexsticker.png) |The goal of `soundscapeR` is to provide a standardized analytical pipeline for the computation, exploration, visualization and diversity quantification of soundscapes. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings, and can handle both audible and ultrasonic recordings. More information about the workflow can be found in Luypaert et al. (2022)|
-
-
-# Table of Contents
-
-* Priors
-  + Acknowledgements
-  + Workflow background
-* The workflow
-  + Raw acoustic data
-  + Calculating acoustic indices
-  + Merging acoustic indices chronologically
-    - The merge_csv function
-    - Introducing the soundscape object
-  + The concept of Operational Sound Units (OSUs)
-  + Binarization of the CVR-index values
-
-0. [Priors](github.com/ThomasLuypaert/soundscapeR#0-priors)
-    0.1. [Acknowledgements](github.com/ThomasLuypaert/soundscapeR#01-acknowlegements)
-    0.2. [Workflow background](github.com/ThomasLuypaert/soundscapeR#02-workflow-background)
-  
-1. [The workflow](github.com/ThomasLuypaert/soundscapeR#1-the-workflow)
-    1.1. [Raw acoustic data](github.com/ThomasLuypaert/soundscapeR#11-raw-acoustic-data)
-    1.2. [Calculating acoustic indices](github.com/ThomasLuypaert/soundscapeR#12-calculating-acoustic-indices)
-    1.3. [Merging acoustic indices chronologically](github.com/ThomasLuypaert/soundscapeR#13-merging-acoustic-indices-chronologically)
-      1.3.1. [The `merge_csv` function](github.com/ThomasLuypaert/soundscapeR#131-the-merge_csv-function)
-      1.3.1. [Introducing the *soundscape* object](github.com/ThomasLuypaert/soundscapeR#132-introducing-the-soundscape-object)
-    1.4. [The concept of Operational Sound Units (OSUs)](github.com/ThomasLuypaert/soundscapeR#14-the-concept-of-operational-sound-units-osus)
-    1.5. [Binarization of CVR-index values](github.com/ThomasLuypaert/soundscapeR#15-binarization-of-the-cvr-index-values)
-
 
 
 ```{r, echo=FALSE}
@@ -326,7 +298,7 @@ Next, we will compute the spectral indices:
 
 ```{r, results='hide', message=FALSE, warning=FALSE}
 
-soundscapeR::index_calc(fileloc = location_soundfiles,
+soundscapeR::ss_index_calc(fileloc = location_soundfiles,
                         outputloc = location_output,
                         samplerate = 44100, 
                         window = 256, 
@@ -376,7 +348,7 @@ To do this, we can use the `merge_csv` function:
 
 ```{r}
 
-merged_CVR_index <- soundscapeR::merge_csv(fileloc = location_output, 
+merged_CVR_index <- soundscapeR::ss_index_merge(fileloc = location_output, 
                                            samplerate = 44100, 
                                            window = 256, 
                                            index = "CVR", 
@@ -535,7 +507,7 @@ This object is available in the package, and can be loaded as follows:
 ```{r}
 
 location_soundscape_obj <- paste0(base::system.file("extdata", package = "soundscapeR", mustWork = TRUE), 
-                              "/merged_soundscape")
+                              "/ss_binarize_test")
 
 merged_soundscape_CVR <- qs::qread(paste0(location_soundscape_obj, "/merged_soundscape_CVR.ssc"))
 
@@ -565,7 +537,7 @@ To do this, we make use of the binarization algorithms available in the \code{\l
 
 ```{r}
 
-bin_soundscape_CVR <- soundscapeR::binarize_df(merged_soundscape = merged_soundscape_CVR, method = "IsoData")
+bin_soundscape_CVR <- soundscapeR::ss_binarize(merged_soundscape = merged_soundscape_CVR, method = "IsoData")
 
 ```
 
@@ -604,7 +576,7 @@ In addition to the 'IsoData' algorithm, other types of algorithms are available.
 
 ```{r, out.width="75%", fig.asp=1.5}
 
-soundscapeR::check_thresh(merged_soundscape = merged_soundscape_CVR, method = "Otsu")
+soundscapeR::ss_threshold_check(merged_soundscape = merged_soundscape_CVR, method = "Otsu")
 
 ```
 
