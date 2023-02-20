@@ -399,7 +399,7 @@ testthat::test_that("the ss_aggregate function produces the correct error messag
 binarized_soundscape_binmeth1 <- binarized_soundscape_CVR
 binarized_soundscape_binmeth1@binarization_method <- "I'm not an option!"
 
-testthat::test_that("the ss_aggregate function produces the correct error message when the binarized_soundscape window argument is wrong", {
+testthat::test_that("the ss_aggregate function produces the correct error message when the binarized_soundscape binarization method argument is wrong", {
 
   testthat::expect_error(
     object = ss_aggregate(binarized_soundscape = binarized_soundscape_binmeth1,
