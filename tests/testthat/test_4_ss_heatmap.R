@@ -359,6 +359,8 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 
 })
 
+
+
     # Wrong merged_df
 
     # Wrong binarized_df
