@@ -253,7 +253,7 @@ ss_binarize <- function(merged_soundscape,
 
   test_1 <- function(x, y){
 
-    !(method == "custom" & (missing(x) | is.null(x)))
+    !((method == "Custom" | method == "custom") & (missing(x) | is.null(x)))
 
   }
 
@@ -285,11 +285,7 @@ ss_binarize <- function(merged_soundscape,
 
   }
 
-  test_3 <- function(x){
 
-    assertthat::not_empty(x)
-
-  }
 
   assertthat::on_failure(test_2) <- function(call, env){
 
@@ -297,14 +293,8 @@ ss_binarize <- function(merged_soundscape,
 
   }
 
-  assertthat::on_failure(test_3) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty S4-object of the type 'soundscape'. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.")
-
-  }
 
   assertthat::assert_that(test_2(merged_soundscape))
-  assertthat::assert_that(test_3(merged_soundscape))
 
     # 1.2. The merged_soundscape elements are in the expected format
 
@@ -519,7 +509,7 @@ ss_binarize <- function(merged_soundscape,
   }
 
   test_18 <- function(x){
-  x %in% c("IJDefault", "Huang", "Huang2", "Intermodes", "IsoData", "Li","MaxEntropy", "Mean", "MinErrorI", "Minimum", "Moments", "Otsu","Percentile", "RenyiEntropy", "Shanbhag", "Triangle", "Yen","Mode", "custom")
+  x %in% c("IJDefault", "Huang", "Huang2", "Intermodes", "IsoData", "Li","MaxEntropy", "Mean", "MinErrorI", "Minimum", "Moments", "Otsu","Percentile", "RenyiEntropy", "Shanbhag", "Triangle", "Yen","Mode", "Custom", "custom")
   }
 
   assertthat::on_failure(test_17) <- function(call, env){
@@ -579,7 +569,7 @@ ss_binarize <- function(merged_soundscape,
   }
 
   else {
-    if (method == "custom") {
+    if (method == "Custom" | method == "custom") {
       threshold <- value
     }
   }
@@ -662,7 +652,7 @@ ss_threshold_check <- function(merged_soundscape,
 
   test_1 <- function(x, y){
 
-    !(method == "custom" & (missing(x) | is.null(x)))
+    !(method == "Custom" & (missing(x) | is.null(x)))
 
   }
 
@@ -694,11 +684,6 @@ ss_threshold_check <- function(merged_soundscape,
 
   }
 
-  test_3 <- function(x){
-
-    assertthat::not_empty(x)
-
-  }
 
   assertthat::on_failure(test_2) <- function(call, env){
 
@@ -706,14 +691,8 @@ ss_threshold_check <- function(merged_soundscape,
 
   }
 
-  assertthat::on_failure(test_3) <- function(call, env){
-
-    paste0(deparse(call$x), " is an empty S4-object of the type 'soundscape'. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.")
-
-  }
 
   assertthat::assert_that(test_2(merged_soundscape))
-  assertthat::assert_that(test_3(merged_soundscape))
 
   # 1.2. The merged_soundscape elements are in the expected format
 
@@ -928,7 +907,7 @@ ss_threshold_check <- function(merged_soundscape,
   }
 
   test_18 <- function(x){
-    x %in% c("IJDefault", "Huang", "Huang2", "Intermodes", "IsoData", "Li","MaxEntropy", "Mean", "MinErrorI", "Minimum", "Moments", "Otsu","Percentile", "RenyiEntropy", "Shanbhag", "Triangle", "Yen","Mode", "custom")
+    x %in% c("IJDefault", "Huang", "Huang2", "Intermodes", "IsoData", "Li","MaxEntropy", "Mean", "MinErrorI", "Minimum", "Moments", "Otsu","Percentile", "RenyiEntropy", "Shanbhag", "Triangle", "Yen","Mode", "Custom", "custom")
   }
 
   assertthat::on_failure(test_17) <- function(call, env){
@@ -1003,7 +982,7 @@ ss_threshold_check <- function(merged_soundscape,
   }
 
   else {
-    if (method == "custom") {
+    if (method == "Custom" | method == "custom") {
       threshold <- value
     }
   }

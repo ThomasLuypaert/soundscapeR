@@ -460,6 +460,7 @@ testthat::test_that("the ss_threshold function works for the 'Mode' binarization
 
 })
 
+
   # 2.2. If wrong df argument
 
     # 2.2.1. Argument is not a data frame
@@ -599,7 +600,7 @@ testthat::test_that("the ss_binarize function provides the correct error when th
 
   testthat::expect_error(
     object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
-                         method = "custom"),
+                         method = "Custom"),
     regexp = "value argument is missing. If you set method to 'custom', please supply a value argument. Consult package documentation for options.",
     fixed = TRUE)
 
@@ -611,7 +612,7 @@ testthat::test_that("the ss_binarize function provides the correct error when th
 testthat::test_that("the ss_binarize function works as expected when the correct arguments are supplied", {
 
  binarized_soundscape_CVR <- ss_binarize(merged_soundscape = merged_soundscape_CVR,
-                                     method = "Otsu",
+                                     method = "IsoData",
                                      value = NULL)
 
  testthat::expect_s4_class(binarized_soundscape_CVR, "soundscape")
@@ -639,11 +640,11 @@ testthat::test_that("the ss_binarize function works as expected when the correct
  testthat::expect_equal(binarized_soundscape_CVR@window, 256)
 
  testthat::expect_true(is.character(binarized_soundscape_CVR@binarization_method))
- testthat::expect_equal(binarized_soundscape_CVR@binarization_method, "Otsu")
+ testthat::expect_equal(binarized_soundscape_CVR@binarization_method, "IsoData")
  testthat::expect_true(is.double(binarized_soundscape_CVR@threshold))
  testthat::expect_equal(binarized_soundscape_CVR@threshold,
                         as.double(ss_threshold(df = merged_soundscape_CVR@merged_df,
-                                                method = "Otsu")))
+                                                method = "IsoData")))
 
  testthat::expect_true(is.na(binarized_soundscape_CVR@output))
  testthat::expect_true(is.data.frame(binarized_soundscape_CVR@merged_df))
@@ -668,6 +669,69 @@ testthat::test_that("the ss_binarize function works as expected when the correct
  testthat::expect_true(is.list(binarized_soundscape_CVR@effort_per_time))
  testthat::expect_true(all(
    sapply(binarized_soundscape_CVR@effort_per_time, function(x) is.na(x))))
+
+})
+
+testthat::test_that("the ss_binarize function works as expected when the correct arguments are supplied", {
+
+  binarized_soundscape_CVR <- ss_binarize(merged_soundscape = merged_soundscape_CVR,
+                                          method = "Custom",
+                                          value = 0.1)
+
+  testthat::expect_s4_class(binarized_soundscape_CVR, "soundscape")
+  testthat::expect_true(lubridate::is.POSIXct(binarized_soundscape_CVR@first_day))
+  testthat::expect_equal(as.character(binarized_soundscape_CVR@first_day),"2015-07-10")
+  testthat::expect_true(is.numeric(binarized_soundscape_CVR@lat))
+  testthat::expect_equal(binarized_soundscape_CVR@lat,-1.7332515613268331)
+  testthat::expect_true(is.numeric(binarized_soundscape_CVR@lon))
+  testthat::expect_equal(binarized_soundscape_CVR@lon,-59.65394067433209)
+  testthat::expect_true(is.character(binarized_soundscape_CVR@tz))
+  testthat::expect_equal(binarized_soundscape_CVR@tz, "America/Manaus")
+  testthat::expect_true(lubridate::is.POSIXct(binarized_soundscape_CVR@sunrise))
+  testthat::expect_equal(as.character(binarized_soundscape_CVR@sunrise),
+                         "2015-07-10 06:04:16")
+  testthat::expect_true(lubridate::is.POSIXct(binarized_soundscape_CVR@sunset))
+  testthat::expect_equal(as.character(binarized_soundscape_CVR@sunset),
+                         "2015-07-10 18:05:47")
+  testthat::expect_true(assertthat::is.dir(binarized_soundscape_CVR@fileloc))
+  testthat::expect_true(assertthat::is.readable(binarized_soundscape_CVR@fileloc))
+  testthat::expect_true(is.character(binarized_soundscape_CVR@index))
+  testthat::expect_equal(binarized_soundscape_CVR@index, "CVR")
+  testthat::expect_true(is.double(binarized_soundscape_CVR@samplerate))
+  testthat::expect_equal(binarized_soundscape_CVR@samplerate, 44100)
+  testthat::expect_true(is.double(binarized_soundscape_CVR@window))
+  testthat::expect_equal(binarized_soundscape_CVR@window, 256)
+
+  testthat::expect_true(is.character(binarized_soundscape_CVR@binarization_method))
+  testthat::expect_equal(binarized_soundscape_CVR@binarization_method, "Custom")
+  testthat::expect_true(is.double(binarized_soundscape_CVR@threshold))
+  testthat::expect_equal(binarized_soundscape_CVR@threshold,
+                         as.double(ss_threshold(df = merged_soundscape_CVR@merged_df,
+                                                method = "IsoData")))
+
+  testthat::expect_true(is.na(binarized_soundscape_CVR@output))
+  testthat::expect_true(is.data.frame(binarized_soundscape_CVR@merged_df))
+  testthat::expect_equal(dim(binarized_soundscape_CVR@merged_df),
+                         dim(merged_soundscape_CVR@merged_df))
+  testthat::expect_true(limma::isNumeric(binarized_soundscape_CVR@merged_df))
+  testthat::expect_true(assertthat::not_empty(binarized_soundscape_CVR@merged_df))
+  testthat::expect_true(assertthat::noNA(binarized_soundscape_CVR@merged_df))
+
+  testthat::expect_true(is.data.frame(binarized_soundscape_CVR@binarized_df))
+  testthat::expect_equal(dim(binarized_soundscape_CVR@binarized_df),
+                         dim(merged_soundscape_CVR@merged_df))
+  testthat::expect_true(min(binarized_soundscape_CVR@binarized_df)==0)
+  testthat::expect_true(max(binarized_soundscape_CVR@binarized_df)==1)
+
+
+  testthat::expect_equal(dim(binarized_soundscape_CVR@aggregated_df), c(1, 1))
+  testthat::expect_equal(binarized_soundscape_CVR@aggregated_df[1, 1], "missing")
+  testthat::expect_true(is.list(binarized_soundscape_CVR@aggregated_df_per_time))
+  testthat::expect_true(all(
+    sapply(binarized_soundscape_CVR@aggregated_df_per_time, function(x) is.na(x))))
+  testthat::expect_true(is.list(binarized_soundscape_CVR@effort_per_time))
+  testthat::expect_true(all(
+    sapply(binarized_soundscape_CVR@effort_per_time, function(x) is.na(x))))
 
 })
 
@@ -898,7 +962,7 @@ testthat::test_that("the ss_binarize function produces the correct error message
 merged_soundscape_postbin1 <- merged_soundscape_CVR
 merged_soundscape_postbin2 <- merged_soundscape_CVR
 merged_soundscape_postaggr <- merged_soundscape_CVR
-merged_soundscape_postbin1@binarization_method <- "Otsu"
+merged_soundscape_postbin1@binarization_method <- "IsoData"
 merged_soundscape_postbin2@threshold <- 1.5
 merged_soundscape_postaggr@output <- "raw"
 
@@ -1104,7 +1168,7 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
   testthat::expect_error(
     object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
-                         method = "custom",
+                         method = "Custom",
                          value = "Not the right format!"),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",
     fixed=TRUE
@@ -1116,7 +1180,7 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
   testthat::expect_error(
     object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
-                         method = "custom",
+                         method = "Custom",
                          value = c(1, 2)),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",
     fixed=TRUE
@@ -1153,7 +1217,7 @@ testthat::test_that("the ss_threshold_check function provides the correct error 
 
   testthat::expect_error(
     object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
-                         method = "custom"),
+                         method = "Custom"),
     regexp = "value argument is missing. If you set method to 'custom', please supply a value argument. Consult package documentation for options.",
     fixed = TRUE)
 
@@ -1162,15 +1226,16 @@ testthat::test_that("the ss_threshold_check function provides the correct error 
   # 5.1. When the correct data frame, method
   # (and potentially value) arguments are supplied
 
-# testthat::test_that("the ss_threshold_check function works as expected when the correct arguments are supplied", {
-#
-#   ss_threshold_check_plot <-  ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
-#                                      method = "IsoData",
-#                                      value = NULL)
-#
-#   vdiffr::expect_doppelganger("check_threshold_plot", ss_threshold_check_plot)
-#
-# })
+testthat::test_that("The ss_threshold_check function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_threshold_check plot",
+    fig = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+                             method = "IsoData",
+                             value = NULL),
+  )
+})
+
 
   # 5.2. When the supplied merged_soundscape argument is wrong
 
@@ -1541,7 +1606,7 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
   testthat::expect_error(
     object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
-                         method = "custom",
+                         method = "Custom",
                          value = "Not the right format!"),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",
     fixed=TRUE
@@ -1553,7 +1618,7 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
   testthat::expect_error(
     object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
-                         method = "custom",
+                         method = "Custom",
                          value = c(1, 2)),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",
     fixed=TRUE
