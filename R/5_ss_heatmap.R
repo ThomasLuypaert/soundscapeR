@@ -392,7 +392,7 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_15) <- function(call, env){
 
-    paste0(deparse(call$x), " has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() function.")
+    paste0(deparse(call$x), " has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() or ss_create() function.")
 
   }
 
@@ -417,7 +417,7 @@ ss_heatmap=function(aggregated_soundscape,
 
     assertthat::on_failure(test_16) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
@@ -436,7 +436,7 @@ ss_heatmap=function(aggregated_soundscape,
 
     assertthat::on_failure(test_16) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
@@ -573,8 +573,8 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
-  # assertthat::assert_that(test_25(minfreq))
-  # assertthat::assert_that(test_26(maxfreq))
+  assertthat::assert_that(test_25(minfreq))
+  assertthat::assert_that(test_26(maxfreq))
 
   # 1.9. Check if the nbins argument abides by the
   # expected format

@@ -59,27 +59,31 @@ testthat::test_that("The ss_heatmap function works as expected when the correct 
 
     # Polar heatmap and annotate == TRUE
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create polar heatmap plot with annotation",
-#     fig = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
-#                      type = "polar",
-#                      annotate = TRUE),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create polar heatmap plot with annotation",
+    fig = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                     type = "polar",
+                     annotate = TRUE,
+                     minfreq = 0,
+                     maxfreq = 500),
+  )
+})
 
     # Polar heatmap and annotate == FALSE
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create polar heatmap plot without annotation",
-#     fig = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
-#                      type = "polar",
-#                      annotate = FALSE),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create polar heatmap plot without annotation",
+    fig = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                     type = "polar",
+                     annotate = FALSE,
+                     minfreq = 0,
+                     maxfreq = 500),
+  )
+})
 
     # Subsetting in time and frequency domain
 
@@ -415,20 +419,298 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 
     # Wrong binarized_df
 
+aggregated_soundscape_CVR_bindf1 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_bindf2 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_bindf3 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_bindf4 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_bindf5 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_bindf6 <- aggregated_soundscape_CVR
+
+aggregated_soundscape_CVR_bindf1@binarized_df <- aggregated_soundscape_CVR_bindf1@binarized_df[FALSE,]
+aggregated_soundscape_CVR_bindf2@binarized_df[1,1] <- NA
+aggregated_soundscape_CVR_bindf3@binarized_df[1,1] <- "I'm not numeric"
+rownames(aggregated_soundscape_CVR_bindf4@binarized_df) <-
+  seq(1,nrow(aggregated_soundscape_CVR_bindf4@binarized_df), 1)
+aggregated_soundscape_CVR_bindf5@binarized_df[1,1] <- 25
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape binarized_df argument is empty", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_bindf1),
+    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape binarized_df argument contains NA values", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_bindf2),
+    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape binarized_df argument contains non-numeric values", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_bindf3),
+    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape binarized_df argument has incorrect row names", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_bindf4),
+    regexp = "aggregated_soundscape@binarized_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape binarized_df argument is non-binary", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_bindf5),
+    regexp = "aggregated_soundscape@binarized_df has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() or ss_create() function.",
+    fixed=TRUE
+  )
+
+})
+
     # Wrong aggregated_df
+
+aggregated_soundscape_CVR_aggdf1 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_aggdf2 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_aggdf3 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_aggdf4 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_aggdf5 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_aggdf6 <- aggregated_soundscape_CVR
+aggregated_soundscape_CVR_aggdf7 <- aggregated_soundscape_CVR
+
+aggregated_soundscape_CVR_aggdf1@aggregated_df <- aggregated_soundscape_CVR_aggdf1@aggregated_df[FALSE,]
+aggregated_soundscape_CVR_aggdf2@aggregated_df[1,1] <- NA
+aggregated_soundscape_CVR_aggdf3@aggregated_df[1,1] <- "I'm not numeric"
+rownames(aggregated_soundscape_CVR_aggdf4@aggregated_df) <-
+  seq(1,nrow(aggregated_soundscape_CVR_aggdf4@aggregated_df), 1)
+
+aggregated_soundscape_CVR_aggdf6@aggregated_df[1,1] <- 25
+aggregated_soundscape_CVR_aggdf7@aggregated_df[1,1] <- 500
+aggregated_soundscape_CVR_aggdf7@output <- "raw"
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape aggregated_df argument is empty", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_aggdf1),
+    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape aggregated_df argument contains NA values", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_aggdf2),
+    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape aggregated_df argument contains non-numeric values", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_aggdf3),
+    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape aggregated_df argument has incorrect row names", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_aggdf4),
+    regexp = "aggregated_soundscape@aggregated_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape output argument is 'incidence_freq' but the data frame contains values larger than one.", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_aggdf6),
+    regexp = "aggregated_soundscape@aggregated_df contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the aggregated_soundscape output argument is 'raw' but the data frame contains values larger than the number of sampling days", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR_aggdf7),
+    regexp = "aggregated_soundscape@aggregated_df contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.",
+    fixed=TRUE
+  )
+
+})
 
 
   # 2.2.3. The type argument
 
+testthat::test_that("the ss_heatmap function produces the correct error message when the type argument is not a character string", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        type = 25),
+    regexp = "type is not a character string. Please supply the heatmap type as a character string. Consult package documentation for available type argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the type argument is not one of the available options", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        type = "I'm not an option"),
+    regexp = "type is not one of the available heatmap type options. Please consult package documentation for available type argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
+    fixed=TRUE
+  )
+
+})
+
   # 2.2.4. The annotate argument
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the type argument is not a boolean flag", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        annotate = "I'm not a boolean flag"),
+    regexp = "annotate is not a Boolean flag (TRUE or FALSE). Please set annotate argument to TRUE or FALSE. Make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
 
   # 2.2.5. The timeinterval argument
 
+testthat::test_that("the ss_heatmap function produces the correct error message when the timeinterval argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        timeinterval = "five seconds"),
+    regexp = "timeinterval is not one of the available timeinterval options. Please make sure the timeinterval argument is a character string of the following format: n unit (with n = number, and unit = one of 'sec', 'secs', 'min', 'mins', 'hour', 'hours', 'day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'). Please consult the scales::breaks_width() documentation for more information.",
+    fixed=TRUE
+  )
+
+})
+
   # 2.2.6. The mintime and maxtime arguments
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the mintime or maxtime arguments are not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        mintime = "30:0:0"),
+    regexp = "mintime is not one a valid format. The mintime or maxtime arguments need to be a character string formatted as %H:%M:%S. Please consult the package documentation for further information.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the mintime or maxtime arguments are not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        maxtime = "30:0:0"),
+    regexp = "maxtime is not one a valid format. The mintime or maxtime arguments need to be a character string formatted as %H:%M:%S. Please consult the package documentation for further information.",
+    fixed=TRUE
+  )
+
+})
+
 
   # 2.2.7. The freqinterval argument
 
+testthat::test_that("the ss_heatmap function produces the correct error message when the freqinterval argument is not in the correct format or exceeds the frequency limits", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        freqinterval = "I'm not an option"),
+    regexp = "freqinterval is not a single positive integer, or is outside of the frequency bounds of the data frame. Please supply the frequency interval as a single positive integer which falls without the data frame's frequency bounds (min frequency < freqinterval < max frequency).",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the freqinterval argument is not in the correct format or exceeds the frequency limits", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        freqinterval = 30000),
+    regexp = "freqinterval is not a single positive integer, or is outside of the frequency bounds of the data frame. Please supply the frequency interval as a single positive integer which falls without the data frame's frequency bounds (min frequency < freqinterval < max frequency).",
+    fixed=TRUE
+  )
+
+})
+
   # 2.2.8. The minfreq and maxfreq arguments
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the minfreq or maxfreq argument is not in the correct format or exceeds the frequency limits", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        minfreq = "I'm not an option"),
+    regexp = "minfreq is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or equals 0. Please provide a minfreq argument which abides by the expected format. For more information, please consult the package documentation.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the minfreq or maxfreq argument is not in the correct format or exceeds the frequency limits", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        minfreq = 30000),
+    regexp = "minfreq is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or equals 0. Please provide a minfreq argument which abides by the expected format. For more information, please consult the package documentation.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the minfreq or maxfreq argument is not in the correct format or exceeds the frequency limits", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        maxfreq = "I'm not an option"),
+    regexp = "maxfreq is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or a character string set to default. Please provide a maxfreq argument which abides by the expected format. For more information, please consult the package documentation.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the minfreq or maxfreq argument is not in the correct format or exceeds the frequency limits", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        maxfreq = 30000),
+    regexp = "maxfreq is not a single positive integer which falls within the frequency bounds of the provided data frame (minimum frequency < minfreq < maximum frequency), or a character string set to default. Please provide a maxfreq argument which abides by the expected format. For more information, please consult the package documentation.",
+    fixed=TRUE
+  )
+
+})
+
+
 
   # 2.2.9. The nbins argument
 
