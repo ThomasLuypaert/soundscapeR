@@ -42,11 +42,6 @@
 #' as a numeric value. Defaults to the maximum frequency of
 #'  the dataframe.
 #'
-#' @param nbins If \code{marginplot=TRUE}, determines the
-#'  number of the frequency-bins by which to divide the
-#'   frequency range to compute the soundscape richness
-#'   (q=0), expressed as a single positive integer.
-#'
 #' @param labelsize_time If annotate=TRUE, can be used to
 #'  alter the size of temporal spectrum annotation. Please
 #'   provide as a single positive integer with a value > 0.
@@ -74,27 +69,9 @@
 #' If set to TRUE, absent OSUs with incidence zero
 #' will be colored black
 #'
-#' @param marginplot One of either TRUE or FALSE.
-#' If set to TRUE, adds marginal plots to the x- and y-axes.
-#' For the x-axis, the marginal plot displays the smoothed
-#'  richness of acoustically active frequency bins for
-#'  each time of day. For the y-axis, the marginal plot
-#'   displays the smoothed richness of acoustically
-#'   active time-bins for each frequency band. Note that
-#'    marginal plots are not available for type="polar".
-#'
-#' @param n_time If marginplot=TRUE, determines the backward
-#'  window length for smoothing the temporal richness.
-#'  Please supply the argument as a single positive integer.
-#'
-#' @param n_freq If marginplot=TRUE, determines the backward
-#'  window length for smoothing the frequency richness.
-#'  Please supply the argument as a single positive integer.
-#'
 #' @param interactive One of either TRUE or FALSE.
 #' If set to TRUE, an interactive plot is produced using
-#'  \code{\link[plotly]{ggplotly}}. Note that interactive
-#'   plots are not available for marginplot=TRUE.
+#'  \code{\link[plotly]{ggplotly}}.
 #'
 #' @param save One of either TRUE or FALSE. If set to TRUE,
 #'  saves the plot using \code{\link[ggplot2]{ggsave}}, and
@@ -137,16 +114,12 @@ ss_heatmap=function(aggregated_soundscape,
                     freqinterval=2000,
                     minfreq=0,
                     maxfreq="default",
-                    nbins=10,
                     labelsize_time=4,
                     labelsize_frequency=4,
                     labelsize_polar=3,
                     palette="D",
                     direction=1,
                     zero.black=FALSE,
-                    marginplot=FALSE,
-                    n_time=10,
-                    n_freq=2,
                     interactive=FALSE,
                     save=FALSE,
                     dir="default",
@@ -576,32 +549,13 @@ ss_heatmap=function(aggregated_soundscape,
   assertthat::assert_that(test_25(minfreq))
   assertthat::assert_that(test_26(maxfreq))
 
-  # 1.9. Check if the nbins argument abides by the
-  # expected format
-
-  test_27 <- function(x){
-
-    assertthat::is.count(x) &
-      x > 0 &
-      x < nrow(aggregated_soundscape@aggregated_df)
-  }
-
-  assertthat::on_failure(test_27) <- function(call, env){
-
-    paste0(deparse(call$x), " is not a valid nbins format. The nbins argument needs to be provided as a single positive integer. The value should range between 1 and the number of rows in the data frame. Please note that the nbins argument works in synergy with the marginplot argument. If you wish to display a marginal plot, please set marginplot = TRUE.")
-
-  }
-
-  assertthat::assert_that(test_27(nbins))
-
-
 
   # 1.11. Check if the labelsize arguments follow the
   # expected format.
 
   test_29 <- function(x){
 
-    (abs(x) == x) &
+    assertthat::is.count(x) &
       x > 0 &
       length(x) == 1
 
@@ -650,8 +604,7 @@ ss_heatmap=function(aggregated_soundscape,
   assertthat::assert_that(test_31(direction))
 
   # 1.13. Check if the boolean flag arguments follow the
-  # expected format (zero.black, marginplot, interactive,
-  # save)
+  # expected format (zero.black, interactive, save)
 
   test_32 <- function(x){
 
@@ -666,48 +619,8 @@ ss_heatmap=function(aggregated_soundscape,
   }
 
   assertthat::assert_that(test_32(zero.black))
-  assertthat::assert_that(test_32(marginplot))
   assertthat::assert_that(test_32(interactive))
   assertthat::assert_that(test_32(save))
-
-  test_33 <- function(x){
-
-    if (x == TRUE){
-
-    type =="regular" &
-      interactive ==FALSE
-
-    } else{return(TRUE)}
-
-  }
-
-  assertthat::on_failure(test_33) <- function(call, env){
-
-    paste0(deparse(call$x), " is used with other arguments which are not accepted. The marginplot=TRUE argument can not be used in synergy with type='polar' or interactive = TRUE.")
-
-  }
-
-  assertthat::assert_that(test_33(x = marginplot))
-
-  # 1.14. Check if the n_time and the n_freq arguments
-  # follow the expected format
-
-  test_34 <- function(x){
-
-    assertthat::is.count(x)
-
-  }
-
-  assertthat::on_failure(test_34) <- function(call, env){
-    paste0(deparse(call$x), " does not have the correct
-           format. Please supply the argument as a single
-           positive integer. Consult package documentation
-           for more information.")
-
-  }
-
-  assertthat::assert_that(test_34(n_time))
-  assertthat::assert_that(test_34(n_freq))
 
   # 1.15. Check if the dir, filename and device arguments
   # follow the expected format.
@@ -735,6 +648,11 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
+  assertthat::on_failure(test_36) <- function(call, env){
+    paste0(deparse(call$x), " is not a valid file path. The dir arguments needs to be a character string of either 'default' - or a valid pathname to an existing directory on your device. If you're working on a Windows operating system, pay attention to backslash and forwardslash.")
+
+  }
+
   assertthat::assert_that(test_35(dir))
   assertthat::assert_that(test_36(dir))
 
@@ -746,7 +664,7 @@ ss_heatmap=function(aggregated_soundscape,
 
   test_38 <- function(x){
 
-    !(sub('.*\\.', '', filename) %in% c("eps", "ps","tex", "pdf", "jpeg",
+    (sub('.*\\.', '', x) %in% c("eps", "ps","tex", "pdf", "jpeg",
                                         "tiff","png", "bmp","svg", "wmf"))
 
   }
@@ -1797,13 +1715,13 @@ ss_heatmap=function(aggregated_soundscape,
     }
   }
 
-  if (marginplot==FALSE & interactive==FALSE & save==FALSE){
+  if (interactive==FALSE & save==FALSE){
     plot
   }
 
   else{
 
-    if (marginplot==FALSE & interactive==FALSE & save==TRUE){
+    if (interactive==FALSE & save==TRUE){
 
       ggplot2::ggsave(
         filename=paste0(
@@ -1825,13 +1743,13 @@ ss_heatmap=function(aggregated_soundscape,
 
     else{
 
-      if (marginplot==FALSE & interactive==TRUE & save==FALSE){
+      if (interactive==TRUE & save==FALSE){
         plotly::ggplotly(plot)
       }
 
       else{
 
-        if (marginplot==FALSE & interactive==TRUE & save==TRUE){
+        if (interactive==TRUE & save==TRUE){
 
           ggplot2::ggsave(
             filename=paste0(
@@ -1853,158 +1771,8 @@ ss_heatmap=function(aggregated_soundscape,
           plotly::ggplotly(plot)
         }
 
-        else{
+        else{}
 
-              if (marginplot==TRUE & type=="regular" & interactive==FALSE){
-
-                heatmap <-
-                  plot+ggplot2::theme(
-                  plot.margin = grid::unit(
-                    c(0.15, 0.15, 0, 0), "cm"),
-                  legend.position = "none")
-
-                xdata <- sounddiv(aggregated_soundscape = aggregated_soundscape,
-                                  qvalue = 0,
-                                  subset = "tod",
-                                  minfreq = minfreq,
-                                  maxfreq = maxfreq)
-
-                colnames(xdata) <- c("richness", "time")
-
-                xdata$richness_smooth=pracma::movavg(
-                  xdata$richness,
-                  n=n_time,
-                  type="t")
-
-                xplot <-
-                  ggplot2::ggplot(
-                  xdata,
-                  ggplot2::aes(time,
-                               richness_smooth))+
-
-                  ggplot2::geom_area(alpha=0.25,
-                                     fill="#440154FF")+
-
-                  ggplot2::geom_line(color="black",
-                                     size=1.2)+
-
-                  ggplot2::ylab("Richness (%)")+
-
-                  ggplot2::xlab(NULL)+
-
-                  ggplot2::scale_x_time(expand = c(0,0))+
-
-                  ggplot2::scale_y_continuous(
-                    expand = c(0,0),
-                    label=scales::comma)+
-
-                  ggplot2::theme(
-                    axis.title.x = ggplot2::element_blank(),
-                    axis.ticks.x = ggplot2::element_blank(),
-                    axis.text.x = ggplot2::element_blank(),
-                    panel.border = ggplot2::element_blank(),
-                    panel.grid.major = ggplot2::element_blank(),
-                    panel.grid.minor = ggplot2::element_blank(),
-                    panel.background = ggplot2::element_blank(),
-                    plot.margin = grid::unit(c(0, 0, 0, 0),
-                                             "cm"))
-
-                ydata <-
-                  as.data.frame(
-                    sounddiv(
-                      aggregated_soundscape = aggregated_soundscape,
-                      qvalue = 0,
-                      subset = "total",
-                      freqseq = TRUE,
-                      nbins = nbins,
-                      minfreq = minfreq,
-                      maxfreq = maxfreq)[,1])
-
-                ydata$frequency <- seq(from = minfreq,
-                                       to = maxfreq,
-                                       by = maxfreq/(nrow(ydata)-1))
-
-                colnames(ydata) <- c("richness",
-                                     "frequency")
-
-                ydata$richness_smooth <- pracma::movavg(
-                  ydata$richness,
-                  n=n_freq,
-                  type="s")
-
-                yplot <-
-                  ggplot2::ggplot(
-                  ydata,
-                  ggplot2::aes(frequency,
-                               richness_smooth))+
-
-                  ggplot2::geom_area(alpha=0.40,
-                                     fill="#FDE725FF")+
-
-                  ggplot2::geom_line(color="black",
-                                     size=1.5)+
-
-                  ggplot2::ylab("Richness (%)")+
-
-                  ggplot2::xlab(NULL)+
-
-                  ggplot2::scale_x_continuous(
-                    expand = c(0,0),
-                    limits = c(0,(maxfreq+(maxfreq/10))))+
-
-                  ggplot2::scale_y_continuous(
-                    expand = c(0,0),
-                    label=scales::comma)+
-
-                  ggplot2::theme(
-                    axis.title.y = ggplot2::element_blank(),
-                    axis.ticks.y = ggplot2::element_blank(),
-                    axis.text.y = ggplot2::element_blank(),
-                    panel.border = ggplot2::element_blank(),
-                    panel.grid.major = ggplot2::element_blank(),
-                    panel.grid.minor = ggplot2::element_blank(),
-                    panel.background = ggplot2::element_blank(),
-                    plot.margin = grid::unit(c(0, 0, 0, -0),
-                                             "cm"))+
-
-                  ggplot2::coord_flip()
-
-                combined_plot <-
-                  xplot +
-                  patchwork::plot_spacer() +
-                  heatmap +
-                  yplot +
-                  patchwork::plot_layout(widths = c(3, 1),
-                                         heights = c(1,3))
-
-                if (save==TRUE){
-                  ggplot2::ggsave(
-                    filename=paste0(
-                      paste0(type,
-                             "_"),
-                      "marginplot_",
-                      filename,
-                      ".",
-                      device),
-                    plot=combined_plot,
-                    device=device,
-                    path=dir,
-                    dpi = "retina",
-                    width=width,
-                    height = height,
-                    units = c("mm"))
-
-                  combined_plot
-                }
-
-                else{
-
-                  if (save==FALSE){
-                    combined_plot
-                  }
-                }
-              }
-        }
       }
     }
   }

@@ -711,20 +711,323 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 })
 
 
-
-  # 2.2.9. The nbins argument
-
   # 2.2.10. The labelsize argument
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_time argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_time = "I'm not an option"),
+    regexp = "labelsize_time is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_time argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_time = -1),
+    regexp = "labelsize_time is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_time argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_time = 300),
+    regexp = "labelsize_time is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_frequency argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_frequency = "I'm not an option"),
+    regexp = "labelsize_frequency is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_frequency argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_frequency = -1),
+    regexp = "labelsize_frequency is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_frequency argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_frequency = 300),
+    regexp = "labelsize_frequency is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_polar argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_polar = "I'm not an option"),
+    regexp = "labelsize_polar is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_polar argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_polar = -1),
+    regexp = "labelsize_polar is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the labelsize_polar argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        labelsize_polar = 300),
+    regexp = "labelsize_polar is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
+    fixed=TRUE
+  )
+
+})
+
+
 
   # 2.2.11. The palette and direction arguments
 
-  # 2.2.12. The boolean flag arguments (zero.black, marginplot, interactive, save)
+testthat::test_that("the ss_heatmap function produces the correct error message when the palette argument is not in the correct format", {
 
-  # 2.2.13. The n_time and n_freq arguments
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        palette = 2),
+    regexp = "palette is not a valid palette argument. Palette needs to be supplied as a character string of either: 'A', 'B', 'C', 'D', 'E', 'magma', 'inferno', 'plasma', 'viridis' or 'cividis'. Please supply a valid palette argument. Consult the soundscapeR of viridis package documentation for more information.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the palette argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        palette = "I'm not an option"),
+    regexp = "palette is not a valid palette argument. Palette needs to be supplied as a character string of either: 'A', 'B', 'C', 'D', 'E', 'magma', 'inferno', 'plasma', 'viridis' or 'cividis'. Please supply a valid palette argument. Consult the soundscapeR of viridis package documentation for more information.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the direction argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        direction = "I'm not an option"),
+    regexp = "direction is not a valid direction argument. The direction argument needs to be supplied as a single integer of either 1 or -1. Please supply a valid direction argument. Consult the soundscapeR of viridis package documentation for more information.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the direction argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        direction = 5),
+    regexp = "direction is not a valid direction argument. The direction argument needs to be supplied as a single integer of either 1 or -1. Please supply a valid direction argument. Consult the soundscapeR of viridis package documentation for more information.",
+    fixed=TRUE
+  )
+
+})
+
+
+  # 2.2.12. The boolean flag arguments (zero.black, interactive, save)
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the zero.black argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        zero.black = "FALSE"),
+    regexp = "zero.black is not a boolean flag. Please supply the argument as one of either TRUE or FALSE, and make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the interactive argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        interactive = "FALSE"),
+    regexp = "interactive is not a boolean flag. Please supply the argument as one of either TRUE or FALSE, and make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the save argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        save = "FALSE"),
+    regexp = "save is not a boolean flag. Please supply the argument as one of either TRUE or FALSE, and make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the zero.black argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        zero.black = 2),
+    regexp = "zero.black is not a boolean flag. Please supply the argument as one of either TRUE or FALSE, and make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the interactive argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        interactive = 2),
+    regexp = "interactive is not a boolean flag. Please supply the argument as one of either TRUE or FALSE, and make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the save argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        save = 2),
+    regexp = "save is not a boolean flag. Please supply the argument as one of either TRUE or FALSE, and make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
 
   # 2.2.14. The dir, filename and device arguments
 
+testthat::test_that("the ss_heatmap function produces the correct error message when the dir argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        dir = 2),
+    regexp = "dir is not a character string. The dir arguments needs to be a character string of either 'default' - or a valid pathname to an existing directory on your device. If you're working on a Windows operating system, pay attention to backslash and forwardslash.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the dir argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        dir = "Not a valid file path"),
+    regexp = "Path 'Not a valid file path' does not exist",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the filename argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        filename = 27),
+    regexp = "filename is not a valid filename argument. The filename argument needs to be a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the filename argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        filename = "file.plg"),
+    regexp = "filename is not a valid filename argument. Please make the filename argument you provide a character string without the extension.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the device argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        filename = "file.png",
+                        device = 2),
+    regexp = "device is not a valid device argument. The device argument needs to be a character string, and one of the following options: eps, ps, tex, pdf, jpeg, tiff, png, bmp, svg, wmf.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the device argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        filename = "file.png",
+                        device = "plg"),
+    regexp = "device is not a valid device argument. The device argument needs to be a character string, and one of the following options: eps, ps, tex, pdf, jpeg, tiff, png, bmp, svg, wmf.",
+    fixed=TRUE
+  )
+
+})
+
+
   # 2.2.15. The height and width arguments
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the height and width arguments are not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        filename = "file.png",
+                        device = "png",
+                        height = "three"),
+    regexp = "height is not a valid argument. The height and width arguments needs to be supplied as a single positive integer. The height and width argument use the unit 'mm'. When values are too large, the figure will fail to plot/save.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the height and width arguments are not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
+                        filename = "file.png",
+                        device = "png",
+                        width = "three"),
+    regexp = "width is not a valid argument. The height and width arguments needs to be supplied as a single positive integer. The height and width argument use the unit 'mm'. When values are too large, the figure will fail to plot/save.",
+    fixed=TRUE
+  )
+
+})
 
 
 
