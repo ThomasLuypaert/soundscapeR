@@ -123,7 +123,7 @@ ss_heatmap=function(aggregated_soundscape,
                     interactive=FALSE,
                     save=FALSE,
                     dir="default",
-                    filename="file",
+                    filename="file.png",
                     device="png",
                     width=100,
                     height=100){
@@ -555,9 +555,9 @@ ss_heatmap=function(aggregated_soundscape,
 
   test_29 <- function(x){
 
-    assertthat::is.count(x) &
-      x > 0 &
-      length(x) == 1
+    length(x) == 1 &
+      assertthat::is.count(x) &
+      all(x > 0)
 
   }
 

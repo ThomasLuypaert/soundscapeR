@@ -739,7 +739,7 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 
   testthat::expect_error(
     object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
-                        labelsize_time = 300),
+                        labelsize_time = c(1,1)),
     regexp = "labelsize_time is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
     fixed=TRUE
   )
@@ -772,7 +772,7 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 
   testthat::expect_error(
     object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
-                        labelsize_frequency = 300),
+                        labelsize_frequency = c(1,1)),
     regexp = "labelsize_frequency is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
     fixed=TRUE
   )
@@ -805,7 +805,7 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 
   testthat::expect_error(
     object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
-                        labelsize_polar = 300),
+                        labelsize_polar = c(1,1)),
     regexp = "labelsize_polar is not a valid labelsize argument. The labelsize_... arguments need to be provided as a single positive number with a value large than 0.",
     fixed=TRUE
   )
