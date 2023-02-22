@@ -25,7 +25,7 @@ aggregated_soundscape_CVR <- ss_aggregate(binarized_soundscape = binarized_sound
 
   # 2.0. If required arguments are missing
 
-testthat::test_that("the sounddiv function provides the correct error when the aggregated_soundscpae argument is missing", {
+testthat::test_that("the ss_diversity_plot function provides the correct error when the aggregated_soundscape argument is missing", {
 
   testthat::expect_error(
     object = ss_diversity_plot(qvalue = 1),
@@ -34,7 +34,7 @@ testthat::test_that("the sounddiv function provides the correct error when the a
 
 })
 
-testthat::test_that("the sounddiv function provides the correct error when the qvalue argument is missing", {
+testthat::test_that("the ss_diversity_plot function provides the correct error when the qvalue argument is missing", {
 
   testthat::expect_error(
     object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR),
@@ -43,7 +43,53 @@ testthat::test_that("the sounddiv function provides the correct error when the q
 
 })
 
-  # 2.1. If the correct arguments are supplied
+# 2.1. When the correct arguments are supplied
 
-    # 2.1.1. graphtype = total, smooth = TRUE and no frequency subsetting
+  # graphtype = "total"
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'total'",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "total"),
+  )
+})
+
+  # graphtype = "frequency"
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'frequency'",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "frequency"),
+  )
+})
+
+  # graphtype = "normfreq"
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'normfreq'",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "normfreq"),
+  )
+})
+
+  # graphtype = "linefreq"
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'linefreq'",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "linefreq"),
+  )
+})
 
