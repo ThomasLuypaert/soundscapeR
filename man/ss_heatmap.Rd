@@ -14,20 +14,16 @@ ss_heatmap(
   freqinterval = 2000,
   minfreq = 0,
   maxfreq = "default",
-  nbins = 10,
   labelsize_time = 4,
   labelsize_frequency = 4,
   labelsize_polar = 3,
   palette = "D",
   direction = 1,
   zero.black = FALSE,
-  marginplot = FALSE,
-  n_time = 10,
-  n_freq = 2,
   interactive = FALSE,
   save = FALSE,
   dir = "default",
-  filename = "file",
+  filename = "file.png",
   device = "png",
   width = 100,
   height = 100
@@ -69,11 +65,6 @@ as a numeric value. Defaults to zero.}
 as a numeric value. Defaults to the maximum frequency of
  the dataframe.}
 
-\item{nbins}{If \code{marginplot=TRUE}, determines the
-number of the frequency-bins by which to divide the
- frequency range to compute the soundscape richness
- (q=0), expressed as a single positive integer.}
-
 \item{labelsize_time}{If annotate=TRUE, can be used to
 alter the size of temporal spectrum annotation. Please
  provide as a single positive integer with a value > 0.}
@@ -101,27 +92,9 @@ If -1, the order of colors is reversed.}
 If set to TRUE, absent OSUs with incidence zero
 will be colored black}
 
-\item{marginplot}{One of either TRUE or FALSE.
-If set to TRUE, adds marginal plots to the x- and y-axes.
-For the x-axis, the marginal plot displays the smoothed
- richness of acoustically active frequency bins for
- each time of day. For the y-axis, the marginal plot
-  displays the smoothed richness of acoustically
-  active time-bins for each frequency band. Note that
-   marginal plots are not available for type="polar".}
-
-\item{n_time}{If marginplot=TRUE, determines the backward
-window length for smoothing the temporal richness.
-Please supply the argument as a single positive integer.}
-
-\item{n_freq}{If marginplot=TRUE, determines the backward
-window length for smoothing the frequency richness.
-Please supply the argument as a single positive integer.}
-
 \item{interactive}{One of either TRUE or FALSE.
 If set to TRUE, an interactive plot is produced using
- \code{\link[plotly]{ggplotly}}. Note that interactive
-  plots are not available for marginplot=TRUE.}
+ \code{\link[plotly]{ggplotly}}.}
 
 \item{save}{One of either TRUE or FALSE. If set to TRUE,
 saves the plot using \code{\link[ggplot2]{ggsave}}, and
