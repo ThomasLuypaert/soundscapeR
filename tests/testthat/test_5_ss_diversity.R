@@ -956,7 +956,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_CVR@merged_df,
                       qvalue = 0),
-    regexp = "aggregated_soundscape is not an S4-object of the type 'soundscape', or is empty. Please supply the aggregated_soundscape object produced by the ss_aggregate() function. Consult the package documentation for further information.",
+    regexp = "aggregated_soundscape is not an S4-object of the type 'soundscape'. Please supply the aggregated_soundscape object produced by the ss_aggregate() or ss_create() functions. Consult the package documentation for further information.",
     fixed=TRUE
   )
 
@@ -986,7 +986,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_coord_1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -997,7 +997,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_coord_2,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -1008,7 +1008,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_coord_3,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@lon is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "aggregated_soundscape@lon is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -1019,7 +1019,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_coord_4,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@lon is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "aggregated_soundscape@lon is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -1030,7 +1030,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_coord_5,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -1041,7 +1041,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_coord_6,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "aggregated_soundscape@lat is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -1057,29 +1057,11 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_tz,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@tz is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).",
+    regexp = "aggregated_soundscape@tz is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).",
     fixed=TRUE
   )
 
 })
-
-    # 2.3.3. When the fileloc argument is wrong
-
-# aggregated_soundscape_fileloc <- aggregated_soundscape_CVR
-# aggregated_soundscape_fileloc@fileloc <- paste0(getwd(), "/IDontExist")
-#
-# testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape fileloc argument is wrong", {
-#
-#   testthat::expect_error(
-#     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_fileloc,
-#                       qvalue = 0),
-#     regexp = paste0("Path ",
-#                     paste0("'", getwd(), "/IDontExist", "'"),
-#                     " does not exist"),
-#     fixed=TRUE
-#   )
-#
-# })
 
     # 2.3.4. When the index argument is wrong
 
@@ -1091,7 +1073,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_index,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@index is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.",
+    regexp = "aggregated_soundscape@index is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.",
     fixed=TRUE
   )
 
@@ -1109,7 +1091,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_samplerate1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@samplerate is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the samplerate and window arguments.",
+    regexp = "aggregated_soundscape@samplerate is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -1120,7 +1102,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_samplerate2,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@samplerate is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the samplerate and window arguments.",
+    regexp = "aggregated_soundscape@samplerate is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -1138,7 +1120,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_window1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@window is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the samplerate and window arguments.",
+    regexp = "aggregated_soundscape@window is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -1149,7 +1131,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_window2,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@window is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the samplerate and window arguments.",
+    regexp = "aggregated_soundscape@window is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -1181,7 +1163,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_thresh1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@threshold is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the value argument is you're supplying a custom threshold value.",
+    regexp = "aggregated_soundscape@threshold is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the value argument is you're supplying a custom threshold value.",
     fixed=TRUE
   )
 
@@ -1199,7 +1181,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_output1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@output is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.",
+    regexp = "aggregated_soundscape@output is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.",
     fixed=TRUE
   )
 
@@ -1210,7 +1192,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_output2,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@output is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.",
+    regexp = "aggregated_soundscape@output is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.",
     fixed=TRUE
   )
 
@@ -1236,7 +1218,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_merged_df1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1247,7 +1229,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_merged_df2,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1258,7 +1240,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_merged_df3,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1269,22 +1251,12 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_merged_df4,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape merged_df argument has incorrect column names", {
-
-  testthat::expect_error(
-    object = ss_diversity(aggregated_soundscape = aggregated_soundscape_merged_df5,
-                      qvalue = 0),
-    regexp = "aggregated_soundscape@merged_df does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.",
-    fixed=TRUE
-  )
-
-})
 
     # 2.3.11. The binarized_df argument is wrong
 
@@ -1308,7 +1280,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_bindf1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1319,7 +1291,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_bindf2,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1330,7 +1302,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_bindf3,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@binarized_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1341,29 +1313,20 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_bindf4,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@binarized_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@binarized_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape binarized_df argument has incorrect column names", {
 
-  testthat::expect_error(
-    object = ss_diversity(aggregated_soundscape = aggregated_soundscape_bindf5,
-                      qvalue = 0),
-    regexp = "aggregated_soundscape@binarized_df does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.",
-    fixed=TRUE
-  )
-
-})
 
 testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape binarized_df argument is non-binary", {
 
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_bindf6,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@binarized_df has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@binarized_df has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1377,6 +1340,7 @@ aggregated_soundscape_aggdf3 <- aggregated_soundscape_CVR
 aggregated_soundscape_aggdf4 <- aggregated_soundscape_CVR
 aggregated_soundscape_aggdf5 <- aggregated_soundscape_CVR
 aggregated_soundscape_aggdf6 <- aggregated_soundscape_CVR
+aggregated_soundscape_aggdf7 <- aggregated_soundscape_CVR
 aggregated_soundscape_aggdf1@aggregated_df <- aggregated_soundscape_aggdf1@aggregated_df[FALSE,]
 aggregated_soundscape_aggdf2@aggregated_df[1,1] <- NA
 aggregated_soundscape_aggdf3@aggregated_df[1,1] <- "I'm not numeric"
@@ -1386,12 +1350,15 @@ colnames(aggregated_soundscape_aggdf5@aggregated_df) <-
   seq(1,ncol(aggregated_soundscape_aggdf5@aggregated_df), 1)
 aggregated_soundscape_aggdf6@aggregated_df[1,1] <- 25
 
+aggregated_soundscape_aggdf7@aggregated_df[1,1] <- 500
+aggregated_soundscape_aggdf7@output <- "raw"
+
 testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape aggregated_df argument is empty", {
 
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggdf1,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1402,7 +1369,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggdf2,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1413,7 +1380,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggdf3,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@aggregated_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.",
     fixed=TRUE
   )
 
@@ -1424,18 +1391,7 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggdf4,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.",
-    fixed=TRUE
-  )
-
-})
-
-testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape aggregated_df argument has incorrect column names", {
-
-  testthat::expect_error(
-    object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggdf5,
-                      qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.",
+    regexp = "aggregated_soundscape@aggregated_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.",
     fixed=TRUE
   )
 
@@ -1447,77 +1403,23 @@ testthat::test_that("the ss_diversity function produces the correct error messag
   testthat::expect_error(
     object = ss_diversity(aggregated_soundscape =aggregated_soundscape_aggdf6,
                       qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument.",
+    regexp = "aggregated_soundscape@aggregated_df contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.",
     fixed=TRUE
   )
 
 })
 
-    # 2.3.13. The aggregated_df_per_time argument is wrong
-
-aggregated_soundscape_aggtime1 <- aggregated_soundscape_CVR
-aggregated_soundscape_aggtime2 <- aggregated_soundscape_CVR
-aggregated_soundscape_aggtime3 <- aggregated_soundscape_CVR
-
-aggregated_soundscape_aggtime1@aggregated_df_per_time <-
-  as.list(seq(1, length(aggregated_soundscape_CVR@aggregated_df_per_time), 1))
-
-aggregated_soundscape_aggtime2@aggregated_df_per_time <-
-  lapply(aggregated_soundscape_CVR@aggregated_df_per_time, function(x) x[,1])
-
-aggregated_soundscape_aggtime3@aggregated_df_per_time <-
-  aggregated_soundscape_CVR@aggregated_df_per_time[[1]]
-
-testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape aggregated_df_per_time argument does not have the expected values", {
+testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape aggregated_df argument contains values outside of the expected range", {
 
   testthat::expect_error(
-    object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggtime1,
-                      qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df_per_time does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
+    object = ss_diversity(aggregated_soundscape =aggregated_soundscape_aggdf7,
+                          qvalue = 0),
+    regexp = "aggregated_soundscape@aggregated_df contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape aggregated_df_per_time argument does not have the expected dimensions", {
-
-  testthat::expect_error(
-    object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggtime2,
-                      qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df_per_time does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
-    fixed=TRUE
-  )
-
-})
-
-testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape aggregated_df_per_time argument does not have the expected length", {
-
-  testthat::expect_error(
-    object = ss_diversity(aggregated_soundscape = aggregated_soundscape_aggtime3,
-                      qvalue = 0),
-    regexp = "aggregated_soundscape@aggregated_df_per_time does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
-    fixed=TRUE
-  )
-
-})
-
-    # 2.3.14. The effort_per_time argument is wrong
-
-# aggregated_soundscape_efftime <- aggregated_soundscape_CVR
-#
-# aggregated_soundscape_efftime@effort_per_time <-
-#   as.list(seq(1, length(aggregated_soundscape_CVR@effort_per_time), 1))
-#
-# testthat::test_that("the ss_diversity function produces the correct error message when the aggregated_soundscape effort_per_time argument does not have the expected format", {
-#
-#   testthat::expect_error(
-#     object = ss_diversity(aggregated_soundscape= aggregated_soundscape_efftime,
-#                       qvalue = 0),
-#     regexp = "aggregated_soundscape@effort_per_time does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.",
-#     fixed=TRUE
-#   )
-#
-# })
 
   # 2.4. The qvalues argument is wrong
 

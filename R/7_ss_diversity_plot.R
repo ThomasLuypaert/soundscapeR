@@ -104,7 +104,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_1) <- function(call, env){
 
-    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape', or is empty. Please supply the aggregated_soundscape object produced by the ss_aggregate() function. Consult the package documentation for further information.")
+    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape'. Please supply the aggregated_soundscape object produced by the ss_aggregate() or ss_create() functions. Consult the package documentation for further information.")
 
   }
 
@@ -134,13 +134,13 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_3) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
   assertthat::on_failure(test_4) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
@@ -157,7 +157,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_5) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
+    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
 
   }
 
@@ -176,7 +176,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_7) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
+    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
 
   }
 
@@ -192,7 +192,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_8) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the samplerate and window arguments.")
+    paste0(deparse(call$x), " is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.")
 
   }
 
@@ -226,7 +226,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_10) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_binarize() and ss_aggregate() functions, and pay special attention to the value argument is you're supplying a custom threshold value.")
+    paste0(deparse(call$x), " is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the value argument is you're supplying a custom threshold value.")
 
   }
 
@@ -242,7 +242,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_11) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
+    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
 
   }
 
@@ -284,25 +284,19 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_12) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
+    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.")
 
   }
 
   assertthat::on_failure(test_13) <- function(call, env){
 
-    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
+    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate() or ss_create(). Make sure you're supplying the dataframe produced by the ss_aggregate() or ss_create() functions.")
 
   }
 
-  assertthat::on_failure(test_14) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
-
-  }
 
   assertthat::assert_that(test_12(aggregated_soundscape@merged_df))
   assertthat::assert_that(test_13(aggregated_soundscape@merged_df))
-  assertthat::assert_that(test_14(aggregated_soundscape@merged_df))
 
   # 1.2.12. The binarized_df argument
 
@@ -315,13 +309,12 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_15) <- function(call, env){
 
-    paste0(deparse(call$x), " has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() function.")
+    paste0(deparse(call$x), " has values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() or ss_create() function.")
 
   }
 
   assertthat::assert_that(test_12(aggregated_soundscape@binarized_df))
   assertthat::assert_that(test_13(aggregated_soundscape@binarized_df))
-  assertthat::assert_that(test_14(aggregated_soundscape@binarized_df))
   assertthat::assert_that(test_15(aggregated_soundscape@binarized_df))
 
   # 1.2.12. The aggregated_df argument
@@ -340,7 +333,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
     assertthat::on_failure(test_16) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
@@ -359,62 +352,14 @@ ss_diversity_plot=function(aggregated_soundscape,
 
     assertthat::on_failure(test_16) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
     assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
   }
 
-  # 1.2.13. The aggregated_df_per_time argument
 
-  test_17_1 <- function(x){
-
-    all(sapply(x, function(x) is.data.frame(x))) &
-      all(assertthat::are_equal(
-        as.vector(sort(table(colnames(aggregated_soundscape@merged_df)))),
-        as.vector(unlist(sapply(x, function(x) ncol(x))))
-      )) &
-      length(x) == ncol(aggregated_soundscape@aggregated_df)
-  }
-
-  test_17_2 <- function(x){
-
-    all(sapply(x, function(x) nrow(x)==nrow(aggregated_soundscape@merged_df)))
-
-  }
-
-
-  assertthat::on_failure(test_17_1) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
-
-  }
-
-  assertthat::on_failure(test_17_2) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
-
-  }
-
-  assertthat::assert_that(test_17_1(aggregated_soundscape@aggregated_df_per_time))
-  assertthat::assert_that(test_17_2(aggregated_soundscape@aggregated_df_per_time))
-
-  # 1.2.14. The effort_per_time argument
-
-  test_18 <- function(x){
-
-    identical(as.list(sort(table(colnames(aggregated_soundscape@merged_df)))), x)
-
-  }
-
-  assertthat::on_failure(test_18) <- function(call, env){
-
-    paste0(deparse(call$x), " does not have the expected format. Did you supply the aggregated_soundscape argument produced using the ss_aggregate function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
-
-  }
-
-  assertthat::assert_that(test_18(aggregated_soundscape@effort_per_time))
 
   # 1.3. The supplied qvalue argument is a positive integer or decimal number
 
