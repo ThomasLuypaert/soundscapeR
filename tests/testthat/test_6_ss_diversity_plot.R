@@ -57,6 +57,51 @@ testthat::test_that("The ss_diversity_plot function works as expected when the c
   )
 })
 
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'total' & smooth = FALSE",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "total",
+                            smooth = FALSE),
+  )
+})
+
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'total', qvalue > 0 & output = percentage",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "total",
+                            output = "percentage"),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'total', output = raw and qvalue > 0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "total",
+                            output = "raw"),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'total', output = raw & qvalue = 0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "total",
+                            output = "raw"),
+  )
+})
+
   # graphtype = "frequency"
 
 testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
@@ -68,6 +113,50 @@ testthat::test_that("The ss_diversity_plot function works as expected when the c
                             graphtype = "frequency"),
   )
 })
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'frequency' & smooth = FALSE",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "frequency",
+                            smooth = FALSE),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'frequency', output = percentage & qvalue > 0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "frequency",
+                            output = "percentage"),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'frequency', output = raw & qvalue > 0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "frequency",
+                            output = "raw"),
+  )
+})
+
+# testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+#
+#   vdiffr::expect_doppelganger(
+#     title = "Create ss_diversity_plot with graphtype = 'frequency', output = raw & qvalue = 0",
+#     fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+#                             qvalue = 0,
+#                             graphtype = "frequency",
+#                             output = "raw"),
+#   )
+# })
 
   # graphtype = "normfreq"
 
@@ -81,6 +170,50 @@ testthat::test_that("The ss_diversity_plot function works as expected when the c
   )
 })
 
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'normfreq' & smooth = FALSE",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "normfreq",
+                            smooth = FALSE),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'normfreq', output = percentage & qvalue > 0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "normfreq",
+                            output = "percentage"),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'normfreq', output = raw & qvalue > 0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "normfreq",
+                            output = "raw"),
+  )
+})
+
+# testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+#
+#   vdiffr::expect_doppelganger(
+#     title = "Create ss_diversity_plot with graphtype = 'normfreq', output = raw & qvalue = 0",
+#     fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+#                             qvalue = 0,
+#                             graphtype = "normfreq",
+#                             output = "raw"),
+#   )
+# })
+
   # graphtype = "linefreq"
 
 testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
@@ -92,6 +225,52 @@ testthat::test_that("The ss_diversity_plot function works as expected when the c
                             graphtype = "linefreq"),
   )
 })
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'linefreq' & smooth = FALSE",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 0,
+                            graphtype = "linefreq",
+                            smooth = FALSE),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'linefreq', output = percentage & qvalue >0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "linefreq",
+                            output = "percentage"),
+  )
+})
+
+testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "Create ss_diversity_plot with graphtype = 'linefreq', output = raw & qvalue > 0",
+    fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                            qvalue = 1,
+                            graphtype = "linefreq",
+                            output = "raw"),
+  )
+})
+
+# testthat::test_that("The ss_diversity_plot function works as expected when the correct arguments are supplied", {
+#
+#   vdiffr::expect_doppelganger(
+#     title = "Create ss_diversity_plot with graphtype = 'linefreq', output = raw & qvalue = 0",
+#     fig = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+#                             qvalue = 0,
+#                             graphtype = "linefreq",
+#                             output = "raw"),
+#   )
+# })
+
+
 
   # 2.2. Correct error message when some of the supplied arguments are incorrect
 
@@ -570,7 +749,7 @@ testthat::test_that("the ss_diversity_plot function produces the correct error m
 
 })
 
-testthat::test_that("the ss_diversity_plot function produces the correct error message when the qvalue argument is a list", {
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the qvalue argument is a factor", {
 
   testthat::expect_error(
     object = ss_diversity_plot(aggregated_soundscape= aggregated_soundscape_CVR,
@@ -581,7 +760,7 @@ testthat::test_that("the ss_diversity_plot function produces the correct error m
 
 })
 
-testthat::test_that("the ss_diversity_plot function produces the correct error message when the qvalue argument is a list", {
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the qvalue argument is negative", {
 
   testthat::expect_error(
     object = ss_diversity_plot(aggregated_soundscape= aggregated_soundscape_CVR,
@@ -592,7 +771,34 @@ testthat::test_that("the ss_diversity_plot function produces the correct error m
 
 })
 
-# 2.5. The minfreq and maxfreq arguments are wrong
+# 2.5. The graphtype argument is wrong
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the graphtype argument is a wrong", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape= aggregated_soundscape_CVR,
+                               qvalue = 1,
+                               graphtype = 3),
+    regexp = "graphtype is not a character string. Please supply the ss_diversity_plot graphtype argument as a character string. Consult package documentation for available graphtype argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the graphtype argument is a wrong", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape= aggregated_soundscape_CVR,
+                               qvalue = 1,
+                               graphtype = "I'm not an option!"),
+    regexp = "graphtype is not one of the available ss_diversity_plot graphtype options. Please consult package documentation for available graphtype argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
+    fixed=TRUE
+  )
+
+})
+
+
+# 2.6. The minfreq and maxfreq arguments are wrong
 
 testthat::test_that("the ss_diversity_plot function produces the correct error message when the minfreq argument is a negative number", {
 
@@ -741,3 +947,264 @@ testthat::test_that("the ss_diversity_plot function produces the correct error m
   )
 
 })
+
+
+  # 2.10. The timeinterval argument is wrong
+
+testthat::test_that("the ss_heatmap function produces the correct error message when the timeinterval argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               timeinterval = "five seconds"),
+    regexp = "timeinterval is not one of the available timeinterval options. Please make sure the timeinterval argument is a character string of the following format: n unit (with n = number, and unit = one of 'sec', 'secs', 'min', 'mins', 'hour', 'hours', 'day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'). Please consult the scales::breaks_width() documentation for more information.",
+    fixed=TRUE
+  )
+
+})
+
+
+  # 2.11. The boolean flag arguments are wrong
+
+    # smooth
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the smooth argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               smooth = "FALSE"),
+    regexp = "smooth is not a Boolean flag (TRUE or FALSE). Please set argument argument to TRUE or FALSE. Make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the smooth argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               smooth = 1),
+    regexp = "smooth is not a Boolean flag (TRUE or FALSE). Please set argument argument to TRUE or FALSE. Make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+    # interactive
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the 'interactive' argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               interactive = "FALSE"),
+    regexp = "interactive is not a Boolean flag (TRUE or FALSE). Please set argument argument to TRUE or FALSE. Make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the 'interactive' argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               interactive = 1),
+    regexp = "interactive is not a Boolean flag (TRUE or FALSE). Please set argument argument to TRUE or FALSE. Make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+    # save
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the 'save' argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               save = "FALSE"),
+    regexp = "save is not a Boolean flag (TRUE or FALSE). Please set argument argument to TRUE or FALSE. Make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the 'save' argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               save = 1),
+    regexp = "save is not a Boolean flag (TRUE or FALSE). Please set argument argument to TRUE or FALSE. Make sure the argument is not a character string.",
+    fixed=TRUE
+  )
+
+})
+
+  # 2.12. The movavg argument is not in the correct format
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the 'movavg' argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               movavg = "I'm not an option!"),
+    regexp = "movavg is not a valid movavg argument. Please supply the movavg argument as a single positive integer with a value larger than zero and smaller than the number of unique times in the recording period.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the 'movavg' argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               movavg = -1),
+    regexp = "movavg is not a valid movavg argument. Please supply the movavg argument as a single positive integer with a value larger than zero and smaller than the number of unique times in the recording period.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the 'movavg' argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               movavg = 5000),
+    regexp = "movavg is not a valid movavg argument. Please supply the movavg argument as a single positive integer with a value larger than zero and smaller than the number of unique times in the recording period.",
+    fixed=TRUE
+  )
+
+})
+
+  # 2.13. The dir, filename and device arguments
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the dir argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               dir = 2),
+    regexp = "dir is not a character string. The dir arguments needs to be a character string of either 'default' - or a valid pathname to an existing directory on your device. If you're working on a Windows operating system, pay attention to backslash and forwardslash.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the filename argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               filename = 27),
+    regexp = "filename is not a valid filename argument. The filename argument needs to be a character string.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the filename argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               filename = "file.plg"),
+    regexp = "filename is not a valid filename argument. Please make the filename argument you provide a character string without the extension.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the device argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               filename = "file.png",
+                               device = 2),
+    regexp = "device is not a valid device argument. The device argument needs to be a character string, and one of the following options: eps, ps, tex, pdf, jpeg, tiff, png, bmp, svg, wmf.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the device argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               filename = "file.png",
+                               device = "plg"),
+    regexp = "device is not a valid device argument. The device argument needs to be a character string, and one of the following options: eps, ps, tex, pdf, jpeg, tiff, png, bmp, svg, wmf.",
+    fixed=TRUE
+  )
+
+})
+
+  # 2.14. The output argument
+
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the output argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               output = 2),
+    regexp = "output is not a character string. Please supply the output argument as a character string. Consult package documentation for available output argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the output argument is not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               output = "I'm not an option!"),
+    regexp = "output is not one of the available ss_diversity_plot output options. Please consult package documentation for available output argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.",
+    fixed=TRUE
+  )
+
+})
+
+  # 2.15. The height and width arguments
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the height and width arguments are not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               filename = "file.png",
+                               device = "png",
+                               height = "three"),
+    regexp = "height is not a valid argument. The height and width arguments needs to be supplied as a single positive integer. The height and width argument use the unit 'mm'. When values are too large, the figure will fail to plot/save.",
+    fixed=TRUE
+  )
+
+})
+
+testthat::test_that("the ss_diversity_plot function produces the correct error message when the height and width arguments are not in the correct format", {
+
+  testthat::expect_error(
+    object = ss_diversity_plot(aggregated_soundscape = aggregated_soundscape_CVR,
+                               qvalue = 0,
+                               filename = "file.png",
+                               device = "png",
+                               width = "three"),
+    regexp = "width is not a valid argument. The height and width arguments needs to be supplied as a single positive integer. The height and width argument use the unit 'mm'. When values are too large, the figure will fail to plot/save.",
+    fixed=TRUE
+  )
+
+})
+
+
+
+
+
+

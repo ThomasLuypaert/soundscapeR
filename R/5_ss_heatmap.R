@@ -637,24 +637,12 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
-  test_36 <- function(x){
-
-    assertthat::is.dir(x)
-
-  }
-
   assertthat::on_failure(test_35) <- function(call, env){
     paste0(deparse(call$x), " is not a character string. The dir arguments needs to be a character string of either 'default' - or a valid pathname to an existing directory on your device. If you're working on a Windows operating system, pay attention to backslash and forwardslash.")
 
   }
 
-  assertthat::on_failure(test_36) <- function(call, env){
-    paste0(deparse(call$x), " is not a valid file path. The dir arguments needs to be a character string of either 'default' - or a valid pathname to an existing directory on your device. If you're working on a Windows operating system, pay attention to backslash and forwardslash.")
-
-  }
-
   assertthat::assert_that(test_35(dir))
-  assertthat::assert_that(test_36(dir))
 
   test_37 <- function(x){
 

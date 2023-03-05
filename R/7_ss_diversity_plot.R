@@ -66,7 +66,7 @@ ss_diversity_plot=function(aggregated_soundscape,
                           interactive = FALSE,
                           save = FALSE,
                           dir = "default",
-                          filename = "file",
+                          filename = "file.png",
                           device = "png",
                           output = "percentage",
                           width = 150,
@@ -425,13 +425,13 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_9) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string. Please supply the sounddiv_by_time graphtype argument as a character string. Consult package documentation for available graphtype argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+    paste0(deparse(call$x), " is not a character string. Please supply the ss_diversity_plot graphtype argument as a character string. Consult package documentation for available graphtype argument options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
 
   }
 
   assertthat::on_failure(test_10) <- function(call, env){
 
-    paste0(deparse(call$x), " is not one of the available sounddiv_by_time graphtype options. Please consult package documentation for available graphtype argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+    paste0(deparse(call$x), " is not one of the available ss_diversity_plot graphtype options. Please consult package documentation for available graphtype argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
 
   }
 
@@ -536,7 +536,7 @@ ss_diversity_plot=function(aggregated_soundscape,
       x < ncol(aggregated_soundscape@aggregated_df)
   }
 
-  assertthat::on_failure(test_21) <- function(call, env){
+  assertthat::on_failure(test_22) <- function(call, env){
 
     paste0(deparse(call$x), " is not a valid movavg argument. Please supply the movavg argument as a single positive integer with a value larger than zero and smaller than the number of unique times in the recording period.")
 
@@ -574,8 +574,8 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   test_38 <- function(x){
 
-    !(sub('.*\\.', '', filename) %in% c("eps", "ps","tex", "pdf", "jpeg",
-                                        "tiff","png", "bmp","svg", "wmf"))
+    (sub('.*\\.', '', x) %in% c("eps", "ps","tex", "pdf", "jpeg",
+                                "tiff","png", "bmp","svg", "wmf"))
 
   }
 
@@ -622,7 +622,7 @@ ss_diversity_plot=function(aggregated_soundscape,
 
   assertthat::on_failure(test_23) <- function(call, env){
 
-    paste0(deparse(call$x), " is not one of the available ss_diversity output options. Please consult package documentation for available output argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
+    paste0(deparse(call$x), " is not one of the available ss_diversity_plot output options. Please consult package documentation for available output argument  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.")
 
   }
 

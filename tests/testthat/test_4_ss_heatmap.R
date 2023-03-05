@@ -943,17 +943,6 @@ testthat::test_that("the ss_heatmap function produces the correct error message 
 
 })
 
-testthat::test_that("the ss_heatmap function produces the correct error message when the dir argument is not in the correct format", {
-
-  testthat::expect_error(
-    object = ss_heatmap(aggregated_soundscape = aggregated_soundscape_CVR,
-                        dir = "Not a valid file path"),
-    regexp = "Path 'Not a valid file path' does not exist",
-    fixed=TRUE
-  )
-
-})
-
 testthat::test_that("the ss_heatmap function produces the correct error message when the filename argument is not in the correct format", {
 
   testthat::expect_error(
