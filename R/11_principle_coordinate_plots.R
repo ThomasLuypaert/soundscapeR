@@ -377,13 +377,13 @@ ss_pcoa <- function(aggregated_soundscape_list,
 
   test_17 <- function(x){
 
-    mode(x) %in% c("numeric","character")
+    (all(mode(x) %in% c("numeric","character"))) | all(is.na(x))
 
   }
 
   test_18 <- function(x){
 
-    length(x) == length(aggregated_soundscape_list)
+    (all(length(x) == length(aggregated_soundscape_list))) | all(is.na(x))
 
   }
 
@@ -587,7 +587,7 @@ if(screeplot == TRUE){
 
     ggplot2::scale_y_continuous(limits = c(0, 101))
 
-  requireNamespace(patchwork)
+  requireNamespace("patchwork")
 
   soundscape_pcoa_plot_combined <- soundscape_pcoa_plot +
     soundscape_screeplot +
