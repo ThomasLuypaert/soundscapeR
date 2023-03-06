@@ -86,7 +86,7 @@ testthat::test_that("The ss_pcao function works as expected when the correct arg
     fig = soundscapeR::ss_pcoa(aggregated_soundscape_list = aggregated_soundscape_CVR_case_study,
                                screeplot = TRUE,
                                grouping = case_study_groups),
-  )
+   )
 })
 
 
