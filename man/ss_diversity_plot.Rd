@@ -17,7 +17,7 @@ ss_diversity_plot(
   interactive = FALSE,
   save = FALSE,
   dir = "default",
-  filename = "file",
+  filename = "file.png",
   device = "png",
   output = "percentage",
   width = 150,
