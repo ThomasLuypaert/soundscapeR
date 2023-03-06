@@ -1,5 +1,3 @@
-patchwork <- NULL
-
 
 #' Create differential soundscape heatmaps
 #'
@@ -1064,7 +1062,7 @@ ss_compare <- function(aggregated_soundscape_A,
 
   else{
 
-    requireNamespace(patchwork)
+    requireNamespace("patchwork")
 
     total_soundscape_difference_plot <- heatmap_A + differential_soundscape_plot + heatmap_B
 
