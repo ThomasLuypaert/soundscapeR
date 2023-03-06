@@ -968,6 +968,6 @@ testthat::test_that("the ss_compare function produces the correct error message 
                         aggregated_soundscape_B = aggregated_soundscape_CVR_aggdf6_B),
     regexp = "aggregated_soundscape_B@aggregated_df contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.",
     fixed=TRUE
-  )
+   )
 
 })
