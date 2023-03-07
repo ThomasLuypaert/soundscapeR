@@ -42,11 +42,11 @@ testthat::test_that("the ss_pcoa function provides the correct error when the ag
 
 # 2.1. When the correct arguments are supplied
 
-set.seed(30874)
-
   # No grouping without scree plot
 
 testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
+
+  set.seed(30874)
 
   vdiffr::expect_doppelganger(
     title = "Create ss_pcoa without grouping or screeplot",
@@ -57,6 +57,8 @@ testthat::test_that("The ss_pcao function works as expected when the correct arg
   # No grouping with scree plot
 
 testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
+
+  set.seed(30874)
 
   vdiffr::expect_doppelganger(
     title = "Create ss_pcoa without grouping but with screeplot",
@@ -69,6 +71,8 @@ testthat::test_that("The ss_pcao function works as expected when the correct arg
 
 testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
 
+  set.seed(30874)
+
   vdiffr::expect_doppelganger(
     title = "Create ss_pcoa with grouping but without screeplot",
     fig = soundscapeR::ss_pcoa(aggregated_soundscape_list = aggregated_soundscape_CVR_case_study,
@@ -80,6 +84,8 @@ testthat::test_that("The ss_pcao function works as expected when the correct arg
   # Grouping with scree plot
 
 testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
+
+  set.seed(30874)
 
   vdiffr::expect_doppelganger(
     title = "Create ss_pcoa with grouping and screeplot",
