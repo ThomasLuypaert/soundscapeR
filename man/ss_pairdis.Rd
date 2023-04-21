@@ -7,7 +7,7 @@
 ss_pairdis(
   soundscape_list,
   qvalue = 0,
-  hier_table = NA,
+  hier_table = NULL,
   minfreq = 0,
   maxfreq = "default",
   mintime = "default",

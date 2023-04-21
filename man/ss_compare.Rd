@@ -5,8 +5,8 @@
 \title{Create differential soundscape heatmaps}
 \usage{
 ss_compare(
-  aggregated_soundscape_A,
-  aggregated_soundscape_B,
+  soundscape_obj_A,
+  soundscape_obj_B,
   type = "regular",
   timeinterval = "1 hour",
   mintime = "default",
@@ -24,11 +24,13 @@ ss_compare(
 )
 }
 \arguments{
-\item{aggregated_soundscape_A}{An aggregated soundscape object produced by
-\code{\link{ss_aggregate}} function for comparison.}
+\item{soundscape_obj_A}{A soundscape object produced by the \code{\link{ss_create}}
+function (or ss_index_merge, ss_binarize, and ss_aggregate in sequence). This will be
+the first soundscape for comparison.}
 
-\item{aggregated_soundscape_B}{An aggregated soundscape object produced by
-\code{\link{ss_aggregate}} function for comparison.}
+\item{soundscape_obj_B}{A soundscape object produced by the \code{\link{ss_create}}
+function (or ss_index_merge, ss_binarize, and ss_aggregate in sequence). This will be
+the second soundscape for comparison.}
 
 \item{type}{One of either "regular" or "polar". If set
 to "regular", produces a regular rectangular heatmap.

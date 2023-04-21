@@ -21,7 +21,6 @@ Imports:
     yaml (>= 2.2.1),
     lubridate, 
     hms, 
-    limma,
     ggplot2 (> 3.3.0), 
     dplyr, 
     stringr,
@@ -29,11 +28,9 @@ Imports:
     lutz (>= 0.3.1),
     reshape2 (>= 1.4.3),
     viridis (>= 0.5.1),
-    plotly (>= 4.9.2.1),
     scales (>= 1.1.0),
     grid (>= 2.6.3),
     patchwork (>= 1.0.0),
-    hilldiv (>= 1.5.1),
     utils (>= 3.6.3),
     suncalc (>= 0.5.0),
     rlist,
@@ -41,12 +38,12 @@ Imports:
     magrittr,
     data.table, 
     vegan, 
-    tidyr,
-    ggrepel
+    tidyr
 Suggests: 
     covr,
     qs,
     sf,
+    plotly (>= 4.9.2.1),
     testthat (>= 3.0.0), 
     vdiffr,
     pracma,
@@ -54,7 +51,8 @@ Suggests:
     crayon,
     parallel,
     assertthat, 
-    here
+    here,
+    ggrepel
 Depends: 
     R (>= 3.5.0)
 URL: https://github.com/ThomasLuypaert/soundscapeR

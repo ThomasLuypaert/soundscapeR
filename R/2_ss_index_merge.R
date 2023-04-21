@@ -229,23 +229,13 @@ ss_index_merge <- function(fileloc,
   folders <- file.path(paste0(fileloc, "/", window))
 
   filenames <- list.files(folders,
-                          pattern = paste0("\\__Towsey.Acoustic.",
-                                           index,
-                                           ".csv$"),
+                          pattern = paste0("CVR.csv$"),
                           recursive = TRUE,
                           full.names = TRUE)
 
   # 3. Merge csv files into a dataframe
 
-  merged_df <- Reduce(rbind, lapply(filenames, data.table::fread))
-
-
-  # 4. Perform some manipulations on the merged_df
-
-  merged_df <- as.matrix(merged_df)
-  merged_df <- t(merged_df)
-  merged_df <- as.data.frame(merged_df)
-  merged_df <- merged_df[c(2:nrow(merged_df)), ]
+  merged_df <- as.data.frame(t(Reduce(rbind, lapply(filenames, function(x) data.table::fread(x)))[,-1]))
 
   # 5. Give the df rownames
 
@@ -270,13 +260,12 @@ ss_index_merge <- function(fileloc,
   # 6. Give the df colnames
 
   tz <- lutz::tz_lookup_coords(lat = lat, lon = lon, method = "accurate")
+
   colnames(merged_df) <- hms::as_hms(
     as.POSIXct(
-      substr(filenames,
-             nchar(filenames) - 40,
-             nchar(filenames) - 26),
-      format = "%Y%m%d_%H%M%S",
-      tz = tz))
+      strptime(stringr::str_extract(filenames, "\\d{8}_\\d{6}"),
+               "%Y%m%d_%H%M%S",
+               tz = tz)))
 
   merged_df <- merged_df[seq(dim(merged_df)[1], 1), ]
 

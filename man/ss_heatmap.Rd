@@ -5,7 +5,7 @@
 \title{Flexible Soundscape Heatmaps}
 \usage{
 ss_heatmap(
-  aggregated_soundscape,
+  soundscape_obj,
   type = "regular",
   annotate = FALSE,
   timeinterval = "1 hour",
@@ -30,7 +30,7 @@ ss_heatmap(
 )
 }
 \arguments{
-\item{aggregated_soundscape}{The aggregated soundscape object produced by
+\item{soundscape_obj}{The aggregated soundscape object produced by
 \code{\link{ss_aggregate}} function.}
 
 \item{type}{One of either "regular" or "polar". If set
@@ -40,7 +40,7 @@ If set to "polar", produces a polar heatmap suitable for
 
 \item{annotate}{One of either TRUE or FALSE. If set to
 TRUE, annotates the heatmap with sunrise and
-sunset times,´and highlights the border between the
+sunset times,B4and highlights the border between the
  audible and ultrasonic spectrum for human hearing.}
 
 \item{timeinterval}{A time interval for the x-axis.

@@ -31,7 +31,7 @@ binarized_soundscape_CVR_case_study <- lapply(merged_soundscape_CVR_case_study,
                                                                       method = "IsoData",
                                                                       value = NULL))
 
-aggregated_soundscape_CVR_case_study <- lapply(binarized_soundscape_CVR_case_study,
+soundscape_obj_CVR_case_study <- lapply(binarized_soundscape_CVR_case_study,
                                                function(x) ss_aggregate(binarized_soundscape = x,
                                                                         output = "incidence_freq"))
 
@@ -41,11 +41,11 @@ case_study_groups <- c("A", "B", "B", "B", "B")
 
 # 2.0. If required arguments are missing
 
-testthat::test_that("the ss_pcoa function provides the correct error when the aggregated_soundscape_list argument is missing", {
+testthat::test_that("the ss_pcoa function provides the correct error when the soundscape_list argument is missing", {
 
   testthat::expect_error(
     object = soundscapeR::ss_pcoa(screeplot = FALSE),
-    regexp = "aggregated_soundscape_list argument is missing. Please supply the missing argument.",
+    regexp = "soundscape_list argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
 })
@@ -61,7 +61,7 @@ with_seed(seed = 1234, code =
 
    vdiffr::expect_doppelganger(
      title = "Create ss_pcoa without grouping or screeplot",
-     fig = soundscapeR::ss_pcoa(aggregated_soundscape_list = aggregated_soundscape_CVR_case_study ),
+     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study ),
    )
  })
 
@@ -74,7 +74,7 @@ with_seed(seed = 1234, code =
 
    vdiffr::expect_doppelganger(
      title = "Create ss_pcoa without grouping but with screeplot",
-     fig = soundscapeR::ss_pcoa(aggregated_soundscape_list = aggregated_soundscape_CVR_case_study,
+     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
                                 screeplot = TRUE),
    )
  })
@@ -87,7 +87,7 @@ with_seed(seed = 1234, code =
 
    vdiffr::expect_doppelganger(
      title = "Create ss_pcoa with grouping but without screeplot",
-     fig = soundscapeR::ss_pcoa(aggregated_soundscape_list = aggregated_soundscape_CVR_case_study,
+     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
                                 screeplot = FALSE,
                                 grouping = case_study_groups),
    )
@@ -101,7 +101,7 @@ with_seed(seed = 1234, code =
 
    vdiffr::expect_doppelganger(
      title = "Create ss_pcoa with grouping and screeplot",
-     fig = soundscapeR::ss_pcoa(aggregated_soundscape_list = aggregated_soundscape_CVR_case_study,
+     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
                                 screeplot = TRUE,
                                 grouping = case_study_groups),
     )

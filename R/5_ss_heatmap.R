@@ -7,7 +7,7 @@
 #'    aspect of the heatmap. Please consult the arguments
 #'     section to find out more about visualization options.
 #'
-#' @param aggregated_soundscape The aggregated soundscape object produced by
+#' @param soundscape_obj The aggregated soundscape object produced by
 #'  \code{\link{ss_aggregate}} function.
 #'
 #' @param type One of either "regular" or "polar". If set
@@ -17,7 +17,7 @@
 #'
 #' @param annotate One of either TRUE or FALSE. If set to
 #'  TRUE, annotates the heatmap with sunrise and
-#'  sunset times,´and highlights the border between the
+#'  sunset times,B4and highlights the border between the
 #'   audible and ultrasonic spectrum for human hearing.
 #'
 #' @param timeinterval A time interval for the x-axis.
@@ -105,7 +105,7 @@
 #'
 #' @export
 
-ss_heatmap=function(aggregated_soundscape,
+ss_heatmap=function(soundscape_obj,
                     type="regular",
                     annotate=FALSE,
                     timeinterval="1 hour",
@@ -146,11 +146,11 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
-  assertthat::assert_that(test_0(aggregated_soundscape))
+  assertthat::assert_that(test_0(soundscape_obj))
 
   # 1. Check if function input meets expectations
 
-  # 1.1. The supplied aggregated_soundscape argument is an S4-object of the type
+  # 1.1. The supplied soundscape_obj argument is an S4-object of the type
   # 'soundscape', and is not empty.
 
   test_1 <- function(x){
@@ -163,13 +163,13 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_1) <- function(call, env){
 
-    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape'. Please supply the aggregated_soundscape object produced by the ss_aggregate() or ss_create() functions. Consult the package documentation for further information.")
+    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape'. Please supply the soundscape_obj object produced by the ss_aggregate() or ss_create() functions. Consult the package documentation for further information.")
 
   }
 
-  assertthat::assert_that(test_1(aggregated_soundscape))
+  assertthat::assert_that(test_1(soundscape_obj))
 
-  # 1.2. The aggregated_soundscape elements are in the expected format
+  # 1.2. The soundscape_obj elements are in the expected format
 
     # 1.2.1. The first_day argument cannot be wrong (S4 property)
 
@@ -193,18 +193,18 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_3) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the soundscape_obj produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
   assertthat::on_failure(test_4) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the soundscape_obj produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
-  assertthat::assert_that(test_3(aggregated_soundscape@lat))
-  assertthat::assert_that(test_4(aggregated_soundscape@lon))
+  assertthat::assert_that(test_3(soundscape_obj@lat))
+  assertthat::assert_that(test_4(soundscape_obj@lon))
 
     # 1.2.3. The time zone argument
 
@@ -216,11 +216,11 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_5) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
+    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
 
   }
 
-  assertthat::assert_that(test_5(aggregated_soundscape@tz))
+  assertthat::assert_that(test_5(soundscape_obj@tz))
 
     # 1.2.6. The index argument
 
@@ -233,11 +233,11 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_7) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
+    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
 
   }
 
-  assertthat::assert_that(test_7(aggregated_soundscape@index))
+  assertthat::assert_that(test_7(soundscape_obj@index))
 
     # 1.2.7. The samplerate and window arguments
 
@@ -249,12 +249,12 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_8) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.")
+    paste0(deparse(call$x), " is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.")
 
   }
 
-  assertthat::assert_that(test_8(aggregated_soundscape@samplerate))
-  assertthat::assert_that(test_8(aggregated_soundscape@window))
+  assertthat::assert_that(test_8(soundscape_obj@samplerate))
+  assertthat::assert_that(test_8(soundscape_obj@window))
 
     # 1.2.8. The binarization_method argument
 
@@ -270,7 +270,7 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
-  assertthat::assert_that(test_9(aggregated_soundscape@binarization_method))
+  assertthat::assert_that(test_9(soundscape_obj@binarization_method))
 
     # 1.2.9. The threshold argument
 
@@ -283,11 +283,11 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_10) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the value argument is you're supplying a custom threshold value.")
+    paste0(deparse(call$x), " is not a single numeric value. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the value argument is you're supplying a custom threshold value.")
 
   }
 
-  assertthat::assert_that(test_10(aggregated_soundscape@threshold))
+  assertthat::assert_that(test_10(soundscape_obj@threshold))
 
     # 1.2.10. The output argument
 
@@ -299,11 +299,11 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_11) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
+    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
 
   }
 
-  assertthat::assert_that(test_11(aggregated_soundscape@output))
+  assertthat::assert_that(test_11(soundscape_obj@output))
 
     # 1.2.11. The merged_df argument
 
@@ -312,8 +312,7 @@ ss_heatmap=function(aggregated_soundscape,
     is.data.frame(x) &
       assertthat::not_empty(x) &
       assertthat::noNA(x) &
-      limma::isNumeric(x)
-
+      all(apply(x, 2, function(y) all(is.numeric(y))))
   }
 
   test_13 <- function(x){
@@ -321,7 +320,7 @@ ss_heatmap=function(aggregated_soundscape,
     (abs(as.numeric(rownames(x)[1]))+
        abs(as.numeric(rownames(x)[2])))>3 &
       min(as.numeric(rownames(x))) >= 0 &
-      max(as.numeric(rownames(x)))<= aggregated_soundscape@samplerate/2
+      max(as.numeric(rownames(x)))<= soundscape_obj@samplerate/2
 
   }
 
@@ -329,8 +328,8 @@ ss_heatmap=function(aggregated_soundscape,
 
     formatted <-  try(
       as.POSIXct(
-        paste0(substr(aggregated_soundscape@first_day, 1, 12)," ", colnames(x)),
-        tz = aggregated_soundscape@tz,
+        paste0(substr(soundscape_obj@first_day, 1, 12)," ", colnames(x)),
+        tz = soundscape_obj@tz,
         format="%Y-%m-%d %H:%M:%S"),
       silent = TRUE)
 
@@ -341,7 +340,7 @@ ss_heatmap=function(aggregated_soundscape,
 
   assertthat::on_failure(test_12) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.")
+    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.")
 
   }
 
@@ -351,8 +350,8 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
-  assertthat::assert_that(test_12(aggregated_soundscape@merged_df))
-  assertthat::assert_that(test_13(aggregated_soundscape@merged_df))
+  assertthat::assert_that(test_12(soundscape_obj@merged_df))
+  assertthat::assert_that(test_13(soundscape_obj@merged_df))
 
     # 1.2.12. The binarized_df argument
 
@@ -369,18 +368,18 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
-  assertthat::assert_that(test_12(aggregated_soundscape@binarized_df))
-  assertthat::assert_that(test_13(aggregated_soundscape@binarized_df))
-  assertthat::assert_that(test_14(aggregated_soundscape@binarized_df))
-  assertthat::assert_that(test_15(aggregated_soundscape@binarized_df))
+  assertthat::assert_that(test_12(soundscape_obj@binarized_df))
+  assertthat::assert_that(test_13(soundscape_obj@binarized_df))
+  assertthat::assert_that(test_14(soundscape_obj@binarized_df))
+  assertthat::assert_that(test_15(soundscape_obj@binarized_df))
 
     # 1.2.12. The aggregated_df argument
 
-  assertthat::assert_that(test_12(aggregated_soundscape@aggregated_df))
-  assertthat::assert_that(test_13(aggregated_soundscape@aggregated_df))
-  assertthat::assert_that(test_14(aggregated_soundscape@aggregated_df))
+  assertthat::assert_that(test_12(soundscape_obj@aggregated_df))
+  assertthat::assert_that(test_13(soundscape_obj@aggregated_df))
+  assertthat::assert_that(test_14(soundscape_obj@aggregated_df))
 
-  if(aggregated_soundscape@output=="incidence_freq"){
+  if(soundscape_obj@output=="incidence_freq"){
 
     test_16 <- function(x){
 
@@ -390,30 +389,30 @@ ss_heatmap=function(aggregated_soundscape,
 
     assertthat::on_failure(test_16) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the soundscape_obj argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
-    assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
+    assertthat::assert_that(test_16(soundscape_obj@aggregated_df))
   }
 
-  if(aggregated_soundscape@output=="raw"){
+  if(soundscape_obj@output=="raw"){
 
     test_16 <- function(x){
 
       all(all(round(unlist(x)) == unlist(x)) &
-            max(x) <= max(table(colnames(aggregated_soundscape@merged_df))) &
+            max(x) <= max(table(colnames(soundscape_obj@merged_df))) &
             min(x) >= 0)
 
     }
 
     assertthat::on_failure(test_16) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the soundscape_obj argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
-    assertthat::assert_that(test_16(aggregated_soundscape@aggregated_df))
+    assertthat::assert_that(test_16(soundscape_obj@aggregated_df))
   }
 
 
@@ -502,8 +501,8 @@ ss_heatmap=function(aggregated_soundscape,
   test_24 <- function(x){
 
     assertthat::is.count(x) &
-      x > min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
-      x < max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))
+      x > min(as.numeric(rownames(soundscape_obj@aggregated_df))) &
+      x < max(as.numeric(rownames(soundscape_obj@aggregated_df)))
 
   }
 
@@ -520,16 +519,16 @@ ss_heatmap=function(aggregated_soundscape,
 
   test_25 <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
-       x <= max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj@aggregated_df)))) |
       x == 0
 
   }
 
   test_26 <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregated_soundscape@aggregated_df))) &
-       x <= max(as.numeric(rownames(aggregated_soundscape@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj@aggregated_df)))) |
       x == "default"
 
   }
@@ -698,12 +697,12 @@ ss_heatmap=function(aggregated_soundscape,
 
   # 2. Prepare variables for plotting
 
-  tz <- aggregated_soundscape@tz
+  tz <- soundscape_obj@tz
 
-  lengthen=function(aggregated_soundscape){
+  lengthen=function(soundscape_obj){
 
-    tz <- aggregated_soundscape@tz
-    df <- aggregated_soundscape@aggregated_df
+    tz <- soundscape_obj@tz
+    df <- soundscape_obj@aggregated_df
     df$frequency <- as.integer(rownames(df))
     melt_df <- reshape2::melt(df, id.vars="frequency")
     colnames(melt_df) <- c("frequency", "time", "value")
@@ -711,7 +710,7 @@ ss_heatmap=function(aggregated_soundscape,
       as.character(melt_df$frequency))
     melt_df$time <- as.POSIXct(
       strptime(
-        x =paste(substr(aggregated_soundscape@first_day, 1, 12),
+        x =paste(substr(soundscape_obj@first_day, 1, 12),
                  melt_df$time,
                  sep=" "),
         format = "%Y-%m-%d %H:%M",
@@ -720,7 +719,7 @@ ss_heatmap=function(aggregated_soundscape,
 
   }
 
-  df2 <- lengthen(aggregated_soundscape = aggregated_soundscape)
+  df2 <- lengthen(soundscape_obj = soundscape_obj)
 
   if(zero.black==TRUE){
 
@@ -728,7 +727,7 @@ ss_heatmap=function(aggregated_soundscape,
       length(
         sort(
           unique(
-            unlist(aggregated_soundscape@aggregated_df)))),
+            unlist(soundscape_obj@aggregated_df)))),
       direction = direction,
       option = palette)
 
@@ -742,7 +741,7 @@ ss_heatmap=function(aggregated_soundscape,
     length(
       sort(
         unique(
-          unlist(aggregated_soundscape@aggregated_df)))),
+          unlist(soundscape_obj@aggregated_df)))),
     direction = direction,
     option = palette)
 
@@ -762,8 +761,8 @@ ss_heatmap=function(aggregated_soundscape,
     mintime <- min(
       as.POSIXct(
         strptime(
-          paste(substr(aggregated_soundscape@first_day, 1, 12),
-                colnames(aggregated_soundscape@aggregated_df),
+          paste(substr(soundscape_obj@first_day, 1, 12),
+                colnames(soundscape_obj@aggregated_df),
                 sep=" "),
           format= "%Y-%m-%d %H:%M:%S",
           tz = tz)))
@@ -772,7 +771,7 @@ ss_heatmap=function(aggregated_soundscape,
   else{
     mintime <- as.POSIXct(
       strptime(
-        paste(substr(aggregated_soundscape@first_day, 1, 12),
+        paste(substr(soundscape_obj@first_day, 1, 12),
               mintime,
               sep=" "),
         format= "%Y-%m-%d %H:%M:%S",
@@ -784,8 +783,8 @@ ss_heatmap=function(aggregated_soundscape,
     maxtime <- max(
       as.POSIXct(
         strptime(
-          paste(substr(aggregated_soundscape@first_day, 1, 12),
-                colnames(aggregated_soundscape@aggregated_df),
+          paste(substr(soundscape_obj@first_day, 1, 12),
+                colnames(soundscape_obj@aggregated_df),
                 sep=" "),
           format= "%Y-%m-%d %H:%M:%S",
           tz = tz)))
@@ -795,7 +794,7 @@ ss_heatmap=function(aggregated_soundscape,
   else{
     maxtime <- as.POSIXct(
       strptime(
-        paste(substr(aggregated_soundscape@first_day, 1, 12),
+        paste(substr(soundscape_obj@first_day, 1, 12),
               maxtime,
               sep=" "),
         format= "%Y-%m-%d %H:%M:%S",
@@ -804,18 +803,18 @@ ss_heatmap=function(aggregated_soundscape,
 
   day <- as.POSIXct(
     strptime(
-      paste(substr(aggregated_soundscape@first_day, 1, 12),
+      paste(substr(soundscape_obj@first_day, 1, 12),
             "00:00:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
       tz = tz))
 
-  sunrise <- aggregated_soundscape@sunrise
-  sunset <- aggregated_soundscape@sunset
+  sunrise <- soundscape_obj@sunrise
+  sunset <- soundscape_obj@sunset
 
   midnight1 <- as.POSIXct(
     strptime(
-      paste(substr(aggregated_soundscape@first_day, 1, 12),
+      paste(substr(soundscape_obj@first_day, 1, 12),
             "00:00:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
@@ -823,7 +822,7 @@ ss_heatmap=function(aggregated_soundscape,
 
   midnight2 <- as.POSIXct(
     strptime(
-      paste(substr(aggregated_soundscape@first_day, 1, 12),
+      paste(substr(soundscape_obj@first_day, 1, 12),
             "23:55:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
@@ -911,13 +910,13 @@ ss_heatmap=function(aggregated_soundscape,
               face = "bold"))+
 
             ggplot2::geom_vline(
-              ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunrise)),
+              ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunrise)),
                            linetype="dashed",
                            color= if (direction==1){paste("white")}
                            else{paste("black")})+
 
             ggplot2::geom_vline(
-              ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunset)),
+              ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunset)),
               linetype="dashed",
               color= if (direction==1){paste("white")}
               else{paste("black")})+
@@ -1153,13 +1152,13 @@ ss_heatmap=function(aggregated_soundscape,
                 face = "bold"))+
 
               ggplot2::geom_vline(
-                ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunrise)),
+                ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunrise)),
                 linetype="dashed",
                 color= if (direction==1){paste("white")}
                 else{paste("black")})+
 
               ggplot2::geom_vline(
-                ggplot2::aes(xintercept = as.numeric(aggregated_soundscape@sunset)),
+                ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunset)),
                 linetype="dashed",
                 color= if (direction==1){paste("white")}
                 else{paste("black")})+
@@ -1447,23 +1446,16 @@ ss_heatmap=function(aggregated_soundscape,
             panel.grid.major = ggplot2::element_blank(),
             panel.grid.minor = ggplot2::element_blank(),
             panel.background = ggplot2::element_blank(),
-            axis.line = ggplot2::element_line(
-              colour = "black"),
-            axis.text.x = ggplot2::element_text(
-              color = "black",
-              size = 10,
-              angle = -0,
-              hjust=1.1,
-              vjust=1),
-            axis.title.y = ggplot2::element_text(margin = grid::unit(c(0, 3, 0, 0), "mm")),
-            axis.title.x = ggplot2::element_text(margin = grid::unit(c(3, 0, 0, 0), "mm")),
+            axis.line= ggplot2::element_blank(),
+            axis.text.y= ggplot2::element_blank(),
+            axis.ticks= ggplot2::element_blank(),
+            axis.title.x= ggplot2::element_blank(),
+            axis.title.y= ggplot2::element_blank(),
             panel.border = ggplot2::element_rect(
               colour = "white",
               fill=NA,
               size=0.5),
             plot.margin = grid::unit(c(1,1,1,1),"cm"),
-            axis.text.y = ggplot2::element_blank(),
-            axis.ticks.y = ggplot2::element_blank(),
             legend.position = "top",
             legend.direction = "horizontal",
             legend.title = ggplot2::element_text(
@@ -1647,22 +1639,15 @@ ss_heatmap=function(aggregated_soundscape,
               panel.grid.major = ggplot2::element_blank(),
               panel.grid.minor = ggplot2::element_blank(),
               panel.background = ggplot2::element_blank(),
-              axis.line = ggplot2::element_line(
-                colour = "black"),
-              axis.text.x = ggplot2::element_text(
-                color = "black",
-                size = 10,
-                angle = -0,
-                hjust=1.1,
-                vjust=1),
-              axis.title.y = ggplot2::element_text(margin = grid::unit(c(0, 3, 0, 0), "mm")),
-              axis.title.x = ggplot2::element_text(margin = grid::unit(c(3, 0, 0, 0), "mm")),
+              axis.line= ggplot2::element_blank(),
+              axis.text.y= ggplot2::element_blank(),
+              axis.ticks= ggplot2::element_blank(),
+              axis.title.x= ggplot2::element_blank(),
+              axis.title.y= ggplot2::element_blank(),
               panel.border = ggplot2::element_rect(
                 colour = "white",
                 fill=NA,
                 size=0.5),
-              axis.text.y = ggplot2::element_blank(),
-              axis.ticks.y = ggplot2::element_blank(),
               plot.margin = grid::unit(c(1,1,1,1),"cm"),
               legend.position = "top",
               legend.direction = "horizontal",
@@ -1732,12 +1717,92 @@ ss_heatmap=function(aggregated_soundscape,
     else{
 
       if (interactive==TRUE & save==FALSE){
-        plotly::ggplotly(plot)
-      }
+
+
+        plot <-
+          ggplot2::ggplot(
+            df2, ggplot2::aes(time,
+                              frequency,
+                              fill=value,
+                              color=value)) +
+
+          ggplot2::geom_tile()+
+
+          ggplot2::scale_fill_gradientn(
+            colors = color_vector,
+            na.value = "grey45",
+            guide = ggplot2::guide_legend(
+              title.position = "top",
+              title.vjust = 1,
+              title.hjust = 0.5,
+              nrow=1,
+              keywidth = grid::unit(5, "mm")),
+            breaks=seq(0, 1, 0.1),
+            limits = c(0, 1))+
+
+          ggplot2::labs(
+            y="Frequency (Hz)",
+            x="Time (hour of day)")+
+
+          ggplot2::theme(
+            panel.grid.major = ggplot2::element_blank(),
+            panel.grid.minor = ggplot2::element_blank(),
+            panel.background = ggplot2::element_blank(),
+            axis.line = ggplot2::element_line(
+              colour = "black"),
+            axis.text.y = ggplot2::element_text(
+              color = "black", size = 10),
+            axis.text.x = ggplot2::element_text(
+              color = "black",
+              size = 10,
+              angle = -45,
+              vjust = 1.2,
+              hjust = -0.3),
+            axis.title.y = ggplot2::element_text(margin = grid::unit(c(0, 3, 0, 0), "mm")),
+            axis.title.x = ggplot2::element_text(margin = grid::unit(c(3, 0, 0, 0), "mm")),
+            panel.border = ggplot2::element_rect(
+              colour = "black",
+              fill=NA,
+              size=0.5),
+            plot.margin = grid::unit(c(1,1,1,1),"cm"),
+            legend.position = "none")+
+
+          ggplot2::labs(fill="OSU RELATIVE ABUNDANCE")+
+
+          ggplot2::scale_x_datetime(
+            labels=scales::date_format("%H:%M", tz=tz),
+            breaks = scales::breaks_width(timeinterval),
+            expand = c(0,0),
+            limits = c(mintime,maxtime))+
+
+          ggplot2::scale_y_continuous(
+            limits = c(minfreq,maxfreq),
+            expand = c(0,0),
+            breaks = seq(minfreq, maxfreq, freqinterval),
+            label=scales::comma)
+
+        if(length(system.file(package='plotly'))==1){
+
+          cat("The 'plotly' R-package needs to be installed before using this function \n")
+          cat("Use: 'install.packages('plotly')' to install the package and try again...")
+          Sys.sleep(0.00001)
+          stop()
+
+        }
+
+        else{
+
+        plotly::ggplotly(plot, source = "select")
+
+          }
+
+        }
 
       else{
 
         if (interactive==TRUE & save==TRUE){
+
+          if (interactive==TRUE & save==FALSE){
 
           ggplot2::ggsave(
             filename=paste0(
@@ -1756,7 +1821,21 @@ ss_heatmap=function(aggregated_soundscape,
             height = height,
             units = c("mm"))
 
+              if(length(system.file(package='plotly'))==1){
+
+                cat("The 'plotly' R-package needs to be installed before using this function \n")
+                cat("Use: 'install.packages('plotly')' to install the package and try again...")
+                Sys.sleep(0.00001)
+                stop()
+
+              }
+
+              else{
+
           plotly::ggplotly(plot)
+
+              }
+          }
         }
 
         else{}

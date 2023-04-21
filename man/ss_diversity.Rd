@@ -5,7 +5,7 @@
 \title{Estimate soundscape diversity using Hill numbers}
 \usage{
 ss_diversity(
-  aggregated_soundscape,
+  soundscape_obj,
   qvalue,
   subset = "total",
   mintime = "default",
@@ -22,7 +22,7 @@ ss_diversity(
 )
 }
 \arguments{
-\item{aggregated_soundscape}{The aggregated soundscape object produced by
+\item{soundscape_obj}{The aggregated soundscape object produced by
 \code{\link{ss_aggregate}} function.}
 
 \item{qvalue}{A positive integer or decimal number (>=0), most commonly

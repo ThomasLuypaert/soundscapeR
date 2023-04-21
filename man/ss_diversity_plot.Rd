@@ -5,7 +5,7 @@
 \title{Visualize Soundscape Diversity by Time of Day}
 \usage{
 ss_diversity_plot(
-  aggregated_soundscape,
+  soundscape_obj,
   qvalue,
   graphtype = "total",
   minfreq = 0,
@@ -25,7 +25,7 @@ ss_diversity_plot(
 )
 }
 \arguments{
-\item{aggregated_soundscape}{The aggregated soundscape object produced by
+\item{soundscape_obj}{The soundscape object produced by
 \code{\link{ss_aggregate}} function.}
 
 \item{qvalue}{A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.}

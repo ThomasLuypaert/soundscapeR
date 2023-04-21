@@ -7,30 +7,30 @@ library(soundscapeR)
 fpath_CVR <- system.file("extdata/ss_binarize_test/merged_soundscape_CVR.ssc",
                          package="soundscapeR")
 
-merged_soundscape_CVR <- qs::qread(file = fpath_CVR)
-merged_soundscape_CVR@fileloc <- substr(fpath_CVR, 0, nchar(fpath_CVR)-26)
+soundscape_obj_CVR <- qs::qread(file = fpath_CVR)
+soundscape_obj_CVR@fileloc <- substr(fpath_CVR, 0, nchar(fpath_CVR)-26)
 
-merged_df_CVR_matrix <- as.matrix(merged_soundscape_CVR@merged_df)
+merged_df_CVR_matrix <- as.matrix(soundscape_obj_CVR@merged_df)
 
-merged_df_CVR_empty <- merged_soundscape_CVR@merged_df[FALSE,]
+merged_df_CVR_empty <- soundscape_obj_CVR@merged_df[FALSE,]
 
-merged_df_CVR_NAs <-merged_soundscape_CVR@merged_df
+merged_df_CVR_NAs <-soundscape_obj_CVR@merged_df
 merged_df_CVR_NAs[1,1] <- NA
 
-merged_df_CVR_nonnum <- merged_soundscape_CVR@merged_df
+merged_df_CVR_nonnum <- soundscape_obj_CVR@merged_df
 merged_df_CVR_nonnum[1,1] <- "I'm not numeric!"
 
-merged_df_CVR_falserows <- merged_soundscape_CVR@merged_df
+merged_df_CVR_falserows <- soundscape_obj_CVR@merged_df
 rownames(merged_df_CVR_falserows) <- seq(1, length(rownames(merged_df_CVR_falserows)), 1)
 
-merged_df_CVR_falsecols <- merged_soundscape_CVR@merged_df
+merged_df_CVR_falsecols <- soundscape_obj_CVR@merged_df
 colnames(merged_df_CVR_falsecols) <- seq(1, length(colnames(merged_df_CVR_falsecols)), 1)
 
 # 2. Start testing the ss_threshold function
 
   # 2.0. If required argument is missing
 
-testthat::test_that("the ss_threshold function provides the correct error when the merged_soundscape argument is missing", {
+testthat::test_that("the ss_threshold function provides the correct error when the soundscape_obj argument is missing", {
 
   testthat::expect_error(
     object = ss_threshold(method = "IJDefault"),
@@ -43,7 +43,7 @@ testthat::test_that("the ss_threshold function provides the correct error when t
 testthat::test_that("the ss_threshold function provides the correct error when the method argument is missing", {
 
   testthat::expect_error(
-    object = ss_threshold(df = merged_soundscape_CVR@merged_df),
+    object = ss_threshold(df = soundscape_obj_CVR@merged_df),
     regexp = "method argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 })
@@ -52,13 +52,13 @@ testthat::test_that("the ss_threshold function provides the correct error when t
 
 testthat::test_that("the ss_threshold function works for the 'IJDefault' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "IJDefault"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "IJDefault")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "IJDefault")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -75,13 +75,13 @@ testthat::test_that("the ss_threshold function works for the 'IJDefault' binariz
 
 testthat::test_that("the ss_threshold function works for the 'Huang' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Huang"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Huang")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Huang")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -98,13 +98,13 @@ testthat::test_that("the ss_threshold function works for the 'Huang' binarizatio
 
 testthat::test_that("the ss_threshold function works for the 'Huang2' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Huang2"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Huang2")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Huang2")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -121,13 +121,13 @@ testthat::test_that("the ss_threshold function works for the 'Huang2' binarizati
 
 testthat::test_that("the ss_threshold function works for the 'Intermodes' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Intermodes"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Intermodes")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Intermodes")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -144,13 +144,13 @@ testthat::test_that("the ss_threshold function works for the 'Intermodes' binari
 
 testthat::test_that("the ss_threshold function works for the 'IsoData' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "IsoData"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "IsoData")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "IsoData")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -167,13 +167,13 @@ testthat::test_that("the ss_threshold function works for the 'IsoData' binarizat
 
 testthat::test_that("the ss_threshold function works for the 'Li' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Li"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Li")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Li")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -190,13 +190,13 @@ testthat::test_that("the ss_threshold function works for the 'Li' binarization m
 
 testthat::test_that("the ss_threshold function works for the 'MaxEntropy' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "MaxEntropy"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "MaxEntropy")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "MaxEntropy")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -213,13 +213,13 @@ testthat::test_that("the ss_threshold function works for the 'MaxEntropy' binari
 
 testthat::test_that("the ss_threshold function works for the 'Mean' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Mean"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Mean")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Mean")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -236,13 +236,13 @@ testthat::test_that("the ss_threshold function works for the 'Mean' binarization
 
 testthat::test_that("the ss_threshold function works for the 'MinErrorI' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "MinErrorI"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "MinErrorI")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "MinErrorI")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -259,13 +259,13 @@ testthat::test_that("the ss_threshold function works for the 'MinErrorI' binariz
 
 testthat::test_that("the ss_threshold function works for the 'Minimum' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Minimum"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Minimum")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Minimum")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -282,13 +282,13 @@ testthat::test_that("the ss_threshold function works for the 'Minimum' binarizat
 
 testthat::test_that("the ss_threshold function works for the 'Moments' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Moments"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Moments")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Moments")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -305,13 +305,13 @@ testthat::test_that("the ss_threshold function works for the 'Moments' binarizat
 
 testthat::test_that("the ss_threshold function works for the 'Otsu' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Otsu"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Otsu")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Otsu")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -328,13 +328,13 @@ testthat::test_that("the ss_threshold function works for the 'Otsu' binarization
 
 testthat::test_that("the ss_threshold function works for the 'Percentile' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Percentile"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Percentile")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Percentile")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -351,13 +351,13 @@ testthat::test_that("the ss_threshold function works for the 'Percentile' binari
 
 testthat::test_that("the ss_threshold function works for the 'RenyiEntropy' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "RenyiEntropy"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "RenyiEntropy")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "RenyiEntropy")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -374,13 +374,13 @@ testthat::test_that("the ss_threshold function works for the 'RenyiEntropy' bina
 
 testthat::test_that("the ss_threshold function works for the 'Shanbhag' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Shanbhag"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Shanbhag")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Shanbhag")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -397,13 +397,13 @@ testthat::test_that("the ss_threshold function works for the 'Shanbhag' binariza
 
 testthat::test_that("the ss_threshold function works for the 'Triangle' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Triangle"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Triangle")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Triangle")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -420,13 +420,13 @@ testthat::test_that("the ss_threshold function works for the 'Triangle' binariza
 
 testthat::test_that("the ss_threshold function works for the 'Yen' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- try(ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- try(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                    method = "Yen"),
                       silent = TRUE)
 
   test_var <- try(autothresholdr::auto_thresh(
     int_arr = as.integer(
-      as.matrix(merged_soundscape_CVR@merged_df) * 100), method = "Yen")/100,
+      as.matrix(soundscape_obj_CVR@merged_df) * 100), method = "Yen")/100,
     silent = TRUE)
 
   testing_function <- function(x, y){
@@ -443,7 +443,7 @@ testthat::test_that("the ss_threshold function works for the 'Yen' binarization 
 
 testthat::test_that("the ss_threshold function works for the 'Mode' binarization method if the correct CVR data frame is provided", {
 
-  function_var <- ss_threshold(df = merged_soundscape_CVR@merged_df,
+  function_var <- ss_threshold(df = soundscape_obj_CVR@merged_df,
                                method = "Mode")
 
   testing_function_mode <- function(x){
@@ -453,7 +453,7 @@ testthat::test_that("the ss_threshold function works for the 'Mode' binarization
 
   }
 
-  test_var <- testing_function_mode(merged_soundscape_CVR@merged_df)
+  test_var <- testing_function_mode(soundscape_obj_CVR@merged_df)
 
   testthat::expect_equal(function_var, test_var)
 
@@ -512,7 +512,7 @@ testthat::test_that("the ss_threshold function provides the correct error messag
 testthat::test_that("the ss_threshold function provides the correct error message when the supplied method argument is not one of the available options", {
 
   testthat::expect_error(
-    object = ss_threshold(df = merged_soundscape_CVR@merged_df,
+    object = ss_threshold(df = soundscape_obj_CVR@merged_df,
                           method = "I'm not an option"),
     regexp = "method is not one of the available binarization methods. Please consult package documentation for available options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.", fixed=TRUE)
 
@@ -543,8 +543,8 @@ testthat::test_that("the ss_get_mode function works when a numeric data frame is
 
   }
 
-  function_var <- ss_get_mode(df = merged_soundscape_CVR@merged_df)
-  test_var <- testing_function_mode(merged_soundscape_CVR@merged_df)
+  function_var <- ss_get_mode(df = soundscape_obj_CVR@merged_df)
+  test_var <- testing_function_mode(soundscape_obj_CVR@merged_df)
 
   testthat::expect_equal(function_var, test_var)
 
@@ -576,12 +576,12 @@ testthat::test_that("the ss_get_mode function works when a numeric data frame is
 
   # 4.0. If required argument is missing
 
-testthat::test_that("the ss_binarize function provides the correct error when the merged_soundscape argument is missing", {
+testthat::test_that("the ss_binarize function provides the correct error when the soundscape_obj argument is missing", {
 
   testthat::expect_error(
     object = ss_binarize(method = "IJDefault",
                          value = NULL),
-    regexp = "merged_soundscape argument is missing. Please supply the missing argument.",
+    regexp = "soundscape_obj argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
 })
@@ -589,7 +589,7 @@ testthat::test_that("the ss_binarize function provides the correct error when th
 testthat::test_that("the ss_binarize function provides the correct error when the method argument is missing", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
+    object = ss_binarize(soundscape_obj = soundscape_obj_CVR,
                          value = NULL),
     regexp = "method argument is missing. Please supply the missing argument.",
     fixed = TRUE)
@@ -599,7 +599,7 @@ testthat::test_that("the ss_binarize function provides the correct error when th
 testthat::test_that("the ss_binarize function provides the correct error when the method argument is set to 'custom', but the value argument is missing", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
+    object = ss_binarize(soundscape_obj = soundscape_obj_CVR,
                          method = "Custom"),
     regexp = "value argument is missing. If you set method to 'custom', please supply a value argument. Consult package documentation for options.",
     fixed = TRUE)
@@ -611,7 +611,7 @@ testthat::test_that("the ss_binarize function provides the correct error when th
 
 testthat::test_that("the ss_binarize function works as expected when the correct arguments are supplied", {
 
- binarized_soundscape_CVR <- ss_binarize(merged_soundscape = merged_soundscape_CVR,
+ binarized_soundscape_CVR <- ss_binarize(soundscape_obj = soundscape_obj_CVR,
                                      method = "IsoData",
                                      value = NULL)
 
@@ -643,20 +643,20 @@ testthat::test_that("the ss_binarize function works as expected when the correct
  testthat::expect_equal(binarized_soundscape_CVR@binarization_method, "IsoData")
  testthat::expect_true(is.double(binarized_soundscape_CVR@threshold))
  testthat::expect_equal(binarized_soundscape_CVR@threshold,
-                        as.double(ss_threshold(df = merged_soundscape_CVR@merged_df,
+                        as.double(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                                 method = "IsoData")))
 
  testthat::expect_true(is.na(binarized_soundscape_CVR@output))
  testthat::expect_true(is.data.frame(binarized_soundscape_CVR@merged_df))
  testthat::expect_equal(dim(binarized_soundscape_CVR@merged_df),
-                        dim(merged_soundscape_CVR@merged_df))
- testthat::expect_true(limma::isNumeric(binarized_soundscape_CVR@merged_df))
+                        dim(soundscape_obj_CVR@merged_df))
+ testthat::expect_true(all(apply(binarized_soundscape_CVR@merged_df, 2, function(y) all(is.numeric(y)))))
  testthat::expect_true(assertthat::not_empty(binarized_soundscape_CVR@merged_df))
  testthat::expect_true(assertthat::noNA(binarized_soundscape_CVR@merged_df))
 
  testthat::expect_true(is.data.frame(binarized_soundscape_CVR@binarized_df))
  testthat::expect_equal(dim(binarized_soundscape_CVR@binarized_df),
-                        dim(merged_soundscape_CVR@merged_df))
+                        dim(soundscape_obj_CVR@merged_df))
  testthat::expect_true(min(binarized_soundscape_CVR@binarized_df)==0)
  testthat::expect_true(max(binarized_soundscape_CVR@binarized_df)==1)
 
@@ -674,7 +674,7 @@ testthat::test_that("the ss_binarize function works as expected when the correct
 
 testthat::test_that("the ss_binarize function works as expected when the correct arguments are supplied", {
 
-  binarized_soundscape_CVR <- ss_binarize(merged_soundscape = merged_soundscape_CVR,
+  binarized_soundscape_CVR <- ss_binarize(soundscape_obj = soundscape_obj_CVR,
                                           method = "Custom",
                                           value = 0.1)
 
@@ -706,20 +706,20 @@ testthat::test_that("the ss_binarize function works as expected when the correct
   testthat::expect_equal(binarized_soundscape_CVR@binarization_method, "Custom")
   testthat::expect_true(is.double(binarized_soundscape_CVR@threshold))
   testthat::expect_equal(binarized_soundscape_CVR@threshold,
-                         as.double(ss_threshold(df = merged_soundscape_CVR@merged_df,
+                         as.double(ss_threshold(df = soundscape_obj_CVR@merged_df,
                                                 method = "IsoData")))
 
   testthat::expect_true(is.na(binarized_soundscape_CVR@output))
   testthat::expect_true(is.data.frame(binarized_soundscape_CVR@merged_df))
   testthat::expect_equal(dim(binarized_soundscape_CVR@merged_df),
-                         dim(merged_soundscape_CVR@merged_df))
-  testthat::expect_true(limma::isNumeric(binarized_soundscape_CVR@merged_df))
+                         dim(soundscape_obj_CVR@merged_df))
+  testthat::expect_true(all(apply(binarized_soundscape_CVR@merged_df, 2, function(y) all(is.numeric(y)))))
   testthat::expect_true(assertthat::not_empty(binarized_soundscape_CVR@merged_df))
   testthat::expect_true(assertthat::noNA(binarized_soundscape_CVR@merged_df))
 
   testthat::expect_true(is.data.frame(binarized_soundscape_CVR@binarized_df))
   testthat::expect_equal(dim(binarized_soundscape_CVR@binarized_df),
-                         dim(merged_soundscape_CVR@merged_df))
+                         dim(soundscape_obj_CVR@merged_df))
   testthat::expect_true(min(binarized_soundscape_CVR@binarized_df)==0)
   testthat::expect_true(max(binarized_soundscape_CVR@binarized_df)==1)
 
@@ -735,108 +735,108 @@ testthat::test_that("the ss_binarize function works as expected when the correct
 
 })
 
-  # 4.2. When the supplied merged_soundscape argument is wrong
+  # 4.2. When the supplied soundscape_obj argument is wrong
 
-    # 4.2.1. The merged_soundscape argument is not an S4 object of the type 'soundscape'
+    # 4.2.1. The soundscape_obj argument is not an S4 object of the type 'soundscape'
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape argument is not an S4-object of the type 'soundscape' ", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj argument is not an S4-object of the type 'soundscape' ", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_CVR@merged_df,
+    object = ss_binarize(soundscape_obj = soundscape_obj_CVR@merged_df,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape is not an S4-object of the type 'soundscape'. Please supply the merged_soundscape object produced by the ss_index_merge() function. Consult the package documentation for further information.",
+    regexp = "soundscape_obj is not an S4-object of the type 'soundscape'. Please supply the soundscape_obj object produced by the ss_index_merge() function. Consult the package documentation for further information.",
     fixed=TRUE
   )
 
 })
 
-  # 4.3. When the merged_soundscape elements are wrong
+  # 4.3. When the soundscape_obj elements are wrong
 
     # 4.3.1. The lat and lon arguments are wrong
 
-merged_soundscape_coord_1 <- merged_soundscape_CVR
-merged_soundscape_coord_2 <- merged_soundscape_CVR
-merged_soundscape_coord_3 <- merged_soundscape_CVR
-merged_soundscape_coord_4 <- merged_soundscape_CVR
-merged_soundscape_coord_5 <- merged_soundscape_CVR
-merged_soundscape_coord_6 <- merged_soundscape_CVR
-merged_soundscape_coord_1@lat <- 91
-merged_soundscape_coord_2@lat <- -91
-merged_soundscape_coord_3@lon <- 181
-merged_soundscape_coord_4@lon <- -181
-merged_soundscape_coord_5@lat <- 91
-merged_soundscape_coord_5@lon <- 181
-merged_soundscape_coord_6@lat <- -91
-merged_soundscape_coord_6@lon <- -181
+soundscape_obj_coord_1 <- soundscape_obj_CVR
+soundscape_obj_coord_2 <- soundscape_obj_CVR
+soundscape_obj_coord_3 <- soundscape_obj_CVR
+soundscape_obj_coord_4 <- soundscape_obj_CVR
+soundscape_obj_coord_5 <- soundscape_obj_CVR
+soundscape_obj_coord_6 <- soundscape_obj_CVR
+soundscape_obj_coord_1@lat <- 91
+soundscape_obj_coord_2@lat <- -91
+soundscape_obj_coord_3@lon <- 181
+soundscape_obj_coord_4@lon <- -181
+soundscape_obj_coord_5@lat <- 91
+soundscape_obj_coord_5@lon <- 181
+soundscape_obj_coord_6@lat <- -91
+soundscape_obj_coord_6@lon <- -181
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_coord_1,
+    object = ss_binarize(soundscape_obj = soundscape_obj_coord_1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_coord_2,
+    object = ss_binarize(soundscape_obj = soundscape_obj_coord_2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_coord_3,
+    object = ss_binarize(soundscape_obj = soundscape_obj_coord_3,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lon is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lon is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_coord_4,
+    object = ss_binarize(soundscape_obj = soundscape_obj_coord_4,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lon is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lon is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_coord_5,
+    object = ss_binarize(soundscape_obj = soundscape_obj_coord_5,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_coord_6,
+    object = ss_binarize(soundscape_obj = soundscape_obj_coord_6,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -844,16 +844,16 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.3. When the tz argument is wrong
 
-merged_soundscape_tz <- merged_soundscape_CVR
-merged_soundscape_tz@tz <- "Emarica/Manaus"
+soundscape_obj_tz <- soundscape_obj_CVR
+soundscape_obj_tz@tz <- "Emarica/Manaus"
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape tz argument is wrong", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj tz argument is wrong", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_tz,
+    object = ss_binarize(soundscape_obj = soundscape_obj_tz,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@tz is not a recognized timezone. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).",
+    regexp = "soundscape_obj@tz is not a recognized timezone. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).",
     fixed=TRUE
   )
 
@@ -861,13 +861,13 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.4. When the fileloc argument is wrong
 
-# merged_soundscape_fileloc <- merged_soundscape_CVR
-# merged_soundscape_fileloc@fileloc <- paste0(getwd(), "/IDontExist")
+# soundscape_obj_fileloc <- soundscape_obj_CVR
+# soundscape_obj_fileloc@fileloc <- paste0(getwd(), "/IDontExist")
 #
-# testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape fileloc argument is wrong", {
+# testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj fileloc argument is wrong", {
 #
 #   testthat::expect_error(
-#     object = ss_binarize(merged_soundscape = merged_soundscape_fileloc,
+#     object = ss_binarize(soundscape_obj = soundscape_obj_fileloc,
 #                          method = "IJDefault",
 #                          value=NULL),
 #     regexp = paste0("Path ",
@@ -880,16 +880,16 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.5. When the index argument is wrong
 
-merged_soundscape_index <- merged_soundscape_CVR
-merged_soundscape_index@index <- "I'm not an option!"
+soundscape_obj_index <- soundscape_obj_CVR
+soundscape_obj_index@index <- "I'm not an option!"
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape index argument is wrong", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj index argument is wrong", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_index,
+    object = ss_binarize(soundscape_obj = soundscape_obj_index,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@index is not a character string of one of the available index options. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.",
+    regexp = "soundscape_obj@index is not a character string of one of the available index options. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.",
     fixed=TRUE
   )
 
@@ -897,30 +897,30 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.6. When the samplerate argument is wrong
 
-merged_soundscape_samplerate1 <- merged_soundscape_CVR
-merged_soundscape_samplerate2 <- merged_soundscape_CVR
-merged_soundscape_samplerate1@samplerate <- -44100
-merged_soundscape_samplerate2@samplerate <- c(44100, 44200)
+soundscape_obj_samplerate1 <- soundscape_obj_CVR
+soundscape_obj_samplerate2 <- soundscape_obj_CVR
+soundscape_obj_samplerate1@samplerate <- -44100
+soundscape_obj_samplerate2@samplerate <- c(44100, 44200)
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape samplerate argument is wrong", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj samplerate argument is wrong", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_samplerate1,
+    object = ss_binarize(soundscape_obj = soundscape_obj_samplerate1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@samplerate is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@samplerate is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape samplerate argument is wrong", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj samplerate argument is wrong", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_samplerate2,
+    object = ss_binarize(soundscape_obj = soundscape_obj_samplerate2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@samplerate is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@samplerate is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -928,30 +928,30 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.7. When the window argument is wrong
 
-merged_soundscape_window1 <- merged_soundscape_CVR
-merged_soundscape_window2 <- merged_soundscape_CVR
-merged_soundscape_window1@window <- -256
-merged_soundscape_window2@window <- c(256, 512)
+soundscape_obj_window1 <- soundscape_obj_CVR
+soundscape_obj_window2 <- soundscape_obj_CVR
+soundscape_obj_window1@window <- -256
+soundscape_obj_window2@window <- c(256, 512)
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape window argument is wrong", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj window argument is wrong", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_window1,
+    object = ss_binarize(soundscape_obj = soundscape_obj_window1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@window is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@window is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape window argument is wrong", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj window argument is wrong", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_window2,
+    object = ss_binarize(soundscape_obj = soundscape_obj_window2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@window is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@window is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -959,45 +959,45 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.8. The post-binarization or post-aggregation arguments are not NA
 
-merged_soundscape_postbin1 <- merged_soundscape_CVR
-merged_soundscape_postbin2 <- merged_soundscape_CVR
-merged_soundscape_postaggr <- merged_soundscape_CVR
-merged_soundscape_postbin1@binarization_method <- "IsoData"
-merged_soundscape_postbin2@threshold <- 1.5
-merged_soundscape_postaggr@output <- "raw"
+soundscape_obj_postbin1 <- soundscape_obj_CVR
+soundscape_obj_postbin2 <- soundscape_obj_CVR
+soundscape_obj_postaggr <- soundscape_obj_CVR
+soundscape_obj_postbin1@binarization_method <- "IsoData"
+soundscape_obj_postbin2@threshold <- 1.5
+soundscape_obj_postaggr@output <- "raw"
 
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape binarization_method argument is not NA", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj binarization_method argument is not NA", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_postbin1,
+    object = ss_binarize(soundscape_obj = soundscape_obj_postbin1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@binarization_method is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@binarization_method is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape threshold argument is not NA", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj threshold argument is not NA", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_postbin2,
+    object = ss_binarize(soundscape_obj = soundscape_obj_postbin2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@threshold is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@threshold is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape output argument is not NA", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj output argument is not NA", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_postaggr,
+    object = ss_binarize(soundscape_obj = soundscape_obj_postaggr,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@output is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@output is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
@@ -1005,74 +1005,74 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.9. The merged_df argument is wrong
 
-merged_soundscape_merged_df1 <- merged_soundscape_CVR
-merged_soundscape_merged_df2 <- merged_soundscape_CVR
-merged_soundscape_merged_df3 <- merged_soundscape_CVR
-merged_soundscape_merged_df4 <- merged_soundscape_CVR
-merged_soundscape_merged_df5 <- merged_soundscape_CVR
-merged_soundscape_merged_df1@merged_df <- merged_soundscape_merged_df1@merged_df[FALSE,]
-merged_soundscape_merged_df2@merged_df[1,1] <- NA
-merged_soundscape_merged_df3@merged_df[1,1] <- "I'm not numeric"
-rownames(merged_soundscape_merged_df4@merged_df) <-
-  seq(1,nrow(merged_soundscape_merged_df4@merged_df), 1)
-colnames(merged_soundscape_merged_df5@merged_df) <-
-  seq(1,ncol(merged_soundscape_merged_df5@merged_df), 1)
+soundscape_obj_merged_df1 <- soundscape_obj_CVR
+soundscape_obj_merged_df2 <- soundscape_obj_CVR
+soundscape_obj_merged_df3 <- soundscape_obj_CVR
+soundscape_obj_merged_df4 <- soundscape_obj_CVR
+soundscape_obj_merged_df5 <- soundscape_obj_CVR
+soundscape_obj_merged_df1@merged_df <- soundscape_obj_merged_df1@merged_df[FALSE,]
+soundscape_obj_merged_df2@merged_df[1,1] <- NA
+soundscape_obj_merged_df3@merged_df[1,1] <- "I'm not numeric"
+rownames(soundscape_obj_merged_df4@merged_df) <-
+  seq(1,nrow(soundscape_obj_merged_df4@merged_df), 1)
+colnames(soundscape_obj_merged_df5@merged_df) <-
+  seq(1,ncol(soundscape_obj_merged_df5@merged_df), 1)
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape merged_df argument is empty", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj merged_df argument is empty", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_merged_df1,
+    object = ss_binarize(soundscape_obj = soundscape_obj_merged_df1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape merged_df argument contains NA values", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj merged_df argument contains NA values", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_merged_df2,
+    object = ss_binarize(soundscape_obj = soundscape_obj_merged_df2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape merged_df argument contains non-numeric values", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj merged_df argument contains non-numeric values", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_merged_df3,
+    object = ss_binarize(soundscape_obj = soundscape_obj_merged_df3,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape merged_df argument has incorrect row names", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj merged_df argument has incorrect row names", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_merged_df4,
+    object = ss_binarize(soundscape_obj = soundscape_obj_merged_df4,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape merged_df argument has incorrect column names", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj merged_df argument has incorrect column names", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_merged_df5,
+    object = ss_binarize(soundscape_obj = soundscape_obj_merged_df5,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
     fixed=TRUE
   )
 
@@ -1080,59 +1080,59 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
     # 4.3.10. The binarization and aggregation arguments are not missing / NAs
 
-merged_soundscape_missing1 <- merged_soundscape_CVR
-merged_soundscape_missing2 <- merged_soundscape_CVR
-merged_soundscape_NA_list1 <- merged_soundscape_CVR
-merged_soundscape_NA_list2 <- merged_soundscape_CVR
+soundscape_obj_missing1 <- soundscape_obj_CVR
+soundscape_obj_missing2 <- soundscape_obj_CVR
+soundscape_obj_NA_list1 <- soundscape_obj_CVR
+soundscape_obj_NA_list2 <- soundscape_obj_CVR
 
-merged_soundscape_missing1@binarized_df <- merged_soundscape_missing1@merged_df
-merged_soundscape_missing2@aggregated_df <- merged_soundscape_missing1@merged_df
-merged_soundscape_NA_list1@aggregated_df_per_time <- as.list(seq(1, 10, 1))
-merged_soundscape_NA_list2@effort_per_time <- as.list(seq(1, 10, 1))
+soundscape_obj_missing1@binarized_df <- soundscape_obj_missing1@merged_df
+soundscape_obj_missing2@aggregated_df <- soundscape_obj_missing1@merged_df
+soundscape_obj_NA_list1@aggregated_df_per_time <- as.list(seq(1, 10, 1))
+soundscape_obj_NA_list2@effort_per_time <- as.list(seq(1, 10, 1))
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape binarized_df argument is not missing", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj binarized_df argument is not missing", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_missing1,
+    object = ss_binarize(soundscape_obj = soundscape_obj_missing1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@binarized_df is not a missing data frame. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@binarized_df is not a missing data frame. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape aggregated_df argument is not missing", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj aggregated_df argument is not missing", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_missing2,
+    object = ss_binarize(soundscape_obj = soundscape_obj_missing2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@aggregated_df is not a missing data frame. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@aggregated_df is not a missing data frame. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape aggregated_df_per_time argument is not a list of NAs", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj aggregated_df_per_time argument is not a list of NAs", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_NA_list1,
+    object = ss_binarize(soundscape_obj = soundscape_obj_NA_list1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@aggregated_df_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@aggregated_df_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_binarize function produces the correct error message when the merged_soundscape effort_per_time argument is not a list of NAs", {
+testthat::test_that("the ss_binarize function produces the correct error message when the soundscape_obj effort_per_time argument is not a list of NAs", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_NA_list2,
+    object = ss_binarize(soundscape_obj = soundscape_obj_NA_list2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@effort_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@effort_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_binarize() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
@@ -1143,7 +1143,7 @@ testthat::test_that("the ss_binarize function produces the correct error message
 testthat::test_that("the ss_binarize function produces the correct error message when the method argument is not supplied as a character string", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
+    object = ss_binarize(soundscape_obj = soundscape_obj_CVR,
                          method = as.factor("IJDefault"),
                          value=NULL),
     regexp = "method is not a character string. Please supply the binarization methods as a character string. Consult package documentation for available method options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.", fixed=TRUE
@@ -1154,7 +1154,7 @@ testthat::test_that("the ss_binarize function produces the correct error message
 testthat::test_that("the ss_binarize function produces the correct error message when the method argument is not one of the available options", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
+    object = ss_binarize(soundscape_obj = soundscape_obj_CVR,
                          method = "Not an option!",
                          value=NULL),
     regexp = "method is not one of the available binarization method options. Please consult package documentation for available  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.", fixed=TRUE
@@ -1167,7 +1167,7 @@ testthat::test_that("the ss_binarize function produces the correct error message
 testthat::test_that("the ss_binarize function produces the correct error message when the format of the value argument is not the right format", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
+    object = ss_binarize(soundscape_obj = soundscape_obj_CVR,
                          method = "Custom",
                          value = "Not the right format!"),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",
@@ -1179,7 +1179,7 @@ testthat::test_that("the ss_binarize function produces the correct error message
 testthat::test_that("the ss_binarize function produces the correct error message when the length of the value argument is not correct", {
 
   testthat::expect_error(
-    object = ss_binarize(merged_soundscape = merged_soundscape_CVR,
+    object = ss_binarize(soundscape_obj = soundscape_obj_CVR,
                          method = "Custom",
                          value = c(1, 2)),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",
@@ -1193,12 +1193,12 @@ testthat::test_that("the ss_binarize function produces the correct error message
 
   # 5.0. If required argument is missing
 
-testthat::test_that("the ss_threshold_check function provides the correct error when the merged_soundscape argument is missing", {
+testthat::test_that("the ss_threshold_check function provides the correct error when the soundscape_obj argument is missing", {
 
   testthat::expect_error(
     object = ss_threshold_check(method = "IJDefault",
                          value = NULL,),
-    regexp = "merged_soundscape argument is missing. Please supply the missing argument.",
+    regexp = "soundscape_obj argument is missing. Please supply the missing argument.",
     fixed = TRUE)
 
 })
@@ -1206,7 +1206,7 @@ testthat::test_that("the ss_threshold_check function provides the correct error 
 testthat::test_that("the ss_threshold_check function provides the correct error when the method argument is missing", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_CVR,
                          value = NULL),
     regexp = "method argument is missing. Please supply the missing argument.",
     fixed = TRUE)
@@ -1216,7 +1216,7 @@ testthat::test_that("the ss_threshold_check function provides the correct error 
 testthat::test_that("the ss_threshold_check function provides the correct error when the method argument is set to 'custom', but the value argument is missing", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_CVR,
                          method = "Custom"),
     regexp = "value argument is missing. If you set method to 'custom', please supply a value argument. Consult package documentation for options.",
     fixed = TRUE)
@@ -1230,100 +1230,100 @@ testthat::test_that("The ss_threshold_check function works as expected when the 
 
   vdiffr::expect_doppelganger(
     title = "Create ss_threshold_check plot",
-    fig = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+    fig = ss_threshold_check(soundscape_obj = soundscape_obj_CVR,
                              method = "IsoData",
                              value = NULL),
   )
 })
 
 
-  # 5.2. When the supplied merged_soundscape argument is wrong
+  # 5.2. When the supplied soundscape_obj argument is wrong
 
     # 5.2.1. The df argument is not an S4 object of the type 'soundscape'
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape argument is not an S4-object of the type 'soundscape' ", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj argument is not an S4-object of the type 'soundscape' ", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR@merged_df,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_CVR@merged_df,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape is not an S4-object of the type 'soundscape'. Please supply the merged_soundscape object produced by the ss_index_merge() function. Consult the package documentation for further information.",
+    regexp = "soundscape_obj is not an S4-object of the type 'soundscape'. Please supply the soundscape_obj object produced by the ss_index_merge() function. Consult the package documentation for further information.",
     fixed=TRUE
   )
 
 })
 
-  # 5.3. When the merged_soundscape elements are wrong
+  # 5.3. When the soundscape_obj elements are wrong
 
     # 5.3.1. The lat and lon arguments are wrong
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_coord_1,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_coord_1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_coord_2,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_coord_2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_coord_3,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_coord_3,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lon is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lon is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_coord_4,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_coord_4,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lon is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lon is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_coord_5,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_coord_5,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape lat and lon argument don't match existing coordinates on Earth", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj lat and lon argument don't match existing coordinates on Earth", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_coord_6,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_coord_6,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@lat is not a valid coordinate. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
+    regexp = "soundscape_obj@lat is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.",
     fixed=TRUE
   )
 
@@ -1331,13 +1331,13 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.3. When the tz argument is wrong
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape tz argument is wrong", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj tz argument is wrong", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_tz,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_tz,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@tz is not a recognized timezone. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).",
+    regexp = "soundscape_obj@tz is not a recognized timezone. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).",
     fixed=TRUE
   )
 
@@ -1345,10 +1345,10 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.4. When the fileloc argument is wrong
 
-# testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape fileloc argument is wrong", {
+# testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj fileloc argument is wrong", {
 #
 #   testthat::expect_error(
-#     object = ss_threshold_check(merged_soundscape = merged_soundscape_fileloc,
+#     object = ss_threshold_check(soundscape_obj = soundscape_obj_fileloc,
 #                          method = "IJDefault",
 #                          value=NULL),
 #     regexp = paste0("Path ",
@@ -1361,13 +1361,13 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.5. When the index argument is wrong
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape index argument is wrong", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj index argument is wrong", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_index,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_index,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@index is not a character string of one of the available index options. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.",
+    regexp = "soundscape_obj@index is not a character string of one of the available index options. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.",
     fixed=TRUE
   )
 
@@ -1375,25 +1375,25 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.6. When the samplerate argument is wrong
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape samplerate argument is wrong", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj samplerate argument is wrong", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_samplerate1,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_samplerate1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@samplerate is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@samplerate is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape samplerate argument is wrong", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj samplerate argument is wrong", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_samplerate2,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_samplerate2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@samplerate is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@samplerate is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -1401,25 +1401,25 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.7. When the window argument is wrong
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape window argument is wrong", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj window argument is wrong", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_window1,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_window1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@window is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@window is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape window argument is wrong", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj window argument is wrong", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_window2,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_window2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@window is not a single positive integer. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
+    regexp = "soundscape_obj@window is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function, and pay special attention to the samplerate and window arguments.",
     fixed=TRUE
   )
 
@@ -1428,37 +1428,37 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.8. The post-binarization or post-aggregation arguments are not NA
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape binarization_method argument is not NA", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj binarization_method argument is not NA", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_postbin1,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_postbin1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@binarization_method is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@binarization_method is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape threshold argument is not NA", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj threshold argument is not NA", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_postbin2,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_postbin2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@threshold is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@threshold is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape output argument is not NA", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj output argument is not NA", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_postaggr,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_postaggr,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@output is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@output is not NA. Did you supply a post-binarization or post-aggregation soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
@@ -1466,61 +1466,61 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.9. The merged_df argument is wrong
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape merged_df argument is empty", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj merged_df argument is empty", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_merged_df1,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_merged_df1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape merged_df argument contains NA values", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj merged_df argument contains NA values", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_merged_df2,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_merged_df2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape merged_df argument contains non-numeric values", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj merged_df argument contains non-numeric values", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_merged_df3,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_merged_df3,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape merged_df argument has incorrect row names", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj merged_df argument has incorrect row names", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_merged_df4,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_merged_df4,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape merged_df argument has incorrect column names", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj merged_df argument has incorrect column names", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_merged_df5,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_merged_df5,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@merged_df does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
+    regexp = "soundscape_obj@merged_df does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.",
     fixed=TRUE
   )
 
@@ -1528,49 +1528,49 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 
     # 5.3.10. The binarization and aggregation arguments are not missing / NAs
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape binarized_df argument is not missing", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj binarized_df argument is not missing", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_missing1,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_missing1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@binarized_df is not a missing data frame. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@binarized_df is not a missing data frame. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape aggregated_df argument is not missing", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj aggregated_df argument is not missing", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_missing2,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_missing2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@aggregated_df is not a missing data frame. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@aggregated_df is not a missing data frame. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape aggregated_df_per_time argument is not a list of NAs", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj aggregated_df_per_time argument is not a list of NAs", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_NA_list1,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_NA_list1,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@aggregated_df_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@aggregated_df_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
 })
 
-testthat::test_that("the ss_threshold_check function produces the correct error message when the merged_soundscape effort_per_time argument is not a list of NAs", {
+testthat::test_that("the ss_threshold_check function produces the correct error message when the soundscape_obj effort_per_time argument is not a list of NAs", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_NA_list2,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_NA_list2,
                          method = "IJDefault",
                          value=NULL),
-    regexp = "merged_soundscape@effort_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation merged_soundscape to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
+    regexp = "soundscape_obj@effort_per_time is not a list of NAs. Did you supply a post-binarization or post-aggregation soundscape_obj to the ss_threshold_check() function? Please supply the output of the ss_index_merge() function to this argument.",
     fixed=TRUE
   )
 
@@ -1581,7 +1581,7 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 testthat::test_that("the ss_threshold_check function produces the correct error message when the method argument is not supplied as a character string", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_CVR,
                          method = as.factor("IJDefault"),
                          value=NULL),
     regexp = "method is not a character string. Please supply the binarization methods as a character string. Consult package documentation for available method options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.", fixed=TRUE
@@ -1592,7 +1592,7 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 testthat::test_that("the ss_threshold_check function produces the correct error message when the method argument is not one of the available options", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_CVR,
                          method = "Not an option!",
                          value=NULL),
     regexp = "method is not one of the available binarization method options. Please consult package documentation for available  options. Make sure the name matches the package documentation, and pay attention to capitals or excess spaces.", fixed=TRUE
@@ -1605,7 +1605,7 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 testthat::test_that("the ss_threshold_check function produces the correct error message when the format of the value argument is not the right format", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_CVR,
                          method = "Custom",
                          value = "Not the right format!"),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",
@@ -1617,7 +1617,7 @@ testthat::test_that("the ss_threshold_check function produces the correct error 
 testthat::test_that("the ss_threshold_check function produces the correct error message when the length of the value argument is not correct", {
 
   testthat::expect_error(
-    object = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+    object = ss_threshold_check(soundscape_obj = soundscape_obj_CVR,
                          method = "Custom",
                          value = c(1, 2)),
     regexp = "value input is not in the right format. To choose a custom binarization threshold, supply a single numeric value.",

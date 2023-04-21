@@ -4,14 +4,15 @@
 \alias{ss_pcoa}
 \title{Principle Coordinate plots for a list of soundscapes}
 \usage{
-ss_pcoa(aggregated_soundscape_list, grouping = NA, screeplot = FALSE)
+ss_pcoa(soundscape_list, grouping = NA, screeplot = FALSE)
 }
 \arguments{
-\item{aggregated_soundscape_list}{A list of aggregated_soundscape objects. Each object in the
-list should be produced using the \code{\link{ss_aggregate}} function.}
+\item{soundscape_list}{A list of soundscape objects. Each object in the
+list should be produced using the \code{\link{ss_create}} function (or ss_index_merge,
+ss_binarize, and ss_aggregate in sequence).}
 
-\item{grouping}{A numeric or character vector indicating potential grouping of the elements in the 'aggregated_soundscape_list' object.
-Make sure that the grouping vector has the same length as the 'aggregated_soundscape_list' argument.}
+\item{grouping}{A numeric or character vector indicating potential grouping of the elements in the 'soundscape_list' object.
+Make sure that the grouping vector has the same length as the 'soundscape_list' argument.}
 
 \item{screeplot}{A boolean operator indicating whether the function should produce a screeplot in addition to the PCoA plot.
 Options are: TRUE and FALSE.}

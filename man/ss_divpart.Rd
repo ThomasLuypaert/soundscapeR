@@ -7,7 +7,7 @@
 ss_divpart(
   soundscape_list,
   qvalue,
-  hier_table = NA,
+  hier_table = NULL,
   minfreq = 0,
   maxfreq = "default",
   mintime = "default",
@@ -16,7 +16,7 @@ ss_divpart(
 )
 }
 \arguments{
-\item{soundscape_list}{A list of dataframes of equal dimensions, each dataframe being produced by \code{\link{ss_aggregate}}.}
+\item{soundscape_list}{A list of soundscape objects of equal dimensions, each soundscape object being produced by \code{\link{ss_create}} (or \code{\link{ss_index_merge}}, \code{\link{ss_binarize}} and \code{\link{ss_aggregate}} in sequence).}
 
 \item{qvalue}{A positive integer or decimal number (>=0), most commonly between 0-3. This parameter modulates the sensitivity of diversity values to the relative abundance of Operational Sound Units (OSUs). A value of 0 corresponds to the richness, a value of 1 is the equivalent number of effective OSUs for the Shannon index, a value of 2 is the equivalent number of effective OSUs for the Simpson index.}
 

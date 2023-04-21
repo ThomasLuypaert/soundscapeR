@@ -5,7 +5,7 @@
 \title{Estimate the soundscape evenness using Hill numbers}
 \usage{
 ss_evenness(
-  aggregated_soundscape = aggregated_soundscape,
+  soundscape_obj = soundscape_obj,
   subset = "total",
   mintime = "default",
   maxtime = "default",
@@ -18,7 +18,7 @@ ss_evenness(
 )
 }
 \arguments{
-\item{aggregated_soundscape}{The aggregated soundscape object produced by
+\item{soundscape_obj}{The aggregated soundscape object produced by
 \code{\link{ss_aggregate}} function.}
 
 \item{subset}{The scale for which the soundscape diversity is computed.

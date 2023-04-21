@@ -227,7 +227,7 @@ ss_aggregate <- function(binarized_soundscape,
     is.data.frame(x) &
       assertthat::not_empty(x) &
       assertthat::noNA(x) &
-      limma::isNumeric(x)
+      all(apply(x, 2, function(y) all(is.numeric(y))))
 
   }
 

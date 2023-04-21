@@ -4,11 +4,13 @@
 #' @description  Creates a differential soundscape heatmap that shows the
 #' difference in OSU presence and prevalence between two soundscape objects.
 #'
-#' @param aggregated_soundscape_A An aggregated soundscape object produced by
-#'  \code{\link{ss_aggregate}} function for comparison.
+#' @param soundscape_obj_A A soundscape object produced by the \code{\link{ss_create}}
+#'  function (or ss_index_merge, ss_binarize, and ss_aggregate in sequence). This will be
+#'  the first soundscape for comparison.
 #'
-#' @param aggregated_soundscape_B An aggregated soundscape object produced by
-#'  \code{\link{ss_aggregate}} function for comparison.
+#' @param soundscape_obj_B A soundscape object produced by the \code{\link{ss_create}}
+#'  function (or ss_index_merge, ss_binarize, and ss_aggregate in sequence). This will be
+#'  the second soundscape for comparison.
 #'
 #' @param type One of either "regular" or "polar". If set
 #' to "regular", produces a regular rectangular heatmap.
@@ -72,8 +74,8 @@
 #'
 #' @export
 
-ss_compare <- function(aggregated_soundscape_A,
-                       aggregated_soundscape_B,
+ss_compare <- function(soundscape_obj_A,
+                       soundscape_obj_B,
                        type = "regular",
                        timeinterval="1 hour",
                        mintime="default",
@@ -111,12 +113,12 @@ ss_compare <- function(aggregated_soundscape_A,
 
   }
 
-  assertthat::assert_that(test_1(aggregated_soundscape_A))
-  assertthat::assert_that(test_1(aggregated_soundscape_B))
+  assertthat::assert_that(test_1(soundscape_obj_A))
+  assertthat::assert_that(test_1(soundscape_obj_B))
 
-  # 0.1.2. Check if aggregated_soundscape arguments meet expectations
+  # 0.1.2. Check if soundscape_obj arguments meet expectations
 
-  # The supplied aggregated_soundscape arguments are S4-object of the type
+  # The supplied soundscape_obj arguments are S4-object of the type
   # 'soundscape', and is not empty.
 
   test_2 <- function(x){
@@ -129,14 +131,14 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_2) <- function(call, env){
 
-    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape', or is empty. Please supply the aggregated_soundscape object produced by the ss_aggregate() function. Consult the package documentation for further information.")
+    paste0(deparse(call$x), " is not an S4-object of the type 'soundscape', or is empty. Please supply the soundscape_obj object produced by the ss_aggregate() function. Consult the package documentation for further information.")
 
   }
 
-  assertthat::assert_that(test_2(aggregated_soundscape_A))
-  assertthat::assert_that(test_2(aggregated_soundscape_B))
+  assertthat::assert_that(test_2(soundscape_obj_A))
+  assertthat::assert_that(test_2(soundscape_obj_B))
 
-  # 0.1.3. The aggregated_soundscape elements are in the expected format
+  # 0.1.3. The soundscape_obj elements are in the expected format
 
   # The lat and lon argument
 
@@ -158,20 +160,20 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_3) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create function? If so, something has gone wrong, please re-run the ss_index_merge(), ss_binarize() and ss_aggregate() or ss_create() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create function? If so, something has gone wrong, please re-run the ss_index_merge(), ss_binarize() and ss_aggregate() or ss_create() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
   assertthat::on_failure(test_4) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create function? If so, something has gone wrong, please re-run the ss_index_merge(), ss_binarize() and ss_aggregate() or ss_create() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
+    paste0(deparse(call$x), " is not a valid coordinate. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create function? If so, something has gone wrong, please re-run the ss_index_merge(), ss_binarize() and ss_aggregate() or ss_create() functions, and pay special attention to the required coordinate format. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
 
   }
 
-  assertthat::assert_that(test_3(aggregated_soundscape_A@lat))
-  assertthat::assert_that(test_4(aggregated_soundscape_A@lon))
-  assertthat::assert_that(test_3(aggregated_soundscape_B@lat))
-  assertthat::assert_that(test_4(aggregated_soundscape_B@lon))
+  assertthat::assert_that(test_3(soundscape_obj_A@lat))
+  assertthat::assert_that(test_4(soundscape_obj_A@lon))
+  assertthat::assert_that(test_3(soundscape_obj_B@lat))
+  assertthat::assert_that(test_4(soundscape_obj_B@lon))
 
   # The time zone argument
 
@@ -183,12 +185,12 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_5) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
+    paste0(deparse(call$x), " is not a recognized timezone. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the required date and coordinate formats (these are used to calculate the time zone).")
 
   }
 
-  assertthat::assert_that(test_5(aggregated_soundscape_A@tz))
-  assertthat::assert_that(test_5(aggregated_soundscape_B@tz))
+  assertthat::assert_that(test_5(soundscape_obj_A@tz))
+  assertthat::assert_that(test_5(soundscape_obj_B@tz))
 
   # The index argument
 
@@ -201,12 +203,12 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_6) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
+    paste0(deparse(call$x), " is not a character string of one of the available index options. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the index argument. Supply the index argument as a character string, and consult package documentation for index options.")
 
   }
 
-  assertthat::assert_that(test_6(aggregated_soundscape_A@index))
-  assertthat::assert_that(test_6(aggregated_soundscape_B@index))
+  assertthat::assert_that(test_6(soundscape_obj_A@index))
+  assertthat::assert_that(test_6(soundscape_obj_B@index))
 
   # The samplerate and window arguments
 
@@ -218,14 +220,14 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_7) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a single positive integer. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.")
+    paste0(deparse(call$x), " is not a single positive integer. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the samplerate and window arguments.")
 
   }
 
-  assertthat::assert_that(test_7(aggregated_soundscape_A@samplerate))
-  assertthat::assert_that(test_7(aggregated_soundscape_A@window))
-  assertthat::assert_that(test_7(aggregated_soundscape_B@samplerate))
-  assertthat::assert_that(test_7(aggregated_soundscape_B@window))
+  assertthat::assert_that(test_7(soundscape_obj_A@samplerate))
+  assertthat::assert_that(test_7(soundscape_obj_A@window))
+  assertthat::assert_that(test_7(soundscape_obj_B@samplerate))
+  assertthat::assert_that(test_7(soundscape_obj_B@window))
 
   # The binarization_method argument
 
@@ -241,8 +243,8 @@ ss_compare <- function(aggregated_soundscape_A,
 
   }
 
-  assertthat::assert_that(test_8(aggregated_soundscape_A@binarization_method))
-  assertthat::assert_that(test_8(aggregated_soundscape_B@binarization_method))
+  assertthat::assert_that(test_8(soundscape_obj_A@binarization_method))
+  assertthat::assert_that(test_8(soundscape_obj_B@binarization_method))
 
   # The threshold argument
 
@@ -255,12 +257,12 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_9) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a single numeric value. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the value argument is you're supplying a custom threshold value.")
+    paste0(deparse(call$x), " is not a single numeric value. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the value argument is you're supplying a custom threshold value.")
 
   }
 
-  assertthat::assert_that(test_9(aggregated_soundscape_A@threshold))
-  assertthat::assert_that(test_9(aggregated_soundscape_B@threshold))
+  assertthat::assert_that(test_9(soundscape_obj_A@threshold))
+  assertthat::assert_that(test_9(soundscape_obj_B@threshold))
 
   # The output argument
 
@@ -272,12 +274,12 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_10) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
+    paste0(deparse(call$x), " is not a character string describing one of the available output options. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument. Options are: 'incidence_freq' and 'raw', please supply them to the output argument as a character string.")
 
   }
 
-  assertthat::assert_that(test_10(aggregated_soundscape_A@output))
-  assertthat::assert_that(test_10(aggregated_soundscape_B@output))
+  assertthat::assert_that(test_10(soundscape_obj_A@output))
+  assertthat::assert_that(test_10(soundscape_obj_B@output))
 
   # The merged_df argument
 
@@ -286,7 +288,7 @@ ss_compare <- function(aggregated_soundscape_A,
     is.data.frame(x) &
       assertthat::not_empty(x) &
       assertthat::noNA(x) &
-      limma::isNumeric(x)
+      all(apply(x, 2, function(y) all(is.numeric(y))))
 
   }
 
@@ -295,7 +297,7 @@ ss_compare <- function(aggregated_soundscape_A,
     (abs(as.numeric(rownames(x)[1]))+
        abs(as.numeric(rownames(x)[2])))>3 &
       min(as.numeric(rownames(x))) >= 0 &
-      max(as.numeric(rownames(x)))<= aggregated_soundscape_A@samplerate/2
+      max(as.numeric(rownames(x)))<= soundscape_obj_A@samplerate/2
 
   }
 
@@ -304,7 +306,7 @@ ss_compare <- function(aggregated_soundscape_A,
     (abs(as.numeric(rownames(x)[1]))+
        abs(as.numeric(rownames(x)[2])))>3 &
       min(as.numeric(rownames(x))) >= 0 &
-      max(as.numeric(rownames(x)))<= aggregated_soundscape_B@samplerate/2
+      max(as.numeric(rownames(x)))<= soundscape_obj_B@samplerate/2
 
   }
 
@@ -312,8 +314,8 @@ ss_compare <- function(aggregated_soundscape_A,
 
     formatted <-  try(
       as.POSIXct(
-        paste0(substr(aggregated_soundscape_A@first_day, 1, 12)," ", colnames(x)),
-        tz = aggregated_soundscape_A@tz,
+        paste0(substr(soundscape_obj_A@first_day, 1, 12)," ", colnames(x)),
+        tz = soundscape_obj_A@tz,
         format="%Y-%m-%d %H:%M:%S"),
       silent = TRUE)
 
@@ -325,8 +327,8 @@ ss_compare <- function(aggregated_soundscape_A,
 
     formatted <-  try(
       as.POSIXct(
-        paste0(substr(aggregated_soundscape_B@first_day, 1, 12)," ", colnames(x)),
-        tz = aggregated_soundscape_B@tz,
+        paste0(substr(soundscape_obj_B@first_day, 1, 12)," ", colnames(x)),
+        tz = soundscape_obj_B@tz,
         format="%Y-%m-%d %H:%M:%S"),
       silent = TRUE)
 
@@ -337,7 +339,7 @@ ss_compare <- function(aggregated_soundscape_A,
 
   assertthat::on_failure(test_11) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the aggregated_soundscape argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.")
+    paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the soundscape_obj argument produced using the ss_aggregate() or ss_create() functions? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function.")
 
   }
 
@@ -353,11 +355,11 @@ ss_compare <- function(aggregated_soundscape_A,
 
   }
 
-  assertthat::assert_that(test_11(aggregated_soundscape_A@merged_df))
-  assertthat::assert_that(test_12_A(aggregated_soundscape_A@merged_df))
+  assertthat::assert_that(test_11(soundscape_obj_A@merged_df))
+  assertthat::assert_that(test_12_A(soundscape_obj_A@merged_df))
 
-  assertthat::assert_that(test_11(aggregated_soundscape_B@merged_df))
-  assertthat::assert_that(test_12_B(aggregated_soundscape_B@merged_df))
+  assertthat::assert_that(test_11(soundscape_obj_B@merged_df))
+  assertthat::assert_that(test_12_B(soundscape_obj_B@merged_df))
 
   # The binarized_df argument
 
@@ -374,27 +376,27 @@ ss_compare <- function(aggregated_soundscape_A,
 
   }
 
-  assertthat::assert_that(test_11(aggregated_soundscape_A@binarized_df))
-  assertthat::assert_that(test_12_A(aggregated_soundscape_A@binarized_df))
-  assertthat::assert_that(test_13_A(aggregated_soundscape_A@binarized_df))
-  assertthat::assert_that(test_14(aggregated_soundscape_A@binarized_df))
+  assertthat::assert_that(test_11(soundscape_obj_A@binarized_df))
+  assertthat::assert_that(test_12_A(soundscape_obj_A@binarized_df))
+  assertthat::assert_that(test_13_A(soundscape_obj_A@binarized_df))
+  assertthat::assert_that(test_14(soundscape_obj_A@binarized_df))
 
-  assertthat::assert_that(test_11(aggregated_soundscape_B@binarized_df))
-  assertthat::assert_that(test_12_B(aggregated_soundscape_B@binarized_df))
-  assertthat::assert_that(test_13_B(aggregated_soundscape_B@binarized_df))
-  assertthat::assert_that(test_14(aggregated_soundscape_B@binarized_df))
+  assertthat::assert_that(test_11(soundscape_obj_B@binarized_df))
+  assertthat::assert_that(test_12_B(soundscape_obj_B@binarized_df))
+  assertthat::assert_that(test_13_B(soundscape_obj_B@binarized_df))
+  assertthat::assert_that(test_14(soundscape_obj_B@binarized_df))
 
   # The aggregated_df argument
 
-  assertthat::assert_that(test_11(aggregated_soundscape_A@aggregated_df))
-  assertthat::assert_that(test_12_A(aggregated_soundscape_A@aggregated_df))
-  assertthat::assert_that(test_13_A(aggregated_soundscape_A@aggregated_df))
+  assertthat::assert_that(test_11(soundscape_obj_A@aggregated_df))
+  assertthat::assert_that(test_12_A(soundscape_obj_A@aggregated_df))
+  assertthat::assert_that(test_13_A(soundscape_obj_A@aggregated_df))
 
-  assertthat::assert_that(test_11(aggregated_soundscape_B@aggregated_df))
-  assertthat::assert_that(test_12_B(aggregated_soundscape_B@aggregated_df))
-  assertthat::assert_that(test_13_B(aggregated_soundscape_B@aggregated_df))
+  assertthat::assert_that(test_11(soundscape_obj_B@aggregated_df))
+  assertthat::assert_that(test_12_B(soundscape_obj_B@aggregated_df))
+  assertthat::assert_that(test_13_B(soundscape_obj_B@aggregated_df))
 
-  if(aggregated_soundscape_A@output=="incidence_freq" & aggregated_soundscape_B@output=="incidence_freq"){
+  if(soundscape_obj_A@output=="incidence_freq" & soundscape_obj_B@output=="incidence_freq"){
 
     test_15 <- function(x){
 
@@ -404,22 +406,22 @@ ss_compare <- function(aggregated_soundscape_A,
 
     assertthat::on_failure(test_15) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than 0 or larger than 1. The expected range of incidence_freq values ranges between 0-1. Did you supply the soundscape_obj argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
-    assertthat::assert_that(test_15(aggregated_soundscape_A@aggregated_df))
-    assertthat::assert_that(test_15(aggregated_soundscape_B@aggregated_df))
+    assertthat::assert_that(test_15(soundscape_obj_A@aggregated_df))
+    assertthat::assert_that(test_15(soundscape_obj_B@aggregated_df))
   }
 
   else{
 
-  if(aggregated_soundscape_A@output=="raw" & aggregated_soundscape_B@output=="raw"){
+  if(soundscape_obj_A@output=="raw" & soundscape_obj_B@output=="raw"){
 
     test_15_A <- function(x){
 
       all(all(round(unlist(x)) == unlist(x)) &
-            max(x) <= max(table(colnames(aggregated_soundscape_A@merged_df))) &
+            max(x) <= max(table(colnames(soundscape_obj_A@merged_df))) &
             min(x) >= 0)
 
     }
@@ -427,28 +429,28 @@ ss_compare <- function(aggregated_soundscape_A,
     test_15_B <- function(x){
 
       all(all(round(unlist(x)) == unlist(x)) &
-            max(x) <= max(table(colnames(aggregated_soundscape_B@merged_df))) &
+            max(x) <= max(table(colnames(soundscape_obj_B@merged_df))) &
             min(x) >= 0)
 
     }
 
     assertthat::on_failure(test_15_A) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the soundscape_obj argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
     assertthat::on_failure(test_15_B) <- function(call, env){
 
-      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the aggregated_soundscape argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
+      paste0(deparse(call$x), " contains values smaller than zero, or larger than the maximum number of soundscape samples per time. The expected range of raw values ranges between 0 and the maximum number of soundscape samples (24-hour recording days). Did you supply the soundscape_obj argument produced using the ss_aggregate or ss_create function? If so, something has gone wrong, please re-run the ss_aggregate() or ss_create() function, and pay special attention to the output argument.")
 
     }
 
-    assertthat::assert_that(test_15_A(aggregated_soundscape_A@aggregated_df))
-    assertthat::assert_that(test_15_B(aggregated_soundscape_B@aggregated_df))
+    assertthat::assert_that(test_15_A(soundscape_obj_A@aggregated_df))
+    assertthat::assert_that(test_15_B(soundscape_obj_B@aggregated_df))
   }
 
-    else{print("aggregated_soundscape_A and/or aggregated_soundscape_B don't have the correct output argument")
+    else{print("soundscape_obj_A and/or soundscape_obj_B don't have the correct output argument")
       Sys.sleep(0.0000000000000001)}
 
   }
@@ -521,16 +523,16 @@ ss_compare <- function(aggregated_soundscape_A,
   test_21_A <- function(x){
 
     assertthat::is.count(x) &
-      x > min(as.numeric(rownames(aggregated_soundscape_A@aggregated_df))) &
-      x < max(as.numeric(rownames(aggregated_soundscape_A@aggregated_df)))
+      x > min(as.numeric(rownames(soundscape_obj_A@aggregated_df))) &
+      x < max(as.numeric(rownames(soundscape_obj_A@aggregated_df)))
 
   }
 
   test_21_B <- function(x){
 
     assertthat::is.count(x) &
-      x > min(as.numeric(rownames(aggregated_soundscape_B@aggregated_df))) &
-      x < max(as.numeric(rownames(aggregated_soundscape_B@aggregated_df)))
+      x > min(as.numeric(rownames(soundscape_obj_B@aggregated_df))) &
+      x < max(as.numeric(rownames(soundscape_obj_B@aggregated_df)))
 
   }
 
@@ -553,32 +555,32 @@ ss_compare <- function(aggregated_soundscape_A,
 
   test_22_A <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregated_soundscape_A@aggregated_df))) &
-       x <= max(as.numeric(rownames(aggregated_soundscape_A@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj_A@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj_A@aggregated_df)))) |
       x == 0
 
   }
 
   test_22_B <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregated_soundscape_B@aggregated_df))) &
-       x <= max(as.numeric(rownames(aggregated_soundscape_B@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj_B@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj_B@aggregated_df)))) |
       x == 0
 
   }
 
   test_23_A <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregated_soundscape_A@aggregated_df))) &
-       x <= max(as.numeric(rownames(aggregated_soundscape_A@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj_A@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj_A@aggregated_df)))) |
       x == "default"
 
   }
 
   test_23_B <- function(x){
     (assertthat::is.count(x) &
-       x >= min(as.numeric(rownames(aggregated_soundscape_B@aggregated_df))) &
-       x <= max(as.numeric(rownames(aggregated_soundscape_B@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj_B@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj_B@aggregated_df)))) |
       x == "default"
 
   }
@@ -685,7 +687,7 @@ ss_compare <- function(aggregated_soundscape_A,
 
   # 1. Preparing the soundscape heatmaps
 
-  heatmap_A <- ss_heatmap(aggregated_soundscape = aggregated_soundscape_A,
+  heatmap_A <- ss_heatmap(soundscape_obj = soundscape_obj_A,
                           type = type,
                           annotate = FALSE,
                           timeinterval = timeinterval,
@@ -702,7 +704,7 @@ ss_compare <- function(aggregated_soundscape_A,
                           zero.black = zero.black,
                           interactive = interactive)
 
-  heatmap_B <- ss_heatmap(aggregated_soundscape = aggregated_soundscape_B,
+  heatmap_B <- ss_heatmap(soundscape_obj = soundscape_obj_B,
                           type = type,
                           annotate = FALSE,
                           timeinterval = timeinterval,
@@ -723,24 +725,24 @@ ss_compare <- function(aggregated_soundscape_A,
 
     # 2.1. Convert the soundscapes to matrices
 
-  if(aggregated_soundscape_A@output == "raw"){
+  if(soundscape_obj_A@output == "raw"){
 
-    aggregated_soundscape_A@aggregated_df <- aggregated_soundscape_A@aggregated_df/aggregated_soundscape_A@effort_per_time[1]
-
-  }
-
-  else{}
-
-  if(aggregated_soundscape_B@output == "raw"){
-
-    aggregated_soundscape_B@aggregated_df <- aggregated_soundscape_B@aggregated_df/aggregated_soundscape_B@effort_per_time[1]
+    soundscape_obj_A@aggregated_df <- soundscape_obj_A@aggregated_df/soundscape_obj_A@effort_per_time[1]
 
   }
 
   else{}
 
-  matrix_A <- as.matrix(aggregated_soundscape_A@aggregated_df)
-  matrix_B <- as.matrix(aggregated_soundscape_B@aggregated_df)
+  if(soundscape_obj_B@output == "raw"){
+
+    soundscape_obj_B@aggregated_df <- soundscape_obj_B@aggregated_df/soundscape_obj_B@effort_per_time[1]
+
+  }
+
+  else{}
+
+  matrix_A <- as.matrix(soundscape_obj_A@aggregated_df)
+  matrix_B <- as.matrix(soundscape_obj_B@aggregated_df)
 
     # 2.2. Subtract the OSU values of the matrices (B - A)
 
@@ -749,7 +751,7 @@ ss_compare <- function(aggregated_soundscape_A,
     # 2.3. Turn into data frame that can be plotted with ggplot
 
   differential_soundscape_matrix <- as.data.frame(differential_soundscape_matrix)
-  differential_soundscape_matrix$frequency <- as.integer(rownames(aggregated_soundscape_A@aggregated_df))
+  differential_soundscape_matrix$frequency <- as.integer(rownames(soundscape_obj_A@aggregated_df))
   differential_soundscape_matrix <- reshape2::melt(differential_soundscape_matrix, id.vars="frequency")
   colnames(differential_soundscape_matrix) <- c("frequency", "time", "value")
 
@@ -758,11 +760,11 @@ ss_compare <- function(aggregated_soundscape_A,
 
   differential_soundscape_matrix$time <- as.POSIXct(
     strptime(
-      x =paste(substr(aggregated_soundscape_A@first_day, 1, 12),
+      x =paste(substr(soundscape_obj_A@first_day, 1, 12),
                differential_soundscape_matrix$time,
                sep=" "),
       format = "%Y-%m-%d %H:%M",
-      tz = aggregated_soundscape_A@tz))
+      tz = soundscape_obj_A@tz))
 
     # 2.4. Preparing the arguments of the differential heatmap
 
@@ -780,21 +782,21 @@ ss_compare <- function(aggregated_soundscape_A,
     mintime <- min(
       as.POSIXct(
         strptime(
-          paste(substr(aggregated_soundscape_A@first_day, 1, 12),
-                colnames(aggregated_soundscape_A@aggregated_df),
+          paste(substr(soundscape_obj_A@first_day, 1, 12),
+                colnames(soundscape_obj_A@aggregated_df),
                 sep=" "),
           format= "%Y-%m-%d %H:%M:%S",
-          tz = aggregated_soundscape_A@tz)))
+          tz = soundscape_obj_A@tz)))
   }
 
   else{
     mintime <- as.POSIXct(
       strptime(
-        paste(substr(aggregated_soundscape_A@first_day, 1, 12),
+        paste(substr(soundscape_obj_A@first_day, 1, 12),
               mintime,
               sep=" "),
         format= "%Y-%m-%d %H:%M:%S",
-        tz = aggregated_soundscape_A@tz))
+        tz = soundscape_obj_A@tz))
 
   }
 
@@ -802,47 +804,47 @@ ss_compare <- function(aggregated_soundscape_A,
     maxtime <- max(
       as.POSIXct(
         strptime(
-          paste(substr(aggregated_soundscape_A@first_day, 1, 12),
-                colnames(aggregated_soundscape_A@aggregated_df),
+          paste(substr(soundscape_obj_A@first_day, 1, 12),
+                colnames(soundscape_obj_A@aggregated_df),
                 sep=" "),
           format= "%Y-%m-%d %H:%M:%S",
-          tz = aggregated_soundscape_A@tz)))
+          tz = soundscape_obj_A@tz)))
 
   }
 
   else{
     maxtime <- as.POSIXct(
       strptime(
-        paste(substr(aggregated_soundscape_A@first_day, 1, 12),
+        paste(substr(soundscape_obj_A@first_day, 1, 12),
               maxtime,
               sep=" "),
         format= "%Y-%m-%d %H:%M:%S",
-        tz = aggregated_soundscape_A@tz))
+        tz = soundscape_obj_A@tz))
   }
 
   day <- as.POSIXct(
     strptime(
-      paste(substr(aggregated_soundscape_A@first_day, 1, 12),
+      paste(substr(soundscape_obj_A@first_day, 1, 12),
             "00:00:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
-      tz = aggregated_soundscape_A@tz))
+      tz = soundscape_obj_A@tz))
 
   midnight1 <- as.POSIXct(
     strptime(
-      paste(substr(aggregated_soundscape_A@first_day, 1, 12),
+      paste(substr(soundscape_obj_A@first_day, 1, 12),
             "00:00:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
-      tz = aggregated_soundscape_A@tz))
+      tz = soundscape_obj_A@tz))
 
   midnight2 <- as.POSIXct(
     strptime(
-      paste(substr(aggregated_soundscape_A@first_day, 1, 12),
+      paste(substr(soundscape_obj_A@first_day, 1, 12),
             "23:55:00",
             sep=" "),
       format= "%Y-%m-%d %H:%M:%S",
-      tz = aggregated_soundscape_A@tz))
+      tz = soundscape_obj_A@tz))
 
   if (type=="regular"){
 
@@ -877,7 +879,7 @@ ss_compare <- function(aggregated_soundscape_A,
             guide = "none") +
 
           ggplot2::scale_x_datetime(
-            labels=scales::date_format("%H:%M", tz=aggregated_soundscape_A@tz),
+            labels=scales::date_format("%H:%M", tz=soundscape_obj_A@tz),
             breaks = scales::breaks_width(timeinterval),
             expand = c(0,0),
             limits = c(mintime,maxtime))+
@@ -958,7 +960,7 @@ ss_compare <- function(aggregated_soundscape_A,
           guide = "none") +
 
         ggplot2::scale_x_datetime(
-          labels=scales::date_format("%H:%M", tz=aggregated_soundscape_A@tz),
+          labels=scales::date_format("%H:%M", tz=soundscape_obj_A@tz),
           breaks = scales::breaks_width(timeinterval),
           expand = c(0,0),
           limits = c(mintime,maxtime))+
@@ -1019,6 +1021,8 @@ ss_compare <- function(aggregated_soundscape_A,
 
   if(interactive == TRUE){
 
+    if (interactive==TRUE & save==FALSE){
+
     differential_soundscape_plot <- differential_soundscape_plot +
       ggplot2::scale_fill_gradientn(
         colours = c("#006c99", "white", "#a62a00"),
@@ -1034,6 +1038,17 @@ ss_compare <- function(aggregated_soundscape_A,
           title =  "OSU DIFF."
         ))
 
+      if(length(system.file(package='plotly'))==1){
+
+        cat("The 'plotly' R-package needs to be installed before using this function \n")
+        cat("Use: 'install.packages('plotly')' to install the package and try again...")
+        Sys.sleep(0.00001)
+        stop()
+
+      }
+
+      else{
+
     differential_soundscape_plot <- plotly::ggplotly(differential_soundscape_plot)
     heatmap_A <- plotly::ggplotly(heatmap_A)
     heatmap_B <- plotly::ggplotly(heatmap_B)
@@ -1044,7 +1059,11 @@ ss_compare <- function(aggregated_soundscape_A,
       plotly::layout(autosize = F, width = 1800, height = 500)
 
     return(total_soundscape_difference_plot)
-  }
+
+      }
+
+
+  }}
 
   else{
 
