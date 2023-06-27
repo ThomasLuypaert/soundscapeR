@@ -33,7 +33,8 @@ ss_get_mode <- function(df) {
 
   test_1 <- function(x){
 
-    (is.data.frame(x) & limma::isNumeric(x))
+    (is.data.frame(x) &
+       all(apply(x, 2, function(y) all(is.numeric(y)))))
   }
 
   assertthat::on_failure(test_1) <- function(call, env){

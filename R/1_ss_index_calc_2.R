@@ -92,9 +92,10 @@ ss_assess_files <- function(file_locs, full_days = TRUE){
         }
       }
 
-      cat("Irregular timeinterval detected for: ", names(file_locs)[i])
+      cat("Irregular timeinterval detected for: ", names(file_locs)[i], "\n")
+      cat("Based on the expected sampling regime, there are missing files...")
 
-      print(basename(file_locs[[i]][outliers]))
+      cat(basename(file_locs[[i]][outliers]))
 
       stop("Irregular timeintervals detected - check files")
 

@@ -1038,7 +1038,7 @@ ss_compare <- function(soundscape_obj_A,
           title =  "OSU DIFF."
         ))
 
-      if(length(system.file(package='plotly'))==1){
+      if(nchar(system.file(package='plotly'))==0){
 
         cat("The 'plotly' R-package needs to be installed before using this function \n")
         cat("Use: 'install.packages('plotly')' to install the package and try again...")

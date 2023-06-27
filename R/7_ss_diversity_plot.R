@@ -666,6 +666,23 @@ ss_diversity_plot=function(soundscape_obj,
 
   else{dir <- dir}
 
+   # Check if plotly is installed
+
+   if (interactive == TRUE){
+
+     if(nchar(system.file(package='plotly'))==0){
+
+       cat("The 'plotly' R-package needs to be installed before using this function \n")
+       cat("Use: 'install.packages('plotly')' to install the package and try again...")
+       Sys.sleep(0.00001)
+       stop()
+
+     }
+
+     else{}
+
+   }
+
    # Create graphs
 
   if (graphtype=="total"){
@@ -742,11 +759,16 @@ ss_diversity_plot=function(soundscape_obj,
                         size = 5)
 
     if (interactive==TRUE){
-      plotly::ggplotly(plot)}
+
+      plotly::ggplotly(plot)
+
+    }
+
 
     else{plot}
 
     }
+
 
     else{
 

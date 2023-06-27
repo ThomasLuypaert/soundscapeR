@@ -116,8 +116,8 @@ ss_heatmap=function(soundscape_obj,
                     maxfreq="default",
                     labelsize_time=4,
                     labelsize_frequency=4,
-                    labelsize_polar=3,
-                    palette="D",
+                    labelsize_polar=2,
+                    palette="A",
                     direction=1,
                     zero.black=FALSE,
                     interactive=FALSE,
@@ -1388,8 +1388,18 @@ ss_heatmap=function(soundscape_obj,
 
     if (type=="polar"){
 
-      print("Please bear with us, making polar heatmaps takes a bit longer...")
-      Sys.sleep(0.0001)
+      if(nchar(system.file(package='ggh4x'))==0){
+
+        cat("The 'ggh4x' R-package needs to be installed before using this function \n")
+        cat("Use: 'install.packages('ggh4x')' to install the package and try again...")
+        Sys.sleep(0.00001)
+        stop()
+
+      }
+
+      else{
+
+      df2 <- df2[df2$time >= mintime & df2$time <= maxtime,]
 
       if (annotate==TRUE){
 
@@ -1400,11 +1410,14 @@ ss_heatmap=function(soundscape_obj,
                               fill=value,
                               color=value)) +
 
-          ggplot2::geom_tile()+
+          geom_rect(aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
+                    color = "black", fill = "black")+
+
+          ggh4x::geom_polygonraster()+
 
           ggplot2::scale_fill_gradientn(
             colors = color_vector,
-            na.value = "grey45",
+            na.value = "black",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
@@ -1416,7 +1429,7 @@ ss_heatmap=function(soundscape_obj,
 
           ggplot2::scale_color_gradientn(
             colors = color_vector,
-            na.value = "grey45",
+            na.value = "black",
             guide = ggplot2::guide_legend(
               title.position = "top",
               title.vjust = 1,
@@ -1429,8 +1442,7 @@ ss_heatmap=function(soundscape_obj,
           ggplot2::scale_x_datetime(
             labels=scales::date_format("%H:%M", tz=tz),
             breaks = scales::breaks_width(timeinterval),
-            expand = c(0,0),
-            limits = c(mintime,maxtime))+
+            expand = c(0,0))+
 
           ggplot2::scale_y_continuous(
             limits = c(minfreq,(maxfreq+(maxfreq/10))),
@@ -1501,8 +1513,8 @@ ss_heatmap=function(soundscape_obj,
             yintercept = seq(minfreq,
                              maxfreq,
                              freqinterval),
-            color="#383e42",
-            alpha=0.5,
+            color="lightgrey",
+            alpha=0.2,
             size=0.2)+
 
           ggplot2::annotate(
@@ -1531,55 +1543,24 @@ ss_heatmap=function(soundscape_obj,
             fill="#ffcc13",
             alpha=1)+
 
-          ggplot2::annotate(
-            geom="rect",
-            xmin =min(df2$time),
-            xmax=sunrise,
-            ymin=maxfreq,
-            ymax=(maxfreq+(maxfreq/10)),
-            fill="#4C4B69",
-            alpha=0.25)+
-
-          ggplot2::annotate(
-            geom="rect",
-            xmin =sunset,
-            xmax=midnight2,
-            ymin=maxfreq,
-            ymax=(maxfreq+(maxfreq/10)),
-            fill="#4C4B69", alpha=0.25)+
-
-          ggplot2::annotate(
-            geom="rect",
-            xmin =sunrise,
-            xmax=sunset,
-            ymin=maxfreq,
-            ymax=(maxfreq+(maxfreq/10)),
-            fill="#ffcc13",
-            alpha=0.25)+
-
           ggplot2::labs(fill="OSU RELATIVE ABUNDANCE")+
 
-          ggplot2::guides(color='none')+
+          ggplot2::guides(color='none') +
 
-          ggplot2::annotate(
-            geom="label",
-            size=labelsize_polar,
-            y=seq(minfreq,
-                  maxfreq,
-                  freqinterval),
-            x=min(df2$time),
-            label=as.character(seq(minfreq,
-                                   maxfreq,
-                                   freqinterval)))
-
-
-
+          annotate('text',
+                   x = midnight1,
+                   y = seq(0,
+                           floor(maxfreq / 4000) * 4000,
+                           4000),
+                   label = as.character(seq(0,
+                                            floor(maxfreq / 1000) * 1000,
+                                            4000)),
+                   color = "white",
+                   size = labelsize_polar,
+                   fontface = 2)
       }
 
       else{
-
-        print("Please bear with us, making polar heatmaps takes a bit longer...")
-        Sys.sleep(0.0001)
 
         if (annotate==FALSE){
 
@@ -1591,7 +1572,7 @@ ss_heatmap=function(soundscape_obj,
                            fill=value,
                            color=value)) +
 
-            ggplot2::geom_tile()+
+            ggh4x::geom_polygonraster()+
 
             ggplot2::scale_fill_gradientn(
               colors = color_vector,
@@ -1620,8 +1601,7 @@ ss_heatmap=function(soundscape_obj,
             ggplot2::scale_x_datetime(
               labels=scales::date_format("%H:%M", tz=tz),
               breaks = scales::breaks_width(timeinterval),
-              expand = c(0,0),
-              limits = c(mintime,maxtime))+
+              expand = c(0,0))+
 
             ggplot2::scale_y_continuous(
               limits = c(minfreq,maxfreq),
@@ -1662,28 +1642,30 @@ ss_heatmap=function(soundscape_obj,
               yintercept = seq(minfreq,
                                maxfreq,
                                freqinterval),
-              color="#383e42",
-              alpha=0.5,
+              color="lightgrey",
+              alpha=0.2,
               size=0.2)+
-
-            ggplot2::annotate(
-              geom="label",
-              size=labelsize_polar,
-              y=seq(minfreq,
-                    maxfreq,
-                    freqinterval),
-              x=min(df2$time),
-              label=as.character(seq(minfreq,
-                                     maxfreq,
-                                     freqinterval)))+
 
             ggplot2::labs(fill="OSU RELATIVE ABUNDANCE")+
 
-            ggplot2::guides(color='none')
+            ggplot2::guides(color='none')+
+
+            annotate('text',
+                     x = midnight1,
+                     y = seq(0,
+                             floor(maxfreq / 4000) * 4000,
+                             4000),
+                     label = as.character(seq(0,
+                                              floor(maxfreq / 1000) * 1000,
+                                              4000)),
+                     color = "white",
+                     size = labelsize_polar,
+                     fontface = 2)
 
           plot
 
         }
+      }
       }
     }
   }
@@ -1781,7 +1763,7 @@ ss_heatmap=function(soundscape_obj,
             breaks = seq(minfreq, maxfreq, freqinterval),
             label=scales::comma)
 
-        if(length(system.file(package='plotly'))==1){
+        if(nchar(system.file(package='plotly'))==0){
 
           cat("The 'plotly' R-package needs to be installed before using this function \n")
           cat("Use: 'install.packages('plotly')' to install the package and try again...")
@@ -1821,7 +1803,7 @@ ss_heatmap=function(soundscape_obj,
             height = height,
             units = c("mm"))
 
-              if(length(system.file(package='plotly'))==1){
+              if(nchar(system.file(package='plotly'))==0){
 
                 cat("The 'plotly' R-package needs to be installed before using this function \n")
                 cat("Use: 'install.packages('plotly')' to install the package and try again...")

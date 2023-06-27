@@ -421,7 +421,7 @@ ss_pcoa <- function(soundscape_list,
 
   # 1. Check if ggrepel is installed
 
-  if(length(system.file(package='ggrepel'))==1){
+  if(nchar(system.file(package='ggrepel'))==0){
 
     cat("The 'ggrepel' R-package needs to be installed before using this function \n")
     cat("Use: 'install.packages('ggrepel')' to install the package and try again...")
