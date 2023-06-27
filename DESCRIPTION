@@ -66,3 +66,4 @@ Depends:
 URL: https://github.com/ThomasLuypaert/soundscapeR
 BugReports: https://github.com/ThomasLuypaert/soundscapeR/issues
 Config/testthat/edition: 3
+SystemRequirements: C++17
