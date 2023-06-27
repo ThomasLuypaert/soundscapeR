@@ -167,6 +167,8 @@ ss_assess_files <- function(file_locs, full_days = TRUE){
 #' @return A list of CVR-values
 CVR_computation <- function(file, window = 256, theta = 3){
 
+  Time <- Amplitude <- NULL
+
   # Load sound recording
   sound <- tuneR::readWave(file) # sound_file
 
@@ -342,7 +344,7 @@ ss_index_calc <- function(file_list,
 
     # Loop through each file and perform fft in parallel
 
-    require(foreach)
+    requireNamespace(foreach)
 
     CVR_list <- foreach::foreach(i = 1:n_files, .packages = c("tuneR", "seewave", "soundscapeR"),
                                  .options.snow = opts) %dopar% {

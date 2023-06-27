@@ -18,7 +18,6 @@ LazyData: true
 RoxygenNote: 7.2.3
 biocViews:
 Imports: 
-    yaml (>= 2.2.1),
     lubridate, 
     hms, 
     ggplot2 (> 3.3.0), 
