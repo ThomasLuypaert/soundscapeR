@@ -309,7 +309,7 @@ ss_divpart <- function(soundscape_list,
     for(i in c(2:leveln)){
       OSU_matrix_sub <- merge(t(OSU_matrix_sub),unique(hierarchy_table[,c(i-1,i)]), by.x="row.names",by.y=as.character(levels[i-1]))
       OSU_matrix_sub <- OSU_matrix_sub[,-1]
-      OSU_matrix_sub <- aggregate(subset(OSU_matrix_sub, select=rownames(OSU_matrix)), by=list(OSU_matrix_sub[,as.character(levels[i])]), FUN=sum)
+      OSU_matrix_sub <- stats::aggregate(subset(OSU_matrix_sub, select=rownames(OSU_matrix)), by=list(OSU_matrix_sub[,as.character(levels[i])]), FUN=sum)
       rownames(OSU_matrix_sub) <- OSU_matrix_sub[,1]
       OSU_matrix_sub <- t(OSU_matrix_sub[,-1])
       OSU_tables_2[[i]] <- OSU_matrix_sub
@@ -535,13 +535,14 @@ ss_pairdis <- function(soundscape_list,
       }
 
       #Quality-check and warnings
-      if(class(beta) == "numeric"){
+
+      if(is.numeric(beta)){
         betan <- length(beta)
         betas <- beta
         Ns <- N
       }
 
-      if(class(beta) == "list"){
+      if(is.list(beta)){
         betan <- length(beta$Beta)
         qvalue <- beta$Order_diversity
         betas <- beta$Beta

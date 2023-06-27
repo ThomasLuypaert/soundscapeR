@@ -38,7 +38,15 @@ Imports:
     magrittr,
     data.table, 
     vegan, 
-    tidyr
+    tidyr,
+    doSNOW,
+    foreach,
+    ggh4x,
+    progress,
+    seewave,
+    terra,
+    tuneR,
+    zoo
 Suggests: 
     covr,
     qs,

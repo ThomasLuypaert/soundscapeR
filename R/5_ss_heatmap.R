@@ -1410,7 +1410,7 @@ ss_heatmap=function(soundscape_obj,
                               fill=value,
                               color=value)) +
 
-          geom_rect(aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
+          ggplot2::geom_rect(ggplot2::aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
                     color = "black", fill = "black")+
 
           ggh4x::geom_polygonraster()+
