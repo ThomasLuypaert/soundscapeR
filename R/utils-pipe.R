@@ -9,3 +9,15 @@
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+#' dopar operator
+#'
+#' See \code{foreach} for details.
+#'
+#' @name %dopar%
+#' @rdname dopar
+#' @keywords internal
+#' @export
+#' @importFrom foreach %dopar%
+#' @usage lhs \%dopar\% rhs
+NULL
