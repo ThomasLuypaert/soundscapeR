@@ -46,10 +46,15 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck, any::XML, any::terra
-          needs: check
+      - name: Install R dependencies
+        run: |
+          if [[ ${{ matrix.config.os }} == 'macOS-latest' ]]; then
+            Rscript -e 'install.packages(c("rcmdcheck", "XML"), type = "binary")'
+          elif [[ ${{ matrix.config.os }} == 'windows-latest' ]]; then
+            Rscript -e 'install.packages(c("rcmdcheck", "XML"), type = "win.binary")'
+          else
+            Rscript -e 'install.packages(c("rcmdcheck", "XML"))'
+          fi
 
       - uses: r-lib/actions/check-r-package@v2
         with:
