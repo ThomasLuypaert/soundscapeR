@@ -43,6 +43,7 @@ Imports:
     ggh4x,
     progress,
     seewave,
+    rgdal,
     terra,
     tuneR,
     zoo,
