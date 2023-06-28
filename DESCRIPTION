@@ -19,6 +19,7 @@ RoxygenNote: 7.2.3
 biocViews:
 Imports: 
     lubridate, 
+    gdal,
     hms, 
     ggplot2 (> 3.3.0), 
     dplyr, 
