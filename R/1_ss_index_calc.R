@@ -344,8 +344,6 @@ ss_index_calc <- function(file_list,
 
     # Loop through each file and perform fft in parallel
 
-    requireNamespace(foreach)
-
     CVR_list <- foreach::foreach(i = 1:n_files, .packages = c("tuneR", "seewave", "soundscapeR"),
                                  .options.snow = opts) %dopar% {
 

@@ -45,7 +45,8 @@ Imports:
     seewave,
     terra,
     tuneR,
-    zoo
+    zoo,
+    doParallel
 Suggests: 
     covr,
     qs,
