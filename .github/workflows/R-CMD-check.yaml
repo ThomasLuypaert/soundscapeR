@@ -50,6 +50,7 @@ jobs:
         with:
           extra-packages: any::rcmdcheck, any::XML
           needs: check
+          binary-packages: true
 
       - uses: r-lib/actions/check-r-package@v2
         with:
