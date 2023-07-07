@@ -43,11 +43,9 @@ Imports:
     ggh4x,
     progress,
     seewave,
-    rgdal,
     terra,
     tuneR,
-    zoo,
-    doParallel
+    zoo
 Suggests: 
     covr,
     qs,

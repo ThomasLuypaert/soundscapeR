@@ -7,7 +7,7 @@
 ss_get_mode(merged_soundscape)
 }
 \arguments{
-\item{merged_soundscape}{The merged_soundscape data frame produced by
+\item{merged_soundscape}{The merged_soundscape object produced by
 \code{\link{ss_index_merge}}.}
 }
 \value{

@@ -7,7 +7,7 @@
 ss_threshold(merged_soundscape, method)
 }
 \arguments{
-\item{merged_soundscape}{The merged_soundscape data frame produced by
+\item{merged_soundscape}{The merged_soundscape object produced by
 \code{\link{ss_index_merge}}.}
 
 \item{method}{The algorithm used to determine the threshold.
