@@ -3,13 +3,13 @@
 
 #' Calculate the mode
 #'
-#' @param df The merged_soundscape data frame produced by
+#' @param merged_soundscape The merged_soundscape object produced by
 #' \code{\link{ss_index_merge}}.
 #' @return Returns the acoustic index value which appears most often
 #' @details Function for internal use by \code{\link{ss_threshold}}
 #'
 
-ss_get_mode <- function(df) {
+ss_get_mode <- function(merged_soundscape) {
 
   # 0. Check if the arguments are missing
 
@@ -25,7 +25,7 @@ ss_get_mode <- function(df) {
 
   }
 
-  assertthat::assert_that(test_0(df))
+  assertthat::assert_that(test_0(merged_soundscape))
 
 
 
@@ -43,12 +43,12 @@ ss_get_mode <- function(df) {
 
   }
 
-  assertthat::assert_that(test_1(df))
+  assertthat::assert_that(test_1(merged_soundscape@merged_df))
 
   # Get the mode of the dataframe or vector
 
-  uniqv <- unique(unlist(df))
-  uniqv[which.max(tabulate(match(unlist(df), uniqv)))]
+  uniqv <- unique(unlist(merged_soundscape@merged_df))
+  uniqv[which.max(tabulate(match(unlist(merged_soundscape@merged_df), uniqv)))]
 }
 
 #' Determine Binarization Threshold
@@ -59,7 +59,7 @@ ss_get_mode <- function(df) {
 #' algorithms from \code{\link[autothresholdr]{auto_thresh}}, or
 #'  calculation of the mode.
 #'
-#' @param df The merged_soundscape data frame produced by
+#' @param merged_soundscape The merged_soundscape object produced by
 #' \code{\link{ss_index_merge}}.
 #'
 #' @param method The algorithm used to determine the threshold.
@@ -78,7 +78,7 @@ ss_get_mode <- function(df) {
 #'
 #' @export
 #'
-ss_threshold <- function(df, method) {
+ss_threshold <- function(merged_soundscape, method) {
 
   # 0. Check if the arguments are missing
 
@@ -94,7 +94,7 @@ ss_threshold <- function(df, method) {
 
   }
 
-  assertthat::assert_that(test_0(df))
+  assertthat::assert_that(test_0(merged_soundscape))
   assertthat::assert_that(test_0(method))
 
 
@@ -128,32 +128,32 @@ ss_threshold <- function(df, method) {
 
   assertthat::on_failure(test_1) <- function(call, env){
 
-    paste0(deparse(call$x), " is not a data frame. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " is not a data frame. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged soundscape object produced by the ss_index_merge() function. function.")
 
   }
 
   assertthat::on_failure(test_2) <- function(call, env){
 
-    paste0(deparse(call$x), " is an empty dataframe. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " is an empty dataframe. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged soundscape object produced by the ss_index_merge() function.")
 
   }
 
   assertthat::on_failure(test_3) <- function(call, env){
 
-    paste0(deparse(call$x), " contains NA values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " contains NA values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged soundscape object produced by the ss_index_merge() function.")
 
   }
 
   assertthat::on_failure(test_4) <- function(call, env){
 
-    paste0(deparse(call$x), " contains non-numeric values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " contains non-numeric values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged soundscape object produced by the ss_index_merge() function.")
 
   }
 
-  assertthat::assert_that(test_1(df))
-  assertthat::assert_that(test_2(df))
-  assertthat::assert_that(test_3(df))
-  assertthat::assert_that(test_4(df))
+  assertthat::assert_that(test_1(merged_soundscape@merged_df))
+  assertthat::assert_that(test_2(merged_soundscape@merged_df))
+  assertthat::assert_that(test_3(merged_soundscape@merged_df))
+  assertthat::assert_that(test_4(merged_soundscape@merged_df))
 
     # 1.2. Check if the specified method is one of the available options
 
@@ -192,8 +192,8 @@ ss_threshold <- function(df, method) {
       method == "Triangle" |
       method == "Yen") {
 
-    df2 <- (as.integer(as.matrix(df) * 100))
-    threshold <- autothresholdr::auto_thresh(int_arr = df2, method = method)
+    merged_soundscape_2 <- (as.integer(as.matrix(merged_soundscape@merged_df) * 100))
+    threshold <- autothresholdr::auto_thresh(int_arr = merged_soundscape_2, method = method)
     threshold <- threshold / 100
 
     return(threshold)
@@ -204,7 +204,7 @@ ss_threshold <- function(df, method) {
 
     if (method == "Mode" | method == "mode") {
 
-      mode <- ss_get_mode(df)
+      mode <- ss_get_mode(merged_soundscape)
 
       return(mode)
 
@@ -456,13 +456,13 @@ ss_binarize <- function(merged_soundscape,
 
   assertthat::on_failure(test_13) <- function(call, env){
 
-    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged soundscape object produced by the ss_index_merge() function.")
 
   }
 
   assertthat::on_failure(test_14) <- function(call, env){
 
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged_soundscape object produced by the ss_index_merge() function.")
 
   }
 
@@ -566,7 +566,7 @@ ss_binarize <- function(merged_soundscape,
       method == "Yen" |
       method == "Mode" |
       method == "mode") {
-    threshold <- ss_threshold(df = merged_soundscape@merged_df, method = method)
+    threshold <- ss_threshold(merged_soundscape = merged_soundscape, method = method)
   }
 
   else {
@@ -854,13 +854,13 @@ ss_threshold_check <- function(merged_soundscape,
 
   assertthat::on_failure(test_13) <- function(call, env){
 
-    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged_soundscape object produced by the ss_index_merge() function.")
 
   }
 
   assertthat::on_failure(test_14) <- function(call, env){
 
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function.")
+    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged soundscape object produced by the ss_index_merge() function.")
 
   }
 
@@ -979,7 +979,7 @@ ss_threshold_check <- function(merged_soundscape,
       method == "Yen" |
       method == "Mode" |
       method == "mode") {
-    threshold <- ss_threshold(df = merged_soundscape@merged_df, method = method)
+    threshold <- ss_threshold(merged_soundscape = merged_soundscape, method = method)
   }
 
   else {

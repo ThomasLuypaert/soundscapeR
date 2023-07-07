@@ -4,10 +4,10 @@
 \alias{ss_threshold}
 \title{Determine Binarization Threshold}
 \usage{
-ss_threshold(df, method)
+ss_threshold(merged_soundscape, method)
 }
 \arguments{
-\item{df}{The merged_soundscape data frame produced by
+\item{merged_soundscape}{The merged_soundscape data frame produced by
 \code{\link{ss_index_merge}}.}
 
 \item{method}{The algorithm used to determine the threshold.

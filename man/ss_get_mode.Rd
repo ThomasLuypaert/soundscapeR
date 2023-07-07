@@ -4,10 +4,10 @@
 \alias{ss_get_mode}
 \title{Calculate the mode}
 \usage{
-ss_get_mode(df)
+ss_get_mode(merged_soundscape)
 }
 \arguments{
-\item{df}{The merged_soundscape data frame produced by
+\item{merged_soundscape}{The merged_soundscape data frame produced by
 \code{\link{ss_index_merge}}.}
 }
 \value{
