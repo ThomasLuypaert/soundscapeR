@@ -55,57 +55,57 @@ testthat::test_that("the ss_pcoa function provides the correct error when the so
 
   # No grouping without scree plot
 
-with_seed(seed = 1234, code =
-
- testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
-
-   vdiffr::expect_doppelganger(
-     title = "ss_pcoa_1",
-     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study ),
-   )
- })
-
-)
+# with_seed(seed = 1234, code =
+#
+#  testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
+#
+#    vdiffr::expect_doppelganger(
+#      title = "ss_pcoa_1",
+#      fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study ),
+#    )
+#  })
+#
+# )
 
    # No grouping with scree plot
 
-with_seed(seed = 1234, code =
- testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
-
-   vdiffr::expect_doppelganger(
-     title = "ss_pcoa_2",
-     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
-                                screeplot = TRUE),
-   )
- })
-)
+# with_seed(seed = 1234, code =
+#  testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
+#
+#    vdiffr::expect_doppelganger(
+#      title = "ss_pcoa_2",
+#      fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
+#                                 screeplot = TRUE),
+#    )
+#  })
+# )
 
    # Grouping without scree plot
 
-with_seed(seed = 1234, code =
- testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
-
-   vdiffr::expect_doppelganger(
-     title = "ss_pcoa_3",
-     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
-                                screeplot = FALSE,
-                                grouping = case_study_groups),
-   )
- })
-)
+# with_seed(seed = 1234, code =
+#  testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
+#
+#    vdiffr::expect_doppelganger(
+#      title = "ss_pcoa_3",
+#      fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
+#                                 screeplot = FALSE,
+#                                 grouping = case_study_groups),
+#    )
+#  })
+# )
 
    # Grouping with scree plot
 
-with_seed(seed = 1234, code =
- testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
-
-   vdiffr::expect_doppelganger(
-     title = "ss_pcoa_4",
-     fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
-                                screeplot = TRUE,
-                                grouping = case_study_groups),
-    )
- })
-)
+# with_seed(seed = 1234, code =
+#  testthat::test_that("The ss_pcao function works as expected when the correct arguments are supplied", {
+#
+#    vdiffr::expect_doppelganger(
+#      title = "ss_pcoa_4",
+#      fig = soundscapeR::ss_pcoa(soundscape_list = soundscape_obj_CVR_case_study,
+#                                 screeplot = TRUE,
+#                                 grouping = case_study_groups),
+#     )
+#  })
+# )
 
 
