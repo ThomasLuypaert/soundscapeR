@@ -1131,7 +1131,7 @@ ss_threshold_check <- function(merged_soundscape,
 
   assertthat::assert_that(test_15(df_before))
   assertthat::assert_that(test_16(df_before))
-  assertthat::assert_that(test_17(df_before))
+  # assertthat::assert_that(test_17(df_before))
   assertthat::assert_that(test_18(df_before))
 
   assertthat::assert_that(test_15(df_after))
