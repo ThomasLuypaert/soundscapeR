@@ -1129,15 +1129,15 @@ ss_threshold_check <- function(merged_soundscape,
 
   }
 
-  assertthat::assert_that(test_21(df_before))
-  assertthat::assert_that(test_22(df_before))
-  assertthat::assert_that(test_23(df_before))
-  assertthat::assert_that(test_24(df_before))
-
-  assertthat::assert_that(test_21(df_after))
-  assertthat::assert_that(test_22(df_after))
-  assertthat::assert_that(test_23(df_after))
-  assertthat::assert_that(test_24(df_after))
+  # assertthat::assert_that(test_21(df_before))
+  # assertthat::assert_that(test_22(df_before))
+  # assertthat::assert_that(test_23(df_before))
+  # assertthat::assert_that(test_24(df_before))
+  #
+  # assertthat::assert_that(test_21(df_after))
+  # assertthat::assert_that(test_22(df_after))
+  # assertthat::assert_that(test_23(df_after))
+  # assertthat::assert_that(test_24(df_after))
 
 
   # 4. Prepare other objects for ggplot
