@@ -1044,9 +1044,12 @@ ss_threshold_check <- function(merged_soundscape,
   new_colnames<-as.character(format(new_colnames,format="%Y-%m%-%d %T"))
 
   colnames(df_after) <- new_colnames
-  colnames(merged_soundscape@merged_df) <- new_colnames
 
-  df_before <- lengthen_2(merged_soundscape = merged_soundscape)
+  to_lengthen <- merged_soundscape
+
+  colnames(to_lengthen@merged_df) <- new_colnames
+
+  df_before <- lengthen_2(merged_soundscape = to_lengthen)
 
   df_before
 
