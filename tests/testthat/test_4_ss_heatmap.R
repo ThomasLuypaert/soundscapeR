@@ -35,27 +35,27 @@ testthat::test_that("the ss_heatmap function provides the correct error when the
 
     # Regular heatmap and annotate == TRUE
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create regular heatmap plot with annotation",
-#     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
-#                      type = "regular",
-#                      annotate = TRUE),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_1",
+    fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
+                     type = "regular",
+                     annotate = TRUE),
+  )
+})
 
     # Regular heatmap and annotate == FALSE
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create regular heatmap plot without annotation",
-#     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
-#                      type = "regular",
-#                      annotate = FALSE),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_2",
+    fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
+                     type = "regular",
+                     annotate = FALSE),
+  )
+})
 
     # Polar heatmap and annotate == TRUE
 
@@ -87,59 +87,59 @@ testthat::test_that("the ss_heatmap function provides the correct error when the
 
     # Subsetting in time and frequency domain
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create regular heatmap plot with temporal and frequency subsetting",
-#     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
-#                      type = "regular",
-#                      annotate = FALSE,
-#                      mintime = "06:00:00",
-#                      maxtime = "18:00:00",
-#                      minfreq = 2000,
-#                      maxfreq = 20000),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_3",
+    fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
+                     type = "regular",
+                     annotate = FALSE,
+                     mintime = "06:00:00",
+                     maxtime = "18:00:00",
+                     minfreq = 2000,
+                     maxfreq = 20000),
+  )
+})
 
   # Modify the time and frequency axis labels
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create regular heatmap plot with modified time-frequency axes",
-#     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
-#                      type = "regular",
-#                      annotate = FALSE,
-#                      timeinterval = "4 hours",
-#                      freqinterval = 5000),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_4",
+    fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
+                     type = "regular",
+                     annotate = FALSE,
+                     timeinterval = "4 hours",
+                     freqinterval = 5000),
+  )
+})
 
     # With zero.black == TRUE
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create regular heatmap plot with a black background",
-#     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
-#                      type = "regular",
-#                      annotate = FALSE,
-#                      zero.black = TRUE),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_5",
+    fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
+                     type = "regular",
+                     annotate = FALSE,
+                     zero.black = TRUE),
+  )
+})
 
     # maxfreq > 22000
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create regular heatmap plot with maxfreq > 22000",
-#     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
-#                      type = "regular",
-#                      annotate = FALSE,
-#                      maxfreq = 22001),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_6",
+    fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
+                     type = "regular",
+                     annotate = FALSE,
+                     maxfreq = 22001),
+  )
+})
 
 
   # 2.2. Correct error message when some of the supplied arguments are incorrect
