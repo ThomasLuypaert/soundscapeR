@@ -947,18 +947,20 @@ ss_threshold_check <- function(merged_soundscape,
 
     # 2.1. Make function to lengthen data frames for ggplot
 
-  lengthen_2 <- function(df){
-    tz <- df@tz
-    df_2 <- df@merged_df
-    df_2$frequency=as.integer(rownames(df_2))
-    melt_df=reshape2::melt(df_2, id.vars="frequency")
-    colnames(melt_df)=c("frequency", "time", "value")
-    melt_df$frequency=as.numeric(as.character(melt_df$frequency))
-    melt_df$time=as.POSIXct(strptime(paste(melt_df$time),
-                                     format= "%Y-%m-%d %H:%M",
-                                     tz=tz))
-    melt_df
+  lengthen_2 <- function(merged_soundscape){
+
+    tz <- merged_soundscape@tz
+    merged_soundscape_2 <- merged_soundscape@merged_df
+    merged_soundscape_2$frequency=as.integer(rownames(merged_soundscape_2))
+    melt_merged_soundscape=reshape2::melt(merged_soundscape_2, id.vars="frequency")
+    colnames(melt_merged_soundscape)=c("frequency", "time", "value")
+    melt_merged_soundscape$frequency=as.numeric(as.character(melt_merged_soundscape$frequency))
+    melt_merged_soundscape$time = format(as.POSIXct(strptime(paste(melt_merged_soundscape$time),
+                                                             format = "%Y-%m-%d %H:%M", tz = tz)), format="%Y-%m-%d %H:%M:%S")
+    melt_merged_soundscape
   }
+
+
 
   if (method == "IJDefault" |
       method == "Huang" |
@@ -979,7 +981,10 @@ ss_threshold_check <- function(merged_soundscape,
       method == "Yen" |
       method == "Mode" |
       method == "mode") {
-    threshold <- ss_threshold(merged_soundscape = merged_soundscape, method = method)
+
+    threshold <- ss_threshold(merged_soundscape = merged_soundscape,
+                              method = method)
+
   }
 
   else {
@@ -988,30 +993,29 @@ ss_threshold_check <- function(merged_soundscape,
     }
   }
 
-  df_after <- as.data.frame(
-    ifelse(merged_soundscape@merged_df > (threshold), 1, 0))
+  df_after <- as.data.frame(ifelse(merged_soundscape@merged_df > (threshold), 1, 0))
 
   colnames(df_after) <- colnames(merged_soundscape@merged_df)
-
   rownames(df_after) <- rownames(merged_soundscape@merged_df)
+
+  df_after
 
   # 3. Figure out the time difference between two
   #consecutive recordings in the df_after df
 
   time_1 <- as.POSIXct(
     strptime(
-      paste(substr(merged_soundscape@first_day, 1, 12),
-            colnames(df_after)[1],
-            sep=" "),
-      format= "%Y-%m-%d %H:%M:%S",
+      paste(
+        substr(merged_soundscape@first_day, 1, 12),
+        colnames(df_after)[1], sep = " "),
+      format = "%Y-%m-%d %H:%M:%S",
       tz = merged_soundscape@tz))
 
   time_2 <- as.POSIXct(
     strptime(
       paste(substr(merged_soundscape@first_day, 1, 12),
-            colnames(df_after)[2],
-            sep=" "),
-      format= "%Y-%m-%d %H:%M:%S",
+            colnames(df_after)[2], sep = " "),
+      format = "%Y-%m-%d %H:%M:%S",
       tz = merged_soundscape@tz))
 
   new_colnames <- seq.POSIXt(
@@ -1019,27 +1023,30 @@ ss_threshold_check <- function(merged_soundscape,
       strptime(
         paste(
           substr(merged_soundscape@first_day, 1, 12),
-              colnames(df_after)[1],
-              sep=" "),
-        format= "%Y-%m-%d %H:%M:%S",
+          colnames(df_after)[1],
+          sep = " "),
+        format = "%Y-%m-%d %H:%M:%S",
         tz = merged_soundscape@tz)),
+
     to = as.POSIXct(
       strptime(
-        paste(substr(merged_soundscape@first_day, 1, 12),
-              colnames(merged_soundscape@merged_df)[1],
-              sep=" "),
-        format= "%Y-%m-%d %H:%M:%S",
-        tz = merged_soundscape@tz)) + (ncol(merged_soundscape@merged_df)*(time_2-time_1)),
-    by = (time_2 - time_1)
-  )[1:ncol(merged_soundscape@merged_df)]
+        paste(
+          substr(merged_soundscape@first_day, 1, 12),
+          colnames(merged_soundscape@merged_df)[1],
+          sep = " "),
+        format = "%Y-%m-%d %H:%M:%S",
+        tz = merged_soundscape@tz)) +
 
-  new_colnames
+      (ncol(merged_soundscape@merged_df) * (time_2 - time_1)),
+
+    by = (time_2 - time_1))[1:ncol(merged_soundscape@merged_df)]
+
+  new_colnames<-as.character(format(new_colnames,format="%Y-%m%-%d %T"))
 
   colnames(df_after) <- new_colnames
-
   colnames(merged_soundscape@merged_df) <- new_colnames
 
-  df_before <- lengthen_2(df = merged_soundscape)
+  df_before <- lengthen_2(merged_soundscape = merged_soundscape)
 
   df_before
 
@@ -1058,32 +1065,33 @@ ss_threshold_check <- function(merged_soundscape,
 
   # new_colnames
 
-  test_14_1 <- function(x){
-
-    !any(!sapply(x, FUN = lubridate::is.POSIXct))
-
-  }
-
-  assertthat::assert_that(test_14_1(new_colnames))
+  # test_14_1 <- function(x){
+  #
+  #   !any(!sapply(x, FUN = lubridate::is.POSIXct))
+  #
+  # }
+  #
+  # assertthat::assert_that(test_14_1(new_colnames))
 
   # 4. Lengthen the df_after data frame
 
-  lengthen_3 <- function(df, date, lat, lon){
+  lengthen_3 <- function(merged_soundscape, date, lat, lon) {
     tz <- lutz::tz_lookup_coords(lat = lat, lon = lon, method = "accurate")
-    df_2 <- df
-    df_2$frequency=as.integer(rownames(df_2))
-    melt_df=reshape2::melt(df_2, id.vars="frequency")
-    colnames(melt_df)=c("frequency", "time", "value")
-    melt_df$frequency=as.numeric(as.character(melt_df$frequency))
-    melt_df$time=as.POSIXct(strptime(paste(melt_df$time),
-                                     format= "%Y-%m-%d %H:%M",
-                                     tz=tz))
-    melt_df
+    merged_soundscape_2 <- merged_soundscape
+    merged_soundscape_2$frequency = as.integer(rownames(merged_soundscape_2))
+    melt_merged_soundscape = reshape2::melt(merged_soundscape_2, id.vars = "frequency")
+    colnames(melt_merged_soundscape) = c("frequency", "time", "value")
+    melt_merged_soundscape$frequency = as.numeric(as.character(melt_merged_soundscape$frequency))
+    melt_merged_soundscape$time = format(as.POSIXct(strptime(paste(melt_merged_soundscape$time),
+                                                             format = "%Y-%m-%d %H:%M", tz = tz)),format="%Y-%m-%d %H:%M:%S")
+    melt_merged_soundscape
   }
 
-  df_after <- lengthen_3(df = df_after, date = paste0(substr(merged_soundscape@first_day, 1, 12)), lat = merged_soundscape@lat, lon = merged_soundscape@lon)
+  df_after <- lengthen_3(merged_soundscape = df_after, date = paste0(substr(merged_soundscape@first_day, 1, 12)),
+                         lat = merged_soundscape@lat, lon = merged_soundscape@lon) # merged_soundscape
 
   df_after
+
 
     # 4.1. Check if the df_before and df_after lengthened
     # data frames are in the right format
@@ -1131,16 +1139,16 @@ ss_threshold_check <- function(merged_soundscape,
 
   # 4. Prepare other objects for ggplot
 
-  timeinterval <- "12 hours"
+  df_before$time<-as.POSIXct(df_before$time)
+  df_after$time<-as.POSIXct(df_after$time)
 
+  timeinterval <- "12 hours"
   freqinterval <- (max(df_before$frequency)/10)
 
-  mintime <- min(new_colnames)
-
-  maxtime <- max(new_colnames)
+  mintime <- min(as.POSIXct(new_colnames))
+  maxtime <- max(as.POSIXct(new_colnames))
 
   minfreq <- 0
-
   maxfreq <- max(df_before$frequency)
 
   # Make a plot
