@@ -1148,8 +1148,8 @@ ss_threshold_check <- function(merged_soundscape,
   timeinterval <- "12 hours"
   freqinterval <- (max(df_before$frequency)/10)
 
-  mintime <- min(as.POSIXct(new_colnames))
-  maxtime <- max(as.POSIXct(new_colnames))
+  mintime <- min(as.POSIXct(new_colnames, tz = merged_soundscape@tz))
+  maxtime <- max(as.POSIXct(new_colnames, tz = merged_soundscape@tz))
 
   minfreq <- 0
   maxfreq <- max(df_before$frequency)
