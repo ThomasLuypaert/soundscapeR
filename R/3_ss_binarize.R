@@ -1099,45 +1099,45 @@ ss_threshold_check <- function(merged_soundscape,
     # 4.1. Check if the df_before and df_after lengthened
     # data frames are in the right format
 
-  test_15 <- function(x){
+  test_21 <- function(x){
 
     is.data.frame(x)
 
   }
 
-  test_16 <- function(x){
+  test_22 <- function(x){
 
     assertthat::not_empty(x)
 
   }
 
-  test_17 <- function(x){
+  test_23 <- function(x){
 
     assertthat::noNA(x)
 
   }
 
-  test_18 <- function(x){
+  test_24 <- function(x){
 
     nrow(x) == (nrow(merged_soundscape@merged_df)*ncol(merged_soundscape@merged_df))
 
   }
 
-  assertthat::on_failure(test_15) <- function(call, env){
+  assertthat::on_failure(test_21) <- function(call, env){
 
     paste0(deparse(call$x), " is not a data frame. This functions builds on the output of ss_index_merge(). Make sure you're supplying the dataframe produced by the ss_index_merge() function")
 
   }
 
-  assertthat::assert_that(test_15(df_before))
-  assertthat::assert_that(test_16(df_before))
-  # assertthat::assert_that(test_17(df_before))
-  assertthat::assert_that(test_18(df_before))
+  assertthat::assert_that(test_21(df_before))
+  assertthat::assert_that(test_22(df_before))
+  assertthat::assert_that(test_23(df_before))
+  assertthat::assert_that(test_24(df_before))
 
-  assertthat::assert_that(test_15(df_after))
-  assertthat::assert_that(test_16(df_after))
-  assertthat::assert_that(test_17(df_after))
-  assertthat::assert_that(test_18(df_after))
+  assertthat::assert_that(test_21(df_after))
+  assertthat::assert_that(test_22(df_after))
+  assertthat::assert_that(test_23(df_after))
+  assertthat::assert_that(test_24(df_after))
 
 
   # 4. Prepare other objects for ggplot

@@ -1209,7 +1209,7 @@ testthat::test_that("The ss_threshold_check function works as expected when the 
   vdiffr::expect_doppelganger(
     title = "ss_binarize_1",
     fig = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
-                             method = "IsoData",
+                             method = "IJDefault",
                              value = NULL),
   )
 })
