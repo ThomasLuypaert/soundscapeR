@@ -1204,15 +1204,17 @@ testthat::test_that("the ss_threshold_check function provides the correct error 
   # 5.1. When the correct data frame, method
   # (and potentially value) arguments are supplied
 
-# testthat::test_that("The ss_threshold_check function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create ss_threshold_check plot",
-#     fig = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
-#                              method = "IsoData",
-#                              value = NULL),
-#   )
-# })
+merged_soundscape_CVR@merged_df <- merged_soundscape_CVR@merged_df[64:128,]
+
+testthat::test_that("The ss_threshold_check function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_binarize_1",
+    fig = ss_threshold_check(merged_soundscape = merged_soundscape_CVR,
+                             method = "IsoData",
+                             value = NULL),
+  )
+})
 
 
   # 5.2. When the supplied merged_soundscape argument is wrong

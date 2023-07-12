@@ -62,7 +62,7 @@ testthat::test_that("The ss_heatmap function works as expected when the correct 
 # testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
 #
 #   vdiffr::expect_doppelganger(
-#     title = "Create polar heatmap plot with annotation",
+#     title = "ss_heatmap_7",
 #     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
 #                      type = "polar",
 #                      annotate = TRUE,
@@ -73,17 +73,15 @@ testthat::test_that("The ss_heatmap function works as expected when the correct 
 
     # Polar heatmap and annotate == FALSE
 
-# testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
-#
-#   vdiffr::expect_doppelganger(
-#     title = "Create polar heatmap plot without annotation",
-#     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
-#                      type = "polar",
-#                      annotate = FALSE,
-#                      minfreq = 0,
-#                      maxfreq = 500),
-#   )
-# })
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_8",
+    fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
+                     type = "polar",
+                     annotate = FALSE),
+  )
+})
 
     # Subsetting in time and frequency domain
 

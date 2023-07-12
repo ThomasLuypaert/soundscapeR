@@ -1353,7 +1353,7 @@ ss_heatmap=function(soundscape_obj,
             panel.border = ggplot2::element_rect(
               colour = "black",
               fill=NA,
-              size=0.5),
+              linewidth=0.5),
             plot.margin = grid::unit(c(1,1,1,1),"cm"),
             legend.position = "top",
             legend.direction = "horizontal",
@@ -1466,7 +1466,7 @@ ss_heatmap=function(soundscape_obj,
             panel.border = ggplot2::element_rect(
               colour = "white",
               fill=NA,
-              size=0.5),
+              linewidth=0.5),
             plot.margin = grid::unit(c(1,1,1,1),"cm"),
             legend.position = "top",
             legend.direction = "horizontal",
@@ -1547,7 +1547,7 @@ ss_heatmap=function(soundscape_obj,
 
           ggplot2::guides(color='none') +
 
-          annotate('text',
+          ggplot2::annotate('text',
                    x = midnight1,
                    y = seq(0,
                            floor(maxfreq / 4000) * 4000,
@@ -1627,7 +1627,7 @@ ss_heatmap=function(soundscape_obj,
               panel.border = ggplot2::element_rect(
                 colour = "white",
                 fill=NA,
-                size=0.5),
+                linewidth=0.5),
               plot.margin = grid::unit(c(1,1,1,1),"cm"),
               legend.position = "top",
               legend.direction = "horizontal",
@@ -1650,7 +1650,7 @@ ss_heatmap=function(soundscape_obj,
 
             ggplot2::guides(color='none')+
 
-            annotate('text',
+            ggplot2::annotate('text',
                      x = midnight1,
                      y = seq(0,
                              floor(maxfreq / 4000) * 4000,
@@ -1745,7 +1745,7 @@ ss_heatmap=function(soundscape_obj,
             panel.border = ggplot2::element_rect(
               colour = "black",
               fill=NA,
-              size=0.5),
+              linewidth=0.5),
             plot.margin = grid::unit(c(1,1,1,1),"cm"),
             legend.position = "none")+
 
