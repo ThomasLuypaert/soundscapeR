@@ -40,25 +40,20 @@
 #' @export
 #'
 ss_index_merge <- function(fileloc,
-                      samplerate,
-                      window,
-                      index,
-                      date,
-                      lat,
-                      lon) {
+                           samplerate,
+                           window,
+                           index,
+                           date,
+                           lat,
+                           lon) {
+  # 0. Check if the arguments are missing
 
-  #0. Check if the arguments are missing
-
-  test_0 <- function(x){
-
+  test_0 <- function(x) {
     !missing(x)
-
   }
 
-  assertthat::on_failure(test_0) <- function(call, env){
-
+  assertthat::on_failure(test_0) <- function(call, env) {
     paste0(deparse(call$x), " argument is missing. Please supply the missing argument.")
-
   }
 
   assertthat::assert_that(test_0(fileloc))
@@ -71,67 +66,59 @@ ss_index_merge <- function(fileloc,
 
   # 1. Check if function inputs meet expectations
 
-    # 1.1. fileloc is an existing, writable directory
+  # 1.1. fileloc is an existing, writable directory
 
-  test_1 <- function(x){
+  test_1 <- function(x) {
     assertthat::is.dir(x)
   }
 
   assertthat::assert_that(test_1(fileloc))
 
-  test_2 <- function(x){
+  test_2 <- function(x) {
     assertthat::is.readable(x)
   }
 
   assertthat::on_failure(test_2) <- function(call, env) {
-
     paste0(deparse(call$x), " is not a readable directory. Please change the permissions and try again.")
-
   }
 
   assertthat::assert_that(test_2(fileloc))
 
-    # 1.2. samplerate is a single, positive integer
+  # 1.2. samplerate is a single, positive integer
 
-  test_3 <- function(x){
+  test_3 <- function(x) {
     assertthat::is.count(x)
   }
 
-  assertthat::on_failure(test_3) <- function(call, env){
-
+  assertthat::on_failure(test_3) <- function(call, env) {
     paste0(deparse(call$x), " is not a single, positive integer. Consult the package documentation for more information on the samplerate.")
-
   }
 
   assertthat::assert_that(test_3(samplerate))
 
-    # 1.3. window is a single, positive integer
+  # 1.3. window is a single, positive integer
 
-  test_4 <- function(x){
+  test_4 <- function(x) {
     assertthat::is.count(x)
   }
 
-  assertthat::on_failure(test_4) <- function(call, env){
-
+  assertthat::on_failure(test_4) <- function(call, env) {
     paste0(deparse(call$x), " is not a single, positive integer. Consult the package documentation for more information on the window.")
-
   }
 
   assertthat::assert_that(test_4(window))
 
-    # 1.4. produce a warning message if window is not a power of two
+  # 1.4. produce a warning message if window is not a power of two
 
-  if(!as.integer(log(window, base=2)) == (log(window, base = 2))){
+  if (!as.integer(log(window, base = 2)) == (log(window, base = 2))) {
     cat("\n Chosen window size is not a power of two. This is a warning message, \n if your window size was chosen purposefully, proceed as planned by pressing Y. \n If you want to abort, press N.", "\n")
     Sys.sleep(0.000000000001)
 
     question1 <- readline("Would you like to proceed with the chosen window size? (Y/N)")
 
-    if(regexpr(question1, 'y', ignore.case = TRUE) == 1){
-    }
-    else{
-
-      if(regexpr(question1, 'n', ignore.case = TRUE) == 1){
+    if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+    } else {
+      if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         print("Index computation aborted.")
         Sys.sleep(0.0000000000000000000000000001)
         stop()
@@ -142,21 +129,20 @@ ss_index_merge <- function(fileloc,
         stop()
       }
     }
-
   }
 
-    # 1.5. check if specified index is one of available options
+  # 1.5. check if specified index is one of available options
 
-  test_5 <- function(x){
+  test_5 <- function(x) {
     assertthat::is.string(x) &
-      x %in% c("BGN", "PMN", "CVR", "EVN", "ENT", "ACI",
-             "OSC", "SPT", "RHZ", "RVT", "RPS", "RNG")
+      x %in% c(
+        "BGN", "PMN", "CVR", "EVN", "ENT", "ACI",
+        "OSC", "SPT", "RHZ", "RVT", "RPS", "RNG"
+      )
   }
 
-  assertthat::on_failure(test_5) <- function(call, env){
-
+  assertthat::on_failure(test_5) <- function(call, env) {
     paste0(deparse(call$x), " is not a character string of one of the available spectral acoustic indices. Please consult package documentation for available options. Pay attention to capital letters and the presence of excess spaces.")
-
   }
 
   assertthat::assert_that(test_5(index))
@@ -168,55 +154,43 @@ ss_index_merge <- function(fileloc,
   }
 
   test_7 <- function(x) {
-    formatted = try(as.Date(x, "%Y-%m-%d"), silent = TRUE)
-    is_date = as.character(formatted) == x & !is.na(formatted)
+    formatted <- try(as.Date(x, "%Y-%m-%d"), silent = TRUE)
+    is_date <- as.character(formatted) == x & !is.na(formatted)
     return(is_date)
   }
 
-  assertthat::on_failure(test_6) <- function(call, env){
-
+  assertthat::on_failure(test_6) <- function(call, env) {
     paste0(deparse(call$x), " is not a character string. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
   }
 
-  assertthat::on_failure(test_7) <- function(call, env){
-
+  assertthat::on_failure(test_7) <- function(call, env) {
     paste0(deparse(call$x), " is not a valid date. Please supply the date as a character string using the following format: YYYY-mm-dd. Please consult package documentation for more information.")
-
   }
 
   assertthat::assert_that(test_6(date))
   assertthat::assert_that(test_7(date))
 
-    # 1.7. Check if latitude and longitude are specified in decimal degrees and
-    # exist on Earth
+  # 1.7. Check if latitude and longitude are specified in decimal degrees and
+  # exist on Earth
 
-  test_8 <- function(x){
-
+  test_8 <- function(x) {
     is.numeric(x) &
       x >= -90 &
       x <= 90
-
   }
 
-  test_9 <- function(x){
-
+  test_9 <- function(x) {
     is.numeric(x) &
       x >= -180 &
       x <= 180
-
   }
 
-  assertthat::on_failure(test_8) <- function(call, env){
-
+  assertthat::on_failure(test_8) <- function(call, env) {
     paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
-
   }
 
-  assertthat::on_failure(test_9) <- function(call, env){
-
+  assertthat::on_failure(test_9) <- function(call, env) {
     paste0(deparse(call$x), " is not a valid coordinate. Make sure you supply numerical decimal coordinates. Latitude values should range between -90 and 90. Longitude values should range between -180 and 180.")
-
   }
 
   assertthat::assert_that(test_8(lat))
@@ -229,13 +203,14 @@ ss_index_merge <- function(fileloc,
   folders <- file.path(paste0(fileloc, "/", window))
 
   filenames <- list.files(folders,
-                          pattern = paste0("CVR.csv$"),
-                          recursive = TRUE,
-                          full.names = TRUE)
+    pattern = paste0("CVR.csv$"),
+    recursive = TRUE,
+    full.names = TRUE
+  )
 
   # 3. Merge csv files into a dataframe
 
-  merged_df <- as.data.frame(t(Reduce(rbind, lapply(filenames, function(x) data.table::fread(x)))[,-1]))
+  merged_df <- as.data.frame(t(Reduce(rbind, lapply(filenames, function(x) data.table::fread(x)))[, -1]))
 
   # 5. Give the df rownames
 
@@ -244,15 +219,17 @@ ss_index_merge <- function(fileloc,
       seq(
         from = (samplerate / 2) / (window),
         to = samplerate / 2,
-        by = (((samplerate / 2) / (window)))))
-  }
-
-  else {
+        by = (((samplerate / 2) / (window)))
+      )
+    )
+  } else {
     frequency_bins <- as.integer(
       seq(
-        from = (samplerate/window),
+        from = (samplerate / window),
         to = samplerate / 2,
-        by = (samplerate/window)))
+        by = (samplerate / window)
+      )
+    )
   }
 
   row.names(merged_df) <- as.integer(frequency_bins)
@@ -264,28 +241,30 @@ ss_index_merge <- function(fileloc,
   colnames(merged_df) <- hms::as_hms(
     as.POSIXct(
       strptime(stringr::str_extract(filenames, "\\d{8}_\\d{6}"),
-               "%Y%m%d_%H%M%S",
-               tz = tz)))
+        "%Y%m%d_%H%M%S",
+        tz = tz
+      )
+    )
+  )
 
   merged_df <- merged_df[seq(dim(merged_df)[1], 1), ]
 
-  if(index=="BGN"){
-
+  if (index == "BGN") {
     merged_df <- merged_df + abs(min(merged_df))
-
-  }
-
-  else{}
+  } else {}
 
   # Create some more useful metadata elements for the soundscape object
 
   day <- as.POSIXct(
     strptime(
       paste(date,
-            "00:00:00",
-            sep=" "),
-      format= "%Y-%m-%d %H:%M:%S",
-      tz=tz))
+        "00:00:00",
+        sep = " "
+      ),
+      format = "%Y-%m-%d %H:%M:%S",
+      tz = tz
+    )
+  )
 
   points <- data.frame(lon = lon, lat = lat)
 
@@ -294,30 +273,33 @@ ss_index_merge <- function(fileloc,
     keep = c("sunrise", "sunriseEnd", "sunset", "sunsetStart"),
     lat = lat,
     lon = lon,
-    tz = tz)
+    tz = tz
+  )
 
 
   sunrise <- as.POSIXct(suntimes$sunrise,
-                        tz = tz,
-                        format = "%Y-%m-%d %H:%M:%S")
+    tz = tz,
+    format = "%Y-%m-%d %H:%M:%S"
+  )
   sunset <- as.POSIXct(suntimes$sunset,
-                       tz = tz,
-                       format = "%Y-%m-%d %H:%M:%S")
+    tz = tz,
+    format = "%Y-%m-%d %H:%M:%S"
+  )
 
   merged_soundscape <- methods::new("soundscape",
-                                    fileloc = fileloc,
-                                    index = index,
-                                    samplerate = samplerate,
-                                    window = window,
-                                    first_day = day,
-                                    lat = lat,
-                                    lon = lon,
-                                    tz = tz,
-                                    sunrise = sunrise,
-                                    sunset = sunset,
-                                    merged_df = merged_df)
+    fileloc = fileloc,
+    index = index,
+    samplerate = samplerate,
+    window = window,
+    first_day = day,
+    lat = lat,
+    lon = lon,
+    tz = tz,
+    sunrise = sunrise,
+    sunset = sunset,
+    merged_df = merged_df
+  )
 
 
   merged_soundscape
-
 }
