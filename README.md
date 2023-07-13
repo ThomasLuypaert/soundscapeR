@@ -9,6 +9,7 @@ Peres, Torbjørn Haugaasen
 [![R-CMD-check](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml)
 [![code
 coverage](https://codecov.io/gh/ThomasLuypaert/soundscapeR/branch/master/graph/badge.svg)](https://codecov.io/gh/ThomasLuypaert/soundscapeR)
+<a href="https://www.repostatus.org/#wip"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public." /></a>
 <!-- badges: end -->
 
 |                                                                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
