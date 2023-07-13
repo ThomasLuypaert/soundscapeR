@@ -21,3 +21,16 @@ files. For instance, the function automatically detects the sampling regime of a
 adjacent files in a folder deviates from the expected sampling regime (e.g. due to missing files). Moreover, the function
 allows the user to subset the number of files per folder to contain only full sampling days (remove partially sampled days from the study).
 }
+\examples{
+
+# File prepration
+fpath <- system.file("extdata", package="soundscapeR")
+file_locs <- ss_find_files(parent_directory = fpath)
+
+# No subsetting
+file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = TRUE)
+
+# Subsetting to full days only
+file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = TRUE)
+
+}

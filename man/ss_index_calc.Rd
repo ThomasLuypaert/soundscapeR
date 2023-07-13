@@ -32,3 +32,13 @@ A list of CVR-values for each sound file
 \description{
 For a given folder of sound files, this function is used to calculate the CVR-index for each 1-min file.
 }
+\examples{
+
+# File preparation
+fpath <- system.file("extdata", package="soundscapeR")
+file_locs <- ss_find_files(parent_directory = fpath)
+file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = FALSE)
+# Index calculation
+ss_index_calc(file_list = file_locs_clean[[1]], window = 256, parallel = FALSE)
+
+}

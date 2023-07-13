@@ -10,6 +10,14 @@
 #'
 #' @export
 #'
+#' @examples
+#'
+#' # Get file path to '.wav' files
+#' fpath <- system.file("extdata", package="soundscapeR")
+#'
+#' # Finding files
+#' file_locs <- ss_find_files(parent_directory = fpath)
+#'
 ss_find_files <- function(parent_directory) {
   directories_with_wavs <- list()
 
@@ -58,6 +66,19 @@ ss_find_files <- function(parent_directory) {
 #' @return A named list with full-length paths to the '.wav' files contained in the parent directory or subdirectories after checking and cleaning.
 #'
 #' @export
+#'
+#' @examples
+#'
+#' # File prepration
+#' fpath <- system.file("extdata", package="soundscapeR")
+#' file_locs <- ss_find_files(parent_directory = fpath)
+#'
+#' # No subsetting
+#' file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = TRUE)
+#'
+#' # Subsetting to full days only
+#' file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = TRUE)
+#'
 ss_assess_files <- function(file_locs, full_days = TRUE) {
   # 1. Find the sampling regime of each folder (median timeinterval between sound files)
 
@@ -151,6 +172,7 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
 #' @param theta The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
 #'
 #' @return A list of CVR-values
+#'
 CVR_computation <- function(file, window = 256, theta = 3) {
   Time <- Amplitude <- NULL
 
@@ -248,6 +270,17 @@ CVR_computation <- function(file, window = 256, theta = 3) {
 #'
 #' @return A list of CVR-values for each sound file
 #' @export
+#'
+#' @examples
+#'
+#' # File preparation
+#' fpath <- system.file("extdata", package="soundscapeR")
+#' file_locs <- ss_find_files(parent_directory = fpath)
+#' file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = FALSE)
+
+#' # Index calculation
+#' ss_index_calc(file_list = file_locs_clean[[1]], window = 256, parallel = FALSE)
+#'
 ss_index_calc <- function(file_list,
                           output_dir = NA,
                           window = 256,

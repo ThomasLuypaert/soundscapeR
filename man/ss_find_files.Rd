@@ -18,3 +18,12 @@ This function takes the path to a parent directory and recursively looks for all
 containing .wav files. The full-length path to each discovered .wav files is saved in a named list maintaining
 directory structure.
 }
+\examples{
+
+# Get file path to '.wav' files
+fpath <- system.file("extdata", package="soundscapeR")
+
+# Finding files
+file_locs <- ss_find_files(parent_directory = fpath)
+
+}
