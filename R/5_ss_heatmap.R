@@ -1345,7 +1345,7 @@ ss_heatmap <- function(soundscape_obj,
             ggplot2::geom_rect(ggplot2::aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
               color = "black", fill = "black"
             ) +
-            ggh4x::geom_polygonraster() +
+            ggplot2::geom_tile(ggplot2::aes(color = value, fill = value)) +
             ggplot2::scale_fill_gradientn(
               colors = color_vector,
               na.value = "black",
@@ -1518,7 +1518,7 @@ ss_heatmap <- function(soundscape_obj,
                   color = value
                 )
               ) +
-              ggh4x::geom_polygonraster() +
+              ggplot2::geom_tile(ggplot2::aes(color = value, fill = value)) +
               ggplot2::scale_fill_gradientn(
                 colors = color_vector,
                 na.value = "grey45",

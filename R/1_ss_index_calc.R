@@ -22,7 +22,7 @@ ss_find_files <- function(parent_directory) {
   directories_with_wavs <- list()
 
   # Check for .wav files in the parent directory non-recursively
-  wav_files <- list.files(parent_directory, pattern = "\\.wav$", full.names = TRUE, recursive = FALSE)
+  wav_files <- list.files(parent_directory, "\\.wav$|\\.WAV$", full.names = TRUE, recursive = FALSE)
 
   if (length(wav_files) > 0) {
     # If .wav files are found in the parent directory, add them to the list with the basename of the directory
@@ -169,90 +169,183 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
 #' @description This function is used to calculate the 'Acoustic Cover' spectral acoustic index.
 #' @param file The full-length path to a .wav file
 #' @param window The window length used for the Fast-Fourier Transformation. Defaults to 256
-#' @param theta The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
+#' @param theta For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā. If ā is less than a user determined threshold, θ (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood
+#' @param threshold The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
 #'
 #' @return A list of CVR-values
 #'
-CVR_computation <- function(file, window = 256, theta = 3) {
-  Time <- Amplitude <- NULL
+CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
 
-  # Load sound recording
-  sound <- tuneR::readWave(file) # sound_file
+  # Define C++ functions
 
-  # Extract spectrogram
-  raw_spectro <- seewave::spectro(sound,
-    wl = window, # window
-    wn = "hamming",
-    plot = FALSE
-  )$amp
+  # mean dB for rows in matrix
 
-  # Smooth spectrogram with a moving window of 3.
-  raw_spectro <- zoo::rollapply(raw_spectro, width = 3, FUN = seewave::meandB, partial = TRUE)
+  Rcpp::cppFunction(
+    'NumericMatrix rollapply_meandB(NumericMatrix x, int width) {
+  int rows = x.nrow();
+  int cols = x.ncol();
+  NumericMatrix out(rows, cols);
 
-  # Truncate values below -90
-  raw_spectro[raw_spectro < -90] <- -90
+  for(int k = 0; k < cols; k++) {
+    NumericVector column = x(_, k);
 
-  # Function to calculate a 100-bin histogram, smooth the values, and return the bin with the largest count.
-  dB_mode_per_row <- function(x) {
+    for(int i = 0; i < rows; i++) {
+      // Center alignment: width should be centered around the current point
+      int start = std::max(0, i - width / 2);
+      int end = std::min(i + width / 2, rows - 1); // ensure the end index does not exceed the length of the column
+      NumericVector window = column[Range(start, end)];
+
+      // Handling NA values
+      if (std::any_of(window.begin(), window.end(), [](double v) { return NumericVector::is_na(v); })) {
+        out(i, k) = NA_REAL;
+        continue;
+      }
+
+      double sum = 0.0;
+      for(int j = 0; j < window.size(); j++) {
+        sum += pow(10.0, window[j] / 10.0);
+      }
+
+      double meanDB = 10 * log10(sum / window.size());
+      out(i, k) = meanDB;
+    }
+  }
+
+  return out;
+}'
+  )
+
+  # mean dB for a vector
+  Rcpp::cppFunction(
+    'NumericVector rollapply_meandB_vector(NumericVector x, int width) {
+  int n = x.size();
+  NumericVector out(n);
+
+  for(int i = 0; i < n; i++) {
+    // Center alignment: width should be centered around the current point
+    int start = std::max(0, i - width / 2);
+    int end = std::min(i + width / 2, n - 1);
+    NumericVector window = x[Range(start, end)];
+
+    // Handling NA values
+    if (std::any_of(window.begin(), window.end(), [](double v) { return NumericVector::is_na(v); })) {
+      out[i] = NA_REAL;
+      continue;
+    }
+
+    double sum = 0.0;
+    for(int j = 0; j < window.size(); j++) {
+      sum += pow(10.0, window[j] / 10.0);
+    }
+
+    double meanDB = 10 * log10(sum / window.size());
+    out[i] = meanDB;
+  }
+
+  return out;
+}'
+  )
+
+  # Adaptive Level Equalisation (Towsey 2017)
+
+  Rcpp::cppFunction(
+    'NumericMatrix adaptive_level_equalisation(NumericMatrix x, int windowRowSize, int windowColSize, double ALE_theta) {
+  int rows = x.nrow();
+  int cols = x.ncol();
+  NumericMatrix out(rows, cols);
+
+  // Initialize output matrix with NA values
+  std::fill(out.begin(), out.end(), NumericVector::get_na());
+
+  // Create padded matrix
+  NumericMatrix padded(rows + windowRowSize - 1, cols + windowColSize - 1);
+  int rowPad = (windowRowSize - 1) / 2;
+  int colPad = (windowColSize - 1) / 2;
+  for(int i = 0; i < rows; i++) {
+    for(int j = 0; j < cols; j++) {
+      padded(i + rowPad, j + colPad) = x(i, j);
+    }
+  }
+
+  // Allocate window vector once
+  NumericVector window(windowRowSize * windowColSize);
+
+  for(int i = 0; i < rows; i++) {
+    for(int j = 0; j < cols; j++) {
+      int windowIndex = 0;
+      for(int k = 0; k < windowRowSize; k++) {
+        for(int l = 0; l < windowColSize; l++) {
+          double value = padded(i + k, j + l);
+          // Assume no NA values
+          window[windowIndex++] = value;
+        }
+      }
+
+      if(windowIndex > 0) {
+        // Calculate meanDB
+        double sum = std::accumulate(window.begin(), window.begin() + windowIndex, 0.0, [](double a, double b) {
+          return a + std::pow(10.0, b / 10.0);
+        });
+        double meanDB = 10.0 * std::log10(sum / windowIndex);
+
+        // Apply threshold theta
+        out(i, j) = meanDB > ALE_theta ? x(i, j) : *std::min_element(window.begin(), window.begin() + windowIndex);
+      }
+    }
+  }
+
+  return out;
+}'
+  )
+
+  # Define R functions
+
+  # dB mode per row, uses rollapply_meandB_vector C++ function complied above.
+  dB_mode_per_row <- function(x, width = 5){
     x <- as.numeric(x)
-    seq.100 <- seq(from = min(x), to = max(x), length.out = 100)
-    sound_hist <- graphics::hist(as.numeric(x), breaks = seq.100, plot = FALSE)
+    seq_100 <- seq(from = min(x), to = max(x), length.out = 100)
+    sound_hist <- graphics::hist(as.numeric(x), breaks = seq_100, plot = FALSE)
 
-    # Smooth counts with a moving window of length 5.
-    sound_hist$counts <- zoo::rollapply(sound_hist$counts, width = 5, FUN = seewave::meandB, partial = TRUE)
+    # Smooth counts with a moving window
+    sound_hist$counts <- rollapply_meandB_vector(sound_hist$counts, width)
 
     # Find bin with the largest number of counts.
-    Mode <- sound_hist$mids[which.max(sound_hist$counts)]
+    mode <- sound_hist$mids[which.max(sound_hist$counts)]
 
-    return(Mode)
-  } # / dB_mode_per_row function
+    return(mode)
+  }
 
-  # Calculate mode of each frequency band using above function
-  spectro_mode <- apply(X = raw_spectro, MARGIN = 1, FUN = dB_mode_per_row)
+  # Load sound recording
+  sound <- tuneR::readWave(file)
 
-  # Smooth modal values to reduce banding in the spectrogram.
-  spectro_mode <- zoo::rollapply(spectro_mode, width = 5, FUN = seewave::meandB, partial = TRUE)
+  # Extract spectrogram
+  raw_spectro <- seewave::spectro(sound, wl = window,
+                                  wn = "hamming",
+                                  plot = FALSE)$amp
 
-  # Subtract mode from each frequency band of the spectrogram
-  spectro_less_mode <- raw_spectro - spectro_mode
+  # Smooth spectrogram with a moving window of 3. Truncating values below -90
+  raw_spectro <- pmax(rollapply_meandB(raw_spectro, width = 3), -90)
 
-  # Truncate negative values to 0
-  spectro_less_mode[spectro_less_mode < 0] <- 0
+  # Calculate mode of each frequency band using above function.
+  spectro_mode <- apply(raw_spectro, 1, FUN = dB_mode_per_row)
 
-  # Adaptive level equalisation function. Calculates mean dB value of the neighbourhood. If this is less than the threshold theta, replace the central cell with the minimum dB value of the neighbourhood.
-  # Assumes a 9 x 3 neighbourhood to match Towsey (2017)
-  ad_lev_eq <- function(x) {
-    x_no_na <- stats::na.omit(x)
-    if (length(x_no_na) == 0) {
-      return(NA)
-    } else if (seewave::meandB(x_no_na) > 3) {
-      return(x[[14]])
-    } else {
-      x[[14]] <- min(x_no_na)
-      return(x[[14]])
-    }
-  } # / ad_lev_eq function
+  # Smooth the mode using a moving average filter
+  spectro_mode <- rollapply_meandB_vector(spectro_mode, width = 5)
 
-  # Convert the spectrogram matrix to a spatRaster
-  temp_rast <- terra::rast(spectro_less_mode)
+  # Subtract the resulting background noise values from the values in each frequency bin. Truncate negative values to zero.
+  spectro_less_mode <- pmax(raw_spectro - spectro_mode, 0)
 
-  # Square sliding window, ART < 10 seconds.
-  temp_rast_ale <- terra::focal(temp_rast, w = c(9, 3), fun = ad_lev_eq)
+  # For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā.
+  # If ā is less than a user determined threshold, θ, set the value of the central element/pixel equal to the minimum in the neighbourhood
+  ale_matrix <- adaptive_level_equalisation(spectro_less_mode, windowRowSize = 9, windowColSize = 3, ALE_theta = 3)
 
-  # Extract as dataframe, taking dimensions from the original raw spectrogram. Need to rename column afterwards.
-  ale_spectro <- data.frame("Freq" = rep(1:nrow(raw_spectro), each = ncol(raw_spectro)), "Time" = rep(1:ncol(raw_spectro), times = nrow(raw_spectro)), terra::as.data.frame(temp_rast_ale))
-
-  colnames(ale_spectro)[3] <- "Amplitude"
 
   # Finally, calculate the CVR.
   # Termed the Activity (ACTsp) in Towsey (2017): "The fraction of cells in each noise-reduced frequency bin whose value exceeds the threshold, θ = 3 dB."
-  # Pivot to wide format.
-  ale_spectro_wide <- tidyr::pivot_wider(ale_spectro, names_from = Time, values_from = Amplitude)
-
   # Calculate number of cells over 3dB threshold in each row, as a fraction of the total.
-  ale_spectro_wide$CVR_index <- rowSums(ale_spectro_wide > 3) / (ncol(ale_spectro_wide) - 1)
+  CVR_index <- rowSums(ale_matrix > threshold) / (ncol(ale_matrix))
 
-  return(ale_spectro_wide$CVR_index)
+  return(CVR_index)
 }
 
 
@@ -264,11 +357,10 @@ CVR_computation <- function(file, window = 256, theta = 3) {
 #' @param output_dir The full-length path to an output directory on your device. If not specified, will default to the location where
 #' the raw sound files are saved.
 #' @param window The window length used for the Fast-Fourier Transformation. Defaults to 256
-#' @param theta The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
-#' @param parallel A boolean operator indicating whether parallel processing should be used to calculate the CVR-index files.
-#' Defaults to FALSE.
+#' @param theta For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā. If ā is less than a user determined threshold, θ (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood
+#' @param threshold The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
 #'
-#' @return A list of CVR-values for each sound file
+#' @return CVR-index output files in '.csv' form, stored in output_dir
 #' @export
 #'
 #' @examples
@@ -279,32 +371,33 @@ CVR_computation <- function(file, window = 256, theta = 3) {
 #' file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = FALSE)
 
 #' # Index calculation
-#' ss_index_calc(file_list = file_locs_clean[[1]], window = 256, parallel = FALSE)
+#' ss_index_calc(file_list = file_locs_clean[[1]], window = 256)
 #'
 ss_index_calc <- function(file_list,
                           output_dir = NA,
                           window = 256,
                           theta = 3,
-                          parallel = FALSE) {
-  Time <- Amplitude <- i <- NULL
+                          threshold = 3) {
 
   # Make an output folder
 
   if (is.na(output_dir)) {
-    base_dir <- dirname(file_list[1])
 
+    base_dir <- dirname(file_list[1])
     output_path <- file.path(base_dir, window)
+
   } else {
     output_path <- file.path(output_dir, window)
   }
 
   if (dir.exists(output_path)) {
+
     output_existing <- list.files(
       path = output_path,
       pattern = "CVR.csv"
     )
 
-    output_expected <- paste0(gsub(x = basename(file_list), pattern = ".wav", replacement = ""), "_CVR.csv")
+    output_expected <- paste0(gsub(x = basename(file_list), pattern = ".wav|.WAV", replacement = ""), "_CVR.csv")
 
     if (length(list.files(
       path = output_path,
@@ -320,145 +413,30 @@ ss_index_calc <- function(file_list,
     }
   } else {
     dir.create(output_path)
+    file_list_new <- file_list
   }
 
-
-
-  # Calculate CVR-index files
-
-  if (parallel == TRUE) {
-    n_cores <- parallel::detectCores() - 2
-
-    n_files <- length(file_list_new)
-
-    # Initialize parallel processing
-
-    cl <- parallel::makeCluster(n_cores)
-    doSNOW::registerDoSNOW(cl)
-
-    # progress bar
-
-    pb <- progress::progress_bar$new(
-      format = "Progress = :perc [:bar] Elapsed = :elapsed | Remaining= :eta",
-      total = n_files,
-      width = 60
-    )
-
-    # allowing progress bar to be used in foreach -----------------------------
-    progress <- function(n) {
-      pb$tick()
-    }
-
-    opts <- list(progress = progress)
-
-    # Loop through each file and perform fft in parallel
-
-    CVR_list <- foreach::foreach(
-      i = 1:n_files, .packages = c("tuneR", "seewave", "soundscapeR"),
-      .options.snow = opts
-    ) %dopar% {
-      sound <- tuneR::readWave(file_list_new[i]) # sound_file
-
-      # Extract spectrogram
-      raw_spectro <- seewave::spectro(sound,
-        wl = window, # window
-        wn = "hamming",
-        plot = FALSE
-      )$amp
-
-      # Smooth spectrogram with a moving window of 3.
-      raw_spectro <- zoo::rollapply(raw_spectro, width = 3, FUN = seewave::meandB, partial = TRUE)
-
-      # Truncate values below -90
-      raw_spectro[raw_spectro < -90] <- -90
-
-      # Function to calculate a 100-bin histogram, smooth the values, and return the bin with the largest count.
-      dB_mode_per_row <- function(x) {
-        x <- as.numeric(x)
-        seq.100 <- seq(from = min(x), to = max(x), length.out = 100)
-        sound_hist <- graphics::hist(as.numeric(x), breaks = seq.100, plot = FALSE)
-
-        # Smooth counts with a moving window of length 5.
-        sound_hist$counts <- zoo::rollapply(sound_hist$counts, width = 5, FUN = seewave::meandB, partial = TRUE)
-
-        # Find bin with the largest number of counts.
-        Mode <- sound_hist$mids[which.max(sound_hist$counts)]
-
-        return(Mode)
-      } # / dB_mode_per_row function
-
-      # Calculate mode of each frequency band using above function
-      spectro_mode <- apply(X = raw_spectro, MARGIN = 1, FUN = dB_mode_per_row)
-
-      # Smooth modal values to reduce banding in the spectrogram.
-      spectro_mode <- zoo::rollapply(spectro_mode, width = 5, FUN = seewave::meandB, partial = TRUE)
-
-      # Subtract mode from each frequency band of the spectrogram
-      spectro_less_mode <- raw_spectro - spectro_mode
-
-      # Truncate negative values to 0
-      spectro_less_mode[spectro_less_mode < 0] <- 0
-
-      # Adaptive level equalisation function. Calculates mean dB value of the neighbourhood. If this is less than the threshold theta, replace the central cell with the minimum dB value of the neighbourhood.
-      # Assumes a 9 x 3 neighbourhood to match Towsey (2017)
-      ad_lev_eq <- function(x) {
-        x_no_na <- stats::na.omit(x)
-        if (length(x_no_na) == 0) {
-          return(NA)
-        } else if (seewave::meandB(x_no_na) > 3) {
-          return(x[[14]])
-        } else {
-          x[[14]] <- min(x_no_na)
-          return(x[[14]])
-        }
-      } # / ad_lev_eq function
-
-      # Convert the spectrogram matrix to a spatRaster
-      temp_rast <- terra::rast(spectro_less_mode)
-
-      # Square sliding window, ART < 10 seconds.
-      temp_rast_ale <- terra::focal(temp_rast, w = c(9, 3), fun = ad_lev_eq)
-
-      # Extract as dataframe, taking dimensions from the original raw spectrogram. Need to rename column afterwards.
-      ale_spectro <- data.frame("Freq" = rep(1:nrow(raw_spectro), each = ncol(raw_spectro)), "Time" = rep(1:ncol(raw_spectro), times = nrow(raw_spectro)), terra::as.data.frame(temp_rast_ale))
-
-      colnames(ale_spectro)[3] <- "Amplitude"
-
-      # Finally, calculate the CVR.
-      # Termed the Activity (ACTsp) in Towsey (2017): "The fraction of cells in each noise-reduced frequency bin whose value exceeds the threshold, θ = 3 dB."
-      # Pivot to wide format.
-      ale_spectro_wide <- tidyr::pivot_wider(ale_spectro, names_from = Time, values_from = Amplitude)
-
-      # Calculate number of cells over 3dB threshold in each row, as a fraction of the total.
-      ale_spectro_wide$CVR_index <- rowSums(ale_spectro_wide > 3) / (ncol(ale_spectro_wide) - 1)
-
-      utils::write.csv(x = t(as.data.frame(ale_spectro_wide$CVR_index)), file = paste0(output_path, "/", gsub(x = basename(file_list_new[i]), pattern = ".wav", replacement = ""), "_CVR.csv"))
-
-      return(ale_spectro_wide$CVR_index)
-    }
-
-    names(CVR_list) <- basename(file_list_new)
-
-    parallel::stopCluster(cl)
-    gc()
-  } else {
     CVR_list <- vector("list", length(file_list_new))
 
-    for (j in 1:length(file_list_new)) {
-      print(paste0(round(((j / length(file_list_new)) * 100), digits = 1), " %"))
+    for (i in 1:length(file_list_new)) {
+
+      print(paste0(round(((i / length(file_list_new)) * 100), digits = 1), " %"))
+
       Sys.sleep(0.00000000000001)
 
-      CVR_list[[j]] <- CVR_computation(
-        file = file_list_new[j],
+      CVR_list[[i]] <- CVR_computation(
+        file = file_list_new[i],
         window = window,
-        theta = theta
+        theta = theta,
+        threshold = threshold
       )
 
-      utils::write.csv(x = t(as.data.frame(CVR_list[[j]])), file = paste0(output_path, "/", gsub(x = basename(file_list_new[j]), pattern = ".wav", replacement = ""), "_CVR.csv"))
+      utils::write.csv(x = t(as.data.frame(CVR_list[[i]])), file = paste0(output_path, "/", gsub(x = basename(file_list_new[i]), pattern = ".wav", replacement = ""), "_CVR.csv"))
     }
 
     names(CVR_list) <- basename(file_list_new)
-  }
 
-  return(CVR_list)
+    print(paste0("CVR-index output files are found in: ", output_path))
+    Sys.sleep(0.0001)
+
 }

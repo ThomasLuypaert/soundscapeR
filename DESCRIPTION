@@ -18,10 +18,10 @@ LazyData: true
 RoxygenNote: 7.2.3
 biocViews:
 Imports: 
-    lubridate, 
-    hms, 
-    ggplot2 (> 3.3.0), 
-    dplyr, 
+    lubridate,
+    hms,
+    ggplot2 (> 3.3.0),
+    dplyr,
     stringr,
     autothresholdr (>= 1.3.5),
     lutz (>= 0.3.1),
@@ -35,30 +35,22 @@ Imports:
     rlist,
     methods,
     magrittr,
-    data.table, 
-    vegan, 
+    data.table,
+    vegan,
     tidyr,
-    doSNOW,
-    foreach,
     ggh4x,
-    progress,
     seewave,
-    terra,
     tuneR,
-    zoo
+    Rcpp
 Suggests: 
     covr,
     qs,
-    sf,
     plotly (>= 4.9.2.1),
     testthat (>= 3.0.0), 
     vdiffr,
     pracma,
-    geiger,
     crayon,
-    parallel,
-    assertthat, 
-    here,
+    assertthat,
     ggrepel
 Depends: 
     R (>= 3.5.0)
@@ -66,4 +58,4 @@ URL: https://github.com/ThomasLuypaert/soundscapeR
 BugReports: https://github.com/ThomasLuypaert/soundscapeR/issues
 Config/testthat/edition: 3
 SystemRequirements: C++17
-Remotes: rspatial/terra
+Remotes: 

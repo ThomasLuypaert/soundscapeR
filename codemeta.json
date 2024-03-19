@@ -13,7 +13,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.2 (2022-10-31 ucrt)",
+  "runtimePlatform": "R version 4.3.1 (2023-06-16 ucrt)",
   "author": [
     {
       "@type": "Person",
@@ -433,18 +433,6 @@
     },
     "21": {
       "@type": "SoftwareApplication",
-      "identifier": "doSNOW",
-      "name": "doSNOW",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=doSNOW"
-    },
-    "22": {
-      "@type": "SoftwareApplication",
       "identifier": "foreach",
       "name": "foreach",
       "provider": {
@@ -455,7 +443,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=foreach"
     },
-    "23": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "ggh4x",
       "name": "ggh4x",
@@ -467,7 +455,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggh4x"
     },
-    "24": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "progress",
       "name": "progress",
@@ -479,7 +467,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progress"
     },
-    "25": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "seewave",
       "name": "seewave",
@@ -491,7 +479,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=seewave"
     },
-    "26": {
+    "25": {
       "@type": "SoftwareApplication",
       "identifier": "terra",
       "name": "terra",
@@ -501,9 +489,9 @@
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://github.com/rspatial/terra"
+      "sameAs": "https://CRAN.R-project.org/package=terra"
     },
-    "27": {
+    "26": {
       "@type": "SoftwareApplication",
       "identifier": "tuneR",
       "name": "tuneR",
@@ -515,7 +503,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tuneR"
     },
-    "28": {
+    "27": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -527,6 +515,18 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=zoo"
     },
+    "28": {
+      "@type": "SoftwareApplication",
+      "identifier": "Rcpp",
+      "name": "Rcpp",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=Rcpp"
+    },
     "29": {
       "@type": "SoftwareApplication",
       "identifier": "R",
@@ -535,7 +535,7 @@
     },
     "SystemRequirements": "C++17"
   },
-  "fileSize": "491370.836KB",
+  "fileSize": "433002.905KB",
   "readme": "https://github.com/ThomasLuypaert/soundscapeR/blob/master/README.md",
   "contIntegration": ["https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/ThomasLuypaert/soundscapeR"]
 }

@@ -9,7 +9,7 @@ ss_index_calc(
   output_dir = NA,
   window = 256,
   theta = 3,
-  parallel = FALSE
+  threshold = 3
 )
 }
 \arguments{
@@ -21,13 +21,12 @@ the raw sound files are saved.}
 
 \item{window}{The window length used for the Fast-Fourier Transformation. Defaults to 256}
 
-\item{theta}{The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.}
+\item{theta}{For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā. If ā is less than a user determined threshold, θ (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood}
 
-\item{parallel}{A boolean operator indicating whether parallel processing should be used to calculate the CVR-index files.
-Defaults to FALSE.}
+\item{threshold}{The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.}
 }
 \value{
-A list of CVR-values for each sound file
+CVR-index output files in '.csv' form, stored in output_dir
 }
 \description{
 For a given folder of sound files, this function is used to calculate the CVR-index for each 1-min file.
@@ -39,6 +38,6 @@ fpath <- system.file("extdata", package="soundscapeR")
 file_locs <- ss_find_files(parent_directory = fpath)
 file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = FALSE)
 # Index calculation
-ss_index_calc(file_list = file_locs_clean[[1]], window = 256, parallel = FALSE)
+ss_index_calc(file_list = file_locs_clean[[1]], window = 256)
 
 }

@@ -4,14 +4,16 @@
 \alias{CVR_computation}
 \title{Calculate the 'Acoustic Cover' (CVR) spectral acoustic index for a sound file}
 \usage{
-CVR_computation(file, window = 256, theta = 3)
+CVR_computation(file, window = 256, theta = 3, threshold = 3)
 }
 \arguments{
 \item{file}{The full-length path to a .wav file}
 
 \item{window}{The window length used for the Fast-Fourier Transformation. Defaults to 256}
 
-\item{theta}{The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.}
+\item{theta}{For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā. If ā is less than a user determined threshold, θ (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood}
+
+\item{threshold}{The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.}
 }
 \value{
 A list of CVR-values
