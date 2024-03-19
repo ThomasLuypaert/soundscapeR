@@ -756,7 +756,9 @@ ss_heatmap <- function(soundscape_obj,
               color = value
             )
           ) +
-          ggplot2::geom_tile() +
+          ggplot2::geom_tile(
+            na.rm = TRUE
+          ) +
           ggplot2::scale_fill_gradientn(
             colors = color_vector,
             na.value = "grey45",
@@ -829,6 +831,7 @@ ss_heatmap <- function(soundscape_obj,
             )
           ) +
           ggplot2::geom_vline(
+            na.rm = TRUE,
             ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunrise)),
             linetype = "dashed",
             color = if (direction == 1) {
@@ -838,6 +841,7 @@ ss_heatmap <- function(soundscape_obj,
             }
           ) +
           ggplot2::geom_vline(
+            na.rm = TRUE,
             ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunset)),
             linetype = "dashed",
             color = if (direction == 1) {
@@ -847,6 +851,7 @@ ss_heatmap <- function(soundscape_obj,
             }
           ) +
           ggplot2::geom_hline(
+            na.rm = TRUE,
             yintercept = 20000,
             linetype = "dashed",
             color = if (direction == 1) {
@@ -856,6 +861,7 @@ ss_heatmap <- function(soundscape_obj,
             }
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = min(df2$time),
             xmax = sunrise,
@@ -866,6 +872,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 1
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = sunset,
             xmax = midnight2,
@@ -876,6 +883,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 1
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = sunrise,
             xmax = sunset,
@@ -886,6 +894,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 1
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = min(df2$time),
             xmax = sunrise,
@@ -896,6 +905,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 0.25
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = sunset,
             xmax = (midnight2 - (60 * 5)),
@@ -906,6 +916,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 0.25
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = sunrise,
             xmax = sunset,
@@ -916,6 +927,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 0.25
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = midnight2,
             xmax = midnight2 + 3600,
@@ -926,6 +938,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 0.5
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "rect",
             xmin = midnight2,
             xmax = midnight2 + 3600,
@@ -936,6 +949,7 @@ ss_heatmap <- function(soundscape_obj,
             alpha = 0.5
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             "text",
             x = (sunrise - (as.numeric(
               difftime(sunrise,
@@ -950,6 +964,7 @@ ss_heatmap <- function(soundscape_obj,
             size = labelsize_time
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             "text",
             x = (sunset - (as.numeric(
               difftime(sunset,
@@ -964,6 +979,7 @@ ss_heatmap <- function(soundscape_obj,
             size = labelsize_time
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             "text",
             x = (midnight2 - (as.numeric(
               difftime(midnight2,
@@ -977,8 +993,11 @@ ss_heatmap <- function(soundscape_obj,
             fontface = 2,
             size = labelsize_time
           ) +
-          ggplot2::geom_vline(xintercept = midnight2) +
+          ggplot2::geom_vline(
+            xintercept = midnight2,
+            na.rm = TRUE) +
           ggplot2::annotate(
+            na.rm = TRUE,
             "text",
             x = midnight2 + 2200,
             y = 20000 + ((maxfreq - 20000) / 2),
@@ -989,6 +1008,7 @@ ss_heatmap <- function(soundscape_obj,
             size = labelsize_frequency
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             "text",
             x = midnight2 + 2200,
             y = (20000 - minfreq) / 2,
@@ -1011,7 +1031,9 @@ ss_heatmap <- function(soundscape_obj,
                 color = value
               )
             ) +
-            ggplot2::geom_tile() +
+            ggplot2::geom_tile(
+              na.rm = TRUE
+            ) +
             ggplot2::scale_fill_gradientn(
               colors = color_vector,
               na.value = "grey45",
@@ -1083,6 +1105,7 @@ ss_heatmap <- function(soundscape_obj,
               )
             ) +
             ggplot2::geom_vline(
+              na.rm = TRUE,
               ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunrise)),
               linetype = "dashed",
               color = if (direction == 1) {
@@ -1092,6 +1115,7 @@ ss_heatmap <- function(soundscape_obj,
               }
             ) +
             ggplot2::geom_vline(
+              na.rm = TRUE,
               ggplot2::aes(xintercept = as.numeric(soundscape_obj@sunset)),
               linetype = "dashed",
               color = if (direction == 1) {
@@ -1101,6 +1125,7 @@ ss_heatmap <- function(soundscape_obj,
               }
             ) +
             ggplot2::geom_hline(
+              na.rm = TRUE,
               yintercept = 20000,
               linetype = "dashed",
               color = if (direction == 1) {
@@ -1110,6 +1135,7 @@ ss_heatmap <- function(soundscape_obj,
               }
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = min(df2$time),
               xmax = sunrise,
@@ -1120,6 +1146,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 1
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = sunset,
               xmax = midnight2,
@@ -1130,6 +1157,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 1
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = sunrise,
               xmax = sunset,
@@ -1140,6 +1168,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 1
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = min(df2$time),
               xmax = sunrise,
@@ -1150,6 +1179,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 0.25
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = sunset,
               xmax = midnight2,
@@ -1160,6 +1190,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 0.25
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = sunrise,
               xmax = sunset,
@@ -1170,6 +1201,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 0.25
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = midnight2,
               xmax = midnight2 + 3600,
@@ -1180,6 +1212,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 0.5
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = midnight2,
               xmax = midnight2 + 3600,
@@ -1190,6 +1223,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 0.5
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               "text",
               x = (sunrise - (as.numeric(
                 difftime(sunrise,
@@ -1203,6 +1237,7 @@ ss_heatmap <- function(soundscape_obj,
               fontface = 2
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               "text",
               x = (sunset - (as.numeric(
                 difftime(sunset,
@@ -1216,6 +1251,7 @@ ss_heatmap <- function(soundscape_obj,
               fontface = 2
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               "text",
               x = (midnight2 - (as.numeric(
                 difftime(midnight2,
@@ -1228,7 +1264,9 @@ ss_heatmap <- function(soundscape_obj,
               color = "white",
               fontface = 2
             ) +
-            ggplot2::geom_vline(xintercept = midnight2) +
+            ggplot2::geom_vline(
+              na.rm = TRUE,
+              xintercept = midnight2) +
             ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
             ggplot2::guides(color = "none")
         }
@@ -1243,7 +1281,9 @@ ss_heatmap <- function(soundscape_obj,
               color = value
             )
           ) +
-          ggplot2::geom_tile() +
+          ggplot2::geom_tile(
+            na.rm = TRUE
+          ) +
           ggplot2::scale_fill_gradientn(
             colors = color_vector,
             na.value = "grey45",
@@ -1337,10 +1377,14 @@ ss_heatmap <- function(soundscape_obj,
                 color = value
               )
             ) +
-            ggplot2::geom_rect(ggplot2::aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
+            ggplot2::geom_rect(
+              na.rm = TRUE,
+              ggplot2::aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
               color = "black", fill = "black"
             ) +
-            ggplot2::geom_tile(ggplot2::aes(color = value, fill = value)) +
+            ggplot2::geom_tile(
+              na.rm = TRUE,
+              ggplot2::aes(color = value, fill = value)) +
             ggplot2::scale_fill_gradientn(
               colors = color_vector,
               na.value = "black",
@@ -1406,6 +1450,7 @@ ss_heatmap <- function(soundscape_obj,
               )
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "segment",
               x = sunrise,
               xend = sunrise,
@@ -1418,6 +1463,7 @@ ss_heatmap <- function(soundscape_obj,
               }
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "segment",
               x = sunset,
               xend = sunset,
@@ -1430,6 +1476,7 @@ ss_heatmap <- function(soundscape_obj,
               }
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "segment",
               x = seq.POSIXt(
                 from = min(df2$time),
@@ -1449,6 +1496,7 @@ ss_heatmap <- function(soundscape_obj,
             ) +
             ggplot2::coord_polar() +
             ggplot2::geom_hline(
+              na.rm = TRUE,
               yintercept = seq(
                 minfreq,
                 maxfreq,
@@ -1459,6 +1507,7 @@ ss_heatmap <- function(soundscape_obj,
               linewidth = 0.2
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = min(df2$time),
               xmax = sunrise,
@@ -1467,6 +1516,7 @@ ss_heatmap <- function(soundscape_obj,
               fill = "#4C4B69", alpha = 1
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = sunset,
               xmax = midnight2,
@@ -1476,6 +1526,7 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 1
             ) +
             ggplot2::annotate(
+              na.rm = TRUE,
               geom = "rect",
               xmin = sunrise,
               xmax = sunset,
@@ -1487,6 +1538,7 @@ ss_heatmap <- function(soundscape_obj,
             ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
             ggplot2::guides(color = "none") +
             ggplot2::annotate("text",
+                              na.rm = TRUE,
               x = midnight1,
               y = seq(
                 0,
@@ -1513,7 +1565,9 @@ ss_heatmap <- function(soundscape_obj,
                   color = value
                 )
               ) +
-              ggplot2::geom_tile(ggplot2::aes(color = value, fill = value)) +
+              ggplot2::geom_tile(
+                na.rm = TRUE,
+                ggplot2::aes(color = value, fill = value)) +
               ggplot2::scale_fill_gradientn(
                 colors = color_vector,
                 na.value = "grey45",
@@ -1584,6 +1638,7 @@ ss_heatmap <- function(soundscape_obj,
               ) +
               ggplot2::coord_polar() +
               ggplot2::geom_hline(
+                na.rm = TRUE,
                 yintercept = seq(
                   minfreq,
                   maxfreq,
@@ -1596,6 +1651,7 @@ ss_heatmap <- function(soundscape_obj,
               ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
               ggplot2::guides(color = "none") +
               ggplot2::annotate("text",
+                                na.rm = TRUE,
                 x = midnight1,
                 y = seq(
                   0,
@@ -1651,7 +1707,9 @@ ss_heatmap <- function(soundscape_obj,
               color = value
             )
           ) +
-          ggplot2::geom_tile() +
+          ggplot2::geom_tile(
+            na.rm = TRUE
+          ) +
           ggplot2::scale_fill_gradientn(
             colors = color_vector,
             na.value = "grey45",

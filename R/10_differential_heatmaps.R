@@ -753,7 +753,8 @@ ss_compare <- function(soundscape_obj_A,
           color = value
         )
       ) +
-      ggplot2::geom_tile(ggplot2::aes(alpha = abs(value))) +
+      ggplot2::geom_tile(na.rm = TRUE,
+                         ggplot2::aes(alpha = abs(value))) +
       ggplot2::scale_fill_gradientn(
         colours = c("#006c99", "white", "#a62a00"),
         values = c(0, 0.5, 1),
@@ -833,7 +834,8 @@ ss_compare <- function(soundscape_obj_A,
             color = value
           )
         ) +
-        ggplot2::geom_tile(ggplot2::aes(alpha = abs(value))) +
+        ggplot2::geom_tile(na.rm = TRUE,
+                           ggplot2::aes(alpha = abs(value))) +
         ggplot2::scale_fill_gradientn(
           colours = c("#006c99", "white", "#a62a00"),
           values = c(0, 0.5, 1),
@@ -899,6 +901,7 @@ ss_compare <- function(soundscape_obj_A,
         ) +
         ggplot2::coord_polar() +
         ggplot2::annotate(
+          na.rm = TRUE,
           geom = "label",
           size = labelsize_polar,
           y = seq(

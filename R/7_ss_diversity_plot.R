@@ -607,10 +607,12 @@ ss_diversity_plot <- function(soundscape_obj,
           ggplot2::aes(time_of_day, soundscape_div_smooth)
         ) +
         ggplot2::geom_area(
+          na.rm = TRUE,
           alpha = 0.25,
           fill = "#440154FF"
         ) +
         ggplot2::geom_line(
+          na.rm = TRUE,
           color = "#440154FF",
           linewidth = 1
         ) +
@@ -667,6 +669,7 @@ ss_diversity_plot <- function(soundscape_obj,
           )
         ) +
         ggplot2::annotate(
+          na.rm = TRUE,
           geom = "text",
           x = (max(total_tod$time_of_day) - 10000),
           y = if (output == "percentage") {
@@ -697,10 +700,12 @@ ss_diversity_plot <- function(soundscape_obj,
             )
           ) +
           ggplot2::geom_area(
+            na.rm = TRUE,
             alpha = 0.25,
             fill = "#440154FF"
           ) +
           ggplot2::geom_line(
+            na.rm = TRUE,
             color = "#440154FF",
             linewidth = 1
           ) +
@@ -757,6 +762,7 @@ ss_diversity_plot <- function(soundscape_obj,
             )
           ) +
           ggplot2::annotate(
+            na.rm = TRUE,
             geom = "text",
             x = (max(total_tod$time_of_day) - 10000),
             y = if (output == "percentage") {
@@ -853,6 +859,7 @@ ss_diversity_plot <- function(soundscape_obj,
             )
           ) +
           ggplot2::geom_area(
+            na.rm = TRUE,
             position = ggplot2::position_stack(reverse = TRUE),
             linewidth = 0.5
           ) +
@@ -935,7 +942,9 @@ ss_diversity_plot <- function(soundscape_obj,
               fill = frequency,
               color = frequency
             )) +
-            ggplot2::geom_area(position = ggplot2::position_stack(reverse = TRUE)) +
+            ggplot2::geom_area(
+              na.rm = TRUE,
+              position = ggplot2::position_stack(reverse = TRUE)) +
             ggplot2::ylab(if (output == "percentage" & qvalue > 0) {
               "Soundscape diversity (%)\n"
             } else {
@@ -1073,7 +1082,9 @@ ss_diversity_plot <- function(soundscape_obj,
               fill = frequency,
               color = frequency
             )) +
-            ggplot2::geom_area(position = ggplot2::position_stack(reverse = TRUE)) +
+            ggplot2::geom_area(
+              na.rm = TRUE,
+              position = ggplot2::position_stack(reverse = TRUE)) +
             ggplot2::ylab("Contribution to total diversity") +
             ggplot2::xlab("Time of day (h)") +
             ggplot2::scale_x_datetime(
@@ -1144,7 +1155,9 @@ ss_diversity_plot <- function(soundscape_obj,
                 fill = frequency,
                 color = frequency
               )) +
-              ggplot2::geom_area(position = ggplot2::position_stack(reverse = TRUE)) +
+              ggplot2::geom_area(
+                na.rm = TRUE,
+                position = ggplot2::position_stack(reverse = TRUE)) +
               ggplot2::ylab("Contribution to total diversity") +
               ggplot2::xlab("Time of day (h)") +
               ggplot2::scale_x_datetime(
@@ -1254,10 +1267,14 @@ ss_diversity_plot <- function(soundscape_obj,
                 x = time_of_day,
                 y = soundscape_div_smooth
               )) +
-              ggplot2::geom_line(ggplot2::aes(color = frequency),
+              ggplot2::geom_line(
+                na.rm = TRUE,
+                ggplot2::aes(color = frequency),
                 linewidth = 1
               ) +
-              ggplot2::geom_area(ggplot2::aes(fill = frequency),
+              ggplot2::geom_area(
+                na.rm = TRUE,
+                ggplot2::aes(fill = frequency),
                 alpha = 0.2
               ) +
               viridis::scale_color_viridis(discrete = TRUE) +
@@ -1359,10 +1376,14 @@ ss_diversity_plot <- function(soundscape_obj,
                   x = time_of_day,
                   y = soundscape_div
                 )) +
-                ggplot2::geom_line(ggplot2::aes(color = frequency),
+                ggplot2::geom_line(
+                  na.rm = TRUE,
+                  ggplot2::aes(color = frequency),
                   linewidth = 1
                 ) +
-                ggplot2::geom_area(ggplot2::aes(fill = frequency),
+                ggplot2::geom_area(
+                  na.rm = TRUE,
+                  ggplot2::aes(fill = frequency),
                   alpha = 0.2
                 ) +
                 viridis::scale_color_viridis(discrete = TRUE) +
