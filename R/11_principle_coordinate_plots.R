@@ -423,9 +423,8 @@ ss_pcoa <- function(soundscape_list,
 
   if(nchar(system.file(package='ggrepel'))==0){
 
-    cat("The 'ggrepel' R-package needs to be installed before using this function \n")
-    cat("Use: 'install.packages('ggrepel')' to install the package and try again...")
-    Sys.sleep(0.00001)
+    cli::cli_alert_danger("The 'ggrepel' R-package needs to be installed before using this function")
+    cli::cli_alert_info("Use: 'install.packages('ggrepel')' to install the package and try again...")
     stop()
 
   }
@@ -579,7 +578,7 @@ if(screeplot == TRUE){
     tidyr::tibble(pe = cumsum(soundscape_pcoa_percent_explained),
            axis = 1:length(soundscape_pcoa_percent_explained)) %>%
     ggplot2::ggplot(ggplot2::aes(axis, pe))+
-    ggplot2::geom_line(size = 1) +
+    ggplot2::geom_line(linewidth = 1) +
     ggplot2::geom_point(shape = 21,
                stroke = 1,
                size = 3,

@@ -1445,7 +1445,7 @@ ss_heatmap <- function(soundscape_obj,
               yend = maxfreq,
               color = "#383e42",
               alpha = 0.5,
-              size = 0.2
+              linewidth = 0.2
             ) +
             ggplot2::coord_polar() +
             ggplot2::geom_hline(
@@ -1456,7 +1456,7 @@ ss_heatmap <- function(soundscape_obj,
               ),
               color = "lightgrey",
               alpha = 0.2,
-              size = 0.2
+              linewidth = 0.2
             ) +
             ggplot2::annotate(
               geom = "rect",
@@ -1591,7 +1591,7 @@ ss_heatmap <- function(soundscape_obj,
                 ),
                 color = "lightgrey",
                 alpha = 0.2,
-                size = 0.2
+                linewidth = 0.2
               ) +
               ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
               ggplot2::guides(color = "none") +
@@ -1711,9 +1711,8 @@ ss_heatmap <- function(soundscape_obj,
           )
 
         if (nchar(system.file(package = "plotly")) == 0) {
-          cat("The 'plotly' R-package needs to be installed before using this function \n")
-          cat("Use: 'install.packages('plotly')' to install the package and try again...")
-          Sys.sleep(0.00001)
+          cli::cli_alert_danger("The 'plotly' R-package needs to be installed before using this function")
+          cli::cli_alert_info("Use: 'install.packages('plotly')' to install the package and try again...")
           stop()
         } else {
           plotly::ggplotly(plot, source = "select")
@@ -1742,9 +1741,8 @@ ss_heatmap <- function(soundscape_obj,
             )
 
             if (nchar(system.file(package = "plotly")) == 0) {
-              cat("The 'plotly' R-package needs to be installed before using this function \n")
-              cat("Use: 'install.packages('plotly')' to install the package and try again...")
-              Sys.sleep(0.00001)
+              cli::cli_alert_danger("The 'plotly' R-package needs to be installed before using this function")
+              cli::cli_alert_info("Use: 'install.packages('plotly')' to install the package and try again...")
               stop()
             } else {
               plotly::ggplotly(plot)

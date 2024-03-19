@@ -378,8 +378,7 @@ ss_compare <- function(soundscape_obj_A,
       assertthat::assert_that(test_15_A(soundscape_obj_A@aggregated_df))
       assertthat::assert_that(test_15_B(soundscape_obj_B@aggregated_df))
     } else {
-      print("soundscape_obj_A and/or soundscape_obj_B don't have the correct output argument")
-      Sys.sleep(0.0000000000000001)
+      cli::cli_abort("soundscape_obj_A and/or soundscape_obj_B don't have the correct output argument")
     }
   }
 
@@ -916,7 +915,7 @@ ss_compare <- function(soundscape_obj_A,
         ) +
         ggplot2::scale_alpha(guide = "none")
     } else {
-      print("You supplied an invalid 'type' argument, please choose one of: 'regular' or 'polar'")
+      cli::cli_abort("You supplied an invalid 'type' argument, please choose one of: 'regular' or 'polar'")
     }
   }
 
@@ -939,9 +938,8 @@ ss_compare <- function(soundscape_obj_A,
         )
 
       if (nchar(system.file(package = "plotly")) == 0) {
-        cat("The 'plotly' R-package needs to be installed before using this function \n")
-        cat("Use: 'install.packages('plotly')' to install the package and try again...")
-        Sys.sleep(0.00001)
+        cli::cli_alert_danger("The 'plotly' R-package needs to be installed before using this function")
+        cli::cli_alert_info("Use: 'install.packages('plotly')' to install the package and try again...")
         stop()
       } else {
         differential_soundscape_plot <- plotly::ggplotly(differential_soundscape_plot)

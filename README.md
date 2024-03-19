@@ -63,12 +63,17 @@ look at this figure:
 
 ### Acknowledgements
 
-Acknowledgements here…
+We are thankful to Oliver Metcalf and Zuzana Burivalova for their input
+on the package.
 
 ### Contribution
 
-Instructions on contributions here…
+The package was developed and written by [Thomas Luypaert]() with
+contributions from Anderson S. Bueno, Tom Bradfer-Lawrence, Carlos A.
+Peres and Torbjørn Haugaasen.
 
 ### Citation
 
-Example of citation here…
+**Luypaert et al. (2024)**. soundscapeR: an R-package for the
+exploration, visualization, diversity quantification and comparison of
+soundscapes.

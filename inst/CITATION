@@ -1,0 +1,14 @@
+citHeader("To cite soundscapeR in publications, please use:")
+
+citEntry(entry = "manual",
+title = "{soundscapeR}: {P}ackage for the visualization and diversity quantification of soundscapes",
+author = "Thomas Luypaert",
+organization = "Norwegian University of Life Sciences",
+address = "",
+note = "version 0.1.0",
+year = "2024",
+url = "https://github.com/ThomasLuypaert/soundscapeR",
+textVersion = paste("Luypaert, T. (2024).",
+"soundscapeR: Package for the visualization and diversity quantification of soundscapes",
+"version 0.1.0. Norwegian University of Life Sciences.",
+"https://github.com/ThomasLuypaert/soundscapeR"))

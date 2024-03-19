@@ -113,10 +113,14 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
         }
       }
 
-      cat("Irregular timeinterval detected for: ", names(file_locs)[i], "\n")
-      cat("Based on the expected sampling regime, there are missing files...")
+      fileloc_names <- names(file_locs)[i]
 
-      cat(basename(file_locs[[i]][outliers]))
+      cli::cli_alert_danger("Irregular timeinterval detected for: {fileloc_names}")
+      cli::cli_alert_info("Based on the expected sampling regime, there are missing files...")
+
+      missing_files <- basename(file_locs[[i]][outliers])
+
+      cli::cli_alert("{missing_files}")
 
       stop("Irregular timeintervals detected - check files")
     } else {
@@ -149,15 +153,15 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
 
     subset_list <- subset_to_closest_multiple(my_list = file_locs, multiple = files_per_day)
 
-    cat("Sampling regime for study: 1 minute in", median_regime, "minutes \n")
-    cat("Number of files per day:", files_per_day, "files \n")
-    cat("The file_locs argument has been subsetted to contain only full sampling days")
+    cli::cli_alert_info("Sampling regime for study: 1 minute in {median_regime} minutes")
+    cli::cli_alert_info("Number of files per day: {files_per_day} files")
+    cli::cli_alert_info("The file_locs argument has been subsetted to contain only full sampling days")
 
     return(subset_list)
   } else {
-    cat("Sampling regime for study: 1 minute in", median_regime, "minutes \n")
-    cat("Number of files per day:", files_per_day, "files \n")
-    cat("The data still contains partially sampled days - be careful with downstream analysis...")
+    cli::cli_alert_info("Sampling regime for study: 1 minute in {median_regime} minutes")
+    cli::cli_alert_info("Number of files per day: {files_per_day} files")
+    cli::cli_alert_warning("The data still contains partially sampled days - be careful with downstream analysis...")
 
     return(file_locs)
   }
@@ -405,9 +409,18 @@ ss_index_calc <- function(file_list,
     )) > 0) {
       file_list_new <- file_list[!sapply(output_expected, function(x) x %in% output_existing)]
 
-      cat("An output folder with CVR output files is already present - continuing the calculation for missing output files only... \n")
-      cat(paste0("Computing ", length(file_list_new), " missing CVR output files out of ", length(file_list), " detected sound files... \n"))
-      Sys.sleep(0.0001)
+      length_file_list_new <- length(file_list_new)
+
+      if(length_file_list_new == 0){
+
+        cli::cli_abort("All expected CVR index files are already present in the output folder, cancelling index computation...")
+
+      }
+
+      length_file_list <- length(file_list)
+
+      cli::cli_alert_warning("An output folder with CVR output files is already present - continuing the calculation for missing output files only...")
+      cli::cli_alert_info("Computing {length_file_list_new} missing CVR output files out of {length_file_list} detected sound files...")
     } else {
       file_list_new <- file_list
     }
@@ -418,11 +431,13 @@ ss_index_calc <- function(file_list,
 
     CVR_list <- vector("list", length(file_list_new))
 
+    progress_bar <- function(){
+
+      cli::cli_progress_bar("Calculating indices", total = length(file_list_new))
+
     for (i in 1:length(file_list_new)) {
 
-      print(paste0(round(((i / length(file_list_new)) * 100), digits = 1), " %"))
-
-      Sys.sleep(0.00000000000001)
+      cli::cli_progress_update()
 
       CVR_list[[i]] <- CVR_computation(
         file = file_list_new[i],
@@ -431,12 +446,18 @@ ss_index_calc <- function(file_list,
         threshold = threshold
       )
 
-      utils::write.csv(x = t(as.data.frame(CVR_list[[i]])), file = paste0(output_path, "/", gsub(x = basename(file_list_new[i]), pattern = ".wav", replacement = ""), "_CVR.csv"))
+      utils::write.csv(x = t(as.data.frame(CVR_list[[i]])), file = paste0(output_path, "/", gsub(x = basename(file_list_new[i]), pattern = ".wav|.WAV", replacement = ""), "_CVR.csv"))
     }
+
+      cli::cli_progress_done()
+
+    }
+
+    progress_bar()
 
     names(CVR_list) <- basename(file_list_new)
 
-    print(paste0("CVR-index output files are found in: ", output_path))
+    cli::cli_alert_success("CVR-index output files are found in: {output_path}")
     Sys.sleep(0.0001)
 
 }

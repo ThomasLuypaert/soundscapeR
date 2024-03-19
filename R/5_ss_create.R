@@ -75,8 +75,7 @@ ss_create <- function(fileloc,
     lon = lon
   )
 
-  print("Merging of index files complete...")
-  Sys.sleep(0.000000000000000000000000000001)
+  cli::cli_alert_success("Merging of index files complete...")
 
   # 2. Binarize the index files
 
@@ -93,8 +92,7 @@ ss_create <- function(fileloc,
     )
   }
 
-  print("Binarizing soundscape complete...")
-  Sys.sleep(0.000000000000000000000000000001)
+  cli::cli_alert_success("Binarizing soundscape complete...")
 
   # 3. Aggregate the index files
 
@@ -103,8 +101,7 @@ ss_create <- function(fileloc,
     output = output
   )
 
-  print("Aggregating soundscape complete: a soundscape object has been created!")
-  Sys.sleep(0.000000000000000000000000000001)
+  cli::cli_alert_success("Aggregating soundscape complete: a soundscape object has been created!")
 
   return(aggregated_soundscape)
 }

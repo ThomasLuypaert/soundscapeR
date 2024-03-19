@@ -111,22 +111,16 @@ ss_index_merge <- function(fileloc,
   # 1.4. produce a warning message if window is not a power of two
 
   if (!as.integer(log(window, base = 2)) == (log(window, base = 2))) {
-    cat("\n Chosen window size is not a power of two. This is a warning message, \n if your window size was chosen purposefully, proceed as planned by pressing Y. \n If you want to abort, press N.", "\n")
-    Sys.sleep(0.000000000001)
+    cli::cli_alert_warning("Chosen window size is not a power of two. This is a warning message, if your window size was chosen purposefully, proceed as planned by pressing Y. If you want to abort, press N.")
 
     question1 <- readline("Would you like to proceed with the chosen window size? (Y/N)")
 
     if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
     } else {
       if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        print("Index computation aborted.")
-        Sys.sleep(0.0000000000000000000000000001)
-        stop()
+        cli::cli_abort("Index computation aborted.")
       } else {
-        print("The option you have chosen is not valid - index computation aborted")
-
-        Sys.sleep(0.00000000000000000000000000000001)
-        stop()
+        cli::cli_abort("The option you have chosen is not valid - index computation aborted")
       }
     }
   }

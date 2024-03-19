@@ -75,18 +75,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "sf",
-      "name": "sf",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=sf"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
       "version": ">= 4.9.2.1",
@@ -137,18 +125,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "geiger",
-      "name": "geiger",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=geiger"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "crayon",
       "name": "crayon",
       "provider": {
@@ -161,11 +137,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "parallel",
-      "name": "parallel"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "assertthat",
       "name": "assertthat",
       "provider": {
@@ -175,18 +146,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=assertthat"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "here",
-      "name": "here",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=here"
     },
     {
       "@type": "SoftwareApplication",
@@ -433,42 +392,6 @@
     },
     "21": {
       "@type": "SoftwareApplication",
-      "identifier": "foreach",
-      "name": "foreach",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=foreach"
-    },
-    "22": {
-      "@type": "SoftwareApplication",
-      "identifier": "ggh4x",
-      "name": "ggh4x",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggh4x"
-    },
-    "23": {
-      "@type": "SoftwareApplication",
-      "identifier": "progress",
-      "name": "progress",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=progress"
-    },
-    "24": {
-      "@type": "SoftwareApplication",
       "identifier": "seewave",
       "name": "seewave",
       "provider": {
@@ -479,19 +402,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=seewave"
     },
-    "25": {
-      "@type": "SoftwareApplication",
-      "identifier": "terra",
-      "name": "terra",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=terra"
-    },
-    "26": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "tuneR",
       "name": "tuneR",
@@ -503,19 +414,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tuneR"
     },
-    "27": {
-      "@type": "SoftwareApplication",
-      "identifier": "zoo",
-      "name": "zoo",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=zoo"
-    },
-    "28": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "Rcpp",
       "name": "Rcpp",
@@ -527,7 +426,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=Rcpp"
     },
-    "29": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
@@ -535,7 +434,7 @@
     },
     "SystemRequirements": "C++17"
   },
-  "fileSize": "433002.905KB",
+  "fileSize": "435276.965KB",
   "readme": "https://github.com/ThomasLuypaert/soundscapeR/blob/master/README.md",
   "contIntegration": ["https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/ThomasLuypaert/soundscapeR"]
 }

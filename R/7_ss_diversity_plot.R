@@ -566,9 +566,8 @@ ss_diversity_plot <- function(soundscape_obj,
 
   if (interactive == TRUE) {
     if (nchar(system.file(package = "plotly")) == 0) {
-      cat("The 'plotly' R-package needs to be installed before using this function \n")
-      cat("Use: 'install.packages('plotly')' to install the package and try again...")
-      Sys.sleep(0.00001)
+      cli::cli_alert_danger("The 'plotly' R-package needs to be installed before using this function")
+      cli::cli_alert_info("Use: 'install.packages('plotly')' to install the package and try again...")
       stop()
     } else {}
   }
@@ -613,7 +612,7 @@ ss_diversity_plot <- function(soundscape_obj,
         ) +
         ggplot2::geom_line(
           color = "#440154FF",
-          size = 1
+          linewidth = 1
         ) +
         ggplot2::ylab(if (output == "percentage" & qvalue > 0) {
           "Soundscape diversity (%)\n"
@@ -703,7 +702,7 @@ ss_diversity_plot <- function(soundscape_obj,
           ) +
           ggplot2::geom_line(
             color = "#440154FF",
-            size = 1
+            linewidth = 1
           ) +
           ggplot2::ylab(if (output == "percentage" & qvalue > 0) {
             "Soundscape diversity (%)\n"
@@ -855,7 +854,7 @@ ss_diversity_plot <- function(soundscape_obj,
           ) +
           ggplot2::geom_area(
             position = ggplot2::position_stack(reverse = TRUE),
-            size = 0.5
+            linewidth = 0.5
           ) +
           ggplot2::ylab(if (output == "percentage" & qvalue > 0) {
             "Soundscape diversity (%)\n"
@@ -1256,7 +1255,7 @@ ss_diversity_plot <- function(soundscape_obj,
                 y = soundscape_div_smooth
               )) +
               ggplot2::geom_line(ggplot2::aes(color = frequency),
-                size = 1
+                linewidth = 1
               ) +
               ggplot2::geom_area(ggplot2::aes(fill = frequency),
                 alpha = 0.2
@@ -1361,7 +1360,7 @@ ss_diversity_plot <- function(soundscape_obj,
                   y = soundscape_div
                 )) +
                 ggplot2::geom_line(ggplot2::aes(color = frequency),
-                  size = 1
+                  linewidth = 1
                 ) +
                 ggplot2::geom_area(ggplot2::aes(fill = frequency),
                   alpha = 0.2

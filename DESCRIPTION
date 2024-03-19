@@ -1,6 +1,6 @@
 Package: soundscapeR
 Type: Package
-Title: Visualization and Quantification of Soundscape Diversity using Hill Numbers
+Title: Visualization And Quantification Of Soundscape Diversity Using Hill Numbers.
 Version: 0.1.0
 Authors@R: c(
     person("Thomas", "Luypaert", email = "thomas.luypaert@nmbu.no", role = c("cre", "aut")),
@@ -40,7 +40,8 @@ Imports:
     tidyr,
     seewave,
     tuneR,
-    Rcpp
+    Rcpp,
+    cli
 Suggests: 
     covr,
     qs,
