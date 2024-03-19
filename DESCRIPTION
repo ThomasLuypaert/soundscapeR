@@ -38,7 +38,6 @@ Imports:
     data.table,
     vegan,
     tidyr,
-    ggh4x,
     seewave,
     tuneR,
     Rcpp

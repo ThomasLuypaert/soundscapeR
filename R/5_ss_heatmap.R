@@ -1325,12 +1325,7 @@ ss_heatmap <- function(soundscape_obj,
     }
   } else {
     if (type == "polar") {
-      if (nchar(system.file(package = "ggh4x")) == 0) {
-        cat("The 'ggh4x' R-package needs to be installed before using this function \n")
-        cat("Use: 'install.packages('ggh4x')' to install the package and try again...")
-        Sys.sleep(0.00001)
-        stop()
-      } else {
+
         df2 <- df2[df2$time >= mintime & df2$time <= maxtime, ]
 
         if (annotate == TRUE) {
@@ -1620,7 +1615,7 @@ ss_heatmap <- function(soundscape_obj,
             plot
           }
         }
-      }
+
     }
   }
 
