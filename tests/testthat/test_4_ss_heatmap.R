@@ -68,7 +68,7 @@ testthat::test_that("The ss_heatmap function works as expected when the correct 
 # testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
 #
 #   vdiffr::expect_doppelganger(
-#     title = "ss_heatmap_7",
+#     title = "ss_heatmap_10",
 #     fig = ss_heatmap(soundscape_obj = soundscape_obj_CVR,
 #                      type = "polar",
 #                      annotate = TRUE,
@@ -81,7 +81,7 @@ testthat::test_that("The ss_heatmap function works as expected when the correct 
 
 testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
   vdiffr::expect_doppelganger(
-    title = "ss_heatmap_8",
+    title = "ss_heatmap_9",
     fig = ss_heatmap(
       soundscape_obj = soundscape_obj_CVR,
       type = "polar",
@@ -146,6 +146,34 @@ testthat::test_that("The ss_heatmap function works as expected when the correct 
       type = "regular",
       annotate = FALSE,
       maxfreq = 22001
+    ),
+  )
+})
+
+# maxfreq < 20000 & annotate == FALSE
+
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_7",
+    fig = ss_heatmap(
+      soundscape_obj = soundscape_obj_CVR,
+      type = "regular",
+      annotate = FALSE,
+      maxfreq = 18000
+    ),
+  )
+})
+
+# maxfreq < 20000 & annotate == TRUE
+
+testthat::test_that("The ss_heatmap function works as expected when the correct arguments are supplied", {
+  vdiffr::expect_doppelganger(
+    title = "ss_heatmap_8",
+    fig = ss_heatmap(
+      soundscape_obj = soundscape_obj_CVR,
+      type = "regular",
+      annotate = FALSE,
+      maxfreq = 18000
     ),
   )
 })

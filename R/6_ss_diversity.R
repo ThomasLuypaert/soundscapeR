@@ -620,8 +620,8 @@ ss_diversity <- function(soundscape_obj,
       soundscape <- sweep(soundscape, 2, colSums(soundscape), FUN = "/")
     }
 
-    pi <- soundscape[soundscape != 0]
-    hill_num <- sum(pi^qvalue)^(1 / (1 - qvalue))
+    p_i <- soundscape[soundscape != 0]
+    hill_num <- sum(p_i^qvalue)^(1 / (1 - qvalue))
   }
 
   # Compute the soundscape diversity under different scenarios

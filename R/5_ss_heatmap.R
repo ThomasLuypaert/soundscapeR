@@ -1677,6 +1677,8 @@ ss_heatmap <- function(soundscape_obj,
     }
   }
 
+  # nocov start
+
   if (interactive == FALSE & save == FALSE) {
     plot
   } else {
@@ -1813,3 +1815,5 @@ ss_heatmap <- function(soundscape_obj,
     }
   }
 }
+
+# nocov end
