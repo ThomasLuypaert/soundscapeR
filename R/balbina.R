@@ -22,5 +22,4 @@
 #' @examples
 #' data(balbina)
 #' soundscape_pcoa <- ss_pcoa(soundscape_list = balbina)
-
 "balbina"

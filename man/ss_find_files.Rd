@@ -21,7 +21,7 @@ directory structure.
 \examples{
 
 # Get file path to '.wav' files
-fpath <- system.file("extdata", package="soundscapeR")
+fpath <- system.file("extdata", package = "soundscapeR")
 
 # Finding files
 file_locs <- ss_find_files(parent_directory = fpath)

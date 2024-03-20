@@ -13,7 +13,7 @@
 #' @examples
 #'
 #' # Get file path to '.wav' files
-#' fpath <- system.file("extdata", package="soundscapeR")
+#' fpath <- system.file("extdata", package = "soundscapeR")
 #'
 #' # Finding files
 #' file_locs <- ss_find_files(parent_directory = fpath)
@@ -61,30 +61,25 @@ ss_find_files <- function(parent_directory) {
 #'
 #' @return In case some files are longer than 60 seconds, creates a new directory called 'split_files' containing the sound files split into 60-second chunks.
 #'
-ss_split_files <- function(file_locs){
-
+ss_split_files <- function(file_locs) {
   # 1. CHECK IF ANY SOUND FILES NEED SPLITTING
 
   soundfiles <- lapply(file_locs, function(x) sapply(x, function(y) tuneR::readWave(y)))
   soundfiles_length <- lapply(soundfiles, function(x) sapply(x, function(y) length(y) / y@samp.rate))
 
 
-  if(any(unlist(soundfiles_length)>60)){
-
-    if(any(unlist(soundfiles_length)%%60!=0)){
-
+  if (any(unlist(soundfiles_length) > 60)) {
+    if (any(unlist(soundfiles_length) %% 60 != 0)) {
       cli::cli_abort("One or more sound files have a length not divisible by 60, aborting file splitting")
-
     }
 
     cli::cli_alert_warning("Detected directories containing sound files with a duration longer than 60 seconds...")
 
-    needs_splitting <- file_locs[which(sapply(soundfiles_length, function(x) any(x>60)))]
-    wav_splitting <- soundfiles[which(sapply(soundfiles_length, function(x) any(x>60)))]
-    wav_duration <- soundfiles_length[which(sapply(soundfiles_length, function(x) any(x>60)))]
+    needs_splitting <- file_locs[which(sapply(soundfiles_length, function(x) any(x > 60)))]
+    wav_splitting <- soundfiles[which(sapply(soundfiles_length, function(x) any(x > 60)))]
+    wav_duration <- soundfiles_length[which(sapply(soundfiles_length, function(x) any(x > 60)))]
 
-    for (i in seq_along(needs_splitting)){
-
+    for (i in seq_along(needs_splitting)) {
       dirname <- basename(dirname(needs_splitting[[i]][1]))
 
       cli::cli_alert_info("Splitting files for {dirname}")
@@ -94,8 +89,7 @@ ss_split_files <- function(file_locs){
       split_dir <- file.path(dirname(needs_splitting[[i]][1]), "split_files")
       dir.create(split_dir, showWarnings = FALSE)
 
-      for (j in 1:length(needs_splitting[[i]])){
-
+      for (j in 1:length(needs_splitting[[i]])) {
         # Read the sound file
 
         audio <- wav_splitting[[i]][[j]]
@@ -114,54 +108,38 @@ ss_split_files <- function(file_locs){
 
         total_duration <- wav_duration[[i]][j]
 
-        num_chunks <- ceiling(total_duration/60)
+        num_chunks <- ceiling(total_duration / 60)
 
         # Cut into 60-second chunks
 
         chunks <- list()
 
-        for (k in 1:num_chunks){
-
-          start_sec <- (k-1)*60
-          end_sec <- min(k*60, total_duration)
-          chunk <- audio[(start_sec*audio@samp.rate + 1):(end_sec*audio@samp.rate)]
+        for (k in 1:num_chunks) {
+          start_sec <- (k - 1) * 60
+          end_sec <- min(k * 60, total_duration)
+          chunk <- audio[(start_sec * audio@samp.rate + 1):(end_sec * audio@samp.rate)]
 
           # Update datetime naming
 
-          updated_datetime <- base_datetime + (k-1)*60
+          updated_datetime <- base_datetime + (k - 1) * 60
           updated_date <- format(updated_datetime, "%Y%m%d")
           updated_time <- format(updated_datetime, "%H%M%S")
 
           updated_filename <- paste0(site_name, "_", updated_date, "_", updated_time, ".wav")
 
           tuneR::writeWave(chunk, file.path(split_dir, updated_filename))
-
         }
-
       }
-
     }
 
     cli::cli_alert_success("Files successfully split, new files can be found in the sub-directory called 'split_files'")
-
-  }
-
-  else{
-
-    if(any(unlist(soundfiles_length)<60)){
-
+  } else {
+    if (any(unlist(soundfiles_length) < 60)) {
       cli::cli_abort("Detected sound files with a duration shorter than 60 seconds - cannot be handled by soundscapeR, aborting...")
-
-    }
-
-    else{
-
+    } else {
       cli::cli_alert_success("All sound files are 60 seconds, no splitting required!")
-
     }
-
   }
-
 }
 
 
@@ -183,7 +161,7 @@ ss_split_files <- function(file_locs){
 #' @examples
 #'
 #' # File prepration
-#' fpath <- system.file("extdata", package="soundscapeR")
+#' fpath <- system.file("extdata", package = "soundscapeR")
 #' file_locs <- ss_find_files(parent_directory = fpath)
 #'
 #' # No subsetting
@@ -292,13 +270,12 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
 #' @return A list of CVR-values
 #'
 CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
-
   # Define C++ functions
 
   # mean dB for rows in matrix
 
   Rcpp::cppFunction(
-    'NumericMatrix rollapply_meandB(NumericMatrix x, int width) {
+    "NumericMatrix rollapply_meandB(NumericMatrix x, int width) {
   int rows = x.nrow();
   int cols = x.ncol();
   NumericMatrix out(rows, cols);
@@ -329,12 +306,12 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
   }
 
   return out;
-}'
+}"
   )
 
   # mean dB for a vector
   Rcpp::cppFunction(
-    'NumericVector rollapply_meandB_vector(NumericVector x, int width) {
+    "NumericVector rollapply_meandB_vector(NumericVector x, int width) {
   int n = x.size();
   NumericVector out(n);
 
@@ -360,13 +337,13 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
   }
 
   return out;
-}'
+}"
   )
 
   # Adaptive Level Equalisation (Towsey 2017)
 
   Rcpp::cppFunction(
-    'NumericMatrix adaptive_level_equalisation(NumericMatrix x, int windowRowSize, int windowColSize, double ALE_theta) {
+    "NumericMatrix adaptive_level_equalisation(NumericMatrix x, int windowRowSize, int windowColSize, double ALE_theta) {
   int rows = x.nrow();
   int cols = x.ncol();
   NumericMatrix out(rows, cols);
@@ -412,13 +389,13 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
   }
 
   return out;
-}'
+}"
   )
 
   # Define R functions
 
   # dB mode per row, uses rollapply_meandB_vector C++ function complied above.
-  dB_mode_per_row <- function(x, width = 5){
+  dB_mode_per_row <- function(x, width = 5) {
     x <- as.numeric(x)
     seq_100 <- seq(from = min(x), to = max(x), length.out = 100)
     sound_hist <- graphics::hist(as.numeric(x), breaks = seq_100, plot = FALSE)
@@ -436,9 +413,11 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
   sound <- tuneR::readWave(file)
 
   # Extract spectrogram
-  raw_spectro <- seewave::spectro(sound, wl = window,
-                                  wn = "hamming",
-                                  plot = FALSE)$amp
+  raw_spectro <- seewave::spectro(sound,
+    wl = window,
+    wn = "hamming",
+    plot = FALSE
+  )$amp
 
   # Smooth spectrogram with a moving window of 3. Truncating values below -90
   raw_spectro <- pmax(rollapply_meandB(raw_spectro, width = 3), -90)
@@ -483,7 +462,7 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
 #' @examples
 #'
 #' # File preparation
-#' fpath <- system.file("extdata", package="soundscapeR")
+#' fpath <- system.file("extdata", package = "soundscapeR")
 #' file_locs <- ss_find_files(parent_directory = fpath)
 #' file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = FALSE)
 
@@ -495,20 +474,16 @@ ss_index_calc <- function(file_list,
                           window = 256,
                           theta = 3,
                           threshold = 3) {
-
   # Make an output folder
 
   if (is.na(output_dir)) {
-
     base_dir <- dirname(file_list[1])
     output_path <- file.path(base_dir, window)
-
   } else {
     output_path <- file.path(output_dir, window)
   }
 
   if (dir.exists(output_path)) {
-
     output_existing <- list.files(
       path = output_path,
       pattern = "CVR.csv"
@@ -524,10 +499,8 @@ ss_index_calc <- function(file_list,
 
       length_file_list_new <- length(file_list_new)
 
-      if(length_file_list_new == 0){
-
+      if (length_file_list_new == 0) {
         cli::cli_abort("All expected CVR index files are already present in the output folder, cancelling index computation...")
-
       }
 
       length_file_list <- length(file_list)
@@ -542,14 +515,12 @@ ss_index_calc <- function(file_list,
     file_list_new <- file_list
   }
 
-    CVR_list <- vector("list", length(file_list_new))
+  CVR_list <- vector("list", length(file_list_new))
 
-    progress_bar <- function(){
-
-      cli::cli_progress_bar("Calculating indices", total = length(file_list_new))
+  progress_bar <- function() {
+    cli::cli_progress_bar("Calculating indices", total = length(file_list_new))
 
     for (i in 1:length(file_list_new)) {
-
       cli::cli_progress_update()
 
       CVR_list[[i]] <- CVR_computation(
@@ -562,15 +533,13 @@ ss_index_calc <- function(file_list,
       utils::write.csv(x = t(as.data.frame(CVR_list[[i]])), file = paste0(output_path, "/", gsub(x = basename(file_list_new[i]), pattern = ".wav|.WAV", replacement = ""), "_CVR.csv"))
     }
 
-      cli::cli_progress_done()
+    cli::cli_progress_done()
+  }
 
-    }
+  progress_bar()
 
-    progress_bar()
+  names(CVR_list) <- basename(file_list_new)
 
-    names(CVR_list) <- basename(file_list_new)
-
-    cli::cli_alert_success("CVR-index output files are found in: {output_path}")
-    Sys.sleep(0.0001)
-
+  cli::cli_alert_success("CVR-index output files are found in: {output_path}")
+  Sys.sleep(0.0001)
 }

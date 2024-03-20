@@ -24,7 +24,7 @@ allows the user to subset the number of files per folder to contain only full sa
 \examples{
 
 # File prepration
-fpath <- system.file("extdata", package="soundscapeR")
+fpath <- system.file("extdata", package = "soundscapeR")
 file_locs <- ss_find_files(parent_directory = fpath)
 
 # No subsetting

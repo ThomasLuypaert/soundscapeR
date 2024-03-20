@@ -34,7 +34,7 @@ For a given folder of sound files, this function is used to calculate the CVR-in
 \examples{
 
 # File preparation
-fpath <- system.file("extdata", package="soundscapeR")
+fpath <- system.file("extdata", package = "soundscapeR")
 file_locs <- ss_find_files(parent_directory = fpath)
 file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = FALSE)
 # Index calculation

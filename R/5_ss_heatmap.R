@@ -995,7 +995,8 @@ ss_heatmap <- function(soundscape_obj,
           ) +
           ggplot2::geom_vline(
             xintercept = midnight2,
-            na.rm = TRUE) +
+            na.rm = TRUE
+          ) +
           ggplot2::annotate(
             na.rm = TRUE,
             "text",
@@ -1266,7 +1267,8 @@ ss_heatmap <- function(soundscape_obj,
             ) +
             ggplot2::geom_vline(
               na.rm = TRUE,
-              xintercept = midnight2) +
+              xintercept = midnight2
+            ) +
             ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
             ggplot2::guides(color = "none")
         }
@@ -1365,29 +1367,213 @@ ss_heatmap <- function(soundscape_obj,
     }
   } else {
     if (type == "polar") {
+      df2 <- df2[df2$time >= mintime & df2$time <= maxtime, ]
 
-        df2 <- df2[df2$time >= mintime & df2$time <= maxtime, ]
-
-        if (annotate == TRUE) {
+      if (annotate == TRUE) {
+        plot <-
+          ggplot2::ggplot(
+            df2, ggplot2::aes(time,
+              frequency,
+              fill = value,
+              color = value
+            )
+          ) +
+          ggplot2::geom_rect(
+            na.rm = TRUE,
+            ggplot2::aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
+            color = "black", fill = "black"
+          ) +
+          ggplot2::geom_tile(
+            na.rm = TRUE,
+            ggplot2::aes(color = value, fill = value)
+          ) +
+          ggplot2::scale_fill_gradientn(
+            colors = color_vector,
+            na.value = "black",
+            guide = ggplot2::guide_legend(
+              title.position = "top",
+              title.vjust = 1,
+              title.hjust = 0.5,
+              nrow = 1,
+              keywidth = grid::unit(5, "mm")
+            ),
+            breaks = seq(0, 1, 0.1),
+            limits = c(0, 1)
+          ) +
+          ggplot2::scale_color_gradientn(
+            colors = color_vector,
+            na.value = "black",
+            guide = ggplot2::guide_legend(
+              title.position = "top",
+              title.vjust = 1,
+              title.hjust = 0.5,
+              nrow = 1,
+              keywidth = grid::unit(5, "mm")
+            ),
+            breaks = seq(0, 1, 0.1),
+            limits = c(0, 1)
+          ) +
+          ggplot2::scale_x_datetime(
+            labels = scales::date_format("%H:%M", tz = tz),
+            breaks = scales::breaks_width(timeinterval),
+            expand = c(0, 0)
+          ) +
+          ggplot2::scale_y_continuous(
+            limits = c(minfreq, (maxfreq + (maxfreq / 10))),
+            expand = c(0, 0),
+            breaks = seq(minfreq, maxfreq, freqinterval),
+            label = scales::comma
+          ) +
+          ggplot2::labs(
+            y = "Frequency (Hz)",
+            x = "Time (hour of day)"
+          ) +
+          ggplot2::theme(
+            panel.grid.major = ggplot2::element_blank(),
+            panel.grid.minor = ggplot2::element_blank(),
+            panel.background = ggplot2::element_blank(),
+            axis.line = ggplot2::element_blank(),
+            axis.text.y = ggplot2::element_blank(),
+            axis.ticks = ggplot2::element_blank(),
+            axis.title.x = ggplot2::element_blank(),
+            axis.title.y = ggplot2::element_blank(),
+            panel.border = ggplot2::element_rect(
+              colour = "white",
+              fill = NA,
+              linewidth = 0.5
+            ),
+            plot.margin = grid::unit(c(1, 1, 1, 1), "cm"),
+            legend.position = "top",
+            legend.direction = "horizontal",
+            legend.title = ggplot2::element_text(
+              color = "black",
+              size = 12,
+              face = "bold"
+            )
+          ) +
+          ggplot2::annotate(
+            na.rm = TRUE,
+            geom = "segment",
+            x = sunrise,
+            xend = sunrise,
+            y = minfreq,
+            yend = maxfreq,
+            color = if (direction == 1) {
+              paste("white")
+            } else {
+              paste("black")
+            }
+          ) +
+          ggplot2::annotate(
+            na.rm = TRUE,
+            geom = "segment",
+            x = sunset,
+            xend = sunset,
+            y = minfreq,
+            yend = maxfreq,
+            color = if (direction == 1) {
+              paste("white")
+            } else {
+              paste("black")
+            }
+          ) +
+          ggplot2::annotate(
+            na.rm = TRUE,
+            geom = "segment",
+            x = seq.POSIXt(
+              from = min(df2$time),
+              to = max(df2$time),
+              by = 3600
+            ),
+            xend = seq.POSIXt(
+              from = min(df2$time),
+              to = max(df2$time),
+              by = 3600
+            ),
+            y = minfreq,
+            yend = maxfreq,
+            color = "#383e42",
+            alpha = 0.5,
+            linewidth = 0.2
+          ) +
+          ggplot2::coord_polar() +
+          ggplot2::geom_hline(
+            na.rm = TRUE,
+            yintercept = seq(
+              minfreq,
+              maxfreq,
+              freqinterval
+            ),
+            color = "lightgrey",
+            alpha = 0.2,
+            linewidth = 0.2
+          ) +
+          ggplot2::annotate(
+            na.rm = TRUE,
+            geom = "rect",
+            xmin = min(df2$time),
+            xmax = sunrise,
+            ymin = maxfreq,
+            ymax = (maxfreq + (maxfreq / 10)),
+            fill = "#4C4B69", alpha = 1
+          ) +
+          ggplot2::annotate(
+            na.rm = TRUE,
+            geom = "rect",
+            xmin = sunset,
+            xmax = midnight2,
+            ymin = maxfreq,
+            ymax = (maxfreq + (maxfreq / 10)),
+            fill = "#4C4B69",
+            alpha = 1
+          ) +
+          ggplot2::annotate(
+            na.rm = TRUE,
+            geom = "rect",
+            xmin = sunrise,
+            xmax = sunset,
+            ymin = maxfreq,
+            ymax = (maxfreq + (maxfreq / 10)),
+            fill = "#ffcc13",
+            alpha = 1
+          ) +
+          ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
+          ggplot2::guides(color = "none") +
+          ggplot2::annotate("text",
+            na.rm = TRUE,
+            x = midnight1,
+            y = seq(
+              0,
+              floor(maxfreq / 4000) * 4000,
+              4000
+            ),
+            label = as.character(seq(
+              0,
+              floor(maxfreq / 1000) * 1000,
+              4000
+            )),
+            color = "white",
+            size = labelsize_polar,
+            fontface = 2
+          )
+      } else {
+        if (annotate == FALSE) {
           plot <-
             ggplot2::ggplot(
-              df2, ggplot2::aes(time,
+              df2,
+              ggplot2::aes(time,
                 frequency,
                 fill = value,
                 color = value
               )
             ) +
-            ggplot2::geom_rect(
-              na.rm = TRUE,
-              ggplot2::aes(xmin = mintime, xmax = maxtime, ymin = minfreq, ymax = maxfreq),
-              color = "black", fill = "black"
-            ) +
             ggplot2::geom_tile(
               na.rm = TRUE,
-              ggplot2::aes(color = value, fill = value)) +
+              ggplot2::aes(color = value, fill = value)
+            ) +
             ggplot2::scale_fill_gradientn(
               colors = color_vector,
-              na.value = "black",
+              na.value = "grey45",
               guide = ggplot2::guide_legend(
                 title.position = "top",
                 title.vjust = 1,
@@ -1400,7 +1586,7 @@ ss_heatmap <- function(soundscape_obj,
             ) +
             ggplot2::scale_color_gradientn(
               colors = color_vector,
-              na.value = "black",
+              na.value = "grey45",
               guide = ggplot2::guide_legend(
                 title.position = "top",
                 title.vjust = 1,
@@ -1417,10 +1603,14 @@ ss_heatmap <- function(soundscape_obj,
               expand = c(0, 0)
             ) +
             ggplot2::scale_y_continuous(
-              limits = c(minfreq, (maxfreq + (maxfreq / 10))),
+              limits = c(minfreq, maxfreq),
               expand = c(0, 0),
-              breaks = seq(minfreq, maxfreq, freqinterval),
-              label = scales::comma
+              breaks = seq(
+                minfreq,
+                maxfreq,
+                freqinterval
+              ),
+              label = scales::unit_format(unit = "K")
             ) +
             ggplot2::labs(
               y = "Frequency (Hz)",
@@ -1449,51 +1639,6 @@ ss_heatmap <- function(soundscape_obj,
                 face = "bold"
               )
             ) +
-            ggplot2::annotate(
-              na.rm = TRUE,
-              geom = "segment",
-              x = sunrise,
-              xend = sunrise,
-              y = minfreq,
-              yend = maxfreq,
-              color = if (direction == 1) {
-                paste("white")
-              } else {
-                paste("black")
-              }
-            ) +
-            ggplot2::annotate(
-              na.rm = TRUE,
-              geom = "segment",
-              x = sunset,
-              xend = sunset,
-              y = minfreq,
-              yend = maxfreq,
-              color = if (direction == 1) {
-                paste("white")
-              } else {
-                paste("black")
-              }
-            ) +
-            ggplot2::annotate(
-              na.rm = TRUE,
-              geom = "segment",
-              x = seq.POSIXt(
-                from = min(df2$time),
-                to = max(df2$time),
-                by = 3600
-              ),
-              xend = seq.POSIXt(
-                from = min(df2$time),
-                to = max(df2$time),
-                by = 3600
-              ),
-              y = minfreq,
-              yend = maxfreq,
-              color = "#383e42",
-              alpha = 0.5,
-              linewidth = 0.2
-            ) +
             ggplot2::coord_polar() +
             ggplot2::geom_hline(
               na.rm = TRUE,
@@ -1506,39 +1651,10 @@ ss_heatmap <- function(soundscape_obj,
               alpha = 0.2,
               linewidth = 0.2
             ) +
-            ggplot2::annotate(
-              na.rm = TRUE,
-              geom = "rect",
-              xmin = min(df2$time),
-              xmax = sunrise,
-              ymin = maxfreq,
-              ymax = (maxfreq + (maxfreq / 10)),
-              fill = "#4C4B69", alpha = 1
-            ) +
-            ggplot2::annotate(
-              na.rm = TRUE,
-              geom = "rect",
-              xmin = sunset,
-              xmax = midnight2,
-              ymin = maxfreq,
-              ymax = (maxfreq + (maxfreq / 10)),
-              fill = "#4C4B69",
-              alpha = 1
-            ) +
-            ggplot2::annotate(
-              na.rm = TRUE,
-              geom = "rect",
-              xmin = sunrise,
-              xmax = sunset,
-              ymin = maxfreq,
-              ymax = (maxfreq + (maxfreq / 10)),
-              fill = "#ffcc13",
-              alpha = 1
-            ) +
             ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
             ggplot2::guides(color = "none") +
             ggplot2::annotate("text",
-                              na.rm = TRUE,
+              na.rm = TRUE,
               x = midnight1,
               y = seq(
                 0,
@@ -1554,124 +1670,10 @@ ss_heatmap <- function(soundscape_obj,
               size = labelsize_polar,
               fontface = 2
             )
-        } else {
-          if (annotate == FALSE) {
-            plot <-
-              ggplot2::ggplot(
-                df2,
-                ggplot2::aes(time,
-                  frequency,
-                  fill = value,
-                  color = value
-                )
-              ) +
-              ggplot2::geom_tile(
-                na.rm = TRUE,
-                ggplot2::aes(color = value, fill = value)) +
-              ggplot2::scale_fill_gradientn(
-                colors = color_vector,
-                na.value = "grey45",
-                guide = ggplot2::guide_legend(
-                  title.position = "top",
-                  title.vjust = 1,
-                  title.hjust = 0.5,
-                  nrow = 1,
-                  keywidth = grid::unit(5, "mm")
-                ),
-                breaks = seq(0, 1, 0.1),
-                limits = c(0, 1)
-              ) +
-              ggplot2::scale_color_gradientn(
-                colors = color_vector,
-                na.value = "grey45",
-                guide = ggplot2::guide_legend(
-                  title.position = "top",
-                  title.vjust = 1,
-                  title.hjust = 0.5,
-                  nrow = 1,
-                  keywidth = grid::unit(5, "mm")
-                ),
-                breaks = seq(0, 1, 0.1),
-                limits = c(0, 1)
-              ) +
-              ggplot2::scale_x_datetime(
-                labels = scales::date_format("%H:%M", tz = tz),
-                breaks = scales::breaks_width(timeinterval),
-                expand = c(0, 0)
-              ) +
-              ggplot2::scale_y_continuous(
-                limits = c(minfreq, maxfreq),
-                expand = c(0, 0),
-                breaks = seq(
-                  minfreq,
-                  maxfreq,
-                  freqinterval
-                ),
-                label = scales::unit_format(unit = "K")
-              ) +
-              ggplot2::labs(
-                y = "Frequency (Hz)",
-                x = "Time (hour of day)"
-              ) +
-              ggplot2::theme(
-                panel.grid.major = ggplot2::element_blank(),
-                panel.grid.minor = ggplot2::element_blank(),
-                panel.background = ggplot2::element_blank(),
-                axis.line = ggplot2::element_blank(),
-                axis.text.y = ggplot2::element_blank(),
-                axis.ticks = ggplot2::element_blank(),
-                axis.title.x = ggplot2::element_blank(),
-                axis.title.y = ggplot2::element_blank(),
-                panel.border = ggplot2::element_rect(
-                  colour = "white",
-                  fill = NA,
-                  linewidth = 0.5
-                ),
-                plot.margin = grid::unit(c(1, 1, 1, 1), "cm"),
-                legend.position = "top",
-                legend.direction = "horizontal",
-                legend.title = ggplot2::element_text(
-                  color = "black",
-                  size = 12,
-                  face = "bold"
-                )
-              ) +
-              ggplot2::coord_polar() +
-              ggplot2::geom_hline(
-                na.rm = TRUE,
-                yintercept = seq(
-                  minfreq,
-                  maxfreq,
-                  freqinterval
-                ),
-                color = "lightgrey",
-                alpha = 0.2,
-                linewidth = 0.2
-              ) +
-              ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
-              ggplot2::guides(color = "none") +
-              ggplot2::annotate("text",
-                                na.rm = TRUE,
-                x = midnight1,
-                y = seq(
-                  0,
-                  floor(maxfreq / 4000) * 4000,
-                  4000
-                ),
-                label = as.character(seq(
-                  0,
-                  floor(maxfreq / 1000) * 1000,
-                  4000
-                )),
-                color = "white",
-                size = labelsize_polar,
-                fontface = 2
-              )
 
-            plot
-          }
+          plot
         }
-
+      }
     }
   }
 

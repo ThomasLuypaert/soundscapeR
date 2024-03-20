@@ -46,7 +46,7 @@ development version of our package, please use the code provided below.
 ``` r
 ## Install from github
 
-##install.packages("remotes") ## if needed
+## install.packages("remotes") ## if needed
 
 remotes::install_github("ThomasLuypaert/soundscapeR", build_vignettes = TRUE)
 ```

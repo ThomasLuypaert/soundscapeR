@@ -945,7 +945,8 @@ ss_diversity_plot <- function(soundscape_obj,
             )) +
             ggplot2::geom_area(
               na.rm = TRUE,
-              position = ggplot2::position_stack(reverse = TRUE)) +
+              position = ggplot2::position_stack(reverse = TRUE)
+            ) +
             ggplot2::ylab(if (output == "percentage" & qvalue > 0) {
               "Soundscape diversity (%)\n"
             } else {
@@ -1086,7 +1087,8 @@ ss_diversity_plot <- function(soundscape_obj,
             )) +
             ggplot2::geom_area(
               na.rm = TRUE,
-              position = ggplot2::position_stack(reverse = TRUE)) +
+              position = ggplot2::position_stack(reverse = TRUE)
+            ) +
             ggplot2::ylab("Contribution to total diversity") +
             ggplot2::xlab("Time of day (h)") +
             ggplot2::scale_x_datetime(
@@ -1159,7 +1161,8 @@ ss_diversity_plot <- function(soundscape_obj,
               )) +
               ggplot2::geom_area(
                 na.rm = TRUE,
-                position = ggplot2::position_stack(reverse = TRUE)) +
+                position = ggplot2::position_stack(reverse = TRUE)
+              ) +
               ggplot2::ylab("Contribution to total diversity") +
               ggplot2::xlab("Time of day (h)") +
               ggplot2::scale_x_datetime(

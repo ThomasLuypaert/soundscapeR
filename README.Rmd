@@ -47,10 +47,9 @@ For the moment, the `soundscapeR` package is still under development, and can th
 ```{r eval = FALSE}
 ## Install from github
 
-##install.packages("remotes") ## if needed
+## install.packages("remotes") ## if needed
 
 remotes::install_github("ThomasLuypaert/soundscapeR", build_vignettes = TRUE)
-
 ```
 
 ### Workflow overview
