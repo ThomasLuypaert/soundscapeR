@@ -564,6 +564,8 @@ ss_diversity_plot <- function(soundscape_obj,
 
   # Check if plotly is installed
 
+  # nocov start
+
   if (interactive == TRUE) {
     if (nchar(system.file(package = "plotly")) == 0) {
       cli::cli_alert_danger("The 'plotly' R-package needs to be installed before using this function")
@@ -571,6 +573,8 @@ ss_diversity_plot <- function(soundscape_obj,
       stop()
     } else {}
   }
+
+  # nocov end
 
   # Create graphs
 
@@ -684,8 +688,12 @@ ss_diversity_plot <- function(soundscape_obj,
           size = 5
         )
 
+      # nocov start
+
       if (interactive == TRUE) {
         plotly::ggplotly(plot)
+
+      # nocov end
       } else {
         plot
       }
@@ -777,8 +785,12 @@ ss_diversity_plot <- function(soundscape_obj,
             size = 5
           )
 
+        # nocov start
+
         if (interactive == TRUE) {
           plotly::ggplotly(plot)
+
+        # nocov end
         } else {
           plot
         }
@@ -930,8 +942,12 @@ ss_diversity_plot <- function(soundscape_obj,
             guide = "none"
           )
 
+        # nocov start
+
         if (interactive == TRUE) {
           plotly::ggplotly(plot)
+
+        # nocov end
         } else {
           plot
         }
@@ -1014,9 +1030,12 @@ ss_diversity_plot <- function(soundscape_obj,
               guide = "none"
             )
 
+          # nocov start
 
           if (interactive == TRUE) {
             plotly::ggplotly(plot)
+
+          # nocov end
           } else {
             plot
           }
@@ -1141,8 +1160,12 @@ ss_diversity_plot <- function(soundscape_obj,
               guide = "none"
             )
 
+          # nocov start
+
           if (interactive == TRUE) {
             plotly::ggplotly(plot)
+
+          # nocov end
           } else {
             plot
           }
@@ -1219,8 +1242,12 @@ ss_diversity_plot <- function(soundscape_obj,
                 guide = "none"
               )
 
+            # nocov start
+
             if (interactive == TRUE) {
               plotly::ggplotly(plot)
+
+            # nocov end
             } else {
               plot
             }
@@ -1341,8 +1368,12 @@ ss_diversity_plot <- function(soundscape_obj,
               ggplot2::scale_y_continuous(expand = c(0, 0)) +
               ggplot2::facet_wrap(~frequency, nrow = 1)
 
+            # nocov start
+
             if (interactive == TRUE) {
               plotly::ggplotly(plot)
+
+            # nocov end
             } else {
               plot
             }
@@ -1450,8 +1481,12 @@ ss_diversity_plot <- function(soundscape_obj,
                 ggplot2::scale_y_continuous(expand = c(0, 0)) +
                 ggplot2::facet_wrap(~frequency, nrow = 1)
 
+              # nocov start
+
               if (interactive == TRUE) {
                 plotly::ggplotly(plot)
+
+              # nocov end
               } else {
                 plot
               }

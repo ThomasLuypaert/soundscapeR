@@ -926,6 +926,8 @@ ss_compare <- function(soundscape_obj_A,
     }
   }
 
+  # nocov start
+
   if (interactive == TRUE) {
     if (interactive == TRUE & save == FALSE) {
       differential_soundscape_plot <- differential_soundscape_plot +
@@ -959,6 +961,8 @@ ss_compare <- function(soundscape_obj_A,
           plotly::layout(autosize = F, width = 1800, height = 500)
 
         return(total_soundscape_difference_plot)
+
+        # nocov end
       }
     }
   } else {

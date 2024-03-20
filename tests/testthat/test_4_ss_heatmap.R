@@ -172,7 +172,7 @@ testthat::test_that("The ss_heatmap function works as expected when the correct 
     fig = ss_heatmap(
       soundscape_obj = soundscape_obj_CVR,
       type = "regular",
-      annotate = FALSE,
+      annotate = TRUE,
       maxfreq = 18000
     ),
   )
