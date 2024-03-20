@@ -3,6 +3,8 @@
 
 # 1. An aggregated_soundscape class
 
+# nocov start
+
 setClass(
   "soundscape",
   representation(
@@ -300,4 +302,4 @@ setMethod(
       print(object@effort_per_time[1:5])
     }
   }
-)
+) # nocov end

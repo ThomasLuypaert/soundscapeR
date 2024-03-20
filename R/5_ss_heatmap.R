@@ -1365,7 +1365,7 @@ ss_heatmap <- function(soundscape_obj,
           )
       }
     }
-  } else {
+  } else { # nocov start
     if (type == "polar") {
       df2 <- df2[df2$time >= mintime & df2$time <= maxtime, ]
 
@@ -1676,8 +1676,6 @@ ss_heatmap <- function(soundscape_obj,
       }
     }
   }
-
-  # nocov start
 
   if (interactive == FALSE & save == FALSE) {
     plot
