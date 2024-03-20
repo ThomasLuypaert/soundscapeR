@@ -4,3 +4,4 @@
 ^codecov\.yml$
 ^\.github$
 ^CITATION\.cff$
+^LICENSE\.md$
