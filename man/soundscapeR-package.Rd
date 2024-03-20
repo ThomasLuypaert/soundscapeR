@@ -4,7 +4,7 @@
 \name{soundscapeR-package}
 \alias{soundscapeR}
 \alias{soundscapeR-package}
-\title{soundscapeR: Visualization and Quantification of Soundscape Diversity using Hill Numbers}
+\title{soundscapeR: Visualization And Quantification Of Soundscape Diversity Using Hill Numbers.}
 \description{
 The soundscapeR package constitutes a standardized analytical pipeline for the exploration, computation, visualization, and comparison of soundscape diveristy using Hill numbers. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings.
 }

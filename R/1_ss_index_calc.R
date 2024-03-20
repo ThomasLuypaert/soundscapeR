@@ -33,7 +33,7 @@ ss_find_files <- function(parent_directory) {
 
     # Use vapply instead of for loop
     subdirectories_with_wavs <- vapply(subdirectories, function(subdir) {
-      wav_files <- list.files(subdir, pattern = "\\.wav$", full.names = TRUE, recursive = FALSE)
+      wav_files <- list.files(subdir, pattern = "\\.wav$|\\.WAV$", full.names = TRUE, recursive = FALSE)
 
       if (length(wav_files) > 0) {
         # If .wav files are found in a subdirectory, add the subdirectory path to the list with the basename of the subdirectory
@@ -52,9 +52,122 @@ ss_find_files <- function(parent_directory) {
   return(directories_with_wavs)
 }
 
+#' @name ss_split_files
+#' @title Check if a file is the correct length, and if not, split it into 60-second chunks.
+#' @description This function takes the output list of the `ss_find_files` function and checks whether the sound files in the folder
+#' are the correct length (60 seconds). If not, the function splits the sound files into 60-second chunks and saves the files in a new
+#' sub-directory called 'split_files'.
+#' @param file_locs The output of the `ss_find_files` function
+#'
+#' @return In case some files are longer than 60 seconds, creates a new directory called 'split_files' containing the sound files split into 60-second chunks.
+#'
+ss_split_files <- function(file_locs){
+
+  # 1. CHECK IF ANY SOUND FILES NEED SPLITTING
+
+  soundfiles <- lapply(file_locs, function(x) sapply(x, function(y) tuneR::readWave(y)))
+  soundfiles_length <- lapply(soundfiles, function(x) sapply(x, function(y) length(y) / y@samp.rate))
+
+
+  if(any(unlist(soundfiles_length)>60)){
+
+    if(any(unlist(soundfiles_length)%%60!=0)){
+
+      cli::cli_abort("One or more sound files have a length not divisible by 60, aborting file splitting")
+
+    }
+
+    cli::cli_alert_warning("Detected directories containing sound files with a duration longer than 60 seconds...")
+
+    needs_splitting <- file_locs[which(sapply(soundfiles_length, function(x) any(x>60)))]
+    wav_splitting <- soundfiles[which(sapply(soundfiles_length, function(x) any(x>60)))]
+    wav_duration <- soundfiles_length[which(sapply(soundfiles_length, function(x) any(x>60)))]
+
+    for (i in seq_along(needs_splitting)){
+
+      dirname <- basename(dirname(needs_splitting[[i]][1]))
+
+      cli::cli_alert_info("Splitting files for {dirname}")
+
+      # Create new directory for split sound files
+
+      split_dir <- file.path(dirname(needs_splitting[[i]][1]), "split_files")
+      dir.create(split_dir, showWarnings = FALSE)
+
+      for (j in 1:length(needs_splitting[[i]])){
+
+        # Read the sound file
+
+        audio <- wav_splitting[[i]][[j]]
+
+        # Extract date/time information
+
+        file_name <- basename(needs_splitting[[i]][j])
+        name_parts <- unlist(strsplit(file_name, "_"))
+        site_name <- name_parts[1]
+        date <- name_parts[2]
+        time <- name_parts[3]
+
+        base_datetime <- as.POSIXct(paste0(date, time), format = "%Y%m%d%H%M%S")
+
+        # Calculate number of chunks
+
+        total_duration <- wav_duration[[i]][j]
+
+        num_chunks <- ceiling(total_duration/60)
+
+        # Cut into 60-second chunks
+
+        chunks <- list()
+
+        for (k in 1:num_chunks){
+
+          start_sec <- (k-1)*60
+          end_sec <- min(k*60, total_duration)
+          chunk <- audio[(start_sec*audio@samp.rate + 1):(end_sec*audio@samp.rate)]
+
+          # Update datetime naming
+
+          updated_datetime <- base_datetime + (k-1)*60
+          updated_date <- format(updated_datetime, "%Y%m%d")
+          updated_time <- format(updated_datetime, "%H%M%S")
+
+          updated_filename <- paste0(site_name, "_", updated_date, "_", updated_time, ".wav")
+
+          tuneR::writeWave(chunk, file.path(split_dir, updated_filename))
+
+        }
+
+      }
+
+    }
+
+    cli::cli_alert_success("Files successfully split, new files can be found in the sub-directory called 'split_files'")
+
+  }
+
+  else{
+
+    if(any(unlist(soundfiles_length)<60)){
+
+      cli::cli_abort("Detected sound files with a duration shorter than 60 seconds - cannot be handled by soundscapeR, aborting...")
+
+    }
+
+    else{
+
+      cli::cli_alert_success("All sound files are 60 seconds, no splitting required!")
+
+    }
+
+  }
+
+}
+
+
 
 #' @name ss_assess_files
-#' @title heck and clean the detected folders containing '.wav' files
+#' @title Check and clean the detected folders containing '.wav' files
 #' @description This function takes the output list of the `ss_find_files` function and performs several checks on the
 #' files. For instance, the function automatically detects the sampling regime of all files, and checks whether the time interval between
 #' adjacent files in a folder deviates from the expected sampling regime (e.g. due to missing files). Moreover, the function

@@ -912,7 +912,8 @@ ss_diversity_plot <- function(soundscape_obj,
               size = 10
             ),
             legend.justification = c(0.5, 1),
-            legend.position = c(0.5, 1)
+            legend.position = "inside",
+            legend.position.inside = c(0.5, 1)
           ) +
           viridis::scale_fill_viridis(
             alpha = 0.9,
@@ -994,7 +995,8 @@ ss_diversity_plot <- function(soundscape_obj,
                 size = 10
               ),
               legend.justification = c(0.5, 1),
-              legend.position = c(0.5, 1)
+              legend.position = "inside",
+              legend.position.inside = c(0.5, 1)
             ) +
             viridis::scale_fill_viridis(
               alpha = 0.9,

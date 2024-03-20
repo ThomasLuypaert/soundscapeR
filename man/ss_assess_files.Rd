@@ -2,7 +2,7 @@
 % Please edit documentation in R/1_ss_index_calc.R
 \name{ss_assess_files}
 \alias{ss_assess_files}
-\title{heck and clean the detected folders containing '.wav' files}
+\title{Check and clean the detected folders containing '.wav' files}
 \usage{
 ss_assess_files(file_locs, full_days = TRUE)
 }
