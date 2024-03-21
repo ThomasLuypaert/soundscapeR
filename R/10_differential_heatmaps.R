@@ -825,6 +825,9 @@ ss_compare <- function(soundscape_obj_A,
       ) +
       ggplot2::scale_alpha(guide = "none")
   } else {
+
+    # nocov start
+
     if (type == "polar") {
       differential_soundscape_plot <-
         ggplot2::ggplot(
@@ -925,8 +928,6 @@ ss_compare <- function(soundscape_obj_A,
       cli::cli_abort("You supplied an invalid 'type' argument, please choose one of: 'regular' or 'polar'")
     }
   }
-
-  # nocov start
 
   if (interactive == TRUE) {
     if (interactive == TRUE & save == FALSE) {
