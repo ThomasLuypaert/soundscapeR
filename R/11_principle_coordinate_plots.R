@@ -51,6 +51,7 @@ ss_pcoa <- function(soundscape_list,
 
   assertthat::assert_that(test_2(soundscape_list))
 
+
   # Are all elements of the list S4-object of the type 'soundscape' and not empty.
 
   test_3 <- function(x) {
@@ -321,6 +322,52 @@ ss_pcoa <- function(soundscape_list,
 
   # The binarized_df argument
 
+  test_13_1 <- function(x) {
+    all(
+      sapply(
+        x,
+        function(y) {
+          is.data.frame(y@binarized_df) &
+            assertthat::not_empty(y@binarized_df) &
+            assertthat::noNA(y@binarized_df) &
+            all(apply(y@binarized_df, 2, function(y) all(is.numeric(y))))
+        }
+      ) == TRUE
+    )
+  }
+
+  test_14_1 <- function(x) {
+    all(
+      sapply(
+        x,
+        function(y) {
+          (abs(as.numeric(rownames(y@binarized_df)[1])) +
+             abs(as.numeric(rownames(y@binarized_df)[2]))) > 3 &
+            min(as.numeric(rownames(y@binarized_df))) >= 0 &
+            max(as.numeric(rownames(y@binarized_df))) <= y@samplerate / 2
+        }
+      ) == TRUE
+    )
+  }
+
+  test_15_1 <- function(x) {
+    all(
+      sapply(
+        x,
+        function(y) {
+          !any(sapply(try(
+            as.POSIXct(
+              paste0(substr(y@first_day, 1, 12), " ", colnames(y@binarized_df)),
+              tz = y@tz,
+              format = "%Y-%m-%d %H:%M:%S"
+            ),
+            silent = TRUE
+          ), function(z) is.na(z)))
+        }
+      ) == TRUE
+    )
+  }
+
   test_16 <- function(x) {
     all(
       sapply(
@@ -333,20 +380,92 @@ ss_pcoa <- function(soundscape_list,
     )
   }
 
+  assertthat::on_failure(test_13_1) <- function(call, env) {
+    paste0(deparse(call$x), " contains invalid merged_df, binarized_df, or aggregated_df data frames. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply a list of soundscapes produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
+  }
+
+  assertthat::on_failure(test_14_1) <- function(call, env) {
+    paste0(deparse(call$x), " contains invalid merged_df, binarized_df, or aggregated_df row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
+  }
+
+
+  assertthat::on_failure(test_15_1) <- function(call, env) {
+    paste0(deparse(call$x), " contains invalid merged_df, binarized_df, or aggregated_df column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
+  }
+
   assertthat::on_failure(test_16) <- function(call, env) {
     paste0(deparse(call$x), " contains binarized_df dataframes with values smaller than 0 or greater than 1. The function expects a binary data frame which is the output of the binarization step using the ss_aggregate() function.")
   }
 
-  assertthat::assert_that(test_13(soundscape_list))
-  assertthat::assert_that(test_14(soundscape_list))
-  assertthat::assert_that(test_15(soundscape_list))
+  assertthat::assert_that(test_13_1(soundscape_list))
+  assertthat::assert_that(test_14_1(soundscape_list))
+  assertthat::assert_that(test_15_1(soundscape_list))
   assertthat::assert_that(test_16(soundscape_list))
 
   # The aggregated_df argument
 
-  assertthat::assert_that(test_13(soundscape_list))
-  assertthat::assert_that(test_14(soundscape_list))
-  assertthat::assert_that(test_15(soundscape_list))
+  test_13_2 <- function(x) {
+    all(
+      sapply(
+        x,
+        function(y) {
+          is.data.frame(y@aggregated_df) &
+            assertthat::not_empty(y@aggregated_df) &
+            assertthat::noNA(y@aggregated_df) &
+            all(apply(y@aggregated_df, 2, function(y) all(is.numeric(y))))
+        }
+      ) == TRUE
+    )
+  }
+
+  test_14_2 <- function(x) {
+    all(
+      sapply(
+        x,
+        function(y) {
+          (abs(as.numeric(rownames(y@aggregated_df)[1])) +
+             abs(as.numeric(rownames(y@aggregated_df)[2]))) > 3 &
+            min(as.numeric(rownames(y@aggregated_df))) >= 0 &
+            max(as.numeric(rownames(y@aggregated_df))) <= y@samplerate / 2
+        }
+      ) == TRUE
+    )
+  }
+
+  test_15_2 <- function(x) {
+    all(
+      sapply(
+        x,
+        function(y) {
+          !any(sapply(try(
+            as.POSIXct(
+              paste0(substr(y@first_day, 1, 12), " ", colnames(y@aggregated_df)),
+              tz = y@tz,
+              format = "%Y-%m-%d %H:%M:%S"
+            ),
+            silent = TRUE
+          ), function(z) is.na(z)))
+        }
+      ) == TRUE
+    )
+  }
+
+  assertthat::on_failure(test_13_2) <- function(call, env) {
+    paste0(deparse(call$x), " contains invalid merged_df, binarized_df, or aggregated_df data frames. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply a list of soundscapes produced using the ss_aggregate() function? If so, something has gone wrong, please re-run the ss_aggregate() function.")
+  }
+
+  assertthat::on_failure(test_14_2) <- function(call, env) {
+    paste0(deparse(call$x), " contains invalid merged_df, binarized_df, or aggregated_df row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
+  }
+
+
+  assertthat::on_failure(test_15_2) <- function(call, env) {
+    paste0(deparse(call$x), " contains invalid merged_df, binarized_df, or aggregated_df column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_aggregate(). Make sure you're supplying the dataframe produced by the ss_aggregate() function.")
+  }
+
+  assertthat::assert_that(test_13_2(soundscape_list))
+  assertthat::assert_that(test_14_2(soundscape_list))
+  assertthat::assert_that(test_15_2(soundscape_list))
 
   # 0.1.4. Check if the other supplied arguments follow the expected format
 
