@@ -3,10 +3,11 @@ Type: Package
 Title: Visualization And Quantification Of Soundscape Diversity Using Hill Numbers.
 Version: 0.1.0
 Authors@R: c(
-    person("Thomas", "Luypaert", email = "thomas.luypaert@nmbu.no", role = c("cre", "aut")),
-    person("Anderson Saldanha", "Bueno", email = "buenoas@gmail.com", role = "aut"), 
-    person("Carlos Augusto", "Peres", email="carlos.a.peres@gmail.com", role="aut"),
-    person("Torbjørn", "Haugaasen", email="torbjorn.haugaasen@nmbu.no", role="aut"))
+    person("Thomas", "Luypaert", email = "thomas.luypaert@nmbu.no", role = c("cre", "aut"), comment = c(ORCID = "0000-0001-7491-7418")),
+    person("Anderson Saldanha", "Bueno", email = "buenoas@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-7416-6626")), 
+    person("Tom", "Bradfer-Lawrence", email = "tom.bradferlawrence@rspb.org.uk", role = "aut", comment = c(ORCID = "0000-0001-6045-4360")),
+    person("Carlos Augusto", "Peres", email="carlos.a.peres@gmail.com", role="aut", comment = c(ORCID = "0000-0002-1588-8765")),
+    person("Torbjørn", "Haugaasen", email="torbjorn.haugaasen@nmbu.no", role="aut", comment = c(ORCID = "0000-0003-0901-5324")))
 Maintainer: Thomas Luypaert <thomas.luypaert@nmbu.no>
 Description: The soundscapeR package constitutes a standardized analytical pipeline for 
     the exploration, computation, visualization, and comparison of soundscape diveristy using Hill numbers. 

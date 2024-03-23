@@ -473,7 +473,8 @@ ss_pcoa <- function(soundscape_list,
         ggrepel::geom_text_repel(ggplot2::aes(label = site),
           box.padding = 0.5,
           segment.color = NA,
-          size = 5
+          size = 5,
+          seed = 1234
         ) +
         ggplot2::theme_classic() +
         ggplot2::theme(
@@ -510,7 +511,8 @@ ss_pcoa <- function(soundscape_list,
         ggrepel::geom_text_repel(ggplot2::aes(label = site),
           box.padding = 0.5,
           segment.color = NA,
-          size = 5
+          size = 5,
+          seed = 1234
         ) +
         ggplot2::theme_classic() +
         ggplot2::theme(

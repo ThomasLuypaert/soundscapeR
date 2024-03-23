@@ -32,16 +32,16 @@
 <circle cx='235.46' cy='408.53' r='4.98' style='stroke-width: 1.42;' />
 <circle cx='231.87' cy='178.00' r='4.98' style='stroke-width: 1.42;' />
 <circle cx='205.92' cy='163.52' r='4.98' style='stroke-width: 1.42;' />
-<line x1='592.70' y1='209.21' x2='586.07' y2='214.82' style='stroke-width: 1.07; stroke: none;' />
-<line x1='247.09' y1='126.67' x2='240.45' y2='132.30' style='stroke-width: 1.07; stroke: none;' />
-<line x1='227.87' y1='414.96' x2='234.58' y2='409.28' style='stroke-width: 1.07; stroke: none;' />
-<line x1='239.45' y1='184.42' x2='232.75' y2='178.75' style='stroke-width: 1.07; stroke: none;' />
-<line x1='198.49' y1='157.24' x2='205.03' y2='162.77' style='stroke-width: 1.07; stroke: none;' />
-<text x='602.33' y='207.41' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='31.63px' lengthAdjust='spacingAndGlyphs'>Aline</text>
-<text x='256.67' y='124.87' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_A1</text>
-<text x='218.24' y='426.55' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_A2</text>
-<text x='249.12' y='196.01' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_B1</text>
-<text x='188.90' y='155.44' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_B2</text>
+<line x1='577.66' y1='221.93' x2='584.29' y2='216.32' style='stroke-width: 1.07; stroke: none;' />
+<line x1='247.08' y1='126.68' x2='240.45' y2='132.30' style='stroke-width: 1.07; stroke: none;' />
+<line x1='243.05' y1='402.10' x2='236.35' y2='407.77' style='stroke-width: 1.07; stroke: none;' />
+<line x1='239.33' y1='184.31' x2='232.76' y2='178.75' style='stroke-width: 1.07; stroke: none;' />
+<line x1='198.39' y1='157.16' x2='205.03' y2='162.77' style='stroke-width: 1.07; stroke: none;' />
+<text x='568.03' y='233.53' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='31.63px' lengthAdjust='spacingAndGlyphs'>Aline</text>
+<text x='256.71' y='124.88' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_A1</text>
+<text x='252.75' y='400.30' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_A2</text>
+<text x='248.92' y='195.90' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_B1</text>
+<text x='188.73' y='155.36' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='79.10px' lengthAdjust='spacingAndGlyphs'>Mascote_B2</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='99.45,495.92 99.45,45.65 ' style='stroke-width: 1.07; stroke-linecap: butt;' />

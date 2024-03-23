@@ -1,56 +1,204 @@
 #' @name ss_find_files
-#' @title Find all .wav files in a parent directory
+#' @title Find all sound files in a parent directory. Allowed formats are '.wav', '.wac', '.mp3' and '.flac'.
 #' @description This function takes the path to a parent directory and recursively looks for all directories and subdirectories
-#' containing .wav files. The full-length path to each discovered .wav files is saved in a named list maintaining
+#' containing sound files. The full-length path to each discovered sound file is saved in a named list maintaining
 #' directory structure.
-#' @param parent_directory The full-length path to a directory containing .wav files, or a directory containing
-#' directories with .wav files. If the latter, this function will look for .wav files recursively in all subdirectories.
+#' @param parent_directory The full-length path to a directory containing sound files, or a directory containing
+#' directories with sound files. If the latter, this function will look for sound files recursively in all subdirectories.
 #'
-#' @return A named list with full-length paths to the '.wav' files contained in the parent directory or subdirectories
+#' @return A named list with full-length paths to the sound files contained in the parent directory or subdirectories
 #'
 #' @export
 #'
 #' @examples
 #'
-#' # Get file path to '.wav' files
+#' # Get file path to sound files
 #' fpath <- system.file("extdata", package = "soundscapeR")
 #'
 #' # Finding files
 #' file_locs <- ss_find_files(parent_directory = fpath)
 #'
 ss_find_files <- function(parent_directory) {
-  directories_with_wavs <- list()
 
-  # Check for .wav files in the parent directory non-recursively
-  wav_files <- list.files(parent_directory, "\\.wav$|\\.WAV$", full.names = TRUE, recursive = FALSE)
+  directories_with_sounds <- list()
 
-  if (length(wav_files) > 0) {
-    # If .wav files are found in the parent directory, add them to the list with the basename of the directory
-    directories_with_wavs[[basename(parent_directory)]] <- wav_files
+  # Check for sound files in the parent directory non-recursively
+  sound_files <- list.files(parent_directory, "\\.(wav|mp3|flac|wac|WAV|MP3|FLAC|WAC)$", full.names = TRUE, recursive = FALSE)
+
+  if (length(sound_files) > 0) {
+    # If sound files are found in the parent directory, add them to the list with the basename of the directory
+    directories_with_sounds[[basename(parent_directory)]] <- sound_files
   } else {
-    # If no .wav files are found in the parent directory, check subdirectories recursively
+    # If no sound files are found in the parent directory, check subdirectories recursively
     subdirectories <- list.dirs(parent_directory, recursive = FALSE, full.names = TRUE)
 
     # Use vapply instead of for loop
-    subdirectories_with_wavs <- vapply(subdirectories, function(subdir) {
-      wav_files <- list.files(subdir, pattern = "\\.wav$|\\.WAV$", full.names = TRUE, recursive = FALSE)
+    subdirectories_with_sounds <- vapply(subdirectories, function(subdir) {
+      sound_files <- list.files(subdir, pattern = "\\.(wav|mp3|flac|wac|WAV|MP3|FLAC|WAC)$", full.names = TRUE, recursive = FALSE)
 
-      if (length(wav_files) > 0) {
-        # If .wav files are found in a subdirectory, add the subdirectory path to the list with the basename of the subdirectory
-        directories_with_wavs[[basename(subdir)]] <<- wav_files
+      if (length(sound_files) > 0) {
+        # If sound files are found in a subdirectory, add the subdirectory path to the list with the basename of the subdirectory
+        directories_with_sounds[[basename(subdir)]] <<- sound_files
         return(TRUE)
       }
       return(FALSE)
     }, logical(1))
 
-    # Check no directory or subdirectories have .wav files
-    if (!any(subdirectories_with_wavs)) {
-      stop("No .wav files found in the input directory or its subdirectories")
+    # Check no directory or subdirectories have sound files
+    if (!any(subdirectories_with_sounds)) {
+      stop("No sound files found in the input directory or its subdirectories")
     }
   }
 
-  return(directories_with_wavs)
+  return(directories_with_sounds)
 }
+
+#' @name ss_convert_files
+#' @title Check if the sound files are in the '.wav' file format, if not, convert the files and save them.
+#' @description This function takes the output list of the `ss_find_files` function and checks whether the sound files in the folder
+#' are of the format '.wav'. If not, the function will covert the sound files to a '.wav' format.
+#' @param file_locs The output of the `ss_find_files` function
+#' @param replace A boolean operator to indicate whether the original non-wav file should be replaced (replace = TRUE) with its .wav file equivalent.
+#' Note that this will lead to original file to be deleted, so make sure you have a back-up of the original file. Defaults to replace = FALSE.
+#'
+#' @return In case some files are not in the '.wav' format, creates a new directory called 'wav_files' containing the sound files converted to '.wav' format.
+ss_convert_files <- function(file_locs, replace = FALSE, verbose = FALSE){
+
+  # 1. Grab file extensions for the sound files in file_locs
+
+  filelocs <- unlist(file_locs)
+
+  extensions <- sapply(filelocs, function(x) tolower(tools::file_ext(x)))
+
+  # 2. Check if any of the file extensions or not .wav or .WAV
+
+  if(any(!extensions %in% c("wav", "WAV"))){
+
+    # 2.1. Grab the files that are not wav
+
+    not_wav <- filelocs[which(!extensions %in% c("wav", "WAV"))]
+    not_wav_ext <- extensions[which(!extensions %in% c("wav", "WAV"))]
+
+    cli::cli_h1("1. Found {length(not_wav)} non-wav files: CONVERTING")
+
+    # 2.2. Convert different formats to wav
+
+    for (i in 1:length(not_wav_ext)){
+
+      # MP3 files
+
+      if (not_wav_ext[i] %in% c("mp3", "MP3")){
+
+        if(verbose == TRUE){
+
+          cli::cli_h2("Converting {basename(not_wav[i])}")
+
+          cli::cli_alert_info("Converting {basename(not_wav_ext[i])} from .mp3 to .wav")
+
+        }
+
+        wav_file <- tuneR::readMP3(filename = not_wav[i])
+
+        new_filename <- gsub(pattern = "MP3", replacement = ".wav", gsub(pattern = ".mp3", replacement = ".wav", not_wav[i]))
+
+        tuneR::writeWave(object = wav_file, filename = new_filename)
+
+        if(verbose == TRUE){
+          cli::cli_alert_success("Conversion successful!")
+        }
+
+        # Delete original file if replace == TRUE
+
+        if(replace == TRUE){
+
+          file.remove(not_wav[i])
+
+          if(verbose == TRUE){
+            cli::cli_alert_success("Removed original file...")
+
+          }
+
+        }
+
+      }
+
+      # WAC files
+
+      if (not_wav_ext[i] %in% c("wac", "WAC")){
+
+        if(verbose == TRUE){
+
+          cli::cli_h2("Converting {basename(not_wav[i])}")
+
+          cli::cli_alert_info("Converting {basename(not_wav_ext[i])} from .wac to .wav")
+
+        }
+
+        wav_file <- bioacoustics::read_wac(file = not_wav_ext[i])
+        new_filename <- gsub(pattern = c(".wac", ".WAC"), replacement = ".wav", not_wav[i])
+        tuneR::writeWave(object = wav_file, filename = new_filename)
+
+        if(verbose == TRUE){
+
+          cli::cli_alert_success("Conversion successful!")
+
+        }
+
+        # Delete original file if replace == TRUE
+
+        if(replace == TRUE){
+
+          file.remove(not_wav[i])
+
+          if(verbose == TRUE){
+            cli::cli_alert_success("Removed original file...")
+
+          }
+
+        }
+
+      }
+
+    }
+
+    # FLAC files
+
+    if (any(not_wav_ext %in% c("flac", "FLAC"))){
+
+      flac_count <- sum((not_wav_ext %in% c("flac", "FLAC")))
+
+      cli::cli_alert_danger("Found {flac_count} '.flac' files. Conversion of FLAC files currently not working...")
+      cli::cli_alert_info("For bulk conversion of flac files, consider using: cloudconvert.com/flac-to-wav")
+
+
+      # cli::cli_alert_warning("To read FLAC files in R, an external software needs to be installed: xiph.org/flac/index.html")
+      # cli::cli_alert_warning("This function will only work if the flac software is installed in the default directory (e.g. for Windows C:/Program Files/FLAC), otherwise an error will be thrown")
+      #
+      # cli::cli_alert_info("Attempting to convert {basename(not_wav_ext[i])} from .flac to .wav")
+      #
+      # wav_file <- tryCatch({
+      #
+      # warbleR::read_sound_file(X = not_wav_ext[i])
+      #
+      # }, error = function(e) {cli::cli_alert_danger("FLAC software not installed or found, skipping conversion of flac files...")})
+      #
+      # new_filename <- gsub(pattern = c(".flac", ".FLAC"), replacement = ".wav", not_wav[i])
+      # tuneR::writeWave(object = wav_file, filename = new_filename)
+      #
+      # cli::cli_alert_success("Conversion successful!")
+
+    }
+
+  }
+
+  else{
+
+    cli::cli_alert_success("All sound files already in .wav format")
+
+  }
+
+}
+
 
 #' @name ss_split_files
 #' @title Check if a file is the correct length, and if not, split it into 60-second chunks.
@@ -61,19 +209,25 @@ ss_find_files <- function(parent_directory) {
 #'
 #' @return In case some files are longer than 60 seconds, creates a new directory called 'split_files' containing the sound files split into 60-second chunks.
 #'
-ss_split_files <- function(file_locs) {
+ss_split_files <- function(file_locs, verbose = FALSE) {
+
   # 1. CHECK IF ANY SOUND FILES NEED SPLITTING
 
   soundfiles <- lapply(file_locs, function(x) sapply(x, function(y) tuneR::readWave(y)))
-  soundfiles_length <- lapply(soundfiles, function(x) sapply(x, function(y) length(y) / y@samp.rate))
+  soundfiles_length <- lapply(soundfiles, function(x) sapply(x, function(y) round((length(y) / y@samp.rate), digits = 0)))
 
 
   if (any(unlist(soundfiles_length) > 60)) {
-    if (any(unlist(soundfiles_length) %% 60 != 0)) {
-      cli::cli_abort("One or more sound files have a length not divisible by 60, aborting file splitting")
-    }
 
-    cli::cli_alert_warning("Detected directories containing sound files with a duration longer than 60 seconds...")
+    cli::cli_h1("2. Detected files > 60 seconds: SPLITTING")
+
+    # Check if any sound files have a length not divisible by 60
+
+    if (any(unlist(soundfiles_length) %% 60 != 0)) {
+
+      cli::cli_alert_warning("One or more sound files have a length not divisible by 60, could lead to partial information loss after splitting")
+      cli::cli_alert_warning("{ unlist(file_locs)[which(unlist(soundfiles_length) %% 60 != 0)]}")
+    }
 
     needs_splitting <- file_locs[which(sapply(soundfiles_length, function(x) any(x > 60)))]
     wav_splitting <- soundfiles[which(sapply(soundfiles_length, function(x) any(x > 60)))]
@@ -82,7 +236,11 @@ ss_split_files <- function(file_locs) {
     for (i in seq_along(needs_splitting)) {
       dirname <- basename(dirname(needs_splitting[[i]][1]))
 
-      cli::cli_alert_info("Splitting files for {dirname}")
+      if(verbose == TRUE){
+
+        cli::cli_alert_info("Splitting files for {dirname}")
+
+      }
 
       # Create new directory for split sound files
 
@@ -143,11 +301,14 @@ ss_split_files <- function(file_locs) {
 }
 
 
-
 #' @name ss_assess_files
-#' @title Check and clean the detected folders containing '.wav' files
+#' @title Check and clean the detected folders containing sound files
 #' @description This function takes the output list of the `ss_find_files` function and performs several checks on the
-#' files. For instance, the function automatically detects the sampling regime of all files, and checks whether the time interval between
+#' files. Firstly, the function checks whether all the sound files in the file_locs are of the format '.wav'. If not, the function tries
+#' to convert the sound files to a '.wav' format. Note that, at present,`soundscapeR` doesn't accommodate file conversion from the '.flac' format
+#' due to its reliance on external software. Converted files will be saved in the same folder as their non-wav file equivalents.
+#' Second, the function will check whether all the '.wav' files in file_locs have the required sixty-second length used for index computation.
+#' Finally, the function automatically detects the sampling regime of all files, and checks whether the time interval between
 #' adjacent files in a folder deviates from the expected sampling regime (e.g. due to missing files). Moreover, the function
 #' allows the user to subset the number of files per folder to contain only full sampling days (remove partially sampled days from the study).
 #' @param file_locs The output of the `ss_find_files` function
@@ -170,21 +331,76 @@ ss_split_files <- function(file_locs) {
 #' # Subsetting to full days only
 #' file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = TRUE)
 #'
-ss_assess_files <- function(file_locs, full_days = TRUE) {
-  # 1. Find the sampling regime of each folder (median timeinterval between sound files)
+ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbose = FALSE) {
+
+  #1. Check if the sound files in file_locs are all in .wav format
+
+  ss_convert_files(file_locs = file_locs, replace = replace, verbose = verbose)
+
+  file_locs_new <- lapply(file_locs, function(x) dirname(x[1]))
+
+  for (i in 1:length(file_locs)){
+
+    file_locs_new[[i]] <- list.files(file_locs_new[[i]],
+                                     "\\.(wav|WAV)$",
+                                     full.names = TRUE,
+                                     recursive = FALSE)
+
+  }
+
+  names(file_locs_new) <- unlist(lapply(file_locs_new, function(x) basename(dirname(x[1]))))
+
+
+  #2. Check if the sound files in file_locs are all of 60-second length
+
+  ss_split_files(file_locs = file_locs_new, verbose = verbose)
+
+  file_locs_new_2 <- lapply(file_locs_new, function(x) dirname(x[1]))
+
+  if(any(unlist(lapply(file_locs_new_2, function(x) dir.exists(file.path(x, "split_files")))))){
+
+    file_locs_split <- which(unlist(lapply(file_locs_new_2, function(x) dir.exists(file.path(x, "split_files")))))
+
+    for (i in seq_along(file_locs_split)){
+
+      file_locs_new_2[i] <- paste0(file_locs_new_2[i], "/split_files")
+
+    }
+
+  }
+
+  for (i in 1:length(file_locs_new_2)){
+
+    file_locs_new_2[[i]] <- list.files(file_locs_new_2[[i]],
+                                       "\\.(wav|WAV)$",
+                                       full.names = TRUE,
+                                       recursive = FALSE)
+
+  }
+
+
+  # 2. Find the sampling regime of each folder (median timeinterval between sound files)
+
+  cli::cli_h1("3. Testing sampling regime")
 
   sample_regime <- vector("list")
 
-  for (i in 1:length(file_locs)) {
+  files_per_day <- vector("list")
+
+  for (i in 1:length(file_locs_new_2)) {
+
+    # Check the sampling regime per directory in file_llocs
+
+
     regime <- sapply(
-      file_locs[[i]],
-      function(x) sub(".*_(\\d{8}_\\d{6})Z\\.wav", "\\1", x)
+      file_locs_new_2[[i]],
+      function(x) sub(".*_(\\d{8}_\\d{6})(Z)?\\.[wW][aA][vV]", "\\1", x)
     )
 
     regime <- diff(unlist(lapply(regime, function(x) {
       as.POSIXct(strptime(x,
-        "%Y%m%d_%H%M%S",
-        tz = "America/Manaus"
+                          "%Y%m%d_%H%M%S",
+                          tz = "America/Manaus"
       ))
     }))) / 60
 
@@ -192,10 +408,21 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
 
     sample_regime[[i]] <- regime
 
+    files_per_day[[i]] <- 1440 / as.numeric(median_regime)
+
+    if(verbose == TRUE){
+
+      cli::cli_h2("Processing {basename(dirname(file_locs_new_2[[i]][1]))}:")
+      cli::cli_alert_info("Sampling regime for study: 1 minute in {median_regime} minutes")
+      cli::cli_alert_info("Number of files per day: {files_per_day[[i]]} files")
+
+    }
+
     # 2. Check if any of the files deviate from the expected sampling regime
     # For instance: are some files missing from the expected sequence
 
     if (any(regime > median_regime)) {
+
       outliers <- c()
 
       for (j in 2:length(regime)) {
@@ -213,28 +440,24 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
 
       cli::cli_alert("{missing_files}")
 
-      stop("Irregular timeintervals detected - check files")
-    } else {
-      # 3. If no missing files, assess how many full sampling days per site
-      # Subset the fileloc list to contain only full days
-
-      files_per_day <- 1440 / as.numeric(median_regime)
+      cli::cli_abort("Irregular timeintervals detected - check files")
     }
   }
 
   if (full_days == TRUE) {
+
     subset_to_closest_multiple <- function(my_list, multiple) {
       # Create a new list to store the subsetted vectors
       my_list_subset <- vector("list", length(my_list))
 
       # Loop over each vector in the list
-      for (i in seq_along(my_list)) {
+      for (i in 1:length(my_list)) {
         # Check if the length of the vector is a multiple of 288
-        if (length(my_list[[i]]) %% multiple == 0) {
+        if (length(my_list[[i]]) %% multiple[[i]] == 0) {
           my_list_subset[[i]] <- my_list[[i]] # No need to subset
         } else {
           # Subset the vector to the closest multiple of 288
-          num_to_keep <- length(my_list[[i]]) %/% multiple * multiple
+          num_to_keep <- length(my_list[[i]]) %/% multiple[[i]] * multiple[[i]]
           my_list_subset[[i]] <- my_list[[i]][1:num_to_keep]
         }
       }
@@ -242,16 +465,12 @@ ss_assess_files <- function(file_locs, full_days = TRUE) {
       return(my_list_subset)
     }
 
-    subset_list <- subset_to_closest_multiple(my_list = file_locs, multiple = files_per_day)
-
-    cli::cli_alert_info("Sampling regime for study: 1 minute in {median_regime} minutes")
-    cli::cli_alert_info("Number of files per day: {files_per_day} files")
-    cli::cli_alert_info("The file_locs argument has been subsetted to contain only full sampling days")
+    subset_list <- subset_to_closest_multiple(my_list = file_locs_new_2, multiple = files_per_day)
+    cli::cli_alert_success("The file_locs argument has been subsetted to contain only full sampling days")
 
     return(subset_list)
+
   } else {
-    cli::cli_alert_info("Sampling regime for study: 1 minute in {median_regime} minutes")
-    cli::cli_alert_info("Number of files per day: {files_per_day} files")
     cli::cli_alert_warning("The data still contains partially sampled days - be careful with downstream analysis...")
 
     return(file_locs)
