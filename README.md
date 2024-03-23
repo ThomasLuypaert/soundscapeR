@@ -68,9 +68,10 @@ on the package.
 
 ### Contribution
 
-The package was developed and written by [Thomas Luypaert]() with
-contributions from Anderson S. Bueno, Tom Bradfer-Lawrence, Carlos A.
-Peres and Torbjørn Haugaasen.
+The package was developed and written by [Thomas
+Luypaert](https://thomasluypaert.weebly.com/) with contributions from
+Anderson S. Bueno, Tom Bradfer-Lawrence, Carlos A. Peres and Torbjørn
+Haugaasen.
 
 ### Citation
 
