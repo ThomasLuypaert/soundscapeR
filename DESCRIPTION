@@ -43,7 +43,8 @@ Imports:
     seewave,
     tuneR,
     Rcpp,
-    cli
+    cli,
+    bioacoustics
 Suggests: 
     covr,
     qs,

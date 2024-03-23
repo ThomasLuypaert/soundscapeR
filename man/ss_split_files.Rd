@@ -4,10 +4,13 @@
 \alias{ss_split_files}
 \title{Check if a file is the correct length, and if not, split it into 60-second chunks.}
 \usage{
-ss_split_files(file_locs)
+ss_split_files(file_locs, verbose = FALSE)
 }
 \arguments{
 \item{file_locs}{The output of the `ss_find_files` function}
+
+\item{verbose}{A boolean operator to indicate how chatty the function should be. Using verbose = TRUE leads to increased messaging on what is happening
+to the files in file_locs.}
 }
 \value{
 In case some files are longer than 60 seconds, creates a new directory called 'split_files' containing the sound files split into 60-second chunks.

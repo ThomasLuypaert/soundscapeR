@@ -2,25 +2,25 @@
 % Please edit documentation in R/1_ss_index_calc.R
 \name{ss_find_files}
 \alias{ss_find_files}
-\title{Find all .wav files in a parent directory}
+\title{Find all sound files in a parent directory. Allowed formats are '.wav', '.wac', '.mp3' and '.flac'.}
 \usage{
 ss_find_files(parent_directory)
 }
 \arguments{
-\item{parent_directory}{The full-length path to a directory containing .wav files, or a directory containing
-directories with .wav files. If the latter, this function will look for .wav files recursively in all subdirectories.}
+\item{parent_directory}{The full-length path to a directory containing sound files, or a directory containing
+directories with sound files. If the latter, this function will look for sound files recursively in all subdirectories.}
 }
 \value{
-A named list with full-length paths to the '.wav' files contained in the parent directory or subdirectories
+A named list with full-length paths to the sound files contained in the parent directory or subdirectories
 }
 \description{
 This function takes the path to a parent directory and recursively looks for all directories and subdirectories
-containing .wav files. The full-length path to each discovered .wav files is saved in a named list maintaining
+containing sound files. The full-length path to each discovered sound file is saved in a named list maintaining
 directory structure.
 }
 \examples{
 
-# Get file path to '.wav' files
+# Get file path to sound files
 fpath <- system.file("extdata", package = "soundscapeR")
 
 # Finding files

@@ -60,6 +60,8 @@ ss_find_files <- function(parent_directory) {
 #' @param file_locs The output of the `ss_find_files` function
 #' @param replace A boolean operator to indicate whether the original non-wav file should be replaced (replace = TRUE) with its .wav file equivalent.
 #' Note that this will lead to original file to be deleted, so make sure you have a back-up of the original file. Defaults to replace = FALSE.
+#' @param verbose A boolean operator to indicate how chatty the function should be. Using verbose = TRUE leads to increased messaging on what is happening
+#' to the files in file_locs.
 #'
 #' @return In case some files are not in the '.wav' format, creates a new directory called 'wav_files' containing the sound files converted to '.wav' format.
 ss_convert_files <- function(file_locs, replace = FALSE, verbose = FALSE){
@@ -206,6 +208,8 @@ ss_convert_files <- function(file_locs, replace = FALSE, verbose = FALSE){
 #' are the correct length (60 seconds). If not, the function splits the sound files into 60-second chunks and saves the files in a new
 #' sub-directory called 'split_files'.
 #' @param file_locs The output of the `ss_find_files` function
+#' @param verbose A boolean operator to indicate how chatty the function should be. Using verbose = TRUE leads to increased messaging on what is happening
+#' to the files in file_locs.
 #'
 #' @return In case some files are longer than 60 seconds, creates a new directory called 'split_files' containing the sound files split into 60-second chunks.
 #'
@@ -314,6 +318,10 @@ ss_split_files <- function(file_locs, verbose = FALSE) {
 #' @param file_locs The output of the `ss_find_files` function
 #' @param full_days A boolean operator specifying whether the function should subset the files in each detected folder to full sampling days.
 #' Defaults to TRUE.
+#' @param replace A boolean operator to indicate whether the original non-wav file should be replaced (replace = TRUE) with its .wav file equivalent.
+#' Note that this will lead to original file to be deleted, so make sure you have a back-up of the original file. Defaults to replace = FALSE.
+#' @param verbose A boolean operator to indicate how chatty the function should be. Using verbose = TRUE leads to increased messaging on what is happening
+#' to the files in file_locs.
 #'
 #' @return A named list with full-length paths to the '.wav' files contained in the parent directory or subdirectories after checking and cleaning.
 #'

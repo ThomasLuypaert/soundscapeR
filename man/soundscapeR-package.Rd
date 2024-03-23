@@ -17,13 +17,14 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Thomas Luypaert \email{thomas.luypaert@nmbu.no}
+\strong{Maintainer}: Thomas Luypaert \email{thomas.luypaert@nmbu.no} (\href{https://orcid.org/0000-0001-7491-7418}{ORCID})
 
 Authors:
 \itemize{
-  \item Anderson Saldanha Bueno \email{buenoas@gmail.com}
-  \item Carlos Augusto Peres \email{carlos.a.peres@gmail.com}
-  \item Torbjørn Haugaasen \email{torbjorn.haugaasen@nmbu.no}
+  \item Anderson Saldanha Bueno \email{buenoas@gmail.com} (\href{https://orcid.org/0000-0001-7416-6626}{ORCID})
+  \item Tom Bradfer-Lawrence \email{tom.bradferlawrence@rspb.org.uk} (\href{https://orcid.org/0000-0001-6045-4360}{ORCID})
+  \item Carlos Augusto Peres \email{carlos.a.peres@gmail.com} (\href{https://orcid.org/0000-0002-1588-8765}{ORCID})
+  \item Torbjørn Haugaasen \email{torbjorn.haugaasen@nmbu.no} (\href{https://orcid.org/0000-0003-0901-5324}{ORCID})
 }
 
 }

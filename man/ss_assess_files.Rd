@@ -2,22 +2,32 @@
 % Please edit documentation in R/1_ss_index_calc.R
 \name{ss_assess_files}
 \alias{ss_assess_files}
-\title{Check and clean the detected folders containing '.wav' files}
+\title{Check and clean the detected folders containing sound files}
 \usage{
-ss_assess_files(file_locs, full_days = TRUE)
+ss_assess_files(file_locs, replace = FALSE, full_days = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{file_locs}{The output of the `ss_find_files` function}
 
+\item{replace}{A boolean operator to indicate whether the original non-wav file should be replaced (replace = TRUE) with its .wav file equivalent.
+Note that this will lead to original file to be deleted, so make sure you have a back-up of the original file. Defaults to replace = FALSE.}
+
 \item{full_days}{A boolean operator specifying whether the function should subset the files in each detected folder to full sampling days.
 Defaults to TRUE.}
+
+\item{verbose}{A boolean operator to indicate how chatty the function should be. Using verbose = TRUE leads to increased messaging on what is happening
+to the files in file_locs.}
 }
 \value{
 A named list with full-length paths to the '.wav' files contained in the parent directory or subdirectories after checking and cleaning.
 }
 \description{
 This function takes the output list of the `ss_find_files` function and performs several checks on the
-files. For instance, the function automatically detects the sampling regime of all files, and checks whether the time interval between
+files. Firstly, the function checks whether all the sound files in the file_locs are of the format '.wav'. If not, the function tries
+to convert the sound files to a '.wav' format. Note that, at present,`soundscapeR` doesn't accommodate file conversion from the '.flac' format
+due to its reliance on external software. Converted files will be saved in the same folder as their non-wav file equivalents.
+Second, the function will check whether all the '.wav' files in file_locs have the required sixty-second length used for index computation.
+Finally, the function automatically detects the sampling regime of all files, and checks whether the time interval between
 adjacent files in a folder deviates from the expected sampling regime (e.g. due to missing files). Moreover, the function
 allows the user to subset the number of files per folder to contain only full sampling days (remove partially sampled days from the study).
 }

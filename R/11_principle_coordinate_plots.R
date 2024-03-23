@@ -383,6 +383,8 @@ ss_pcoa <- function(soundscape_list,
 
   assertthat::assert_that(test_19(screeplot))
 
+  # nocov start
+
   # 1. Check if ggrepel is installed
 
   if (nchar(system.file(package = "ggrepel")) == 0) {
@@ -581,3 +583,5 @@ ss_pcoa <- function(soundscape_list,
     }
   }
 }
+
+# nocov end
