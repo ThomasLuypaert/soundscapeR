@@ -6,7 +6,7 @@
 \usage{
 ss_pairdis(
   soundscape_list,
-  qvalue = 0,
+  qvalue,
   hier_table = NULL,
   minfreq = 0,
   maxfreq = "default",
