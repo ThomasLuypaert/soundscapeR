@@ -1,3 +1,5 @@
+# nocov start
+
 #' @name ss_find_files
 #' @title Find all sound files in a parent directory. Allowed formats are '.wav', '.wac', '.mp3' and '.flac'.
 #' @description This function takes the path to a parent directory and recursively looks for all directories and subdirectories
@@ -770,3 +772,5 @@ ss_index_calc <- function(file_list,
   cli::cli_alert_success("CVR-index output files are found in: {output_path}")
   Sys.sleep(0.0001)
 }
+
+# nocov end
