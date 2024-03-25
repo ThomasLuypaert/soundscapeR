@@ -219,9 +219,8 @@ ss_split_files <- function(file_locs, verbose = FALSE) {
 
   # 1. CHECK IF ANY SOUND FILES NEED SPLITTING
 
-  soundfiles <- lapply(file_locs, function(x) sapply(x, function(y) tuneR::readWave(y)))
-  soundfiles_length <- lapply(soundfiles, function(x) sapply(x, function(y) round((length(y) / y@samp.rate), digits = 0)))
-
+  # soundfiles <- lapply(file_locs, function(x) sapply(x, function(y) tuneR::readWave(y)))
+  soundfiles_length <- lapply(file_locs, function(x) round(warbleR::duration_sound_files(x)$duration, digits = 0))
 
   if (any(unlist(soundfiles_length) > 60)) {
 
@@ -236,10 +235,21 @@ ss_split_files <- function(file_locs, verbose = FALSE) {
     }
 
     needs_splitting <- file_locs[which(sapply(soundfiles_length, function(x) any(x > 60)))]
-    wav_splitting <- soundfiles[which(sapply(soundfiles_length, function(x) any(x > 60)))]
     wav_duration <- soundfiles_length[which(sapply(soundfiles_length, function(x) any(x > 60)))]
 
+    for (i in 1:length(needs_splitting)){
+
+      needs_splitting[[i]] <- needs_splitting[[i]][soundfiles_length[[i]]>60]
+      wav_duration[[i]] <- wav_duration[[i]][soundfiles_length[[i]]>60]
+
+    }
+
+
+    wav_splitting <- lapply(needs_splitting, function(x) sapply(x, function(y) tuneR::readWave(y)))
+
+
     for (i in seq_along(needs_splitting)) {
+
       dirname <- basename(dirname(needs_splitting[[i]][1]))
 
       if(verbose == TRUE){
