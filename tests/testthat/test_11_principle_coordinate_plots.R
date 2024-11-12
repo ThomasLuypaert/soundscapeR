@@ -1,6 +1,9 @@
 library(testthat)
 library(soundscapeR)
 
+# Set locale before running any tests
+Sys.setlocale("LC_ALL", "en_US.UTF-8")
+
 # 0. Loading required function
 
 with_seed <- function(seed, code) {

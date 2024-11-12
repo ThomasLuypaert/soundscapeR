@@ -1,6 +1,9 @@
 library(testthat)
 library(soundscapeR)
 
+# Set locale before running any tests
+Sys.setlocale("LC_ALL", "en_US.UTF-8")
+
 
 # 1. Load the merged '.csv' data frame files,
 # binarize the data frame, aggregate the data frame, and make

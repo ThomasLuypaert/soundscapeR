@@ -1,6 +1,9 @@
 library(testthat)
 library(soundscapeR)
 
+# Set locale before running any tests
+Sys.setlocale("LC_ALL", "en_US.UTF-8")
+
 # 1. Load merged csv data frame files and wrong data frame
 # types for testing purposes
 
