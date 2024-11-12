@@ -1,0 +1,35 @@
+# -----------------------------------------------------------
+# CITATION file created with {cffr} R package, v1.0.0
+# See also: https://docs.ropensci.org/cffr/
+# -----------------------------------------------------------
+ 
+cff-version: 1.2.0
+message: 'To cite package "soundscapeR" in publications use:'
+type: software
+license: GPL-3.0-only
+title: 'soundscapeR: Visualization and Quantification of Soundscape Diversity using
+  Hill Numbers'
+version: 0.1.0
+abstract: The soundscapeR package constitutes a standardized analytical pipeline for
+  the exploration, computation, visualization, and comparison of soundscape diveristy
+  using Hill numbers. The package is designed to work with either continuous or regular-interval
+  long-duration acoustic recordings.
+authors:
+- family-names: Luypaert
+  given-names: Thomas
+  email: thomas.luypaert@nmbu.no
+- family-names: Bueno
+  given-names: Anderson Saldanha
+  email: buenoas@gmail.com
+- family-names: Peres
+  given-names: Carlos Augusto
+  email: carlos.a.peres@gmail.com
+- family-names: Haugaasen
+  given-names: Torbjørn
+  email: torbjorn.haugaasen@nmbu.no
+repository-code: https://github.com/ThomasLuypaert/soundscapeR
+url: https://github.com/ThomasLuypaert/soundscapeR
+contact:
+- family-names: Luypaert
+  given-names: Thomas
+  email: thomas.luypaert@nmbu.no
