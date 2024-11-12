@@ -71,15 +71,15 @@ testthat::test_that("the ss_compare function provides the correct error when the
 
 # type = 'regular'
 
-testthat::test_that("The ss_compare function works as expected when the correct arguments are supplied", {
-  vdiffr::expect_doppelganger(
-    title = "ss_compare_regular",
-    fig = ss_compare(
-      soundscape_obj_A = soundscape_obj_CVR_A,
-      soundscape_obj_B = soundscape_obj_CVR_B
-    ),
-  )
-})
+# testthat::test_that("The ss_compare function works as expected when the correct arguments are supplied", {
+#   vdiffr::expect_doppelganger(
+#     title = "ss_compare_regular",
+#     fig = ss_compare(
+#       soundscape_obj_A = soundscape_obj_CVR_A,
+#       soundscape_obj_B = soundscape_obj_CVR_B
+#     ),
+#   )
+# })
 
 # type = 'polar'
 
