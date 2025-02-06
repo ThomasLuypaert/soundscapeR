@@ -21,7 +21,7 @@ the raw sound files are saved.}
 
 \item{window}{The window length used for the Fast-Fourier Transformation. Defaults to 256}
 
-\item{theta}{For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā. If ā is less than a user determined threshold, θ (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood}
+\item{theta}{For each neighbourhood (3 frames C 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, D. If D is less than a user determined threshold, N8 (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood}
 
 \item{threshold}{The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.}
 }

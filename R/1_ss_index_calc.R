@@ -582,17 +582,6 @@ ss_assess_files <- function(file_locs, replace = FALSE, check_filedur = FALSE, f
   }
 }
 
-
-#' @name CVR_computation
-#' @title Calculate the 'Acoustic Cover' (CVR) spectral acoustic index for a sound file
-#' @description This function is used to calculate the 'Acoustic Cover' spectral acoustic index.
-#' @param file The full-length path to a .wav file
-#' @param window The window length used for the Fast-Fourier Transformation. Defaults to 256
-#' @param theta For each neighbourhood (3 frames C 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, D. If D is less than a user determined threshold, N8 (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood
-#' @param threshold The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
-#'
-#' @return A list of CVR-values
-#'
 CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
   # Define C++ functions
 
@@ -738,9 +727,9 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
 
   # Extract spectrogram
   raw_spectro <- seewave::spectro(sound,
-    wl = window,
-    wn = "hamming",
-    plot = FALSE
+                                  wl = window,
+                                  wn = "hamming",
+                                  plot = FALSE
   )$amp
 
   # Smooth spectrogram with a moving window of 3. Truncating values below -90
@@ -767,6 +756,7 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
 
   return(CVR_index)
 }
+
 
 
 #' @name ss_index_calc

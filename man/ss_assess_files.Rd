@@ -4,13 +4,22 @@
 \alias{ss_assess_files}
 \title{Check and clean the detected folders containing sound files}
 \usage{
-ss_assess_files(file_locs, replace = FALSE, full_days = TRUE, verbose = FALSE)
+ss_assess_files(
+  file_locs,
+  replace = FALSE,
+  check_filedur = FALSE,
+  full_days = TRUE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{file_locs}{The output of the `ss_find_files` function}
 
 \item{replace}{A boolean operator to indicate whether the original non-wav file should be replaced (replace = TRUE) with its .wav file equivalent.
 Note that this will lead to original file to be deleted, so make sure you have a back-up of the original file. Defaults to replace = FALSE.}
+
+\item{check_filedur}{A boolean operator to indicate if you want to check the duration of your sound file, and split files if the file length
+exceeds 60 seconds per file. The soundscapeR package expects sound files to be of 60 second duration. This step can be time-consuming, so this step is turned off by default.}
 
 \item{full_days}{A boolean operator specifying whether the function should subset the files in each detected folder to full sampling days.
 Defaults to TRUE.}
