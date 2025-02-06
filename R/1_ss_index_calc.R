@@ -203,6 +203,48 @@ ss_convert_files <- function(file_locs, replace = FALSE, verbose = FALSE){
 
 }
 
+#' @name get_wav_duration
+#' @title Check the duration of a sound file
+#' @description This function takes the full length path to a sound file and returns its duration in seconds.
+#' @param file_path A full length path to the location of a sound file.
+#' @keywords internal
+#'
+#' @return The duration of a .wav sound file in seconds.
+#'
+get_wav_duration <- function(file_path) {
+  con <- file(file_path, "rb")  # Open file in binary mode
+  on.exit(close(con))  # Ensure the file is closed after reading
+
+  seek(con, 22)
+  num_channels <- readBin(con, integer(), size = 2, endian = "little")
+
+  seek(con, 24)
+  sample_rate <- readBin(con, integer(), size = 4, endian = "little")
+
+  seek(con, 34)
+  bit_depth <- readBin(con, integer(), size = 2, endian = "little")
+
+  # Find the "data" chunk dynamically
+  seek(con, 12)
+  while (TRUE) {
+    chunk_id <- readChar(con, 4, useBytes = TRUE)
+    chunk_size <- readBin(con, integer(), size = 4, endian = "little")
+
+    if (chunk_id == "data") {
+      data_size <- chunk_size
+      break
+    } else {
+      seek(con, chunk_size, origin = "current")
+    }
+  }
+
+  bytes_per_sample <- (bit_depth / 8) * num_channels
+  duration <- data_size / (sample_rate * bytes_per_sample)
+
+  return(duration)
+}
+
+
 
 #' @name ss_split_files
 #' @title Check if a file is the correct length, and if not, split it into 60-second chunks.
@@ -220,7 +262,10 @@ ss_split_files <- function(file_locs, verbose = FALSE) {
   # 1. CHECK IF ANY SOUND FILES NEED SPLITTING
 
   # soundfiles <- lapply(file_locs, function(x) sapply(x, function(y) tuneR::readWave(y)))
-  soundfiles_length <- lapply(file_locs, function(x) round(warbleR::duration_sound_files(x)$duration, digits = 0))
+
+
+  soundfiles_length <- lapply(file_locs, function(x) sapply(x, function(y) get_wav_duration(y)))
+
 
   if (any(unlist(soundfiles_length) > 60)) {
 
@@ -332,6 +377,8 @@ ss_split_files <- function(file_locs, verbose = FALSE) {
 #' Defaults to TRUE.
 #' @param replace A boolean operator to indicate whether the original non-wav file should be replaced (replace = TRUE) with its .wav file equivalent.
 #' Note that this will lead to original file to be deleted, so make sure you have a back-up of the original file. Defaults to replace = FALSE.
+#' @param check_filedur A boolean operator to indicate if you want to check the duration of your sound file, and split files if the file length
+#' exceeds 60 seconds per file. The soundscapeR package expects sound files to be of 60 second duration. This step can be time-consuming, so this step is turned off by default.
 #' @param verbose A boolean operator to indicate how chatty the function should be. Using verbose = TRUE leads to increased messaging on what is happening
 #' to the files in file_locs.
 #'
@@ -351,7 +398,7 @@ ss_split_files <- function(file_locs, verbose = FALSE) {
 #' # Subsetting to full days only
 #' file_locs_clean <- ss_assess_files(file_locs = file_locs, full_days = TRUE)
 #'
-ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbose = FALSE) {
+ss_assess_files <- function(file_locs, replace = FALSE, check_filedur = FALSE, full_days = TRUE, verbose = FALSE) {
 
   #1. Check if the sound files in file_locs are all in .wav format
 
@@ -373,7 +420,11 @@ ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbos
 
   #2. Check if the sound files in file_locs are all of 60-second length
 
-  ss_split_files(file_locs = file_locs_new, verbose = verbose)
+  if (check_filedur == TRUE){
+
+    ss_split_files(file_locs = file_locs_new, verbose = verbose)
+
+  }
 
   file_locs_new_2 <- lapply(file_locs_new, function(x) dirname(x[1]))
 
@@ -407,6 +458,8 @@ ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbos
 
   files_per_day <- vector("list")
 
+  to_remove <- vector("list", length = 0)
+
   for (i in 1:length(file_locs_new_2)) {
 
     # Check the sampling regime per directory in file_llocs
@@ -414,8 +467,9 @@ ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbos
 
     regime <- sapply(
       file_locs_new_2[[i]],
-      function(x) sub(".*_(\\d{8}_\\d{6})(Z)?\\.[wW][aA][vV]", "\\1", x)
+      function(x) sub(".*?(\\d{8}_\\d{6})(Z)?\\.[wW][aA][vV]", "\\1", x)
     )
+
 
     regime <- diff(unlist(lapply(regime, function(x) {
       as.POSIXct(strptime(x,
@@ -433,13 +487,32 @@ ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbos
     if(verbose == TRUE){
 
       cli::cli_h2("Processing {basename(dirname(file_locs_new_2[[i]][1]))}:")
-      cli::cli_alert_info("Sampling regime for study: 1 minute in {median_regime} minutes")
-      cli::cli_alert_info("Number of files per day: {files_per_day[[i]]} files")
+
+      if(any(is.na(regime))){
+
+        cli::cli_alert_danger("Sampling regime could not be detected for one or more files due to incorrect file naming. Removing directory from file_locs.")
+
+      }
+
+      else{
+        cli::cli_alert_info("Sampling regime for study: 1 minute in {median_regime} minutes")
+        cli::cli_alert_info("Number of files per day: {files_per_day[[i]]} files")
+
+      }
 
     }
 
     # 2. Check if any of the files deviate from the expected sampling regime
     # For instance: are some files missing from the expected sequence
+
+
+    if(any(is.na(regime))){
+
+      to_remove <- append(x = to_remove, values = i)
+      next
+
+    }
+
 
     if (any(regime > median_regime)) {
 
@@ -463,6 +536,18 @@ ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbos
       cli::cli_abort("Irregular timeintervals detected - check files")
     }
   }
+
+  # Remove directories that have wrong file naming
+
+  cli::cli_alert_info("{to_remove}")
+
+  if(length(to_remove) > 0){
+
+    file_locs_new_2 <- file_locs_new_2[-unlist(to_remove)]
+    files_per_day <- files_per_day[-unlist(to_remove)]
+
+  }
+
 
   if (full_days == TRUE) {
 
@@ -503,7 +588,7 @@ ss_assess_files <- function(file_locs, replace = FALSE, full_days = TRUE, verbos
 #' @description This function is used to calculate the 'Acoustic Cover' spectral acoustic index.
 #' @param file The full-length path to a .wav file
 #' @param window The window length used for the Fast-Fourier Transformation. Defaults to 256
-#' @param theta For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā. If ā is less than a user determined threshold, θ (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood
+#' @param theta For each neighbourhood (3 frames C 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, D. If D is less than a user determined threshold, N8 (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood
 #' @param threshold The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
 #'
 #' @return A list of CVR-values
@@ -670,13 +755,13 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
   # Subtract the resulting background noise values from the values in each frequency bin. Truncate negative values to zero.
   spectro_less_mode <- pmax(raw_spectro - spectro_mode, 0)
 
-  # For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā.
-  # If ā is less than a user determined threshold, θ, set the value of the central element/pixel equal to the minimum in the neighbourhood
+  # For each neighbourhood (3 frames C 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, D.
+  # If D is less than a user determined threshold, N8, set the value of the central element/pixel equal to the minimum in the neighbourhood
   ale_matrix <- adaptive_level_equalisation(spectro_less_mode, windowRowSize = 9, windowColSize = 3, ALE_theta = 3)
 
 
   # Finally, calculate the CVR.
-  # Termed the Activity (ACTsp) in Towsey (2017): "The fraction of cells in each noise-reduced frequency bin whose value exceeds the threshold, θ = 3 dB."
+  # Termed the Activity (ACTsp) in Towsey (2017): "The fraction of cells in each noise-reduced frequency bin whose value exceeds the threshold, N8 = 3 dB."
   # Calculate number of cells over 3dB threshold in each row, as a fraction of the total.
   CVR_index <- rowSums(ale_matrix > threshold) / (ncol(ale_matrix))
 
@@ -692,7 +777,7 @@ CVR_computation <- function(file, window = 256, theta = 3, threshold = 3) {
 #' @param output_dir The full-length path to an output directory on your device. If not specified, will default to the location where
 #' the raw sound files are saved.
 #' @param window The window length used for the Fast-Fourier Transformation. Defaults to 256
-#' @param theta For each neighbourhood (3 frames × 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, ā. If ā is less than a user determined threshold, θ (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood
+#' @param theta For each neighbourhood (3 frames C 9 frequency bins) centred on any element/pixel in the spectrogram, calculate the average spectrogram value, D. If D is less than a user determined threshold, N8 (theta), set the value of the central element/pixel equal to the minimum in the neighbourhood
 #' @param threshold The cut-off dB-value above which sound is considered present in a frequency bin. Defaults to 3 dB.
 #'
 #' @return CVR-index output files in '.csv' form, stored in output_dir

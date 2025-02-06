@@ -3,41 +3,52 @@
   "@type": "SoftwareSourceCode",
   "identifier": "soundscapeR",
   "description": "The soundscapeR package constitutes a standardized analytical pipeline for the exploration, computation, visualization, and comparison of soundscape diveristy using Hill numbers. The package is designed to work with either continuous or regular-interval long-duration acoustic recordings.",
-  "name": "soundscapeR: Visualization and Quantification of Soundscape Diversity using Hill Numbers",
+  "name": "soundscapeR: Visualization And Quantification Of Soundscape Diversity Using Hill Numbers",
   "codeRepository": "https://github.com/ThomasLuypaert/soundscapeR",
   "issueTracker": "https://github.com/ThomasLuypaert/soundscapeR/issues",
-  "license": "https://spdx.org/licenses/GPL-3.0",
+  "license": "https://spdx.org/licenses/MIT",
   "version": "0.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.3.1 (2023-06-16 ucrt)",
+  "runtimePlatform": "R version 4.4.2 (2024-10-31 ucrt)",
   "author": [
     {
       "@type": "Person",
       "givenName": "Thomas",
       "familyName": "Luypaert",
-      "email": "thomas.luypaert@nmbu.no"
+      "email": "thomas.luypaert@nmbu.no",
+      "@id": "https://orcid.org/0000-0001-7491-7418"
     },
     {
       "@type": "Person",
       "givenName": "Anderson Saldanha",
       "familyName": "Bueno",
-      "email": "buenoas@gmail.com"
+      "email": "buenoas@gmail.com",
+      "@id": "https://orcid.org/0000-0001-7416-6626"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Tom",
+      "familyName": "Bradfer-Lawrence",
+      "email": "tom.bradferlawrence@rspb.org.uk",
+      "@id": "https://orcid.org/0000-0001-6045-4360"
     },
     {
       "@type": "Person",
       "givenName": "Carlos Augusto",
       "familyName": "Peres",
-      "email": "carlos.a.peres@gmail.com"
+      "email": "carlos.a.peres@gmail.com",
+      "@id": "https://orcid.org/0000-0002-1588-8765"
     },
     {
       "@type": "Person",
       "givenName": "Torbjørn",
       "familyName": "Haugaasen",
-      "email": "torbjorn.haugaasen@nmbu.no"
+      "email": "torbjorn.haugaasen@nmbu.no",
+      "@id": "https://orcid.org/0000-0003-0901-5324"
     }
   ],
   "maintainer": [
@@ -45,7 +56,8 @@
       "@type": "Person",
       "givenName": "Thomas",
       "familyName": "Luypaert",
-      "email": "thomas.luypaert@nmbu.no"
+      "email": "thomas.luypaert@nmbu.no",
+      "@id": "https://orcid.org/0000-0001-7491-7418"
     }
   ],
   "softwareSuggestions": [
@@ -113,18 +125,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "pracma",
-      "name": "pracma",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=pracma"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "crayon",
       "name": "crayon",
       "provider": {
@@ -189,7 +189,7 @@
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
-      "version": "> 3.3.0",
+      "version": ">= 3.5.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -250,6 +250,18 @@
     },
     "8": {
       "@type": "SoftwareApplication",
+      "identifier": "sf",
+      "name": "sf",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=sf"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
       "identifier": "reshape2",
       "name": "reshape2",
       "version": ">= 1.4.3",
@@ -261,7 +273,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=reshape2"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "viridis",
       "name": "viridis",
@@ -274,7 +286,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=viridis"
     },
-    "10": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "scales",
       "name": "scales",
@@ -287,17 +299,17 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=scales"
     },
-    "11": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "grid",
       "name": "grid",
       "version": ">= 2.6.3"
     },
-    "12": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "patchwork",
       "name": "patchwork",
-      "version": ">= 1.0.0",
+      "version": ">= 1.2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -306,13 +318,13 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=patchwork"
     },
-    "13": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils",
       "version": ">= 3.6.3"
     },
-    "14": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "suncalc",
       "name": "suncalc",
@@ -325,7 +337,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=suncalc"
     },
-    "15": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "rlist",
       "name": "rlist",
@@ -337,12 +349,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlist"
     },
-    "16": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "methods",
       "name": "methods"
     },
-    "17": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "magrittr",
       "name": "magrittr",
@@ -354,7 +366,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=magrittr"
     },
-    "18": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "data.table",
       "name": "data.table",
@@ -366,7 +378,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=data.table"
     },
-    "19": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "vegan",
       "name": "vegan",
@@ -378,7 +390,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=vegan"
     },
-    "20": {
+    "21": {
       "@type": "SoftwareApplication",
       "identifier": "tidyr",
       "name": "tidyr",
@@ -390,7 +402,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyr"
     },
-    "21": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "seewave",
       "name": "seewave",
@@ -402,7 +414,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=seewave"
     },
-    "22": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "tuneR",
       "name": "tuneR",
@@ -414,7 +426,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tuneR"
     },
-    "23": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "Rcpp",
       "name": "Rcpp",
@@ -426,7 +438,55 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=Rcpp"
     },
-    "24": {
+    "25": {
+      "@type": "SoftwareApplication",
+      "identifier": "cli",
+      "name": "cli",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=cli"
+    },
+    "26": {
+      "@type": "SoftwareApplication",
+      "identifier": "bioacoustics",
+      "name": "bioacoustics",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=bioacoustics"
+    },
+    "27": {
+      "@type": "SoftwareApplication",
+      "identifier": "warbleR",
+      "name": "warbleR",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=warbleR"
+    },
+    "28": {
+      "@type": "SoftwareApplication",
+      "identifier": "pracma",
+      "name": "pracma",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=pracma"
+    },
+    "29": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
@@ -434,7 +494,23 @@
     },
     "SystemRequirements": "C++17"
   },
-  "fileSize": "435276.965KB",
+  "fileSize": "426492.379KB",
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Thomas",
+          "familyName": "Luypaert"
+        }
+      ],
+      "name": "{soundscapeR}: {P}ackage for the visualization and diversity quantification of soundscapes",
+      "url": "https://github.com/ThomasLuypaert/soundscapeR",
+      "description": "version 0.1.0"
+    }
+  ],
   "readme": "https://github.com/ThomasLuypaert/soundscapeR/blob/master/README.md",
   "contIntegration": ["https://github.com/ThomasLuypaert/soundscapeR/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/ThomasLuypaert/soundscapeR"]
 }
