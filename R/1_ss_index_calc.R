@@ -490,7 +490,7 @@ ss_assess_files <- function(file_locs, replace = FALSE, check_filedur = FALSE, f
 
       if(any(is.na(regime))){
 
-        cli::cli_alert_danger("Sampling regime could not be detected for one or more files due to incorrect file naming. Removing directory from file_locs.")
+        cli::cli_alert_danger("Sampling regime could not be detected for one or more files due to incorrect file naming.")
 
       }
 
@@ -509,31 +509,33 @@ ss_assess_files <- function(file_locs, replace = FALSE, check_filedur = FALSE, f
     if(any(is.na(regime))){
 
       to_remove <- append(x = to_remove, values = i)
+      cli::cli_alert_warning("{names(file_locs_new_2)[i]} will be removed from the clean files list due issues with file timestamps.")
       next
 
     }
 
 
-    if (any(regime > median_regime)) {
+    if (any(regime != median_regime)) {
 
-      outliers <- c()
+      problematic_files <- basename(file_locs_new_2[[i]][which(regime != median_regime)])
 
-      for (j in 2:length(regime)) {
-        if (as.numeric(regime[j] - regime[j - 1], units = "secs") > median_regime) {
-          outliers <- c(outliers, j)
-        }
-      }
-
-      fileloc_names <- names(file_locs)[i]
+      fileloc_names <- names(file_locs_new_2)[i]
 
       cli::cli_alert_danger("Irregular timeinterval detected for: {fileloc_names}")
-      cli::cli_alert_info("Based on the expected sampling regime, there are missing files...")
+      cli::cli_alert_info("Based on the expected sampling regime, there are missing or irregular files...")
 
-      missing_files <- basename(file_locs[[i]][outliers])
+      if (length(problematic_files) > 0) {
 
-      cli::cli_alert("{missing_files}")
+        cli::cli_alert("Problematic files: {paste(problematic_files, collapse = ', ')}")  # Format output
+      } else {
+        cli::cli_alert_warning("No specific missing files could be identified.")
+      }
 
-      cli::cli_abort("Irregular timeintervals detected - check files")
+      to_remove <- append(x = to_remove, values = i)
+      cli::cli_alert_warning("{names(file_locs_new_2)[i]} will be removed from the clean files list due to a irregular sampling regime")
+      next
+
+      #cli::cli_abort("Irregular timeintervals detected - check files")
     }
   }
 
