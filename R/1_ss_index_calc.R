@@ -212,39 +212,13 @@ ss_convert_files <- function(file_locs, replace = FALSE, verbose = FALSE){
 #' @return The duration of a .wav sound file in seconds.
 #'
 get_wav_duration <- function(file_path) {
-  con <- file(file_path, "rb")  # Open file in binary mode
-  on.exit(close(con))  # Ensure the file is closed after reading
 
-  seek(con, 22)
-  num_channels <- readBin(con, integer(), size = 2, endian = "little")
+  file_info <- tuneR::readWave(filename = file_path, header = TRUE)
 
-  seek(con, 24)
-  sample_rate <- readBin(con, integer(), size = 4, endian = "little")
-
-  seek(con, 34)
-  bit_depth <- readBin(con, integer(), size = 2, endian = "little")
-
-  # Find the "data" chunk dynamically
-  seek(con, 12)
-  while (TRUE) {
-    chunk_id <- readChar(con, 4, useBytes = TRUE)
-    chunk_size <- readBin(con, integer(), size = 4, endian = "little")
-
-    if (chunk_id == "data") {
-      data_size <- chunk_size
-      break
-    } else {
-      seek(con, chunk_size, origin = "current")
-    }
-  }
-
-  bytes_per_sample <- (bit_depth / 8) * num_channels
-  duration <- data_size / (sample_rate * bytes_per_sample)
+  duration <- round(file_info$samples / file_info$sample.rate)
 
   return(duration)
 }
-
-
 
 #' @name ss_split_files
 #' @title Check if a file is the correct length, and if not, split it into 60-second chunks.
