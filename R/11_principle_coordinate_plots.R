@@ -591,12 +591,7 @@ ss_pcoa <- function(soundscape_list,
         ) +
         ggplot2::scale_x_continuous(expand = c(0.1, 0.1)) +
         ggplot2::scale_y_continuous(expand = c(0.1, 0.1)) +
-        ggrepel::geom_text_repel(ggplot2::aes(label = site),
-          box.padding = 0.5,
-          segment.color = NA,
-          size = 5,
-          seed = 1234
-        ) +
+        ggplot2::geom_text(ggplot2::aes(label = site), vjust = -1, size = 5) +
         ggplot2::theme_classic() +
         ggplot2::theme(
           axis.title.y = ggplot2::element_text(
@@ -629,12 +624,7 @@ ss_pcoa <- function(soundscape_list,
         ) +
         ggplot2::scale_x_continuous(expand = c(0.1, 0.1)) +
         ggplot2::scale_y_continuous(expand = c(0.1, 0.1)) +
-        ggrepel::geom_text_repel(ggplot2::aes(label = site),
-          box.padding = 0.5,
-          segment.color = NA,
-          size = 5,
-          seed = 1234
-        ) +
+        ggplot2::geom_text(ggplot2::aes(label = site), vjust = -1, size = 5) +
         ggplot2::theme_classic() +
         ggplot2::theme(
           axis.title.y = ggplot2::element_text(
