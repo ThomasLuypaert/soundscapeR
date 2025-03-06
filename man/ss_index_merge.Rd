@@ -4,7 +4,16 @@
 \alias{ss_index_merge}
 \title{Import and Merge Acoustic Index '.csv' Files}
 \usage{
-ss_index_merge(fileloc, samplerate, window, index, date, lat, lon)
+ss_index_merge(
+  fileloc,
+  samplerate,
+  window,
+  index,
+  date,
+  lat,
+  lon,
+  timezone_offset = "00:00:00"
+)
 }
 \arguments{
 \item{fileloc}{The full-length path to the directory where the
@@ -34,6 +43,8 @@ collected. Coordinates should be specified in decimal degrees as a
 \item{lon}{The longitude of the site at which the sound files were
 collected. Coordinates should be specified in decimal degrees as a
  numerical variable.}
+
+\item{timezone_offset}{A time zone offset to apply (e.g., "07:00:00" for 7 hours ahead or "-05:00:00" for 5 hours behind). Defaults to no offset ("00:00:00").}
 }
 \value{
 Returns a time-by-frequency dataframe of acoustic index values

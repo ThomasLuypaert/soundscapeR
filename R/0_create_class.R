@@ -14,6 +14,7 @@ setClass(
     tz = "character",
     sunrise = "POSIXct",
     sunset = "POSIXct",
+    timezone_offset = "character",
     fileloc = "character",
     index = "character",
     samplerate = "numeric",
@@ -34,6 +35,7 @@ setClass(
     tz = NA_character_,
     sunrise = NA_character_,
     sunset = NA_character_,
+    timezone_offset = NA_character_,
     fileloc = NA_character_,
     index = NA_character_,
     samplerate = NA_real_,
@@ -80,6 +82,12 @@ setMethod(
       as.character(hms::as_hms(round(object@sunset))),
       "\n"
     )
+    cat(
+      "    Timezone offset: ",
+      object@timezone_offset,
+      "\n"
+    )
+
     cat("\n")
     cat(crayon::bold("    Acoustic index metadata: ", "\n"))
     cat("\n")

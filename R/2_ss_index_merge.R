@@ -34,6 +34,8 @@
 #'  collected. Coordinates should be specified in decimal degrees as a
 #'   numerical variable.
 #'
+#' @param timezone_offset A time zone offset to apply (e.g., "07:00:00" for 7 hours ahead or "-05:00:00" for 5 hours behind). Defaults to no offset ("00:00:00").
+#'
 #' @return Returns a time-by-frequency dataframe of acoustic index values
 #' for all files in the recording period.
 #'
@@ -45,7 +47,8 @@ ss_index_merge <- function(fileloc,
                            index,
                            date,
                            lat,
-                           lon) {
+                           lon,
+                           timezone_offset = "00:00:00") {
   # 0. Check if the arguments are missing
 
   test_0 <- function(x) {
@@ -190,8 +193,34 @@ ss_index_merge <- function(fileloc,
   assertthat::assert_that(test_8(lat))
   assertthat::assert_that(test_9(lon))
 
+  # 1.8 Check that the timezone_offset argument has the correct format
 
-  # 2. Get a list of the acoustic index '.csv' files in the specified file location
+  test_10 <- function(x) {
+    is.character(x)
+  }
+
+  assertthat::assert_that(test_10(timezone_offset),
+                          msg = "timezone_offset must be a string.")
+
+
+  test_11 <- function(x) {
+      grepl("^[+-]?[0-9]{2}:[0-9]{2}:[0-9]{2}$", x)
+    }
+
+  assertthat::assert_that(test_11(timezone_offset),
+                          msg = "timezone_offset must be in the format 'HH:MM:SS' or '[+/-]HH:MM:SS'.")
+
+  ### START
+
+  cli::cli_h1(paste0("Processing folder: ", basename(fileloc)))
+
+  # 2. Get timezone offset in seconds
+  tz_offset_hms <- hms::as_hms(timezone_offset)  # Convert the string into a hms object
+  sign_offset <- ifelse(substr(timezone_offset, 1, 1) == "-", -1, 1)
+  tz_offset_seconds <- as.numeric(tz_offset_hms) * sign_offset
+
+
+  # 3. Get a list of the acoustic index '.csv' files in the specified file location
 
 
   folders <- file.path(paste0(fileloc, "/", window))
@@ -202,7 +231,7 @@ ss_index_merge <- function(fileloc,
     full.names = TRUE
   )
 
-  # 3. Merge csv files into a dataframe
+  # 4. Merge csv files into a dataframe
 
   merged_df <- as.data.frame(t(Reduce(rbind, lapply(filenames, function(x) data.table::fread(x)))[, -1]))
 
@@ -235,9 +264,9 @@ ss_index_merge <- function(fileloc,
   colnames(merged_df) <- hms::as_hms(
     as.POSIXct(
       strptime(stringr::str_extract(filenames, "\\d{8}_\\d{6}"),
-        "%Y%m%d_%H%M%S",
-        tz = tz
-      )
+               "%Y%m%d_%H%M%S",
+               tz = "UTC"  # first assume UTC time zone
+      ) + tz_offset_seconds
     )
   )
 
@@ -247,7 +276,7 @@ ss_index_merge <- function(fileloc,
     merged_df <- merged_df + abs(min(merged_df))
   } else {}
 
-  # Create some more useful metadata elements for the soundscape object
+  # 7. Create some more useful metadata elements for the soundscape object
 
   day <- as.POSIXct(
     strptime(
@@ -263,7 +292,7 @@ ss_index_merge <- function(fileloc,
   points <- data.frame(lon = lon, lat = lat)
 
   suntimes <- suncalc::getSunlightTimes(
-    date = as.Date(day),
+    date = as.Date(date),
     keep = c("sunrise", "sunriseEnd", "sunset", "sunsetStart"),
     lat = lat,
     lon = lon,
@@ -291,6 +320,7 @@ ss_index_merge <- function(fileloc,
     tz = tz,
     sunrise = sunrise,
     sunset = sunset,
+    timezone_offset = timezone_offset,
     merged_df = merged_df
   )
 

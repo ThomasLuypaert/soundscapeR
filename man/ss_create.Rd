@@ -14,6 +14,7 @@ ss_create(
   lon,
   method,
   value,
+  timezone_offset = "00:00:00",
   output
 )
 }
@@ -55,6 +56,8 @@ information on algorithm methodologies.}
 
 \item{value}{Optional argument used to set a custom threshold
 value for binarization - used in combination with method="Custom".}
+
+\item{timezone_offset}{A time zone offset to apply (e.g., "07:00:00" for 7 hours ahead or "-05:00:00" for 5 hours behind). Defaults to no offset ("00:00:00").}
 
 \item{output}{Determines whether the function returns the raw
 total number of detections per time during the

@@ -615,6 +615,9 @@ ss_heatmap <- function(soundscape_obj,
         tz = tz
       )
     )
+
+    attr(melt_df$time, "tzone") <- tz
+
     return(melt_df)
   }
 

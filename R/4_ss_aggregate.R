@@ -295,9 +295,25 @@ ss_aggregate <- function(binarized_soundscape,
   # and compute the total sampling effort per time. Finally, compute the incidence
   # frequency per OSU for all OSUs in the dataframe
 
-  aggregate_per_time <- vector("list", 0)
-  aggregated_df <- vector("list", 0)
-  sampling_effort_per_time <- vector("list", 0)
+  # First, check if there is sufficient data for each time
+
+  time_counts <- table(colnames(binarized_soundscape@binarized_df))
+
+  if (any(time_counts < 2)) {
+
+    low_occurrence_times <- names(time_counts[time_counts < 2])
+
+
+    cli::cli_abort(paste(
+      "Error: The following time(s) have less than two occurrences:",
+      paste(low_occurrence_times, collapse = ", "),
+      "\nPlease ensure each time period has at least two recordings."
+    ))
+  }
+
+  aggregate_per_time <- vector("list", length(unique_times))
+  aggregated_df <- vector("list", length(unique_times))
+  sampling_effort_per_time <- vector("list", length(unique_times))
 
   for (i in 1:length(unique_times)) {
     aggregate_per_time[[i]] <- binarized_soundscape@binarized_df[, grepl(as.character(unique_times[i]),
@@ -331,6 +347,7 @@ ss_aggregate <- function(binarized_soundscape,
     tz = binarized_soundscape@tz,
     sunrise = binarized_soundscape@sunrise,
     sunset = binarized_soundscape@sunset,
+    timezone_offset = binarized_soundscape@timezone_offset,
     fileloc = binarized_soundscape@fileloc,
     index = binarized_soundscape@index,
     samplerate = binarized_soundscape@samplerate,

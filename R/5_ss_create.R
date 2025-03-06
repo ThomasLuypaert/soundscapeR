@@ -43,6 +43,8 @@
 #' @param value Optional argument used to set a custom threshold
 #' value for binarization - used in combination with method="Custom".
 #'
+#' @param timezone_offset A time zone offset to apply (e.g., "07:00:00" for 7 hours ahead or "-05:00:00" for 5 hours behind). Defaults to no offset ("00:00:00").
+#'
 #' @param output Determines whether the function returns the raw
 #' total number of detections per time during the
 #' recording period (output = "raw"), or the incidence frequency
@@ -62,6 +64,7 @@ ss_create <- function(fileloc,
                       lon,
                       method,
                       value,
+                      timezone_offset = "00:00:00",
                       output) {
   # 1. Merge the index files into a soundscape
 
@@ -72,7 +75,8 @@ ss_create <- function(fileloc,
     index = index,
     date = date,
     lat = lat,
-    lon = lon
+    lon = lon,
+    timezone_offset = timezone_offset
   )
 
   cli::cli_alert_success("Merging of index files complete...")
