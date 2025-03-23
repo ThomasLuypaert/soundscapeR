@@ -204,8 +204,8 @@ ss_index_merge <- function(fileloc,
 
 
   test_11 <- function(x) {
-      grepl("^[+-]?[0-9]{2}:[0-9]{2}:[0-9]{2}$", x)
-    }
+    grepl("^[+-]?[0-9]{2}:[0-9]{2}:[0-9]{2}$", x)
+  }
 
   assertthat::assert_that(test_11(timezone_offset),
                           msg = "timezone_offset must be in the format 'HH:MM:SS' or '[+/-]HH:MM:SS'.")
@@ -226,9 +226,9 @@ ss_index_merge <- function(fileloc,
   folders <- file.path(paste0(fileloc, "/", window))
 
   filenames <- list.files(folders,
-    pattern = paste0("CVR.csv$"),
-    recursive = TRUE,
-    full.names = TRUE
+                          pattern = paste0("CVR.csv$"),
+                          recursive = TRUE,
+                          full.names = TRUE
   )
 
   # 4. Merge csv files into a dataframe
@@ -261,14 +261,20 @@ ss_index_merge <- function(fileloc,
 
   tz <- lutz::tz_lookup_coords(lat = lat, lon = lon, method = "accurate")
 
-  colnames(merged_df) <- hms::as_hms(
+  colnames(merged_df) <-
     as.POSIXct(
       strptime(stringr::str_extract(filenames, "\\d{8}_\\d{6}"),
                "%Y%m%d_%H%M%S",
                tz = "UTC"  # first assume UTC time zone
       ) + tz_offset_seconds
     )
-  )
+
+  if(any(nchar(colnames(merged_df)) < 19)){
+
+    colnames(merged_df)[which(nchar(colnames(merged_df)) < 19)] <- paste0(colnames(merged_df)[which(nchar(colnames(merged_df)) < 19)], " 00:00:00")
+
+  }
+
 
   merged_df <- merged_df[seq(dim(merged_df)[1], 1), ]
 
@@ -281,8 +287,8 @@ ss_index_merge <- function(fileloc,
   day <- as.POSIXct(
     strptime(
       paste(date,
-        "00:00:00",
-        sep = " "
+            "00:00:00",
+            sep = " "
       ),
       format = "%Y-%m-%d %H:%M:%S",
       tz = tz
@@ -301,27 +307,27 @@ ss_index_merge <- function(fileloc,
 
 
   sunrise <- as.POSIXct(suntimes$sunrise,
-    tz = tz,
-    format = "%Y-%m-%d %H:%M:%S"
+                        tz = tz,
+                        format = "%Y-%m-%d %H:%M:%S"
   )
   sunset <- as.POSIXct(suntimes$sunset,
-    tz = tz,
-    format = "%Y-%m-%d %H:%M:%S"
+                       tz = tz,
+                       format = "%Y-%m-%d %H:%M:%S"
   )
 
   merged_soundscape <- methods::new("soundscape",
-    fileloc = fileloc,
-    index = index,
-    samplerate = samplerate,
-    window = window,
-    first_day = day,
-    lat = lat,
-    lon = lon,
-    tz = tz,
-    sunrise = sunrise,
-    sunset = sunset,
-    timezone_offset = timezone_offset,
-    merged_df = merged_df
+                                    fileloc = fileloc,
+                                    index = index,
+                                    samplerate = samplerate,
+                                    window = window,
+                                    first_day = day,
+                                    lat = lat,
+                                    lon = lon,
+                                    tz = tz,
+                                    sunrise = sunrise,
+                                    sunset = sunset,
+                                    timezone_offset = timezone_offset,
+                                    merged_df = merged_df
   )
 
 

@@ -158,7 +158,7 @@ ss_aggregate <- function(binarized_soundscape,
 
   test_12 <- function(x) {
     all(length(x) == 1 &
-      is.double(x) & !is.na(x))
+          is.double(x) & !is.na(x))
   }
 
   assertthat::on_failure(test_12) <- function(call, env) {
@@ -190,23 +190,23 @@ ss_aggregate <- function(binarized_soundscape,
 
   test_16 <- function(x) {
     (abs(as.numeric(rownames(x)[1])) +
-      abs(as.numeric(rownames(x)[2]))) > 3 &
+       abs(as.numeric(rownames(x)[2]))) > 3 &
       min(as.numeric(rownames(x))) >= 0 &
       max(as.numeric(rownames(x))) <= binarized_soundscape@samplerate / 2
   }
 
-  test_17 <- function(x) {
-    formatted <- try(
-      as.POSIXct(
-        paste0(substr(binarized_soundscape@first_day, 1, 12), " ", colnames(x)),
-        tz = binarized_soundscape@tz,
-        format = "%Y-%m-%d %H:%M:%S"
-      ),
-      silent = TRUE
-    )
-
-    !any(sapply(formatted, function(y) is.na(y)))
-  }
+  # test_17 <- function(x) {
+  #   formatted <- try(
+  #     as.POSIXct(
+  #       paste0(substr(binarized_soundscape@first_day, 1, 12), " ", colnames(x)),
+  #       tz = binarized_soundscape@tz,
+  #       format = "%Y-%m-%d %H:%M:%S"
+  #     ),
+  #     silent = TRUE
+  #   )
+  #
+  #   !any(sapply(formatted, function(y) is.na(y)))
+  # }
 
 
   assertthat::on_failure(test_15) <- function(call, env) {
@@ -217,14 +217,14 @@ ss_aggregate <- function(binarized_soundscape,
     paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_binarize(). Make sure you're supplying the dataframe produced by the ss_binarize() function.")
   }
 
-  assertthat::on_failure(test_17) <- function(call, env) {
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_binarize(). Make sure you're supplying the dataframe produced by the ss_binarize() function.")
-  }
+  # assertthat::on_failure(test_17) <- function(call, env) {
+  #   paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_binarize(). Make sure you're supplying the dataframe produced by the ss_binarize() function.")
+  # }
 
   assertthat::assert_that(test_15(binarized_soundscape@merged_df))
   assertthat::assert_that(test_16(binarized_soundscape@merged_df))
 
-  assertthat::assert_that(test_17(binarized_soundscape@merged_df))
+  # assertthat::assert_that(test_17(binarized_soundscape@merged_df))
 
   # 1.2.12. The binarized_df argument
 
@@ -239,7 +239,7 @@ ss_aggregate <- function(binarized_soundscape,
 
   assertthat::assert_that(test_15(binarized_soundscape@binarized_df))
   assertthat::assert_that(test_16(binarized_soundscape@binarized_df))
-  assertthat::assert_that(test_17(binarized_soundscape@binarized_df))
+  # assertthat::assert_that(test_17(binarized_soundscape@binarized_df))
   assertthat::assert_that(test_18(binarized_soundscape@binarized_df))
 
   # 1.2.13. The aggregated_df data frame and lists
@@ -280,7 +280,10 @@ ss_aggregate <- function(binarized_soundscape,
 
   # Get a list of unique times in the dataframe, and sort chronologically
 
-  colnames(binarized_soundscape@binarized_df) <- substr(colnames(binarized_soundscape@binarized_df), 1, 8)
+  colnames(binarized_soundscape@binarized_df) <- hms::as_hms(strptime(colnames(binarized_soundscape@binarized_df),
+                                                                      format = "%Y-%m-%d %H:%M:%S"
+  ))
+
 
   unique_times <- sort(
     hms::as_hms(
@@ -317,7 +320,7 @@ ss_aggregate <- function(binarized_soundscape,
 
   for (i in 1:length(unique_times)) {
     aggregate_per_time[[i]] <- binarized_soundscape@binarized_df[, grepl(as.character(unique_times[i]),
-      x = colnames(binarized_soundscape@binarized_df)
+                                                                         x = colnames(binarized_soundscape@binarized_df)
     )] # subset per time
 
     sampling_effort_per_time[[i]] <- ncol(aggregate_per_time[[i]]) # sampling effort
@@ -341,25 +344,25 @@ ss_aggregate <- function(binarized_soundscape,
   colnames(aggregated_df) <- unique_times
 
   aggregated_soundscape <- methods::new("soundscape",
-    first_day = binarized_soundscape@first_day,
-    lat = binarized_soundscape@lat,
-    lon = binarized_soundscape@lon,
-    tz = binarized_soundscape@tz,
-    sunrise = binarized_soundscape@sunrise,
-    sunset = binarized_soundscape@sunset,
-    timezone_offset = binarized_soundscape@timezone_offset,
-    fileloc = binarized_soundscape@fileloc,
-    index = binarized_soundscape@index,
-    samplerate = binarized_soundscape@samplerate,
-    window = binarized_soundscape@window,
-    binarization_method = binarized_soundscape@binarization_method,
-    threshold = binarized_soundscape@threshold,
-    output = output,
-    merged_df = binarized_soundscape@merged_df,
-    binarized_df = binarized_soundscape@binarized_df,
-    aggregated_df = aggregated_df,
-    aggregated_df_per_time = aggregate_per_time,
-    effort_per_time = sampling_effort_per_time
+                                        first_day = binarized_soundscape@first_day,
+                                        lat = binarized_soundscape@lat,
+                                        lon = binarized_soundscape@lon,
+                                        tz = binarized_soundscape@tz,
+                                        sunrise = binarized_soundscape@sunrise,
+                                        sunset = binarized_soundscape@sunset,
+                                        timezone_offset = binarized_soundscape@timezone_offset,
+                                        fileloc = binarized_soundscape@fileloc,
+                                        index = binarized_soundscape@index,
+                                        samplerate = binarized_soundscape@samplerate,
+                                        window = binarized_soundscape@window,
+                                        binarization_method = binarized_soundscape@binarization_method,
+                                        threshold = binarized_soundscape@threshold,
+                                        output = output,
+                                        merged_df = binarized_soundscape@merged_df,
+                                        binarized_df = binarized_soundscape@binarized_df,
+                                        aggregated_df = aggregated_df,
+                                        aggregated_df_per_time = aggregate_per_time,
+                                        effort_per_time = sampling_effort_per_time
   )
 
 

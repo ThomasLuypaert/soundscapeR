@@ -354,24 +354,24 @@ ss_binarize <- function(merged_soundscape,
 
   test_13 <- function(x) {
     (abs(as.numeric(rownames(x)[1])) +
-      abs(as.numeric(rownames(x)[2]))) > 3 &
+       abs(as.numeric(rownames(x)[2]))) > 3 &
       min(as.numeric(rownames(x))) >= 0 &
       max(as.numeric(rownames(x))) <= merged_soundscape@samplerate / 2
   }
 
-  test_14 <- function(x) {
-    formatted <- try(
-      as.POSIXct(
-        paste0(substr(merged_soundscape@first_day, 1, 12), " ", colnames(x)),
-        tz = merged_soundscape@tz,
-        format = "%Y-%m-%d %H:%M:%S"
-      ),
-      silent = TRUE
-    )
-
-    !any(sapply(formatted, function(y) is.na(y)))
-  }
-
+  # test_14 <- function(x) {
+  #   formatted <- try(
+  #     as.POSIXct(
+  #       paste0(substr(merged_soundscape@first_day, 1, 12), " ", colnames(x)),
+  #       tz = merged_soundscape@tz,
+  #       format = "%Y-%m-%d %H:%M:%S"
+  #     ),
+  #     silent = TRUE
+  #   )
+  #
+  #   !any(sapply(formatted, function(y) is.na(y)))
+  # }
+  #
 
   assertthat::on_failure(test_12) <- function(call, env) {
     paste0(deparse(call$x), " is not a valid data frame. It is possible the argument is not a data frame, is empty, or contains NA/non-numeric values. Did you supply the merged_soundscape argument produced using the ss_index_merge() function? If so, something has gone wrong, please re-run the ss_index_merge() function.")
@@ -381,13 +381,13 @@ ss_binarize <- function(merged_soundscape,
     paste0(deparse(call$x), " does not have the correct row names. Please make sure the row names indicate the frequency values. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged soundscape object produced by the ss_index_merge() function.")
   }
 
-  assertthat::on_failure(test_14) <- function(call, env) {
-    paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged_soundscape object produced by the ss_index_merge() function.")
-  }
+  # assertthat::on_failure(test_14) <- function(call, env) {
+  #   paste0(deparse(call$x), " does not have the correct column names. Please make sure the column names indicate the time of day expressed as a character string in the following format: HH:MM::SS. This functions builds on the output of ss_index_merge(). Make sure you're supplying the merged_soundscape object produced by the ss_index_merge() function.")
+  # }
 
   assertthat::assert_that(test_12(merged_soundscape@merged_df))
   assertthat::assert_that(test_13(merged_soundscape@merged_df))
-  assertthat::assert_that(test_14(merged_soundscape@merged_df))
+  # assertthat::assert_that(test_14(merged_soundscape@merged_df))
 
   # 1.2.10. The binarized_df and aggregate_df arguments are missing
 
@@ -451,24 +451,24 @@ ss_binarize <- function(merged_soundscape,
   # 2. Calculate the binarization threshold
 
   if (method == "IJDefault" |
-    method == "Huang" |
-    method == "Huang2" |
-    method == "Intermodes" |
-    method == "IsoData" |
-    method == "Li" |
-    method == "MaxEntropy" |
-    method == "Mean" |
-    method == "MinErrorI" |
-    method == "Minimum" |
-    method == "Moments" |
-    method == "Otsu" |
-    method == "Percentile" |
-    method == "RenyiEntropy" |
-    method == "Shanbhag" |
-    method == "Triangle" |
-    method == "Yen" |
-    method == "Mode" |
-    method == "mode") {
+      method == "Huang" |
+      method == "Huang2" |
+      method == "Intermodes" |
+      method == "IsoData" |
+      method == "Li" |
+      method == "MaxEntropy" |
+      method == "Mean" |
+      method == "MinErrorI" |
+      method == "Minimum" |
+      method == "Moments" |
+      method == "Otsu" |
+      method == "Percentile" |
+      method == "RenyiEntropy" |
+      method == "Shanbhag" |
+      method == "Triangle" |
+      method == "Yen" |
+      method == "Mode" |
+      method == "mode") {
     threshold <- ss_threshold(merged_soundscape = merged_soundscape, method = method)
   } else {
     if (method == "Custom" | method == "custom") {
@@ -483,21 +483,21 @@ ss_binarize <- function(merged_soundscape,
   rownames(thresh_df) <- rownames(merged_soundscape@merged_df)
 
   binarized_soundscape <- methods::new("soundscape",
-    first_day = merged_soundscape@first_day,
-    lat = merged_soundscape@lat,
-    lon = merged_soundscape@lon,
-    tz = merged_soundscape@tz,
-    sunrise = merged_soundscape@sunrise,
-    sunset = merged_soundscape@sunset,
-    timezone_offset = merged_soundscape@timezone_offset,
-    fileloc = merged_soundscape@fileloc,
-    index = merged_soundscape@index,
-    samplerate = merged_soundscape@samplerate,
-    window = merged_soundscape@window,
-    binarization_method = method,
-    threshold = as.numeric(threshold),
-    merged_df = merged_soundscape@merged_df,
-    binarized_df = thresh_df
+                                       first_day = merged_soundscape@first_day,
+                                       lat = merged_soundscape@lat,
+                                       lon = merged_soundscape@lon,
+                                       tz = merged_soundscape@tz,
+                                       sunrise = merged_soundscape@sunrise,
+                                       sunset = merged_soundscape@sunset,
+                                       timezone_offset = merged_soundscape@timezone_offset,
+                                       fileloc = merged_soundscape@fileloc,
+                                       index = merged_soundscape@index,
+                                       samplerate = merged_soundscape@samplerate,
+                                       window = merged_soundscape@window,
+                                       binarization_method = method,
+                                       threshold = as.numeric(threshold),
+                                       merged_df = merged_soundscape@merged_df,
+                                       binarized_df = thresh_df
   )
 
 

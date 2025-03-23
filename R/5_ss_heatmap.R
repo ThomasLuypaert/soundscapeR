@@ -104,7 +104,6 @@
 #'  specified device and filename.
 #'
 #' @export
-
 ss_heatmap <- function(soundscape_obj,
                        type = "regular",
                        annotate = FALSE,
@@ -247,7 +246,7 @@ ss_heatmap <- function(soundscape_obj,
 
   test_10 <- function(x) {
     all(length(x) == 1 &
-      is.double(x) & !is.na(x))
+          is.double(x) & !is.na(x))
   }
 
   assertthat::on_failure(test_10) <- function(call, env) {
@@ -279,23 +278,23 @@ ss_heatmap <- function(soundscape_obj,
 
   test_13 <- function(x) {
     (abs(as.numeric(rownames(x)[1])) +
-      abs(as.numeric(rownames(x)[2]))) > 3 &
+       abs(as.numeric(rownames(x)[2]))) > 3 &
       min(as.numeric(rownames(x))) >= 0 &
       max(as.numeric(rownames(x))) <= soundscape_obj@samplerate / 2
   }
 
-  test_14 <- function(x) {
-    formatted <- try(
-      as.POSIXct(
-        paste0(substr(soundscape_obj@first_day, 1, 12), " ", colnames(x)),
-        tz = soundscape_obj@tz,
-        format = "%Y-%m-%d %H:%M:%S"
-      ),
-      silent = TRUE
-    )
-
-    !any(sapply(formatted, function(y) is.na(y)))
-  }
+  # test_14 <- function(x) {
+  #   formatted <- try(
+  #     as.POSIXct(
+  #       paste0(substr(soundscape_obj@first_day, 1, 12), " ", colnames(x)),
+  #       tz = soundscape_obj@tz,
+  #       format = "%Y-%m-%d %H:%M:%S"
+  #     ),
+  #     silent = TRUE
+  #   )
+  #
+  #   !any(sapply(formatted, function(y) is.na(y)))
+  # }
 
 
   assertthat::on_failure(test_12) <- function(call, env) {
@@ -322,14 +321,14 @@ ss_heatmap <- function(soundscape_obj,
 
   assertthat::assert_that(test_12(soundscape_obj@binarized_df))
   assertthat::assert_that(test_13(soundscape_obj@binarized_df))
-  assertthat::assert_that(test_14(soundscape_obj@binarized_df))
+  # assertthat::assert_that(test_14(soundscape_obj@binarized_df))
   assertthat::assert_that(test_15(soundscape_obj@binarized_df))
 
   # 1.2.12. The aggregated_df argument
 
   assertthat::assert_that(test_12(soundscape_obj@aggregated_df))
   assertthat::assert_that(test_13(soundscape_obj@aggregated_df))
-  assertthat::assert_that(test_14(soundscape_obj@aggregated_df))
+  # assertthat::assert_that(test_14(soundscape_obj@aggregated_df))
 
   if (soundscape_obj@output == "incidence_freq") {
     test_16 <- function(x) {
@@ -346,8 +345,8 @@ ss_heatmap <- function(soundscape_obj,
   if (soundscape_obj@output == "raw") {
     test_16 <- function(x) {
       all(all(round(unlist(x)) == unlist(x)) &
-        max(x) <= max(table(colnames(soundscape_obj@merged_df))) &
-        min(x) >= 0)
+            max(x) <= max(table(colnames(soundscape_obj@merged_df))) &
+            min(x) >= 0)
     }
 
     assertthat::on_failure(test_16) <- function(call, env) {
@@ -441,15 +440,15 @@ ss_heatmap <- function(soundscape_obj,
 
   test_25 <- function(x) {
     (assertthat::is.count(x) &
-      x >= min(as.numeric(rownames(soundscape_obj@aggregated_df))) &
-      x <= max(as.numeric(rownames(soundscape_obj@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj@aggregated_df)))) |
       x == 0
   }
 
   test_26 <- function(x) {
     (assertthat::is.count(x) &
-      x >= min(as.numeric(rownames(soundscape_obj@aggregated_df))) &
-      x <= max(as.numeric(rownames(soundscape_obj@aggregated_df)))) |
+       x >= min(as.numeric(rownames(soundscape_obj@aggregated_df))) &
+       x <= max(as.numeric(rownames(soundscape_obj@aggregated_df)))) |
       x == "default"
   }
 
@@ -608,8 +607,8 @@ ss_heatmap <- function(soundscape_obj,
     melt_df$time <- as.POSIXct(
       strptime(
         x = paste(substr(soundscape_obj@first_day, 1, 12),
-          melt_df$time,
-          sep = " "
+                  melt_df$time,
+                  sep = " "
         ),
         format = "%Y-%m-%d %H:%M",
         tz = tz
@@ -664,8 +663,8 @@ ss_heatmap <- function(soundscape_obj,
       as.POSIXct(
         strptime(
           paste(substr(soundscape_obj@first_day, 1, 12),
-            colnames(soundscape_obj@aggregated_df),
-            sep = " "
+                colnames(soundscape_obj@aggregated_df),
+                sep = " "
           ),
           format = "%Y-%m-%d %H:%M:%S",
           tz = tz
@@ -676,8 +675,8 @@ ss_heatmap <- function(soundscape_obj,
     mintime <- as.POSIXct(
       strptime(
         paste(substr(soundscape_obj@first_day, 1, 12),
-          mintime,
-          sep = " "
+              mintime,
+              sep = " "
         ),
         format = "%Y-%m-%d %H:%M:%S",
         tz = tz
@@ -690,8 +689,8 @@ ss_heatmap <- function(soundscape_obj,
       as.POSIXct(
         strptime(
           paste(substr(soundscape_obj@first_day, 1, 12),
-            colnames(soundscape_obj@aggregated_df),
-            sep = " "
+                colnames(soundscape_obj@aggregated_df),
+                sep = " "
           ),
           format = "%Y-%m-%d %H:%M:%S",
           tz = tz
@@ -702,8 +701,8 @@ ss_heatmap <- function(soundscape_obj,
     maxtime <- as.POSIXct(
       strptime(
         paste(substr(soundscape_obj@first_day, 1, 12),
-          maxtime,
-          sep = " "
+              maxtime,
+              sep = " "
         ),
         format = "%Y-%m-%d %H:%M:%S",
         tz = tz
@@ -714,8 +713,8 @@ ss_heatmap <- function(soundscape_obj,
   day <- as.POSIXct(
     strptime(
       paste(substr(soundscape_obj@first_day, 1, 12),
-        "00:00:00",
-        sep = " "
+            "00:00:00",
+            sep = " "
       ),
       format = "%Y-%m-%d %H:%M:%S",
       tz = tz
@@ -728,8 +727,8 @@ ss_heatmap <- function(soundscape_obj,
   midnight1 <- as.POSIXct(
     strptime(
       paste(substr(soundscape_obj@first_day, 1, 12),
-        "00:00:00",
-        sep = " "
+            "00:00:00",
+            sep = " "
       ),
       format = "%Y-%m-%d %H:%M:%S",
       tz = tz
@@ -739,8 +738,8 @@ ss_heatmap <- function(soundscape_obj,
   midnight2 <- as.POSIXct(
     strptime(
       paste(substr(soundscape_obj@first_day, 1, 12),
-        "23:55:00",
-        sep = " "
+            "23:55:00",
+            sep = " "
       ),
       format = "%Y-%m-%d %H:%M:%S",
       tz = tz
@@ -754,9 +753,9 @@ ss_heatmap <- function(soundscape_obj,
           ggplot2::ggplot(
             df2,
             ggplot2::aes(time,
-              frequency,
-              fill = value,
-              color = value
+                         frequency,
+                         fill = value,
+                         color = value
             )
           ) +
           ggplot2::geom_tile(
@@ -956,8 +955,8 @@ ss_heatmap <- function(soundscape_obj,
             "text",
             x = (sunrise - (as.numeric(
               difftime(sunrise,
-                midnight1,
-                units = "secs"
+                       midnight1,
+                       units = "secs"
               )
             ) / 2)),
             y = (maxfreq + (maxfreq / 20)),
@@ -971,8 +970,8 @@ ss_heatmap <- function(soundscape_obj,
             "text",
             x = (sunset - (as.numeric(
               difftime(sunset,
-                sunrise,
-                units = "secs"
+                       sunrise,
+                       units = "secs"
               )
             ) / 2)),
             y = (maxfreq + (maxfreq / 20)),
@@ -986,8 +985,8 @@ ss_heatmap <- function(soundscape_obj,
             "text",
             x = (midnight2 - (as.numeric(
               difftime(midnight2,
-                sunset,
-                units = "secs"
+                       sunset,
+                       units = "secs"
               )
             ) / 2)),
             y = (maxfreq + (maxfreq / 20)),
@@ -1030,9 +1029,9 @@ ss_heatmap <- function(soundscape_obj,
             ggplot2::ggplot(
               df2,
               ggplot2::aes(time,
-                frequency,
-                fill = value,
-                color = value
+                           frequency,
+                           fill = value,
+                           color = value
               )
             ) +
             ggplot2::geom_tile(
@@ -1231,8 +1230,8 @@ ss_heatmap <- function(soundscape_obj,
               "text",
               x = (sunrise - (as.numeric(
                 difftime(sunrise,
-                  midnight1,
-                  units = "secs"
+                         midnight1,
+                         units = "secs"
                 )
               ) / 2)),
               y = (maxfreq + (maxfreq / 20)),
@@ -1245,8 +1244,8 @@ ss_heatmap <- function(soundscape_obj,
               "text",
               x = (sunset - (as.numeric(
                 difftime(sunset,
-                  sunrise,
-                  units = "secs"
+                         sunrise,
+                         units = "secs"
                 )
               ) / 2)),
               y = (maxfreq + (maxfreq / 20)),
@@ -1259,8 +1258,8 @@ ss_heatmap <- function(soundscape_obj,
               "text",
               x = (midnight2 - (as.numeric(
                 difftime(midnight2,
-                  sunset,
-                  units = "secs"
+                         sunset,
+                         units = "secs"
                 )
               ) / 2)),
               y = (maxfreq + (maxfreq / 20)),
@@ -1281,9 +1280,9 @@ ss_heatmap <- function(soundscape_obj,
         plot <-
           ggplot2::ggplot(
             df2, ggplot2::aes(time,
-              frequency,
-              fill = value,
-              color = value
+                              frequency,
+                              fill = value,
+                              color = value
             )
           ) +
           ggplot2::geom_tile(
@@ -1376,9 +1375,9 @@ ss_heatmap <- function(soundscape_obj,
         plot <-
           ggplot2::ggplot(
             df2, ggplot2::aes(time,
-              frequency,
-              fill = value,
-              color = value
+                              frequency,
+                              fill = value,
+                              color = value
             )
           ) +
           ggplot2::geom_rect(
@@ -1543,21 +1542,21 @@ ss_heatmap <- function(soundscape_obj,
           ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
           ggplot2::guides(color = "none") +
           ggplot2::annotate("text",
-            na.rm = TRUE,
-            x = midnight1,
-            y = seq(
-              0,
-              floor(maxfreq / 4000) * 4000,
-              4000
-            ),
-            label = as.character(seq(
-              0,
-              floor(maxfreq / 1000) * 1000,
-              4000
-            )),
-            color = "white",
-            size = labelsize_polar,
-            fontface = 2
+                            na.rm = TRUE,
+                            x = midnight1,
+                            y = seq(
+                              0,
+                              floor(maxfreq / 4000) * 4000,
+                              4000
+                            ),
+                            label = as.character(seq(
+                              0,
+                              floor(maxfreq / 1000) * 1000,
+                              4000
+                            )),
+                            color = "white",
+                            size = labelsize_polar,
+                            fontface = 2
           )
       } else {
         if (annotate == FALSE) {
@@ -1565,9 +1564,9 @@ ss_heatmap <- function(soundscape_obj,
             ggplot2::ggplot(
               df2,
               ggplot2::aes(time,
-                frequency,
-                fill = value,
-                color = value
+                           frequency,
+                           fill = value,
+                           color = value
               )
             ) +
             ggplot2::geom_tile(
@@ -1657,21 +1656,21 @@ ss_heatmap <- function(soundscape_obj,
             ggplot2::labs(fill = "OSU RELATIVE ABUNDANCE") +
             ggplot2::guides(color = "none") +
             ggplot2::annotate("text",
-              na.rm = TRUE,
-              x = midnight1,
-              y = seq(
-                0,
-                floor(maxfreq / 4000) * 4000,
-                4000
-              ),
-              label = as.character(seq(
-                0,
-                floor(maxfreq / 1000) * 1000,
-                4000
-              )),
-              color = "white",
-              size = labelsize_polar,
-              fontface = 2
+                              na.rm = TRUE,
+                              x = midnight1,
+                              y = seq(
+                                0,
+                                floor(maxfreq / 4000) * 4000,
+                                4000
+                              ),
+                              label = as.character(seq(
+                                0,
+                                floor(maxfreq / 1000) * 1000,
+                                4000
+                              )),
+                              color = "white",
+                              size = labelsize_polar,
+                              fontface = 2
             )
 
           plot
@@ -1707,9 +1706,9 @@ ss_heatmap <- function(soundscape_obj,
         plot <-
           ggplot2::ggplot(
             df2, ggplot2::aes(time,
-              frequency,
-              fill = value,
-              color = value
+                              frequency,
+                              fill = value,
+                              color = value
             )
           ) +
           ggplot2::geom_tile(
