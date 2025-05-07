@@ -505,14 +505,12 @@ ss_pcoa <- function(soundscape_list,
   # nocov start
 
   # 1. Check if ggrepel is installed
-
   if (nchar(system.file(package = "ggrepel")) == 0) {
     cli::cli_alert_danger("The 'ggrepel' R-package needs to be installed before using this function")
     cli::cli_alert_info("Use: 'install.packages('ggrepel')' to install the package and try again...")
     stop()
   } else {
     # 1. Check that a list of soundscapes contain the 'raw' incidences, not the 'incidence_freq'
-
     if (all(sapply(soundscape_list, function(x) x@output == "raw")) == FALSE) {
       wrong_output <- which(sapply(
         soundscape_list,
@@ -526,7 +524,6 @@ ss_pcoa <- function(soundscape_list,
     }
 
     # 2. Create a site-by-OSU matrix of OSU incidence frequencies
-
     site_by_OSU_matrix <-
       as.data.frame(
         do.call(
@@ -541,117 +538,91 @@ ss_pcoa <- function(soundscape_list,
     colnames(site_by_OSU_matrix) <- paste0("OSU_", seq(1, ncol(site_by_OSU_matrix), 1))
 
     # 3. Remove the OSUs that have zero-detection across all soundscapes
-
     site_by_OSU_matrix <- site_by_OSU_matrix[, which(!colSums(site_by_OSU_matrix) == 0)]
 
     # 4. Calculate the Bray-Curtis distances between the soundscapes
-
     soundscape_dist <- vegan::vegdist(site_by_OSU_matrix, method = "bray")
 
-    # 5. Calculate the PCoA values for the soundscapes
-
+    # 5. Calculate the PCoA values for the soundscapes (use a large k to keep all axes initially)
     soundscape_pcoa <- stats::cmdscale(soundscape_dist,
-      k = 2,
-      eig = TRUE,
-      add = TRUE
+                                       k = nrow(site_by_OSU_matrix)-1,  # Keep all axes initially
+                                       eig = TRUE,
+                                       add = TRUE
     )
 
+    # Calculate % variance explained for all axes
+    soundscape_pcoa_percent_explained <- (soundscape_pcoa$eig / sum(soundscape_pcoa$eig)) * 100
 
-    soundscape_pcoa_points <- soundscape_pcoa$points
-    colnames(soundscape_pcoa_points) <- c("pcoa1", "pcoa2")
+    # 6. Calculate the cumulative variance explained
+    cumulative_variance <- cumsum(soundscape_pcoa_percent_explained)
+
+    # Determine the number of axes needed to reach the variance threshold (e.g., 95%)
+    n_axes <- min(which(cumulative_variance >= 95))  # The first axis to exceed the threshold
+
+    # Store all the PCoA points (now using the chosen number of axes)
+    soundscape_pcoa_points <- soundscape_pcoa$points[, 1:n_axes]  # Subset to selected axes
+    colnames(soundscape_pcoa_points) <- paste0("pcoa", 1:n_axes)  # Dynamically label axes
 
     soundscape_pcoa_points <-
       soundscape_pcoa_points %>%
       tidyr::as_tibble(rownames = "samples") %>%
       dplyr::mutate(site = rownames(soundscape_pcoa_points))
 
-    soundscape_pcoa_percent_explained <- (soundscape_pcoa$eig / sum(soundscape_pcoa$eig)) * 100
+    soundscape_pcoa_points$grouping <- grouping
 
-    # 6. Plotting the PCoA plot
+    # Return the percentage of variation explained for each axis
+    soundscape_pcoa_percent_explained <- soundscape_pcoa_percent_explained[1:n_axes]
+    cumulative_variance <- cumulative_variance[1:n_axes]
 
-    if (any(is.na(grouping))) {} else {
-      soundscape_pcoa_points$factor <- as.character(grouping)
-    }
+    data <- list(soundscape_pcoa_points, soundscape_pcoa_percent_explained)
 
+    names(data) <- c("pcoa_PCs", "pcoa_var")
 
-    if (any(is.na(grouping))) {
-      soundscape_pcoa_plot <-
-        soundscape_pcoa_points %>%
-        ggplot2::ggplot(ggplot2::aes(pcoa1, pcoa2, label = site)) +
-        ggplot2::geom_point(shape = 21, stroke = 1, size = 4) +
-        ggplot2::labs(
-          x = paste0("PCo 1 (", format(round(soundscape_pcoa_percent_explained[1], 1),
-            nsmall = 1,
-            trim = TRUE
-          ), "%)"),
-          y = paste0("PCo 2 (", format(round(soundscape_pcoa_percent_explained[2], 1),
-            nsmall = 1,
-            trim = TRUE
-          ), "%)")
-        ) +
-        ggplot2::scale_x_continuous(expand = c(0.1, 0.1)) +
-        ggplot2::scale_y_continuous(expand = c(0.1, 0.1)) +
-        ggplot2::geom_text(ggplot2::aes(label = site), vjust = -1, size = 5) +
-        ggplot2::theme_classic() +
-        ggplot2::theme(
-          axis.title.y = ggplot2::element_text(
-            size = 16,
-            margin = ggplot2::margin(t = 0, r = 20, b = 0, l = 0)
-          ),
-          axis.title.x = ggplot2::element_text(
-            size = 16,
-            margin = ggplot2::margin(t = 20, r = 0, b = 0, l = 0)
-          ),
-          axis.text = ggplot2::element_text(size = 14),
-          plot.margin = grid::unit(c(1, 1, 1, 1), "cm")
-        )
-    } else {
-      soundscape_pcoa_plot <-
-        soundscape_pcoa_points %>%
-        ggplot2::ggplot(ggplot2::aes(pcoa1, pcoa2, label = site)) +
-        ggplot2::geom_point(ggplot2::aes(fill = factor),
-          shape = 21, stroke = 1, size = 4
-        ) +
-        ggplot2::labs(
-          x = paste0("PCo 1 (", format(round(soundscape_pcoa_percent_explained[1], 1),
-            nsmall = 1,
-            trim = TRUE
-          ), "%)"),
-          y = paste0("PCo 2 (", format(round(soundscape_pcoa_percent_explained[2], 1),
-            nsmall = 1,
-            trim = TRUE
-          ), "%)")
-        ) +
-        ggplot2::scale_x_continuous(expand = c(0.1, 0.1)) +
-        ggplot2::scale_y_continuous(expand = c(0.1, 0.1)) +
-        ggplot2::geom_text(ggplot2::aes(label = site), vjust = -1, size = 5) +
-        ggplot2::theme_classic() +
-        ggplot2::theme(
-          axis.title.y = ggplot2::element_text(
-            size = 16,
-            margin = ggplot2::margin(t = 0, r = 20, b = 0, l = 0)
-          ),
-          axis.title.x = ggplot2::element_text(
-            size = 16,
-            margin = ggplot2::margin(t = 20, r = 0, b = 0, l = 0)
-          ),
-          axis.text = ggplot2::element_text(size = 14),
-          plot.margin = grid::unit(c(1, 1, 1, 1), "cm"),
-          legend.position = "none"
-        ) +
-        viridis::scale_fill_viridis(
-          discrete = TRUE,
-          begin = 0.2,
-          end = 0.8,
-          option = "B"
-        )
-    }
+    # 7. Plotting the PCoA plot (just the first two axes or any others)
+    soundscape_pcoa_plot <-
+      soundscape_pcoa_points %>%
+      ggplot2::ggplot(ggplot2::aes(pcoa1, pcoa2, label = site, fill = grouping)) +
+      ggplot2::geom_point(shape = 21, stroke = 1, size = 4) +
+      ggplot2::labs(
+        x = paste0("PCo 1 (", format(round(soundscape_pcoa_percent_explained[1], 1),
+                                     nsmall = 1, trim = TRUE), "%)"),
+        y = paste0("PCo 2 (", format(round(soundscape_pcoa_percent_explained[2], 1),
+                                     nsmall = 1, trim = TRUE), "%)"),
+        fill = "Group"  # Set your desired legend title here
+      ) +
+      ggplot2::scale_x_continuous(expand = c(0.1, 0.1)) +
+      ggplot2::scale_y_continuous(expand = c(0.1, 0.1)) +
+      ggplot2::geom_text(ggplot2::aes(label = site), vjust = -1, size = 5) +
+      ggplot2::theme_classic() +
+      ggplot2::theme(
+        legend.position = "top",
+        legend.direction = "horizontal",
+        legend.title = ggplot2::element_text(hjust = 0.5, size = 14),
+        legend.text = ggplot2::element_text(size = 12),
+        legend.box = "horizontal",
+        legend.box.just = "center",
+        axis.title.y = ggplot2::element_text(
+          size = 16,
+          margin = ggplot2::margin(t = 0, r = 20, b = 0, l = 0)
+        ),
+        axis.title.x = ggplot2::element_text(
+          size = 16,
+          margin = ggplot2::margin(t = 20, r = 0, b = 0, l = 0)
+        ),
+        axis.text = ggplot2::element_text(size = 14),
+        plot.margin = grid::unit(c(1, 1, 1, 1), "cm")
+      ) +
+      ggplot2::guides(fill = ggplot2::guide_legend(title.position = "top", title.hjust = 0.5))
+
+    to_return <- list(data, soundscape_pcoa_plot)
+
+    names(to_return) <- c("data", "plot")
 
     if (screeplot == TRUE) {
       soundscape_screeplot <-
         tidyr::tibble(
-          pe = cumsum(soundscape_pcoa_percent_explained),
-          axis = 1:length(soundscape_pcoa_percent_explained)
+          pe = cumulative_variance,
+          axis = 1:length(cumulative_variance)
         ) %>%
         ggplot2::ggplot(ggplot2::aes(axis, pe)) +
         ggplot2::geom_line(linewidth = 1) +
@@ -664,7 +635,7 @@ ss_pcoa <- function(soundscape_list,
         ) +
         ggplot2::theme_classic() +
         ggplot2::ylab("Cumulative percentage variation explained") +
-        ggplot2::xlab("Number of principle coordinate axes") +
+        ggplot2::xlab("Number of principal coordinate axes") +
         ggplot2::theme(
           axis.title.y = ggplot2::element_text(
             size = 16,
@@ -686,9 +657,13 @@ ss_pcoa <- function(soundscape_list,
         soundscape_screeplot +
         patchwork::plot_layout(nrow = 1)
 
-      return(soundscape_pcoa_plot_combined)
+      to_return <- list(data, soundscape_pcoa_plot_combined)
+
+      names(to_return) <- c("data", "plot")
+
+      return(to_return)
     } else {
-      return(soundscape_pcoa_plot)
+      return(to_return)
     }
   }
 }
